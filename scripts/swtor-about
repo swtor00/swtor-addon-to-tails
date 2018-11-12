@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+# -*- encoding: UTF-8
+"""This scripts show a dialog with basic information about the
+running Tails installation.
+"""
+
+import gettext
+import subprocess
+
+from gi import require_version
+require_version('Gtk', '3.0')
+from gi.repository import GLib, Gtk, GdkPixbuf
+
+
+class AboutSwtor(Gtk.AboutDialog):
+    """A simple class showing the dialog"""
+    def __init__(self):
+        gettext.install("tails")
+        self.get_tails_version()
+        Gtk.AboutDialog.__init__(self)
+
+        self.set_program_name(_("swtor version 0.41"))
+
+        headerbar = Gtk.HeaderBar()
+        headerbar.set_title(_("About swtor-addon"))
+        headerbar.set_show_close_button(True)
+        self.set_titlebar(headerbar)
+
+        try:
+            self.set_logo(GdkPixbuf.Pixbuf.new_from_file_at_size(
+                '/home/amnesia/Persistent/swtor-addon-to-tails/swtor-logo.png', 400, 200))
+        except GLib.GError:
+            pass
+
+        self.set_copyright("author :  swtor00@protonmail.com")
+
+        self.set_website("https://github.com/swtor00/swtor-addon-to-tails")
+
+        self.connect("delete-event", Gtk.main_quit)
+        self.connect("response", Gtk.main_quit)
+        self.show_all()
+        Gtk.main()
+
+    def get_tails_version(self):
+        """Find out the tails_version and the tails_main_version"""
+        try:
+            self.tails_version = subprocess.Popen(
+                ["tails-version"], stdout=subprocess.PIPE).communicate()[0]
+            self.tails_version = self.tails_version.decode('utf-8')
+            self.tails_main_version = self.tails_version.split("-")[0]
+        except OSError:
+            self.tails_version = _("not available")
+            self.tails_main_version = ""
+
+AboutSwtor()

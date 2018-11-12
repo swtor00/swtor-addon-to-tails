@@ -1,0 +1,112 @@
+
+Date		Release		Author		Description
+----------------------------------------------------------------------------------------------------
+
+06/01/2018	0.31		swtor00		Release 0.31 / Beta 
+06/04/2018                      swtor00         adding 2 options GUI-LINKS:YES and GUI-LINKS:NO 
+06/07/2018                      swtor00         adding 2 options BROWSER-SOCKS5:YES and BROWSER-SOCKS5:NO
+06/08/2018			swtor00		outsourcing backup completly from startup.sh
+						all backups are not langer made in ~/Persistent/config
+                                                 
+06/08/2018      0.32            swtor00         Release 0.32 / Beta
+                                                cleaned up the little mess with the backup !
+
+06/09/2018	                swtor00         multiple little changes 
+
+06/26/2018      0.33            swtor00         The addional software is now part of tails 3.8 
+                                                or later. We don't need them gain to install inside 
+                                                of our script.
+
+                                                After upgrade from 0.32 to 0.33 you have to delete
+                                                2 folders   
+ 
+                                                ~/Persistent/deb
+                                                ~/Persistent/swtor-addon-to-tails/deb 
+
+                                                As user root create the follwing file 
+
+                                                /live/persistence/TailsData_unlocked/live-additional-software.conf
+                                                                                       
+                                                paste the following lines into it 
+                                              
+                                                chromium
+                                                libminizip1
+                                                libre2-3
+                                                sshpass
+ 
+08/26/2018      0.34		swtor00		Adding 1 Option CHECK-UPDATE:YES
+						multiple little errors solved	
+
+09/10/2018	0.35		swtor00		Added a better documentation
+
+09/11/2018      0.36            swtor00         temporary removed auto update feature 
+09/13/2018      0.37            swtor00         added auto-update again 
+09/13/2018      0.38            swtor00         Fix relaease
+
+                                                - Introducing JOTV 
+                                                - Better update-routine tho the script ....
+                                                  
+                                                 I made a little failure to run git pull  ....
+                                                 We should run it this way .... the corect way
+                                                 
+                                                 git reset --hard origin/master 
+                                                 git pull https://github.com/swtor00/swtor-addon-to-tails
+               
+						 If the the directory /home/amnesia/.ssh is found empty on 
+                                                 startup of selector.sh we exit the script immediately. 
+                                                 In this case we assume, that this tails system never
+                                                 contacted any ssh-host.
+
+						 Adding 2 more options inside swtor.cfg
+                                                 
+                                                 BACKUP-FIXED-PROFILE:NO
+                                                 BACKUP-APT-LIST:NO
+ 
+                                                 If you set both values to YES .....
+                                                 Your backup will be very big ....
+                                                 You need at least 180 mb to store
+                                                 all data. All the data inside 
+                                                 ~/Persistent/personal-files will be backuped,
+
+                                                 If you are just making a small backup with the execption of  
+
+                                                 -fixed profile inside ~/Persistent/personal-files/3
+                                                 -apt-list inside /live/persistence/TailsData_unlocked/apt
+                                    
+                                                 The generated backup will only be a 2 MB in size.
+
+                                                 restore_image.sh script addet
+               
+                                                 Added option IMPORT-BOOKMARKS:NO to swtor.cfg 
+
+
+10/13/2018      0.39            swtor00          Fix relaease for 
+                                                 create_image.sh and 
+                                                 restore_image.sh
+						 Better handling on first startup with 
+                                                 personal-files and symlink to this directory
+                                                 fixed profile inside personal-files can 
+                                                 be made, if it is the wish of the user
+                                                 backup-files can be transferd to a backup-host 
+                                                 backup-files can be deledet on demand
+						 Removed a lot of typos in the dialog-boxes 
+
+                                                 
+11/01/2018	0.40		swtor00		- multiple error fixed
+						- Added chapter 6 & 7 of documentation
+	                                                 
+11/11/2018	0.41		swtor00		- multiple errors fixed
+                                                - test for ssh persistent option
+                                                - test for additiona-sofwtare option                                                                                   
+                                                     
+
+ 
+                                                     
+                                                                                                 
+                              
+                                                   
+                                                   
+
+                                                   
+                                                  
+                                                   
