@@ -4,29 +4,29 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 3.10.1 or higher                      #
+# OS      : Tails 4.11 or higher                        #
 # TASKS   : select ssh-server to use                    #
 #                                                       #
-# VERSION : 0.41                                        #
+# VERSION : 0.50                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 02-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Check to see if  TOR is allready runnig ....
+# Check to see if TOR is allready runnig ....
 
-/usr/local/sbin/tor-has-bootstrapped
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
 if [ $? -eq 0 ] ; then
-    echo TOR is running and we can continue to execute the script ....
+   echo TOR is running and we can continue with the execution of the script ....
 else
-    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-    exit 1
+  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
+  exit 1
 fi
 
 
@@ -35,7 +35,7 @@ fi
 # Or the persistent option for ssh-client is not set properly...
 
 if [ -z "$(ls -A /home/amnesia/.ssh )" ]; then
-   zenity --info  --text="The directory /home/amnesia/.ssh is empty !"  > /dev/null 2>&1
+   zenity --info --width=600 --text="The directory /home/amnesia/.ssh is empty !"  > /dev/null 2>&1
    exit 1
 else
    echo ssh directory contains data
@@ -47,7 +47,7 @@ if [ -z "$ssh_pid" ]
 then
     echo No active ssh-connection found.
 else
-    zenity --info  --text="There is allready a ssh-connection ! Pleaase close the other connection."  > /dev/null 2>&1
+    zenity --info --width=600 --text="There is allready a ssh-connection ! Pleaase close the other connection."  > /dev/null 2>&1
     exit 1
 fi
 
@@ -55,7 +55,7 @@ cd /home/amnesia/Persistent/scripts/
 
 if [ ! -f /home/amnesia/Persistent/swtorcfg/swtorssh.cfg ]
 then
-        zenity --info  --text="Configuration file ~/Persistent/swtorcfg/swtorssh.cfg was not found !"  > /dev/null 2>&1
+        zenity --info --width=600 --text="Configuration file ~/Persistent/swtorcfg/swtorssh.cfg was not found !"  > /dev/null 2>&1
         exit 1
 fi
 
@@ -90,7 +90,7 @@ account=$(zenity --width=800 --height=400 --list --title "Please seleect the ssh
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
-    zenity --error --text "No selection was made !"
+    zenity --error --width=600 --text "No selection was made !"
     exit 1
 fi
 
@@ -115,11 +115,11 @@ if [ $arg1 == "fullssh.sh" ] ; then
         touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./1.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
    else
-       password=$(zenity --entry --text="Password for the ssh-connection ? " --title=Password --hide-text)
+       password=$(zenity --entry --width=600 --text="Password for the ssh-connection ? " --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        chmod 600 /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        if [ "$password" == "" ] ; then
-           zenity --error --text "No password provided on the keyboard !"
+           zenity --error --width=600 --text "No password provided on the keyboard !"
            exit 1
        else
            echo ... we have a password
@@ -145,7 +145,7 @@ if [ $arg1 == "chainssh.sh" ] ; then
         touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./3.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
    else
-       zenity --error --text "Only ssh-id authentification ist valid in chaimode of swtor !"
+       zenity --error --width=600 --text "Only ssh-id authentification ist valid in chaimode of swtor !"
        exit 1
    fi
 fi
@@ -153,11 +153,11 @@ fi
 
 if [ $arg1 == "pfssh.sh" ] ; then
    if [ $arg3 == "passwd" ] ; then
-       password=$(zenity --entry --text="Password for the ssh-connection ? " --title=Password --hide-text)
+       password=$(zenity --entry --width=600 --text="Password for the ssh-connection ? " --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        chmod 600 /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        if [ "$password" == "" ] ; then
-           zenity --error --text "No password provided on the keyboard !"
+           zenity --error --width=600 --text "No password provided on the keyboard !"
            exit 1
        else
            echo ... we have a password
@@ -170,7 +170,7 @@ if [ $arg1 == "pfssh.sh" ] ; then
        touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./4.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
     else
-       zenity --error --text "The script pfssh.sh only supports password-logins !"
+       zenity --error --width=600 --text "The script pfssh.sh only supports password-logins !"
        exit
     fi
 fi

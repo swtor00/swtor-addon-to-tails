@@ -175,10 +175,13 @@ case $? in
          # Install chromium
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium
+         cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox
+
 
          # Install sshpass
 
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass
+
 
          ;;
          1) echo nothing to do ..

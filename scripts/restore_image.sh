@@ -4,47 +4,47 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 3.10.1 or higher                      #
+# OS      : Tails 4.11 or higher                        #
 # TASKS   : Restore a saved image of all important      #
 # persistent files of tails                             #
 #                                                       #
-# VERSION : 0.41                                        #
+# VERSION : 0.50                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 04-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Check to see if  TOR is allready runnig ....
+# Check to see if TOR is allready runnig ....
 
-/usr/local/sbin/tor-has-bootstrapped
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
 if [ $? -eq 0 ] ; then
-    echo TOR is running and we can continue to execute the script ....
+   echo TOR is running and we can continue with the execution of the script ....
 else
-    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-    exit 1
+  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
+  exit 1
 fi
 
+
 # We need a administration password, or the addon will not work properly
+cd ~/Persistent
 
 echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/test_admin 2>&1
 
-if grep -q "is not allowed to execute" ~/Persistent/test_admin
+if grep -q "password is disabled" ~/Persistent/test_admin
  then
      rm ~/Persistent/test_admin > /dev/null 2>&1
-     zenity --error --text "This addon needs a administration password on startup.\n\nYou have to restart Tails and set a administration password !!"
+     zenity --error --width=600 --text="This addon needs a administration password for tails on startup !"
      exit 1
 else
     rm ~/Persistent/test_admin > /dev/null 2>&1
-    echo we have a password
+    echo we have a password for tails
 fi
-
-cd ~/Persistent
 
 
 if [ -z "$(ls -A ~/Persistent/swtor-addon-to-tails )" ];then

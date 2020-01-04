@@ -4,22 +4,22 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 3.10.1 or higher                      #
+# OS      : Tails 4.11 or higher                        #
 # TASKS   : Nainmenu of all swtor-functions             #
 #                                                       #
-# VERSION : 0.41                                        #
+# VERSION : 0.50                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # Main-Menu of of the swtor-addon-to-tails              #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 02-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# On every startup of Tails, the initial process has to be run once
+# On every startup of Tails, the initial process of the addon has to be run once
 
 if [ ! -f ~/swtor_init ]
    then
@@ -31,15 +31,16 @@ if [ ! -f ~/swtor_init ]
    fi
 fi
 
-# Check to see if  TOR is allready runnig ....
+# Check to see if TOR is allready runnig ....
 
-/usr/local/sbin/tor-has-bootstrapped
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
 if [ $? -eq 0 ] ; then
-    echo TOR is running and we can continue to execute the script ....
+   echo TOR is running and we can continue with the execution of the script ....
 else
-    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-    exit 1
+  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
+  exit 1
 fi
+
 
 # Build main menu
 
@@ -59,12 +60,12 @@ while [ $menu -eq 1 ]; do
        --print-column=1)
 
 if [ "$selection" == "" ] ; then
-    zenity --error --text "No selection was made !"
+    zenity --error --width=600 --text "No selection was made !"
 fi
 
 
 if [ $selection == "1" ] ; then
-   ./selector.sh 2>&1  > /dev/null &
+   ./selector.sh 2>&1  > /dev/null 
 fi
 
 if [ $selection == "2" ] ; then

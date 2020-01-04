@@ -71,14 +71,15 @@ else
     echo we have a password
 fi
 
-# Check to see if  TOR is allready runnig ....
 
-/usr/local/sbin/tor-has-bootstrapped
+# Check to see if TOR is allready runnig ....
+
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
 if [ $? -eq 0 ] ; then
-    echo TOR is running and we can continue to execute the script ....
+   echo TOR is running and we can continue with the execution of the script ....
 else
-    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-    exit 1
+  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
+  exit 1
 fi
 
 # Check for updates on demand if CHECK-UPDATE:YES is set of inside swtor.cfg

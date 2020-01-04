@@ -40,7 +40,7 @@ else
 fi
 
 if [ $arg1 != "fullssh.sh" ] ; then
-   zenity --info  --text="Wrong script definition inside fullssh.arg !"  > /dev/null 2>&1
+   zenity --info --width=600 --text="Wrong script definition inside fullssh.arg !"  > /dev/null 2>&1
    exit 1
 fi
 
@@ -92,7 +92,7 @@ chain+=$arg9
 if [ $arg8 == "clock" ]
    then
    xhost +
-   chain+=" xclock -geometry 300x300+85+5"
+   chain+=" xclock -geometry 150x150+85+5"
 fi
 
 # is allready a ssh deamon running ?
@@ -114,7 +114,7 @@ then
 
       if [ -z "$ssh_pid" ]
       then
-          zenity --info --text "ssh isn't active ! Script do exit now. Logs are inside of swtorcfg/log ! "
+          zenity --info --width=600 --text "ssh connection isn't active ! Script do exit now. Logs are inside of swtorcfg/log ! "
           exit 1
       fi
 
@@ -126,7 +126,7 @@ then
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
-      zenity --info --text "The encrypted connection is now active.To close this connection, press the ok button on this window !"
+      zenity --info  --width=600 --text "The encrypted ssh connection over the onion-network is now active.\nTo close this connection,please press the ok button on this window !"
       sleep 1
 
       ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')

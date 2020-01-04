@@ -4,21 +4,20 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 3.10.1 or higher                      #
+# OS      : Tails 4.11 or higher                        #
 # TASKS   : Toolsmenu of all swtor-functions            #
 #                                                       #
-# VERSION : 0.41                                        #
+# VERSION : 0.50                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 02-01-2020                                    #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
-
 
 # Has setup ever run on this addon ?
 
@@ -28,16 +27,16 @@ if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ]
        exit 1
 fi
 
+# Check to see if TOR is allready runnig ....
 
-# Check to see if  TOR is allready runnig ....
-
-/usr/local/sbin/tor-has-bootstrapped
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
 if [ $? -eq 0 ] ; then
-    echo TOR is running and we can continue to execute the script ....
+   echo TOR is running and we can continue with the execution of the script ....
 else
-    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-    exit 1
+  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
+  exit 1
 fi
+
 
 menu=1
 while [ $menu -eq 1 ]; do
@@ -87,7 +86,7 @@ if [ $selection == "1" ] ; then
             sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Current settings of Tails are now freezed !" > /dev/null 2>&1)
          
    else
-            sleep 5 | tee >(zenity --error --text="Freezing not possible ! \nThis Tails seems already in the state to be freezed !" > /dev/null 2>&1)
+            sleep 5 | tee >(zenity --error --text="Freezing not possible ! \nThis Tails system seems already in the state to be freezed !" > /dev/null 2>&1)
 
    fi 
 fi
@@ -140,11 +139,11 @@ if [ $selection == "4" ] ; then
 
          if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ]
          then
-             zenity --info  --text="Addon has no .git directory inside of ~/Persistent/swtor-addon-to-tails !"  > /dev/null 2>&1
+             zenity --info --width=600 --text="Addon has no .git directory inside of ~/Persistent/swtor-addon-to-tails !"  > /dev/null 2>&1
              exit 1
          fi
 
-        zenity --question  --text "There is a newer version to download. Would you like to update now ?"
+        zenity --question --width=600 --text "There is a newer version to download. Would you like to update now ?"
         case $? in
                 0) sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The addon is now updating to the latest release ... please wait !" > /dev/null 2>&1)
                    ./udpate.sh
@@ -168,7 +167,7 @@ fi
 
 
 if [ $selection == "7" ] ; then
-    evince /home/amnesia/Persistent/doc/swtor0-40.pdf
+    evince /home/amnesia/Persistent/doc/swtor0-41.pdf
 fi
 
 if [ $selection == "8" ] ; then

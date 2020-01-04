@@ -6,15 +6,15 @@
 # EMAIL   : Please have a closer look at the ReadMe     #
 #           I only do response to PGP encrypted Mails   #
 #           send from https://protonmail.com/           #
-# OS      : Tails 3.8 or higher                         #
+# OS      : Tails 4.11 or higher                        #
 # TASKS   : The setup script of all swtor scripts       #
 #                                                       #
-# VERSION : 0.40                                        #
+# VERSION : 0.50                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 02-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
