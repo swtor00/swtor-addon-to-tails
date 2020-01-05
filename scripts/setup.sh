@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : setup script for the addon                  #
 #                                                       #
 #                                                       #
@@ -45,9 +45,8 @@ if grep -q "password is disabled" ~/Persistent/test_admin
      exit 1
 else
     rm ~/Persistent/test_admin > /dev/null 2>&1
-    echo we have a password for tails
+    echo we have a password 
 fi
-
 
 # is .ssh persistent ?
 

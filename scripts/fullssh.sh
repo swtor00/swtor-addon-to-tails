@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 3.10.1 or higher                      #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : run a ssh command with multipe options      #
 #                                                       #
-# VERSION : 0.41                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -55,7 +55,7 @@ if [ $arg4 == "4" ] ; then
 fi
 
 if [ $arg4 == "6" ] ; then
-    zenity --info  --text="IP V6 can not be used !"  > /dev/null 2>&1
+    zenity --info --width=600 --text="IP V6 can not be used !"  > /dev/null 2>&1
     exit 1
 fi
 

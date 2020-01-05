@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
-# TASKS   : Toolsmenu of all swtor-functions            #
+# OS      : Tails 4.1.1 or higher                       #
+# TASKS   : Toolsmenu of all hidden swtor-functions     #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 02-01-2020                                    #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -32,6 +32,14 @@ fi
 curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
 if [ $? -eq 0 ] ; then
    echo TOR is running and we can continue with the execution of the script ....
+   current_version=$(tails-version | head -1 | awk '{print $1}')
+   expected_version=$(cat ~/Persistent/swtorcfg/swtor.cfg | grep TAILS | sed 's/[^0-9.]*//g')
+   if [ "$current_version" = "$expected_version" ]; then
+      echo we have the same version of tails, that we are expecting from the addon.    
+   else
+        sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Warning : Expected Tails-version did not match !" > /dev/null 2>&1)
+
+   fi
 else
   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
   exit 1
@@ -59,7 +67,7 @@ while [ $menu -eq 1 ]; do
        --print-column=1)
 
 if [ "$selection" == "" ] ; then
-    zenity --error --text "No selection was made !"
+    menu=0   
 fi
 
 if [ $selection == "1" ] ; then

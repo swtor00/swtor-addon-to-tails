@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : select ssh-server to use                    #
 #                                                       #
 # VERSION : 0.50                                        #
@@ -30,7 +30,7 @@ else
 fi
 
 
-# if the .ssh directory is empty ....  We could assume the follwing.
+# If the .ssh directory is empty ....  We could assume the follwing.
 # This tails never contacted any ssh-system -> No Keys -> No known_hosts
 # Or the persistent option for ssh-client is not set properly...
 

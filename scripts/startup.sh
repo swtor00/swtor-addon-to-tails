@@ -5,16 +5,16 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 3.10.1 or higher                      #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : Install software and create all symbolic    #
 # links on the Desktop of tails.                        #
 #                                                       #
-# VERSION : 0.40                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-10                                    #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -41,7 +41,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ]
        else
             # Houston ... We have a problem
 
-            zenity --question  --text "Warning - Warning - Warning - Warning - Warning\n\nYour current Tails is freezed with a other version than it was created. Delete the current freezing from the old Tails ?"
+            zenity --question --width=600 --text "Warning - Warning - Warning - Warning - Warning\n\nYour current Tails is freezed with a other version than it was created. Delete the current freezing from the old Tails ?"
             case $? in
             0)  rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
                 rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
@@ -64,7 +64,7 @@ echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/scripts/test_admin 2>&1
 if grep -q "is not allowed to execute" ~/Persistent/scripts/test_admin
  then
      rm ~/Persistent/scripts/test_admin > /dev/null 2>&1
-     zenity --error --text "This addon needs a administration password on startup.\n\nYou have to restart Tails and set a administration password !!"
+     zenity --error --width=600 --text "This addon needs a administration password on startup.\n\nYou have to restart Tails and set a administration password !!"
      exit 1
 else
     rm ~/Persistent/scripts/test_admin > /dev/null 2>&1
@@ -90,9 +90,7 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
 
     # If you don't like this behavior on startup, you should open with a editor the
     # configuration file ~/Persistent/swtorcfg/swtor.cfg and set the option
-    # CHECK-UPDATE:YES
-    # to the value
-    # CHECK-UPDATE:NO
+    # CHECK-UPDATE:YES to the value CHECK-UPDATE:NO
     # After this little change ... it will not longer look for a update
 
     sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Checking for updates ... please wait !" > /dev/null 2>&1)
@@ -212,7 +210,7 @@ gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ]
 then
-    zenity --info  --text="Password was not coorect !"  > /dev/null 2>&1
+    zenity --info --width=600 --text="Password was not correct !"  > /dev/null 2>&1
     rm password
     rm password_correct
     exit 1
@@ -259,7 +257,7 @@ if [ ! -f /usr/bin/sshpass ]
 fi
 
 
-# Make symbolic links on the desktop for the browser and the ssh-connection
+# Make symbolic links on the desktop for the main menu 
 # This depends on the setting GUI-LINKS:YES and BROWSER-SOCKS5:YES inside swtor.cfg
 
 if grep -q BROWSER-SOCKS5:YES ~/Persistent/swtorcfg/swtor.cfg

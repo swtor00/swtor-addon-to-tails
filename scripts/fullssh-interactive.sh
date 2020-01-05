@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : run a ssh command with multipe options      #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
@@ -15,7 +15,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 04-01-2020                                  #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -38,7 +38,7 @@ if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/fullssh.arg | awk '{print $9}')
 
 else
-    zenity --info  --text="No arguments supplied with fullssh-interactive.arg or this file do not exist."  > /dev/null 2>&1
+    zenity --info --width=600 --text="No arguments supplied with fullssh-interactive.arg or this file do not exist."  > /dev/null 2>&1
     exit 1
 fi
 
@@ -47,12 +47,12 @@ if [ -f /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg ]
    echo We found a password-file that should contain the valid entry to the host
    password=$(cat ~/Persistent/swtorcfg/ssh-interactive.arg)
 else
-    zenity --info  --text="No password-file found."  > /dev/null 2>&1
+    zenity --info --width=600 --text="No password-file found."  > /dev/null 2>&1
     exit 1
 fi
 
 if [ $arg1 != "fullssh.sh" ] ; then
-   zenity --info  --text="Wrong script definition inside fullssh-interactive.arg !"  > /dev/null 2>&1
+   zenity --info --width=600 --text="Wrong script definition inside fullssh-interactive.arg !"  > /dev/null 2>&1
    exit 1
 fi
 
@@ -67,7 +67,7 @@ if [ $arg4 == "4" ] ; then
 fi
 
 if [ $arg4 == "6" ] ; then
-    zenity --info  --text="IP V6 can not be used !"  > /dev/null 2>&1
+    zenity --info --width=600 --text="IP V6 can not be used !"  > /dev/null 2>&1
     exit 1
 fi
 
@@ -102,7 +102,7 @@ chain+=$arg9
 if [ $arg8 == "clock" ]
    then
    xhost +
-   chain+=" xclock -geometry 300x300+85+5"
+   chain+=" xclock -geometry 150x150+85+5"
 fi
 
 # is allready a ssh deamon running ?
@@ -116,7 +116,7 @@ then
 
       sshpass -p $password ssh $chain &
 
-      # we loook on the processes .. If the password was correct or not
+      # we loook on the shs processes .. If the password was correct or not
 
       sleep 4
 
@@ -125,7 +125,7 @@ then
 
       if [ -z "$ssh_pid" ]
       then
-          zenity --info --text "ssh isn't active ! The password was wrong !"
+          zenity --info --width=600 --text "ssh isn't active ! The password was wrong !"
           exit 1
       fi
 
@@ -137,8 +137,7 @@ then
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
-      zenity --info --text "The encrypted connection is now active.To close this connection, press the ok button on this window !"
-
+      zenity --info  --width=600 --text "The encrypted ssh connection over the onion-network is now active.\nTo close this connection,please press the ok button on this window !"
       sleep 1
 
       ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')

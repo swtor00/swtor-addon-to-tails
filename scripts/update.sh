@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 02-01-2020                                  #
+# DATE    : 04-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -28,7 +28,7 @@ else
   exit 1
 fi
 
-# Is this script controlled with git or not ?
+# Is this script controlled by git or not ?
 
 if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ]
    then
@@ -36,11 +36,10 @@ if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ]
        exit 1
 fi
 
-# In the case, that someone changed the confiuration-file
+# In the case, that someone changed the current confiuration-file
 # we copy the current config swtor.cfg
 
 cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config
-
 cd ~/Persistent/swtor-addon-to-tails
 
 git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails

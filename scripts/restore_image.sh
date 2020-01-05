@@ -4,16 +4,16 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : Restore a saved image of all important      #
 # persistent files of tails                             #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 04-01-2020                                  #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -43,18 +43,19 @@ if grep -q "password is disabled" ~/Persistent/test_admin
      exit 1
 else
     rm ~/Persistent/test_admin > /dev/null 2>&1
-    echo we have a password for tails
+    echo we have a password
 fi
 
 
 if [ -z "$(ls -A ~/Persistent/swtor-addon-to-tails )" ];then
 
-   zenity --info  --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this tool in recovery-mode.\n\nPlease press OK to continue."
+   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this recovery-mode.\n\nPlease press OK to continue."
+
    echo
    echo we need to download the script ... execute git command to donwload
    echo
    echo
-   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download current code for swtor from github.Please wait.This may needs some time" > /dev/null 2>&1)
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download current swtor-shell code from github.Please wait.This may needs some time" > /dev/null 2>&1)
          git clone https://github.com/swtor00/swtor-addon-to-tails
    echo
    cp ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.git-hub

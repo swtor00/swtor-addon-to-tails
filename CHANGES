@@ -99,10 +99,19 @@ Date		Release		Author		Description
                                                 - test for ssh persistent option
                                                 - test for additional-software option                                                                                   
                                                      
-02/01/2029	0.50 		swtor00         - New Tails 4.0 and and a lot of changes to reflect them all
+02/01/2020	0.50 		swtor00         - New Tails 4.0 and and a lot of changes inside of the scripz to reflect 
+                                                  them all
                                                 - For Debian 10 "chromium-sandbox" has to be installed.
                                                 - New Desktop wallpaper   
 						- SSH Server windows was not serialized. (fixed)  
+
+05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fild from 
+                                                  the configuration file. Show a warning if the value 
+                                                  don't match.
+                                                - Multiple little errors fixed.   
+
+    
+                                                       
                                                                                                  
                               
                                                    

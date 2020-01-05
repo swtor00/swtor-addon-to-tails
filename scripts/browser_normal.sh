@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : Start browser in normal mode                #
 #                                                       #
-# VERSION : 0.50                                       #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 04-01-2020                                  #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -32,7 +32,7 @@ fi
 
 cd /home/amnesia/Persistent/scripts
 
-if [ !  -d /home/amnesia/Persistent/settings/2  ]
+if [ ! -d /home/amnesia/Persistent/settings/2  ]
 then
     zenity --info --width=600 --text="Configuration ~/Persistent/settings/2 not found." &
     exit 1

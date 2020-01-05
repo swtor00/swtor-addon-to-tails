@@ -4,16 +4,16 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : Create a image of all important persistent  #
 # files of tails                                        #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 04-01-2020                                  # 
+# DATE    : 05-01-2020                                  # 
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -38,57 +38,57 @@ sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Sta
 # backup all important files for the user amnesia
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/bookmarks )" ]; then
-    echo no data for [bookmarks]
+    echo no data [bookmarks]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/bookmarks /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/dotfiles )" ]; then
-    echo no data for [dotfiles]
+    echo no data [dotfiles]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/dotfiles /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/electrum )" ]; then
-    echo no data for [electrum]
+    echo no data [electrum]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/electrum /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/gnupg )" ]; then
-    echo no data for [gnupg]
+    echo no data [gnupg]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/gnupg /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/openssh-client )" ]; then
-    echo no data for [openssh-client]
+    echo no data [openssh-client]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/openssh-client /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/pidgin )" ]; then
-    echo no data for [pidgin]
+    echo no data [pidgin]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/pidgin /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/thunderbird )" ]; then
-    echo no data for [thunderbird]
+    echo no data [thunderbird]
 else
     rsync -aqzh /live/persistence/TailsData_unlocked/thunderbird /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
 if grep -q BACKUP-FIXED-PROFILE:YES ~/Persistent/swtorcfg/swtor.cfg ; then
 if [ -z "$(ls -A ~/Persistent/personal-files/3 )" ]; then
-    echo no data for [fixed-profile personal-data]
+    echo no data [fixed-profile personal-data]
 else
     rsync -avzh ~/Persistent/personal-files/3 /home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
 fi
 fi
 
 if [ -z "$(ls -A ~/Persistent/swtorcfg )" ]; then
-    echo no data for [swtorcfg]
+    echo no data [swtorcfg]
 else
     mkdir -p /home/amnesia/Persistent/backup/swtorcfg
     cp ~/Persistent/swtorcfg/*.cfg /home/amnesia/Persistent/backup/swtorcfg
@@ -179,18 +179,9 @@ backupdir=$(echo ~/Persistent/backup-$(date '+%Y-%m-%d'))
 sleep 8 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Backup created inside of the directory\n$(echo $backupdir)" > /dev/null 2>&1)
 
 
-# zenity --question  --text "Should the created backup to be entycrypted with gpg ?"
-# case $? in
-#   0) tar czvpf - ~/Persistent/backup | gpg --symmetric --cipher-algo aes256 -o "$(date '+%Y-%m-%d').tar.gz.gpg" 
-#    ;;
-#    1) tar czvf "$(date '+%Y-%m-%d').tar.gz" ~/Persistent/backup > /dev/null 2>&1
-#    ;;
-# esac
-
-
 # Now we have to decide, if we would like to copy this backup to a foreign ssh-host
 
-zenity --question  --text "Would you like to transfer this backup-files\nwith ssh to a predefined backup-host inside of swtorssh.cfg ?" > /dev/null 2>&1
+zenity --question --width=600 --text "Would you like to transfer this backup-files\nwith ssh to a predefined backup-host inside of swtorssh.cfg ?" > /dev/null 2>&1
 case $? in
          0) echo we have to transfer the backup to ssh-host
 
@@ -199,7 +190,7 @@ case $? in
          line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
 
          if [ -z "$line" ] ; then
-            zenity --error --text "No predefined backup host found inside of ~/Persistent/swtorcfg/swtorssh.cfg !\nYou have to copy the backup files by yourself anywhere else." > /dev/null 2>&1
+            zenity --error --width=600 --text "No predefined backup host found inside of ~/Persistent/swtorcfg/swtorssh.cfg !\nYou have to copy the backup files by yourself anywhere else." > /dev/null 2>&1
             exit 1
          fi
 
@@ -217,17 +208,17 @@ case $? in
 
          if [ $? -eq 0 ] ; then
             echo all done ...
-            zenity --info --text "Congratulations !\nYour backup files have ben succesfull transfered with ssh to a other location." > /dev/null 2>&1
-            zenity --question --text "Would you like to delete the local created backup-files now ? \n\nIf you answer Yes please be sure to have following ssh information anywhere written.\n\n-username and the correct password\n-port\n-servername or ip\n\nIn the case of a desaster-recovery for tails you neeed this information to copy back the files over ssh!\n\n"
+            zenity --info --width=600 --text "Congratulations !\nYour backup files have ben succesfull transfered with ssh to a other location." > /dev/null 2>&1
+            zenity --question --width=600 --text "Would you like to delete the local created backup-files now ? \n\nIf you answer Yes please be sure to have following ssh information anywhere written.\n\n-username and the correct password\n-port\n-servername or ip\n\nIn the case of a desaster-recovery for tails you neeed this information to copy back the files over ssh!\n\n"
             case $? in
                      0) rm -rf /home/amnesia/Persistent/$remote_name > /dev/null 2>&1
 
-                     zenity --info --text "The backup folder $(echo $remote_name) has ben deleted.\nTo copy back this files from the remote server,you should execute the following command inside of a terminal\n\n
+                     zenity --info --width=600 --text "The backup folder $(echo $remote_name) has ben deleted.\nTo copy back this files from the remote server,you should execute the following command inside of a terminal\n\n
 scp $(echo $ssh_host$remote_name/* /home/amnesia/Persistent )\n\nYou can copy this information to the clippboard  or write it down"
 
                     ;;
                     1) echo backup files remain inside of directoty  ~/Persistent
-                      zenity --info --text "The backup folder $(echo $remote_name) remains inside ~/Persistent.\nTo copy back this files from the remote server,you should execute the following command inside of a terminal\$
+                      zenity --info --width=600 --text "The backup folder $(echo $remote_name) remains inside ~/Persistent.\nTo copy back this files from the remote server,you should execute the following command inside of a terminal\$
 scp $(echo $ssh_host$remote_name/* /home/amnesia/Persistent )\n\nYou can copy this information to the clippboard  or write it down"
                     ;;
             esac

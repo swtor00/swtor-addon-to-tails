@@ -4,22 +4,22 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.11 or higher                        #
+# OS      : Tails 4.1.1 or higher                       #
 # TASKS   : run a ssh command with multipe options      #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.51                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 04-01-2020                                  #
+# DATE    : 05-01-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Test needet parameters for this script
+# Test all needet parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
    then
@@ -38,21 +38,21 @@ if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
 
 
 else
-    zenity --info  --text="No arhuments supplied with chainssh.arg or this file do not exist !"  > /dev/null 2>&1
+    zenity --info  -width=600 --text="No arhuments supplied with chainssh.arg or this file do not exist !"  > /dev/null 2>&1
     exit 1
 fi
 
 
 if [ ! -f /home/amnesia/Persistent/swtorcfg/$arg13 ]
 then
-       zenity --info  --text="Chain-configuration file not found inside ~/Persistent/swtorcfg !"  > /dev/null 2>&1
+       zenity --info -width=600 --text="Chain-configuration file not found inside ~/Persistent/swtorcfg !"  > /dev/null 2>&1
        echo file $arg13 not found inside of ~/Persistent/swtorcfg
        exit 1
 fi
 
 if [ $arg1 != "chainssh.sh" ] ;
    then
-   zenity --info  --text="Wrong script definition inside fullssh.arg !"  > /dev/null 2>&1
+   zenity --info -width=600 --text="Wrong script definition inside fullssh.arg !"  > /dev/null 2>&1
    exit 1
 fi
 
@@ -68,7 +68,7 @@ if [ $arg4 == "4" ] ; then
 fi
 
 if [ $arg4 == "6" ] ; then
-    zenity --info  --text="IP V6 can not be used !"  > /dev/null 2>&1
+    zenity --info -width=600 --text="IP V6 can not be used !"  > /dev/null 2>&1
     exit 1
 fi
 
@@ -130,7 +130,7 @@ if [ -z "$ssh_pid" ]
 
       if [ -z "$ssh_pid" ]
           then
-          zenity --info --text "ssh isn't active ! Script do exit now. "
+          zenity --info -width=600 --text "ssh isn't active ! Script do exit now. "
           exit 1
       fi
 
@@ -142,8 +142,7 @@ if [ -z "$ssh_pid" ]
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
-      zenity --info --text "The encrypted connection is now active.To close this connection, press the ok button on this window !"
-
+      zenity --info --width=600 --text "The encrypted ssh connection over the onion-network is now active.\nTo close this connection,please press the ok button on this window !"
 
       # over ssh we send a kill -9 signal to ssh host1 , to relase port 11000 on host1
 
