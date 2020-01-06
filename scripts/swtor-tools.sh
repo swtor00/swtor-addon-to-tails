@@ -67,7 +67,7 @@ while [ $menu -eq 1 ]; do
        --print-column=1)
 
 if [ "$selection" == "" ] ; then
-    menu=0   
+    menu=0
 fi
 
 if [ $selection == "1" ] ; then
@@ -94,7 +94,7 @@ if [ $selection == "1" ] ; then
    else
             sleep 5 | tee >(zenity --error --text="Freezing not possible ! \nThis Tails system seems already in the state to be freezed !" > /dev/null 2>&1)
 
-   fi 
+   fi
 fi
 
 
@@ -127,16 +127,18 @@ if [ $selection == "4" ] ; then
     # We contact github to see what version is over there stored ....
 
     wget -O REMOTE.html  https://github.com/swtor00/swtor-addon-to-tails/blob/master/swtorcfg/swtor.cfg
-    html2text REMOTE.html REMOTE.TXT
-    
-    REMOTE=$(grep "SWTOR-VERSION" REMOTE.TXT | cut -d ">" -f2 | cut -d "<" -f 1)
+    html2text REMOTE.html > REMOTE.TXT
+
+    REMOTE=$(grep "SWTOR-VERSION" REMOTE.TXT)
+    REMOTE=$(echo $REMOTE | tr -d " ")
     LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg)
+
+    rm REMOTE.html > /dev/null 2>&1
+    rm REMOTE.TXT > /dev/null 2>&1
 
     # Comparing the remote and the local version of the scirpt..
 
     echo REMOTE-VERSION [$REMOTE] LOCAL-VERSION [$LOCAL]
-
-    exit 0
 
     if [ "$REMOTE" == "$LOCAL" ]
     then
@@ -152,7 +154,7 @@ if [ $selection == "4" ] ; then
              exit 1
          fi
 
-        zenity --question --width=600 --text "On Github is newer version to download. Would you like to update the addon now ?"
+        zenity --question --width=600 --text "On Github is a newer version of swtor to download.\n Would you like to update the addon now ?"
         case $? in
                 0) sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The addon is now updating to the latest release ... please wait !" > /dev/null 2>&1)
                    ./udpate.sh
