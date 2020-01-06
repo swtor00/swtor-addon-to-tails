@@ -108,7 +108,10 @@ Date		Release		Author		Description
 05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fild from 
                                                   the configuration file. Show a warning if the value 
                                                   don't match.
-                                                - Multiple little errors fixed.   
+                                                - Multiple little errors fixed. 
+                                                - Changed setting from VERSION to SWTOR-VERSION
+                                                - Added html2text to section software 
+  
 
     
                                                        

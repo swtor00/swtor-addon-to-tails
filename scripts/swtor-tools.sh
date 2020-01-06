@@ -90,9 +90,7 @@ if [ $selection == "1" ] ; then
             # Do markup the version of Tails we used to freezing ... we store it right here 
 
             tails-version > ~/Persistent/swtorcfg/freezed.cgf
- 
             sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Current settings of Tails are now freezed !" > /dev/null 2>&1)
-         
    else
             sleep 5 | tee >(zenity --error --text="Freezing not possible ! \nThis Tails system seems already in the state to be freezed !" > /dev/null 2>&1)
 
@@ -123,19 +121,22 @@ fi
 
 if [ $selection == "4" ] ; then
 
-    cd ~/Persitent/scripts
+    cd ~/Persistent/scripts
     sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Checking for updates ... please wait !" > /dev/null 2>&1)
 
     # We contact github to see what version is over there stored ....
 
-    wget -O REMOTE-VERSION https://github.com/swtor00/swtor-addon-to-tails/blob/master/swtorcfg/swtor.cfg
-
-    REMOTE=$(grep ">VERSION" REMOTE-VERSION | cut -d ">" -f2 | cut -d "<" -f 1)
-    LOCAL=$(grep VERSION ~/Persistent/swtorcfg/swtor.cfg)
+    wget -O REMOTE.html  https://github.com/swtor00/swtor-addon-to-tails/blob/master/swtorcfg/swtor.cfg
+    html2text REMOTE.html REMOTE.TXT
+    
+    REMOTE=$(grep "SWTOR-VERSION" REMOTE.TXT | cut -d ">" -f2 | cut -d "<" -f 1)
+    LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg)
 
     # Comparing the remote and the local version of the scirpt..
 
     echo REMOTE-VERSION [$REMOTE] LOCAL-VERSION [$LOCAL]
+
+    exit 0
 
     if [ "$REMOTE" == "$LOCAL" ]
     then
@@ -151,7 +152,7 @@ if [ $selection == "4" ] ; then
              exit 1
          fi
 
-        zenity --question --width=600 --text "There is a newer version to download. Would you like to update now ?"
+        zenity --question --width=600 --text "On Github is newer version to download. Would you like to update the addon now ?"
         case $? in
                 0) sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The addon is now updating to the latest release ... please wait !" > /dev/null 2>&1)
                    ./udpate.sh

@@ -175,6 +175,7 @@ case $? in
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium
          cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox
+         cat ~/Persistent/password | sudo -S apt-get install -y html2text 
 
 
          # Install sshpass
