@@ -99,7 +99,7 @@ Date		Release		Author		Description
                                                 - test for ssh persistent option
                                                 - test for additional-software option                                                                                   
                                                      
-02/01/2020	0.50 		swtor00         - New Tails 4.0 and and a lot of changes inside of the scripz to reflect 
+02/01/2020	0.50 		swtor00         - New Tails 4.0 and and a lot of changes inside of the script to reflect 
                                                   them all
                                                 - For Debian 10 "chromium-sandbox" has to be installed.
                                                 - New Desktop wallpaper   
@@ -110,7 +110,22 @@ Date		Release		Author		Description
                                                   don't match.
                                                 - Multiple little errors fixed. 
                                                 - Changed setting from VERSION to SWTOR-VERSION
-                                                - Added html2text to section software 
+                                                - Added html2text to section software
+
+20/12/2020	0.52            swtor00		- Script needs at least version 4.14 of tails 
+                                                - If there is no active Internet Connection, the script does 
+                                                  now detect it on startup within 7 secounds ... 
+                                                  I the old way it was over 1 mnute to detect that there is no
+                                                  Internet Connection. 
+                                                - apt autremove is executed after the changing of the firewall-settings is done.
+                                                - Bookmark cleaning for tor-browser.
+
+
+
+
+                    
+   
+
   
 
     

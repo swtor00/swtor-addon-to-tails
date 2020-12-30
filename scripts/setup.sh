@@ -71,7 +71,7 @@ else
     rm ~/Persistent/mounted > /dev/null 2>&1
     echo failure
 
-     zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\n\nYou have to set this option and restart Tails !!"
+    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\n\nYou have to set this option and restart Tails !!"
     exit 1
 fi
 
@@ -182,6 +182,9 @@ case $? in
 
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass
 
+         # Install yad
+
+         cat ~/Persistent/password | sudo -S apt-get install -y yad
 
          ;;
          1) echo nothing to do ..
