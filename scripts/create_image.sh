@@ -4,36 +4,24 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
-# TASKS   : Create a image of all important persistent  #
-# files of tails                                        #
+# OS      : Tails 4.14 or higher                        #
 #                                                       #
-# VERSION : 0.51                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-01-2020                                  # 
+# DATE    : 30-12-2020                                  # 
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Check to see if TOR is allready runnig ....
-
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
-if [ $? -eq 0 ] ; then
-   echo TOR is running and we can continue with the execution of the script ....
-else
-  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-  exit 1
-fi
 
 cd ~/Persistent/scripts
 
 sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Starting backup of persistent data.Please wait !" > /dev/null 2>&1)
-
 
 # backup all important files for the user amnesia
 

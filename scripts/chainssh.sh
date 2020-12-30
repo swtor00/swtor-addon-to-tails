@@ -4,22 +4,21 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
-# TASKS   : run a ssh command with multipe options      #
+# OS      : Tails 4.14 or higher                        #
 #                                                       #
-# VERSION : 0.51                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-01-2020                                  #
+# DATE    : 30-12-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Test all needet parameters for this script
+# Test all parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
    then
@@ -38,7 +37,7 @@ if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
 
 
 else
-    zenity --info  -width=600 --text="No arhuments supplied with chainssh.arg or this file do not exist !"  > /dev/null 2>&1
+    zenity --info  -width=600 --text="No arguments supplied with chainssh.arg or this file do not exist !"  > /dev/null 2>&1
     exit 1
 fi
 
@@ -103,7 +102,7 @@ command2=$(cat ~/Persistent/swtorcfg/$arg13)
 
 # One thing is very important :
 # In the case we would like to close the complete connection
-# we have to send a kill -9 to the remote host1 or the local
+# we have to send a kill -9 to the remote host or the local
 # port 11000 remains closed for future connections
 
 username=$(echo $arg9 | tr "@" " " | awk '{print $1}')

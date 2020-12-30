@@ -4,16 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
-# TASKS   : setup script for the addon                  #
+# OS      : Tails 4.14 or higher                        #
 #                                                       #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 01-01-20                                    #
+# DATE    : 30-12-20                                    #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -21,15 +20,18 @@
 #########################################################
 
 
-# Check to see if TOR is allready runnig ....
+# Check to see if ONION Network is allready runnig ....
 
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
 if [ $? -eq 0 ] ; then
-   echo TOR is running and we can continue with the execution of the script ....
+   echo TOR is up and running and we can continue with the execution of the script ....
+   echo done
 else
-  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-  exit 1
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="ONION network not ready or no internet connection !" > /dev/null 2>&1)
+   exit 1
 fi
+
+
 
 
 cd ~/Persistent
