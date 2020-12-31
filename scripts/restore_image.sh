@@ -4,34 +4,33 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
-# TASKS   : Restore a saved image of all important      #
-# persistent files of tails                             #
+# OS      : Tails 4.14 or higher                        #
 #                                                       #
-# VERSION : 0.51                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-01-2020                                  #
+# DATE    : 30-12-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Check to see if TOR is allready runnig ....
+# Check to see if ONION Network is allready runnig ....
 
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 12 | grep -m 1 Congratulations > /dev/null
 if [ $? -eq 0 ] ; then
-   echo TOR is running and we can continue with the execution of the script ....
+    echo TOR  is running ... > /dev/null 2>&1
 else
-  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-  exit 1
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="ONION network not ready or no internet connection !" > /dev/null 2>&1)
+   exit 1
 fi
 
 
 # We need a administration password, or the addon will not work properly
+
 cd ~/Persistent
 
 echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/test_admin 2>&1
@@ -42,26 +41,21 @@ if grep -q "password is disabled" ~/Persistent/test_admin
      zenity --error --width=600 --text="This addon needs a administration password for tails on startup !"
      exit 1
 else
-    rm ~/Persistent/test_admin > /dev/null 2>&1
-    echo we have a password
+    rm ~/Persistent/test_admin >/dev/null 2>&1
+    echo we have a password > /dev/null 2>&1
 fi
 
 
-if [ -z "$(ls -A ~/Persistent/swtor-addon-to-tails )" ];then
+if [ -z "$(ls -A ~/Persistent/swtor-addon-to-tails > /dev/null 2>&1)" ];then
 
-   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this recovery-mode.\n\nPlease press OK to continue."
-
-   echo
-   echo we need to download the script ... execute git command to donwload
-   echo
-   echo
+   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis script restores all persistent data from a saved image.\n\nPlease press OK to continue."
+   echo we need to download the script ... execute git command to donwload > /dev/null 2>&1
    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download current swtor-shell code from github.Please wait.This may needs some time" > /dev/null 2>&1)
-         git clone https://github.com/swtor00/swtor-addon-to-tails
-   echo
-   cp ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.git-hub
-   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download finished." > /dev/null 2>&1)
+         git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
 
-   echo creating symlinks
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download from github finished." > /dev/null 2>&1)
+
+   echo creating symlinks > /dev/null 2>&1
 
    ln -s ~/Persistent/swtor-addon-to-tails/settings  ~/Persistent/settings
    ln -s ~/Persistent/swtor-addon-to-tails/scripts   ~/Persistent/scripts
@@ -83,72 +77,101 @@ echo $password > /home/amnesia/Persistent/password
 # Empty password ?
 
 if [ "$password" == "" ];then
-   zenity --error --text "Password was empty !"
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Password was empty." > /dev/null 2>&1)
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    exit 1
 fi
 
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait.We check the password !" > /dev/null 2>&1)
 
 # We make the password-test inside a own script
 
-gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent/scripts/testroot.sh
+gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent/scripts/testroot.sh > /dev/null 2>&1
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ]
 then
-    zenity --info  --text="Password was not coorect !"  > /dev/null 2>&1
-    rm ~/Persistent/password
-    rm ~/Persistent/password_correct
+    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Password was not correct." > /dev/null 2>&1)
+    rm ~/Persistent/password > /dev/null 2>&1
+    rm ~/Persistent/password_correct > /dev/null 2>&1
     exit 1
 else
-   echo .
-   echo all clear. We proceed with the restore of inmage
-   echo .
+   echo all clear. We proceed with the restore of inmage > /dev/null 2>&1
 fi
 
+# Find the backup-file 
 
-cat password | sudo -S chown root:root /home/amnesia/Persistent/tails-image*.tar.gz
-tar xf tails-image*.tar.gz
+backup_file=$(find /home/amnesia/Persistent | grep tails-image*) 
 
+if [ "$backup_file" == "" ];then
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="No Backup-file found on this persistent volume !" > /dev/null 2>&1)
+   rm /home/amnesia/Persistent/password > /dev/null 2>&1
+   exit 1
+fi
 
-# Creating personal-files and restore  bookmarks
+cp $(echo $backup_file) /home/amnesia/Persistent/
+
+cat password | sudo -S chown root:root /home/amnesia/Persistent/tails-image*.tar.gz > /dev/null 2>&1
+tar xf tails-image*.tar.gz > /dev/null 2>&1
+
+# Creating personal-files and copy back 
 
 mkdir ~/Persistent/personal-files
 
-zenity --question  --text "Should a symlink created for the directory ~/personal-files ?"
+zenity --question --width=500 --text "Should a symlink created for the directory ~/personal-files ?"
 case $? in
          0) symlinkdir=$(zenity --entry --text="Please give the name of the symlinked directory  ? " --title=Directory)
             ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir
-            cp ~/Persistent/home/amnesia/Persistent/backup/personal-files/* ~/Persistent/personal-files
+            cp ~/Persistent/home/amnesia/Persistent/backup/personal-files/* ~/Persistent/personal-files > /dev/null 2>&1
          ;;
-         1) echo not creating symlink
+         1) echo not creating symlink > /dev/null 2>&1
          ;;
 esac
 
-
-zenity --question  --text "Would you like to create a fixed chromium profile  ? \nAll cookys stored in this profile remain stored even after a reboot !"
-case $? in
-         0) cd ~/Persistent/settings
-            tar xzf tmp.tar.gz
-            cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3
-            rm -rf /Persistent/settings/2
-            rm -rf /Persistent/settings/1
-         ;;
-         1) echo not creatinging fixed browsing profile
-         ;;
-esac
+# Restoring saved bookmarks if they exist 
 
 if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/bookmarks )" ]; then
-    echo no data for [bookmarks]
+    echo no data for [bookmarks] found ... 
 else
-    zenity --question  --text "Should the saved bookmarks from backup be restored ?"
+    zenity --question --width=500 --text "Should the saved bookmarks from the backup be restored ?"
     case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/bookmarks /live/persistence/TailsData_unlocked
+         0) cp ~/Persistent/home/amnesia/Persistent/backup/bookmarks/* ~/.mozilla/firefox/bookmarks > /dev/null 2>&1
          ;;
-         1) echo bookmarks from backup not restored on demand
+         1) echo bookmarks from backup not restored on demand > /dev/null 2>&1
          ;;
     esac
 fi
+
+
+# Creating new fixed profile ?
+
+zenity --question --width=500 --text "Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remains even after a reboot !"
+case $? in
+         0) cd ~/Persistent/settings
+            tar xzf tmp.tar.gz
+            cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3 > /dev/null 2>&1
+            rm -rf /Persistent/settings/2 > /dev/null 2>&1
+            rm -rf /Persistent/settings/1 > /dev/null 2>&1
+         ;;
+         1) echo not creatinging fixed browsing profile > /dev/null 2>&1
+         ;;
+esac
+
+# Restoring saved ssh-keys if they exist
+
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/openssh-client )" ]; then
+    echo no data for [openssh-client] > /dev/null 2>&1
+else
+    zenity --question --width=500 --text "Should the openssh-keys be restored from the image ? \nAny existing file inside this directory will may be overwritten !"
+    case $? in
+         0) cp ~/Persistent/home/amnesia/Persistent/backup/openssh-client/* ~/.ssh
+         ;;
+         1) echo openssh-client files not restored on demand > /dev/null 2>&1
+         ;;
+    esac
+fi
+
+
+
+exit 0 
 
 
 if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/dotfiles )" ]; then
@@ -190,17 +213,7 @@ else
 fi
 
 
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/openssh-client )" ]; then
-    echo no data for [openssh-client]
-else
-    zenity --question  --text "Should the openssh-client files be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/openssh-client /live/persistence/TailsData_unlocked
-         ;;
-         1) echo openssh-client files not restored on demand
-         ;;
-    esac
-fi
+
 
 
 
