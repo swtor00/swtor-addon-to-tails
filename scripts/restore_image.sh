@@ -48,12 +48,12 @@ fi
 
 if [ -z "$(ls -A ~/Persistent/swtor-addon-to-tails > /dev/null 2>&1)" ];then
 
-   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis script restores all persistent data from a saved image.\n\nPlease press OK to continue."
+   zenity --info --width=600 --text="Welcome to the persistent restore-image for-tails.\n\nThis script restores all data from a saved image.\n\nPlease press OK to continue."
    echo we need to download the script ... execute git command to donwload > /dev/null 2>&1
-   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download current swtor-shell code from github.Please wait.This may needs some time" > /dev/null 2>&1)
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download current swtor-shell code from github. Please wait ! \nThis may needs some time" > /dev/null 2>&1)
          git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
 
-   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download from github finished." > /dev/null 2>&1)
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Download from github is now finished." > /dev/null 2>&1)
 
    echo creating symlinks > /dev/null 2>&1
 
@@ -94,27 +94,28 @@ then
     rm ~/Persistent/password_correct > /dev/null 2>&1
     exit 1
 else
-   echo all clear. We proceed with the restore of inmage > /dev/null 2>&1
+   echo all clear. We proceed with the restore of inmage >/dev/null 2>&1
 fi
 
 # Find the backup-file 
 
-backup_file=$(find /home/amnesia/Persistent | grep tails-image*) 
+backup_file=$(cat password | sudo -S find /home/amnesia/Persistent | grep tails-image* )
 
 if [ "$backup_file" == "" ];then
-   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="No Backup-file found on this persistent volume !" > /dev/null 2>&1)
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="No valid Backup-file found on this persistent volume !" > /dev/null 2>&1)
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    exit 1
 fi
 
-cp $(echo $backup_file) /home/amnesia/Persistent/
+cp $(echo $backup_file) /home/amnesia/Persistent/ >/dev/null 2>&1
 
-cat password | sudo -S chown root:root /home/amnesia/Persistent/tails-image*.tar.gz > /dev/null 2>&1
-tar xf tails-image*.tar.gz > /dev/null 2>&1
+cat password | sudo -S chown root:root /home/amnesia/Persistent/tails-image*.tar.gz
+cat password | sudo -S tar xf tails-image*.tar.gz
 
-# Creating personal-files and copy back 
 
-mkdir ~/Persistent/personal-files
+# Creating personal-files and copy back symbolic linkes 
+
+mkdir ~/Persistent/personal-files >/dev/null 2>&1
 
 zenity --question --width=500 --text "Should a symlink created for the directory ~/personal-files ?"
 case $? in
@@ -128,8 +129,8 @@ esac
 
 # Restoring saved bookmarks if they exist 
 
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/bookmarks )" ]; then
-    echo no data for [bookmarks] found ... 
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/bookmarks)" ]; then
+    echo no data [bookmarks] found ... > /dev/null 2>&1
 else
     zenity --question --width=500 --text "Should the saved bookmarks from the backup be restored ?"
     case $? in
@@ -140,25 +141,36 @@ else
     esac
 fi
 
+# At first we look inside of the image if there was a fixed profile for chromium. 
 
-# Creating new fixed profile ?
-
-zenity --question --width=500 --text "Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remains even after a reboot !"
-case $? in
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/personal-files/3 2>/dev/null)" ]; then
+    echo no data [fixed-profile] > /dev/null 2>&1
+    zenity --question --width=500 --text "Would you like to create a new fixed chromium profile ?  \nAll information stored in this profile remains even after a reboot"
+    case $? in
          0) cd ~/Persistent/settings
             tar xzf tmp.tar.gz
             cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3 > /dev/null 2>&1
             rm -rf /Persistent/settings/2 > /dev/null 2>&1
             rm -rf /Persistent/settings/1 > /dev/null 2>&1
          ;;
-         1) echo not creatinging fixed browsing profile > /dev/null 2>&1
+         1) echo not creating fixed browsing profile > /dev/null 2>&1
          ;;
-esac
+    esac
+else
+    zenity --question --width=500 --text "Should the fixed profile from the backup be restored ? \nIf you say No there will not be a fixed profile."
+    case $? in
+         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/personal-files/3  /home/amnesia/Persistent/personal-files
+         ;;
+         1) echo fixed profile files not restored on demand > /dev/null 2>&1
+         ;;
+    esac
+fi
+
 
 # Restoring saved ssh-keys if they exist
 
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/openssh-client )" ]; then
-    echo no data for [openssh-client] > /dev/null 2>&1
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/openssh-client)" ]; then
+    echo no data [openssh-client] > /dev/null 2>&1
 else
     zenity --question --width=500 --text "Should the openssh-keys be restored from the image ? \nAny existing file inside this directory will may be overwritten !"
     case $? in
@@ -170,176 +182,157 @@ else
 fi
 
 
+# Restoring network-connections if they exist 
 
-exit 0 
+cat ~/Persistent/password | sudo -S chown -R root:root /home/amnesia/Persistent/home/amnesia/Persistent/backup/nm-system-connections > /dev/null 2>&1
 
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/dotfiles )" ]; then
-   echo no data for [dotfiles]
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/nm-system-connections)" ]; then
+    echo no data [network-connections] > /dev/null 2>&1
 else
-    zenity --question  --text "Should the dotfiles be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/dotfiles /live/persistence/TailsData_unlocked
+   zenity --question --width=500 --text "Should the network-configurations from the image be restored ?\nAll existing files will be overwritten !"
+   case $? in
+         0) cat ~/Persistent/password | sudo -S rsync -aqzh /home/amnesia/Persistent/home/amnesia/Persistent/backup/nm-system-connections /live/persistence/TailsData_unlocked > /dev/null 2>&1
          ;;
-         1) echo dotfiles not restored on demand
+         1) echo network-connections not restored on demand > /dev/null 2>&1
+         ;;
+   esac
+fi 
+
+
+# Restoring swtor-configuraion files if they exist 
+
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/swtorcfg)" ]; then
+    echo no data for [swtorcfg] > /dev/null 2>&1
+else
+    zenity --question --width=500 --text "Should the swtor configuration swtorssh.cfg file be restored ?"
+    case $? in
+         0) cp ~/Persistent/home/amnesia/Persistent/backup/swtorcfg/swtorssh.cfg  ~/Persistent/swtorcfg
+            cp ~/Persistent/home/amnesia/Persistent/backup/swtorcfg/my*  ~/Persistent/swtorcfg
+         ;;
+         1) echo swtor configuration files not restored on demand > /dev/null 2>&1
          ;;
     esac
 fi
 
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/electrum )" ]; then
-    echo no data for [electrum]
-else
-    zenity --question  --text "Should the electrum files be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/dotfiles /live/persistence/TailsData_unlocked
-         ;;
-         1) echo electrum files not restored on demand
-         ;;
-    esac
-fi
-
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/gnupg )" ]; then
-    echo no data for [gnupg]
-else
-    zenity --question  --text "Should the gnupg files be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/gnupg  /live/persistence/TailsData_unlocked
-         ;;
-         1) echo gnupg files not restored on demand
-         ;;
-    esac
-fi
-
-
-
-
-
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/pidgin )" ]; then
-    echo no data for [pidgin]
-else
-    zenity --question  --text "Should the pidgin files be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/pidgin /live/persistence/TailsData_unlocked
-         ;;
-         1) echo pidgin files not restored on demand
-         ;;
-    esac
-fi
-
-
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/thunderbird )" ]; then
-    echo no data for [thunderbird]
-else
-    zenity --question  --text "Should the thunderbird files be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/thunderbird /live/persistence/TailsData_unlocked
-         ;;
-         1) echo thunderbird files not restored on demand
-         ;;
-    esac
-fi
-
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/swtorcfg )" ]; then
-    echo no data for [swtorcfg]
-else
-    zenity --question  --text "Should the swtor configuration files be restored ?"
-    case $? in
-         0) cp ~/Persistent/home/amnesia/Persistent/backup/swtorcfg/*.cfg  ~/Persistent/swtorcfg
-            cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config
-            cp ~/Persistent/swtorcfg/swtor.github ~/Persistent/swtorcfg/swtor.cfg
-         ;;
-         1) echo swtor configuration files not restored on demand
-         ;;
-    esac
-fi
-
-
-
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/personal-files/3 )" ]; then
-    echo no data for [personal-files]
-else
-    zenity --question  --text "Should the fixed profile from backup be restored ?"
-    case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/personal-files/3  /home/amnesia/Persistent/personal-files
-         ;;
-         1) echo fixed profile files not restored on demand
-         ;;
-    esac
-fi
-
+# Restoring Tor-Browser files inside Persistent if they exist 
 
 if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/Tor)" ]; then
-    echo no data for [personal-files]
+    echo no data for [TOR-files] > /dev/null 2>&1
 else
-    zenity --question  --text "Should the TOR Browser directory inside of ~/Persistent from backup be restored ?"
+    zenity --question --width=500 --text "Should the TOR Browser directory inside of ~/Persistent from the backup be restored ?"
     case $? in
          0) cp -r ~/Persistent/home/amnesia/Persistent/backup/Tor/*  ~/Persistent/Tor\ Browser/
          ;;
-         1) echo TOR Browser directory inside ~/Persistent not restored on demand
+         1) echo TOR files inside ~/Persistent not restored on demand > /dev/null 2>&1
+         ;;
+    esac
+fi
+
+# Restoring Gnupg if they exist 
+> /dev/null 2>&1
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/gnupg)" ]; then
+    echo no data for [gnupg]
+else
+    zenity --question --width=500 --text "Should the gnupg files from the image be restored ? \nIf you really know, what you are doing .. press Yes \nOtherwise press No"
+    case $? in
+         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/gnupg  /live/persistence/TailsData_unlocked
+         ;;
+         1) echo gnupg files not restored on demand > /dev/null 2>&1
+         ;;
+    esac
+fi
+
+# Restoring electrum files if they exist 
+
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/electrum 2>/dev/null )" ]; then
+    echo no data for [electrum] > /dev/null 2>&1
+else
+    zenity --question --width=500 --text "Should the electrum files be restored ?\nIf you really know, what you are doing .. press Yes \nOtherwise press No"
+    case $? in
+         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/dotfiles /live/persistence/TailsData_unlocked
+         ;;
+         1) echo electrum files not restored on demand > /dev/null 2>&1
+         ;;
+    esac
+fi
+
+# Restoring pidgin files if they exist 
+
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/pidgin 2>/dev/null)" ]; then
+    echo no data for [pidgin] > /dev/null 2>&1
+else
+    zenity --question --width=500 --text "Should the pidgin files be restored ? \nIf you really know, what you are doing .. press Yes \nOtherwise press No"
+    case $? in
+         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/pidgin /live/persistence/TailsData_unlocked
+         ;;
+         1) echo pidgin files not restored on demand > /dev/null 2>&1
          ;;
     esac
 fi
 
 
-cat ~/Persistent/password | sudo -S chown -R root:root /home/amnesia/Persistent/home/amnesia/Persistent/backup/cups-configuration
-cat ~/Persistent/password | sudo -S chown -R root:root /home/amnesia/Persistent/home/amnesia/Persistent/backup/nm-system-connections
+# Restoring thunderbird files if they exist 
 
-zenity --question  --text "Should the cups files from backup be restored ?"
-case $? in
-         0) cat ~/Persistent/password | sudo -S rsync -aqzh /home/amnesia/Persistent/home/amnesia/Persistent/backup/cups-configuration /live/persistence/TailsData_unlocked
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/thunderbird 2>/dev/null)" ]; then
+    echo no data for [thunderbird] > /dev/null 2>&1
+else
+    zenity --question --width=500 --text "Should the thunderbird files be restored ?\nIf you really know, what you are doing .. press Yes \nOtherwise press No"
+    case $? in
+         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/thunderbird /live/persistence/TailsData_unlocked
          ;;
-         1) echo cups files not restored on demand
+         1) echo thunderbird files not restored on demand > /dev/null 2>&1
          ;;
-esac
+    esac
+fi
 
 
-zenity --question  --text "Should the network-configuration from backup with all stored passwords be restored ?"
-case $? in
-         0) cat ~/Persistent/password | sudo -S rsync -aqzh /home/amnesia/Persistent/home/amnesia/Persistent/backup/nm-system-connections /live/persistence/TailsData_unlocked
+# Restoring cups-configuration if they exist
+
+cat ~/Persistent/password | sudo -S chown -R root:root /home/amnesia/Persistent/home/amnesia/Persistent/backup/cups-configuration > /dev/null 2>&1
+if [ -z "$(cat ~/Persistent/password | sudo -S ls -A ~/Persistent/home/amnesia/Persistent/backup/cups-configuration)" ]; then
+    echo no data for [cupps] > /dev/null 2>&1
+else
+    zenity --question --width=500 --text "Should the cups files be restored ?\nIf you really know, what you are doing .. press Yes \nOtherwise press No"
+    case $? in
+         0) cat ~/Persistent/password | sudo -S rsync -aqzh /home/amnesia/Persistent/home/amnesia/Persistent/backup/cups-configuration /live/persistence/TailsData_unlocked > /dev/null 2>&1
          ;;
-         1) echo network-configuration not restored on demand
+         1) echo cups files not restored on demand > /dev/null 2>&1
          ;;
-esac
+    esac
+fi
 
 
-zenity --question  --text "Configure the additional software for the addon  ?"
-case $? in
-         0) echo we do install the additional software
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list with apt-get update.\nThis needs a long time to complete !" > /dev/null 2>&1)
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait until this commmand is finished  !" > /dev/null 2>&1)
+sleep 1
+cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
+sleep 1
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update is complete.\nNow we can install the additional software\n" > /dev/null 2>&1)
 
-         # apt-get update
+# Install chromiu
+cat ~/Persistent/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
+cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
+cat ~/Persistent/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
 
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list with apt-get update.\nThis may needs some time" > /dev/null 2>&1)
-         sleep 1
-         cat ~/Persistent/password | sudo -S apt-get update
-         sleep 1
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update is done.\nNow we can install the additional software\n" > /dev/null 2>&1)
+# Install sshpass
 
-         # Install chromium
+cat ~/Persistent/password | sudo -S apt-get install -y sshpass > /dev/null 2>&1
+ 
+# Install yad 
 
-         cat ~/Persistent/password | sudo -S apt-get install -y chromium
-
-         # Install sshpass
-
-         cat ~/Persistent/password | sudo -S apt-get install -y sshpass
-
-         ;;
-         1) echo nothing to do ..
-         ;;
-esac
+cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
+ 
 
 
-zenity --question  --text "Remove the extracted backup-directory ?"
-case $? in
+# Removing Backup-directory on request 
+
+zenity --question --width=500 --text "Should the extracted backup be removed ?"
+    case $? in
          0) cat ~/Persistent/password | sudo -S rm -rf /home/amnesia/Persistent/home
+         ;; 
+         1) echo backup remains inside /Persistent > /dev/null 2>&1
          ;;
-         1) echo do not remove the backup directory
-         ;;
-esac
+     esac
 
 
 rm ~/Persistent/password
@@ -347,11 +340,46 @@ rm ~/Persistent/password_correct
 
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
-
-
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Restore is now complete.Please restart Tails to have all settings active ! " > /dev/null 2>&1)
-
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Restore from backup is now complete.\nPlease restart Tails to have all settings active ! ")
 
 exit 0
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+z
