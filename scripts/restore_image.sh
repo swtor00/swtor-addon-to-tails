@@ -271,7 +271,7 @@ else
 fi
 
 
-# Restoring thunderbird files if they exist 
+# Restoring thunderbird files if they exist
 
 if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/thunderbird 2>/dev/null)" ]; then
     echo no data for [thunderbird] > /dev/null 2>&1
@@ -317,14 +317,14 @@ cat ~/Persistent/password | sudo -S apt-get install -y html2text > /dev/null 2>&
 # Install sshpass
 
 cat ~/Persistent/password | sudo -S apt-get install -y sshpass > /dev/null 2>&1
- 
-# Install yad 
+
+# Install yad
 
 cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
- 
 
 
-# Removing Backup-directory on request 
+
+# Removing Backup-directory on request
 
 zenity --question --width=500 --text "Should the extracted backup be removed ?"
     case $? in
