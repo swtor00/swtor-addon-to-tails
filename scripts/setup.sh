@@ -58,7 +58,7 @@ if grep -q "/home/amnesia/.ssh" ~/Persistent/mounted
      echo we have .ssh mounted
 else
     echo failure
-    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\n\nYou have to set this option and restart Tails !!"
+    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option and restart Tails."
     exit 1
 fi
 
@@ -73,7 +73,7 @@ else
     rm ~/Persistent/mounted > /dev/null 2>&1
     echo failure
 
-    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\n\nYou have to set this option and restart Tails !!"
+    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\nYou have to set this option and restart Tails."
     exit 1
 fi
 
@@ -83,7 +83,7 @@ fi
 if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ]
    then
 
-   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this tool.\n\n* We create a few symlinks inside of persistent\n* We create a folder personal-files\n* We install additional software chromium and sshpass\n* We import bookmarks on demand\n\n\nPlease press OK to continue."
+   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this tool on this persistent volume.\n\n* We create a few symlinks inside of persistent\n* We create a folder personal-files\n* We install additional software\n* We import bookmarks on demand\n\n\nPlease press OK to continue."
 
    echo creating symlinks
 
@@ -115,12 +115,10 @@ echo $password > /home/amnesia/Persistent/password
 # Empty password ?
 
 if [ "$password" == "" ];then
-   zenity --error --text "Password was empty !"
+   zenity --error --width=400 --text "Password was empty !"
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    exit 1
 fi
-
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait.We check the password !" > /dev/null 2>&1)
 
 # We make the password-test inside a own script
 
@@ -128,7 +126,7 @@ gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ]
 then
-    zenity --info --text="Password was not coorect !"  > /dev/null 2>&1
+    zenity --info --width=400 --text="Password was not correct !"  > /dev/null 2>&1
     rm ~/Persistent/password
     rm ~/Persistent/password_correct
     exit 1
@@ -138,7 +136,7 @@ fi
 
 mkdir ~/Persistent/personal-files
 
-zenity --question --width=600 --text="Should a symlink created for the directory ~/personal-files ?"
+zenity --question --width=600 --text="Should a symlink created for the directory ~/Persistent/personal-files ?"
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please give the name of the symlinked directory  ? " --title=Directory)
             ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir
@@ -148,7 +146,7 @@ case $? in
 esac
 
 
-zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll cookys stored in this profile remain stored even after a reboot !"
+zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll inforamtion stored in this profile remain valid even after a reboot !"
 case $? in
          0) cd ~/Persistent/settings
             tar xzf tmp.tar.gz

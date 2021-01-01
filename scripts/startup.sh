@@ -124,7 +124,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ]
           echo done
        else
             # Houston ... We have a problem
-            # You shouldn' run this addon with a freezed system from a older tails version than the current one ...
+            # You should not run this addon with a freezed system from a older tails version than the current one ...
 
             rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
             rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
