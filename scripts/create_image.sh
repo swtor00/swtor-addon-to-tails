@@ -103,9 +103,6 @@ if [ "$password" == "" ];then
    exit 1
 fi
 
-
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait.We check the password !" > /dev/null 2>&1)
-
 # We make the password-test inside a own script
 
 gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent/scripts/testroot.sh
