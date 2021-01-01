@@ -67,6 +67,8 @@ else
     rsync -aqzh /live/persistence/TailsData_unlocked/thunderbird /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
+
+
 if grep -q BACKUP-FIXED-PROFILE:YES ~/Persistent/swtorcfg/swtor.cfg ; then
 if [ -z "$(ls -A ~/Persistent/personal-files/3 )" ]; then
     echo no data [fixed-profile personal-data]
@@ -138,6 +140,9 @@ cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/live-add
 echo live-additional-software.conf backup done.
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
 echo persistence.conf backup done.
+cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/greeter-settings /home/amnesia/Persistent/backup > /dev/null 2>&1
+echo greeter-settings backup done.
+
 
 # We create the image with the user root and after the backup we chance the owner
 # to amnesia, so we can copy it anywhere we would like to have it
