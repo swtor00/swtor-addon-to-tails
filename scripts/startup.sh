@@ -322,8 +322,10 @@ fi
 if grep -q BROWSER-SOCKS5:YES ~/Persistent/swtorcfg/swtor.cfg
    then
    cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT
+   cat password | sudo -S apt autoremove --yes
    echo step 08
-   echo changing iptables firewall to accept socks5 connections  
+   echo changing iptables firewall to accept socks5 connections
+   echo autoremove old unused packages    
    echo done
 else
    echo Browser-socks5 not selected
