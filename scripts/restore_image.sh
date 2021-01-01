@@ -18,14 +18,17 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+
 # Check to see if ONION Network is allready runnig ....
 
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 12 | grep -m 1 Congratulations > /dev/null
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
 if [ $? -eq 0 ] ; then
-    echo TOR  is running ... > /dev/null 2>&1
+   echo step 01a.
+   echo TOR is up and running and we can continue with the execution of the script ....
+   echo done
 else
-   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="ONION network not ready or no internet connection !" > /dev/null 2>&1)
-   exit 1
+  sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="TOR is not ready or no internet connection" > /dev/null 2>&1)
+  exit 1
 fi
 
 

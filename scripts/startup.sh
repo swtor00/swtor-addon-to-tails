@@ -19,19 +19,40 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+# This script has to run only once ... no more 
+
+if [ -f ~/swtor_init ]
+   then
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="The command \"startup.sh\" was allready executed!" > /dev/null 2>&1) 
+   exit 0
+fi
+
 
 # Has setup ever run on this tails system ?
 
 if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ]
    then
-       notify-send "Execute the command \"setup-swtor.sh\" first !"
+       sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Execute the command \"setup-swtor.sh\" first !" > /dev/null 2>&1)
        exit 1
 
 else
-    echo step 01a.
+    echo step 00.
     echo "setup-swtor has ben executed once .... "
     echo done
 fi
+
+# Check to see if ONION Network is allready runnig ....
+
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
+if [ $? -eq 0 ] ; then
+   echo step 01a.
+   echo TOR is up and running and we can continue with the execution of the script ....
+   echo done
+else
+  sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="TOR is not ready or no internet connection" > /dev/null 2>&1)
+  exit 1
+fi
+
 
 # test for installed yad command from persistent volume
 
@@ -44,7 +65,7 @@ else
     echo step 01b.
     echo "yad is not installed .... "
     echo done
-    notify-send "Additional software yad isn't installed"
+    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Tor is ready but yad is not installed by now !" > /dev/null 2>&1)
     exit 1
 fi
 
@@ -59,7 +80,7 @@ else
     echo step 01c.
     echo "sshpass is not installed .... "
     echo done
-    notify-send "Additional software sshpass isn't installed"
+        sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Tor is ready but sshpass is not installed by now !" > /dev/null 2>&1)
     exit 1
 fi
 
@@ -75,7 +96,7 @@ else
     echo step 01d.
     echo "html2text is not installed .... "
     echo done
-    notify-send "Additional software html2text isn't installed"
+    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Tor is ready but html2text is not installed by now !" > /dev/null 2>&1)
     exit 1
 fi
 
@@ -90,7 +111,7 @@ else
     echo step 01e.
     echo "chromium is not installed .... "
     echo done
-    notify-send "Additional software chromium isn't installed"
+    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Tor is ready but chromium is not installed by now !" > /dev/null 2>&1)
     exit 1
 fi
 
@@ -106,7 +127,7 @@ else
     echo step 01f.
     echo "chromium-sandbox is not installed .... "
     echo done
-    notify-send "Additional software chromium-sandbox isn't installed"
+    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Tor is ready but chromium-sandbox is not installed by now !" > /dev/null 2>&1)
     exit 1
 fi
 
@@ -130,28 +151,11 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ]
             rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
             rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
 
-            yad --title="Error " --width=400 --height=100 --center \
-            --text="\n\nThis system was freezed with a older version of tails.\nYou have to reboot this system to complete unfreezing"
+            zenity --info --width=600 --text="\nThis system was freezed with a older version of tails.\nYou have to reboot for a complete unfreezing\nPlease reboot ASAP !"
             exit 1
        fi
        rm ~/Persistent/scripts/current > /dev/null 2>&1
 fi
-
-
-
-# Check to see if ONION Network is allready runnig ....
-
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
-if [ $? -eq 0 ] ; then
-   echo step 03
-   echo TOR is up and running and we can continue with the execution of the script ....
-   echo done
-else
-   yad --title="Error " --width=400 --height=100 --center \
-   --text="\n\n ONION network not ready or no internet connection \n\n"
-  exit 1
-fi
-
 
 
 # We need a administration password, or the addon will not work properly
@@ -161,7 +165,7 @@ echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/scripts/test_admin 2>&1
 if grep -q "is not allowed to execute" ~/Persistent/scripts/test_admin
  then
      rm ~/Persistent/scripts/test_admin > /dev/null 2>&1
-     yad --title="Error " --width=400 --height=100 --center --text="\n\n You have to set a administration password on\n the greeting-screen of tails!"
+     zenity --info --width=600 --text="\nYou have to set a administration password on\n the greeting-screen of tails!" 
      exit 1
 else
     rm ~/Persistent/scripts/test_admin > /dev/null 2>&1
@@ -183,8 +187,10 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
     # configuration file ~/Persistent/swtorcfg/swtor.cfg and set the option
     # CHECK-UPDATE:YES to the value CHECK-UPDATE:NO
     # After this little change ... it will not longer look for a update on startup 
-
-    yad --title="Information " --width=400 --height=100 --no-buttons --center --timeout=4 --text="\n\n Checking for Updates ... Please wait !"
+    # of the addon.
+   
+    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Checking for updates. Please wait ..." > /dev/null 2>&1)
+  
 
     # We contact github to see what version is stored over there ....
 
@@ -202,8 +208,7 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
         echo step 05
         echo "no updates found"
         echo done
-        yad --title="Information " --width=400 --height=100 --no-buttons --center --timeout=4 --text="\n\n No updates found on github !"        
-
+        sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="No updates found on github  ..." > /dev/null 2>&1)    
     else
 
          # Is this script controlled with git or not ?
@@ -214,17 +219,13 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
              --text="\n\n Addon has no .git directory.\n This means that this addon isn't controlled by git."
              exit 1
          fi
-
-         yad --title="Information " --width=400 --height=100 --no-buttons --center --timeout=4 \
-         --text="\n\n Found a update on github.\n The Addon will be updated to the latest version."         
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Uupdate found ... install the update ..." > /dev/null 2>&1)       
          ./udpate.sh
          echo step 05
          echo "Update for addon installed"
          echo done  
     fi
-
     rm ~/Persistent/scripts/REMOTE-VERSION > /dev/null 2>&1
-
 else
     echo step 05
     echo "Not checking for updates of the script."
@@ -264,7 +265,7 @@ then
     cd /home/amnesia/Persistent/scripts/state
     rm online
 fi
-
+ex
 # Test for old saved passwords
 
 cd /home/amnesia/Persistent/scripts
@@ -286,8 +287,7 @@ echo $password > /home/amnesia/Persistent/scripts/password
 # Empty password ?
 
 if [ "$password" == "" ];then
-   yad --title="Error " --width=400 --height=100 --center --timeout=4 \
-   --text="\n\n Password was blank \n\n"
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Password was blank .." > /dev/null 2>&1)
    rm /home/amnesia/Persistent/scripts/password > /dev/null 2>&1
    exit 1
 fi
@@ -305,8 +305,7 @@ gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ]
 then
-    yad --title="Error " --width=400 --height=100 --center --timeout=4 \
-    --text="\n\n Password was not correct \n\n"
+    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Password was not correct .." > /dev/null 2>&1)
     rm password
     rm password_correct
     exit 1
