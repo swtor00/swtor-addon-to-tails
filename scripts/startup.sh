@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #########################################################
 # SCRIPT  : startup.sh                                  #
@@ -186,11 +185,11 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
     # If you don't like this behavior on startup, you should open the
     # configuration file ~/Persistent/swtorcfg/swtor.cfg and set the option
     # CHECK-UPDATE:YES to the value CHECK-UPDATE:NO
-    # After this little change ... it will not longer look for a update on startup 
+    # After this little change ... it will not longer look for a update on startup
     # of the addon.
-   
+
     sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Checking for updates. Please wait ..." > /dev/null 2>&1)
-  
+
 
     # We contact github to see what version is stored over there ....
 
@@ -223,7 +222,7 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
          ./udpate.sh
          echo step 05
          echo "Update for addon installed"
-         echo done  
+         echo done
     fi
     rm ~/Persistent/scripts/REMOTE-VERSION > /dev/null 2>&1
 else
@@ -265,7 +264,7 @@ then
     cd /home/amnesia/Persistent/scripts/state
     rm online
 fi
-ex
+
 # Test for old saved passwords
 
 cd /home/amnesia/Persistent/scripts
@@ -311,7 +310,7 @@ then
     exit 1
 else
     echo step 07
-    echo password is correct 
+    echo password is correct
     echo done
 fi
 
@@ -324,14 +323,14 @@ if grep -q BROWSER-SOCKS5:YES ~/Persistent/swtorcfg/swtor.cfg
    cat password | sudo -S apt autoremove --yes
    echo step 08
    echo changing iptables firewall to accept socks5 connections
-   echo autoremove old unused packages    
+   echo autoremove old unused packages
    echo done
 else
    echo Browser-socks5 not selected
 fi
 
 
-# Make symbolic links on the desktop for the main menu 
+# Make symbolic links on the desktop for the main menu
 # This depends on the setting GUI-LINKS:YES and BROWSER-SOCKS5:YES inside of swtor.cfg
 
 if grep -q BROWSER-SOCKS5:YES ~/Persistent/swtorcfg/swtor.cfg
