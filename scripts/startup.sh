@@ -42,6 +42,9 @@ fi
 
 # Check to see if ONION Network is allready runnig ....
 
+
+sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing the internet-connection !" > /dev/null 2>&1)
+
 curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
 if [ $? -eq 0 ] ; then
    echo step 01a.
@@ -52,6 +55,8 @@ else
   exit 1
 fi
 
+
+sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing the installed additional software !" > /dev/null 2>&1)
 
 # test for installed yad command from persistent volume
 
@@ -173,6 +178,8 @@ else
     echo done
 fi
 
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Checking for updates ... Depending on the local configuration of swtor." > /dev/null 2>&1)
+
 
 # Check for updates on demand if CHECK-UPDATE:YES is set of inside swtor.cfg
 # The default Value of this setting is : NO
@@ -218,7 +225,7 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
              --text="\n\n Addon has no .git directory.\n This means that this addon isn't controlled by git."
              exit 1
          fi
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Uupdate found ... install the update ..." > /dev/null 2>&1)       
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Update found ... install the update ..." > /dev/null 2>&1)       
          ./udpate.sh
          echo step 05
          echo "Update for addon installed"
@@ -231,6 +238,7 @@ else
     echo done
 fi
 
+sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Clean up all log-files" > /dev/null 2>&1)
 
 # cleanup old connection-files file inside cfg directory
 
@@ -295,6 +303,8 @@ echo step 06
 echo checking password
 echo done
 
+sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing administration password ...." > /dev/null 2>&1)
+
 # We make the password-test inside a own script
 
 gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent/scripts/testroot.sh > /dev/null 2>&1
@@ -314,6 +324,8 @@ else
     echo done
 fi
 
+
+sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Changing firewall rules to build a socks5 server  ..." > /dev/null 2>&1) 
 
 # change firewall for a ssh-socks5-connection
 
@@ -380,5 +392,8 @@ echo 1 > /home/amnesia/Persistent/scripts/state/offline
 # We are finished here , signal with Error Code 0
 
 echo 1 > ~/swtor_init
+
+sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Initialisation is now completed ..." > /dev/null 2>&1) 
+
 exit 0
 

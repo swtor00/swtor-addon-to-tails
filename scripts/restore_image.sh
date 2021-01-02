@@ -305,12 +305,12 @@ else
 fi
 
 
-sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list with apt-get update.\nThis needs a long time to complete !" > /dev/null 2>&1)
-sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait until this commmand is finished  !" > /dev/null 2>&1)
-sleep 1
+sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list with apt-get update. \nThis needs a  very long time to complete depending of the internet speed ! Please wait !!" > /dev/null 2>&1)
+
 cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
-sleep 1
-sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update is complete.\nNow we can install the additional software\n" > /dev/null 2>&1)
+
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The update is now complete. \nNow we can install the additional software" > /dev/null 2>&1)
+
 
 # Install chromium
 cat ~/Persistent/password | sudo -S apt-get install -y chromium > /dev/null 2>&1

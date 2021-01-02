@@ -19,11 +19,11 @@
 #########################################################
 
 
+
 # On every single startup of Tails, the initial process of the addon has to be run once ...
 
-sleep 4 | tee >(zenity --info --pulsate --no-cancel --auto-close -title="Info" --text="Starting the addon !" > /dev/null 2>&1)
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Starting the initialisation of the addon !" > /dev/null 2>&1)
 
-sleep 1
 
 if [ ! -f ~/swtor_init ]
    then
