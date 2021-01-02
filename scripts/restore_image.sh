@@ -331,7 +331,8 @@ cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
 
 zenity --question --width=500 --text "Should the extracted backup be removed ?"
     case $? in
-         0) cat ~/Persistent/password | sudo -S rm -rf /home/amnesia/Persistent/home
+         0) cat ~/Persistent/password | sudo -S rm -rf /home/amnesia/Persistent/home >/dev/null 2>&1
+            cat ~/Persistent/password | sudo -S rm -rf /home/amnesia/Persistent/tails-image*.tar.gz >/dev/null 2>&1
          ;; 
          1) echo backup remains inside /Persistent > /dev/null 2>&1
          ;;
