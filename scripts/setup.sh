@@ -174,17 +174,25 @@ case $? in
          # Install chromium
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium
+         zenity --info --width=600 --text="chromium has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."         
+
          cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox
+         zenity --info --width=600 --text="chromium-sandbox has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
+
          cat ~/Persistent/password | sudo -S apt-get install -y html2text 
+         zenity --info --width=600 --text="Html2text has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
 
          # Install sshpass
 
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass
+         zenity --info --width=600 --text="sshpass has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
          # Install yad
 
          cat ~/Persistent/password | sudo -S apt-get install -y yad
+         zenity --info --width=600 --text="yad  has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue." 
+
 
          ;;
          1) echo nothing to do ..

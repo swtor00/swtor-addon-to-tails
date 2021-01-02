@@ -312,18 +312,25 @@ cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
 sleep 1
 sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update is complete.\nNow we can install the additional software\n" > /dev/null 2>&1)
 
-# Install chromiu
+# Install chromium
 cat ~/Persistent/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
+zenity --info --width=600 --text="chromium has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
+
 cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
+zenity --info --width=600 --text="chromium-sandbox has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
+
 cat ~/Persistent/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
+zenity --info --width=600 --text="Html2text has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
 # Install sshpass
 
 cat ~/Persistent/password | sudo -S apt-get install -y sshpass > /dev/null 2>&1
+zenity --info --width=600 --text="sshpass has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
 # Install yad
 
 cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
+zenity --info --width=600 --text="yad has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
 
 
