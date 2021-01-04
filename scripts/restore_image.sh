@@ -49,6 +49,36 @@ else
 fi
 
 
+# is .ssh persistent ?
+
+mount > ~/Persistent/mounted
+if grep -q "/home/amnesia/.ssh" ~/Persistent/mounted
+ then
+     echo we have .ssh mounted
+else
+    echo failure
+    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option and restart Tails."
+    exit 1
+fi
+
+
+# is additional software peristent ?
+
+if grep -q "/var/cache/apt/archives" ~/Persistent/mounted
+ then
+     rm ~/Persistent/mounted > /dev/null 2>&1
+     echo we have additional software active
+else
+    rm ~/Persistent/mounted > /dev/null 2>&1
+    echo failure
+
+    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\nYou have to set this option and restart Tails."
+    exit 1
+fi
+
+
+
+
 if [ -z "$(ls -A ~/Persistent/swtor-addon-to-tails > /dev/null 2>&1)" ];then
 
    zenity --info --width=600 --text="Welcome to the persistent restore-image for-tails.\n\nThis script restores all data from a saved image.\n\nPlease press OK to continue."

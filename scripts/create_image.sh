@@ -89,7 +89,7 @@ mkdir -p /home/amnesia/Persistent/backup/Tor
 mkdir -p /home/amnesia/Persistent/backup/personal-files
 
 cp -r ~/Persistent/Tor\ Browser/*  /home/amnesia/Persistent/backup/Tor
-cp ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files
+cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files
 
 password=$(zenity --entry --text="Curent tails administration-password ? " --title=Password --hide-text)
 echo $password > /home/amnesia/Persistent/scripts/password
