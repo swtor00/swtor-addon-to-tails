@@ -146,7 +146,7 @@ case $? in
 esac
 
 
-zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll inforamtion stored in this profile remain valid even after a reboot !"
+zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remain valid even after a reboot !"
 case $? in
          0) cd ~/Persistent/settings
             tar xzf tmp.tar.gz
@@ -205,7 +205,7 @@ rm ~/Persistent/password_correct
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
 
 
-sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now complete ! You can now start the addon with swtor-menu.sh" > /dev/null 2>&1)
+sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now completed ! \nYou can now start the addon with swtor-menu.sh" > /dev/null 2>&1)
 
 exit 0
 
