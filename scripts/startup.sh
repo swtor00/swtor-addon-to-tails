@@ -56,6 +56,14 @@ else
 fi
 
 
+# if the directory ~/.ssh is empty ... this tails system never contacted never any remote ssh-server 
+
+sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing ssh files for the addon ..." > /dev/null 2>&1)
+
+if [ -z "$(ls -A /home/amnesia/.ssh )" ]; then
+   sleep 8 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="The directory /home/amnesia/.ssh is empty.\n\nThis addons needs a predefined SSH connection" > /dev/null 2>&1)
+fi 
+
 sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing the installed additional software !" > /dev/null 2>&1)
 
 # test for installed yad command from persistent volume
@@ -341,6 +349,10 @@ else
    echo Browser-socks5 not selected
 fi
 
+# Creating Desktop links 
+
+
+sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Creating links on Desktop  ..." > /dev/null 2>&1) 
 
 # Make symbolic links on the desktop for the main menu
 # This depends on the setting GUI-LINKS:YES and BROWSER-SOCKS5:YES inside of swtor.cfg
@@ -392,8 +404,6 @@ echo 1 > /home/amnesia/Persistent/scripts/state/offline
 # We are finished here , signal with Error Code 0
 
 echo 1 > ~/swtor_init
-
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Initialisation is now completed ..." > /dev/null 2>&1) 
 
 exit 0
 

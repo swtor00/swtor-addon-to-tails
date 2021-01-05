@@ -154,7 +154,9 @@ zenity --question --width=500 --text "Should a symlink created for the directory
 case $? in
          0) symlinkdir=$(zenity --entry --text="Please give the name of the symlinked directory  ? " --title=Directory)
             ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir
-            cp ~/Persistent/home/amnesia/Persistent/backup/personal-files/* ~/Persistent/personal-files > /dev/null 2>&1
+
+            rm  ~/Persistent/home/amnesia/Persistent/backup/personal-files/3 > /dev/null 2>&1
+            cp -r ~/Persistent/home/amnesia/Persistent/backup/personal-files/* ~/Persistent/personal-files > /dev/null 2>&1
          ;;
          1) echo not creating symlink > /dev/null 2>&1
          ;;
@@ -176,7 +178,8 @@ fi
 
 # At first we look inside of the image if there was a fixed profile for chromium. 
 
-if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/personal-files/3 2>/dev/null)" ]; then
+
+if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/personal-files/fixed-profile 2>/dev/null)" ]; then
     echo no data [fixed-profile] > /dev/null 2>&1
     zenity --question --width=500 --text "Would you like to create a new fixed chromium profile ?  \nAll information stored in this profile remains even after a reboot"
     case $? in
@@ -192,7 +195,8 @@ if [ -z "$(ls -A ~/Persistent/home/amnesia/Persistent/backup/personal-files/3 2>
 else
     zenity --question --width=500 --text "Should the fixed profile from the backup be restored ? \nIf you say No there will not be a fixed profile."
     case $? in
-         0) rsync -aqzh ~/Persistent/home/amnesia/Persistent/backup/personal-files/3  /home/amnesia/Persistent/personal-files
+         0) mv /home/amnesia/Persistent/backup/fixed-profile /home/amnesia/Persistent/backup/3
+            rsync -avzh /home/amnesia/Persistent/backup/3  ~/Persistent/home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
          ;;
          1) echo fixed profile files not restored on demand > /dev/null 2>&1
          ;;

@@ -71,9 +71,9 @@ fi
 
 if grep -q BACKUP-FIXED-PROFILE:YES ~/Persistent/swtorcfg/swtor.cfg ; then
 if [ -z "$(ls -A ~/Persistent/personal-files/3 )" ]; then
-    echo no data [fixed-profile personal-data]
+    echo no data configured according configuration [fixed-profile personal-data]
 else
-    rsync -avzh ~/Persistent/personal-files/3 /home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
+    rsync -avzh ~/Persistent/personal-files/3 /home/amnesia/Persistent/backup/fixed-profile > /dev/null 2>&1
 fi
 fi
 
@@ -90,6 +90,7 @@ mkdir -p /home/amnesia/Persistent/backup/personal-files
 
 cp -r ~/Persistent/Tor\ Browser/*  /home/amnesia/Persistent/backup/Tor
 cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files
+rm -f /home/amnesia/Persistent/backup/personal-files/3 > /dev/null 2>&1
 
 password=$(zenity --entry --text="Curent tails administration-password ? " --title=Password --hide-text)
 echo $password > /home/amnesia/Persistent/scripts/password

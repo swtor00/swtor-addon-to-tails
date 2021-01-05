@@ -4,41 +4,28 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
+# OS      : Tails 4.14 or higher                        #
 # TASKS   : select ssh-server to use                    #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 02-01-2020                                  #
+# DATE    : 01-05-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Check to see if TOR is allready runnig ....
 
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
-if [ $? -eq 0 ] ; then
-   echo TOR is running and we can continue with the execution of the script ....
-else
-  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-  exit 1
-fi
+# Check for the configuration file ....
 
-
-# If the .ssh directory is empty ....  We could assume the follwing.
-# This tails never contacted any ssh-system -> No Keys -> No known_hosts
-# Or the persistent option for ssh-client is not set properly...
-
-if [ -z "$(ls -A /home/amnesia/.ssh )" ]; then
-   zenity --info --width=600 --text="The directory /home/amnesia/.ssh is empty !"  > /dev/null 2>&1
-   exit 1
-else
-   echo ssh directory contains data
+if [ ! -f /home/amnesia/Persistent/swtorcfg/swtorssh.cfg ]
+then
+        zenity --info --width=600 --text="Configuration file ~/Persistent/swtorcfg/swtorssh.cfg was not found !"  > /dev/null 2>&1
+        exit 1
 fi
 
 
@@ -47,17 +34,12 @@ if [ -z "$ssh_pid" ]
 then
     echo No active ssh-connection found.
 else
-    zenity --info --width=600 --text="There is allready a ssh-connection ! Pleaase close the other connection."  > /dev/null 2>&1
+    zenity --info --width=600 --text="There is allready a ssh-connection ! Pleaase close the other connection first."  > /dev/null 2>&1
     exit 1
 fi
 
 cd /home/amnesia/Persistent/scripts/
 
-if [ ! -f /home/amnesia/Persistent/swtorcfg/swtorssh.cfg ]
-then
-        zenity --info --width=600 --text="Configuration file ~/Persistent/swtorcfg/swtorssh.cfg was not found !"  > /dev/null 2>&1
-        exit 1
-fi
 
 # Cleanup old files
 
@@ -90,7 +72,6 @@ account=$(zenity --width=800 --height=400 --list --title "Please seleect the ssh
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
-    zenity --error --width=600 --text "No selection was made !"
     exit 1
 fi
 
