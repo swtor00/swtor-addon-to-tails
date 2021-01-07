@@ -115,7 +115,7 @@ Date		Release		Author		Description
 20/12/2020	0.52            swtor00		- Script needs at least version 4.14 of tails 
                                                 - If there is no active Internet Connection, the script does 
                                                   now detect it on startup within 7 secounds ... instead of 
-                                                  waiting a minute .. 
+                                                  waiting a minute until a error comes up ..
                                                 - apt autoremove --yes is executed after the changing of
                                                   the firewall-settings is done.
                                                 - Bookmark cleaning for tor-browser.
