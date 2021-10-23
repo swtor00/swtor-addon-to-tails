@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 # -*- encoding: UTF-8
-"""This scripts show a dialog with basic information about the
-running Tails installation.
-"""
 
 import gettext
 import subprocess
