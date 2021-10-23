@@ -114,11 +114,12 @@ Date		Release		Author		Description
 
 20/12/2020	0.52            swtor00		- Script needs at least version 4.14 of tails 
                                                 - If there is no active Internet Connection, the script does 
-                                                  now detect it on startup within 7 secounds ... 
-                                                  I the old way it was over 1 mnute to detect that there is no
-                                                  Internet Connection. 
-                                                - apt autremove is executed after the changing of the firewall-settings is done.
+                                                  now detect it on startup within 7 secounds ... instead of 
+                                                  waiting a minute until a error comes up ..
+                                                - apt autoremove --yes is executed after the changing of
+                                                  the firewall-settings is done.
                                                 - Bookmark cleaning for tor-browser.
+                                                - Addded yad to section software.  
 
 
 24/10/2021	0.60		swtor00		- Tails-update to Debian 11 needs some minor changes

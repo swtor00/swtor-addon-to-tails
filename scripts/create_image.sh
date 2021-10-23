@@ -4,36 +4,24 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
-# TASKS   : Create a image of all important persistent  #
-# files of tails                                        #
+# OS      : Tails 4.14 or higher                        #
 #                                                       #
-# VERSION : 0.51                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-01-2020                                  # 
+# DATE    : 30-12-2020                                  # 
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Check to see if TOR is allready runnig ....
-
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
-if [ $? -eq 0 ] ; then
-   echo TOR is running and we can continue with the execution of the script ....
-else
-  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
-  exit 1
-fi
 
 cd ~/Persistent/scripts
 
 sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Starting backup of persistent data.Please wait !" > /dev/null 2>&1)
-
 
 # backup all important files for the user amnesia
 
@@ -79,11 +67,13 @@ else
     rsync -aqzh /live/persistence/TailsData_unlocked/thunderbird /home/amnesia/Persistent/backup > /dev/null 2>&1
 fi
 
+
+
 if grep -q BACKUP-FIXED-PROFILE:YES ~/Persistent/swtorcfg/swtor.cfg ; then
 if [ -z "$(ls -A ~/Persistent/personal-files/3 )" ]; then
-    echo no data [fixed-profile personal-data]
+    echo no data configured according configuration [fixed-profile personal-data]
 else
-    rsync -avzh ~/Persistent/personal-files/3 /home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
+    rsync -avzh ~/Persistent/personal-files/3 /home/amnesia/Persistent/backup/fixed-profile > /dev/null 2>&1
 fi
 fi
 
@@ -99,7 +89,8 @@ mkdir -p /home/amnesia/Persistent/backup/Tor
 mkdir -p /home/amnesia/Persistent/backup/personal-files
 
 cp -r ~/Persistent/Tor\ Browser/*  /home/amnesia/Persistent/backup/Tor
-cp ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files
+cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files
+rm -f /home/amnesia/Persistent/backup/personal-files/3 > /dev/null 2>&1
 
 password=$(zenity --entry --text="Curent tails administration-password ? " --title=Password --hide-text)
 echo $password > /home/amnesia/Persistent/scripts/password
@@ -112,9 +103,6 @@ if [ "$password" == "" ];then
    rm /home/amnesia/Persistent/scripts/password > /dev/null 2>&1
    exit 1
 fi
-
-
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait.We check the password !" > /dev/null 2>&1)
 
 # We make the password-test inside a own script
 
@@ -150,6 +138,9 @@ cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/live-add
 echo live-additional-software.conf backup done.
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
 echo persistence.conf backup done.
+cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/greeter-settings /home/amnesia/Persistent/backup > /dev/null 2>&1
+echo greeter-settings backup done.
+
 
 # We create the image with the user root and after the backup we chance the owner
 # to amnesia, so we can copy it anywhere we would like to have it

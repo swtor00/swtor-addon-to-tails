@@ -4,16 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
-# TASKS   : setup script for the addon                  #
+# OS      : Tails 4.14 or higher                        #
 #                                                       #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.52                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 01-01-20                                    #
+# DATE    : 30-12-20                                    #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -21,14 +20,29 @@
 #########################################################
 
 
-# Check to see if TOR is allready runnig ....
+# Create lockdir ....
 
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ | cat | grep -m 1 Congratulations
-if [ $? -eq 0 ] ; then
-   echo TOR is running and we can continue with the execution of the script ....
-else
-  sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="TOR Network is not ready !" > /dev/null 2>&1)
+lockdir=~/Persistent/scripts/setup.lock
+if mkdir "$lockdir"
+   then    # directory did not exist, but was created successfully
+       echo >&2 "successfully acquired lock: $lockdir"
+   else    # failed to create the directory, presumably because it already exists
+       echo >&2 "cannot acquire lock, giving up on $lockdir"
   exit 1
+fi
+
+
+
+# Check to see if ONION Network is allready runnig ....
+
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
+if [ $? -eq 0 ] ; then
+   echo TOR is up and running and we can continue with the execution of the script ....
+   echo done
+else
+   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="ONION network not ready or no internet connection !" > /dev/null 2>&1
+   rm -f $lockdir > /dev/null 2>&1    
+   exit 1
 fi
 
 
@@ -42,6 +56,7 @@ if grep -q "password is disabled" ~/Persistent/test_admin
  then
      rm ~/Persistent/test_admin > /dev/null 2>&1
      zenity --error --width=600 --text="This addon needs a administration password for tails on startup !"
+     rm -f $lockdir > /dev/null 2>&1   
      exit 1
 else
     rm ~/Persistent/test_admin > /dev/null 2>&1
@@ -56,9 +71,11 @@ if grep -q "/home/amnesia/.ssh" ~/Persistent/mounted
      echo we have .ssh mounted
 else
     echo failure
-    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\n\nYou have to set this option and restart Tails !!"
+    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option and restart Tails."
+    rm -f $lockdir > /dev/null 2>&1   
     exit 1
 fi
+
 
 
 # is additional software peristent ?
@@ -71,9 +88,15 @@ else
     rm ~/Persistent/mounted > /dev/null 2>&1
     echo failure
 
-    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\n\nYou have to set this option and restart Tails !!"
+    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\nYou have to set this option and restart Tails."
+    rm -f $lockdir > /dev/null 2>&1
     exit 1
 fi
+
+
+# Delete test-file
+
+rm ~/Persistent/mounted > /dev/null 2>&1
 
 
 # Test for a prior execution of the script setup.sh
@@ -81,7 +104,7 @@ fi
 if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ]
    then
 
-   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this tool.\n\n* We create a few symlinks inside of persistent\n* We create a folder personal-files\n* We install additional software chromium and sshpass\n* We import bookmarks on demand\n\n\nPlease press OK to continue."
+   zenity --info --width=600 --text="Welcome to the swtor-addon-for-tails.\nThis ist the first time you startup this tool on this persistent volume.\n\n* We create a few symlinks inside of persistent\n* We create a folder personal-files\n* We install additional software\n* We import bookmarks on demand\n\n\nPlease press OK to continue."
 
    echo creating symlinks
 
@@ -104,6 +127,7 @@ if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ]
    fi
 else
    zenity --error --width=600 --text="Setup has failed. This programm was allready executed once on this volume !"
+   rm -f $lockdir > /dev/null 2>&1
    exit 1
 fi
 
@@ -113,12 +137,11 @@ echo $password > /home/amnesia/Persistent/password
 # Empty password ?
 
 if [ "$password" == "" ];then
-   zenity --error --text "Password was empty !"
+   zenity --error --width=400 --text "Password was empty !"
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
+   rm -f $lockdir > /dev/null 2>&1
    exit 1
 fi
-
-sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Please wait.We check the password !" > /dev/null 2>&1)
 
 # We make the password-test inside a own script
 
@@ -126,17 +149,18 @@ gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ]
 then
-    zenity --info --text="Password was not coorect !"  > /dev/null 2>&1
+    zenity --info --width=400 --text="Password was not correct !"  > /dev/null 2>&1
     rm ~/Persistent/password
     rm ~/Persistent/password_correct
+    rm -f $lockdir > /dev/null 2>&1
     exit 1
 fi
 
-# Creating personal-files and restore  bookmarks
+# Creating personal-files
 
 mkdir ~/Persistent/personal-files
 
-zenity --question --width=600 --text="Should a symlink created for the directory ~/personal-files ?"
+zenity --question --width=600 --text="Should a symlink created for the directory ~/Persistent/personal-files ?"
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please give the name of the symlinked directory  ? " --title=Directory)
             ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir
@@ -146,7 +170,9 @@ case $? in
 esac
 
 
-zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll cookys stored in this profile remain stored even after a reboot !"
+
+
+zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remain valid even after a reboot !"
 case $? in
          0) cd ~/Persistent/settings
             tar xzf tmp.tar.gz
@@ -157,6 +183,16 @@ case $? in
          1) echo not creatinging fixed browsing profile
          ;;
 esac
+
+
+# Restore bookmarks on demoand 
+
+
+
+if grep -q IMPORT-BOOKMARKS:YES ~/Persistent/swtorcfg/swtor.cfg
+ then
+ rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
+fi 
 
 
 zenity --question --width=600 --text="Configure the additional software for the addon  ?"
@@ -174,17 +210,25 @@ case $? in
          # Install chromium
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium
+         zenity --info --width=600 --text="chromium has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."         
+
          cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox
+         zenity --info --width=600 --text="chromium-sandbox has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
+
          cat ~/Persistent/password | sudo -S apt-get install -y html2text 
+         zenity --info --width=600 --text="Html2text has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
 
          # Install sshpass
 
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass
+         zenity --info --width=600 --text="sshpass has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue."
 
          # Install yad
 
          cat ~/Persistent/password | sudo -S apt-get install -y yad
+         zenity --info --width=600 --text="yad  has been installed. Please confirm that this software has to be Installed on Every Startup.\n\n\nPlease press OK to continue." 
+
 
          ;;
          1) echo nothing to do ..
@@ -197,7 +241,11 @@ rm ~/Persistent/password_correct
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
 
 
-sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now complete ! You can now start the addon with swtor-menu.sh" > /dev/null 2>&1)
+sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now completed ! \nYou can now start the addon with swtor-menu.sh" > /dev/null 2>&1)
+
+# Delete lock-file ...
+
+rm -f $lockdir > /dev/null 2>&1
 
 exit 0
 

@@ -18,28 +18,45 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+# Create lockdir ....
+
+lockdir=~/Persistent/scripts/menu.lock
+if mkdir "$lockdir"
+   then    # directory did not exist, but was created successfully
+       echo >&2 "successfully acquired lock: $lockdir"
+   else    # failed to create the directory, presumably because it already exists
+       echo >&2 "cannot acquire lock, giving up on $lockdir"
+  exit 1
+fi
+
 
 # On every single startup of Tails, the initial process of the addon has to be run once ...
 
-notify-send Info "Starting addon ..."
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Starting the initialisation of the addon !" > /dev/null 2>&1)
 
-sleep 1
 
 if [ ! -f ~/swtor_init ]
    then
    ~/Persistent/scripts/init-swtor.sh
    if [ ! -f ~/swtor_init ]
       then
-          notify-send Error "Error during initialisation of addon  ..."
-          sleep 2
+          sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Error during the initialisation of the addon !" > /dev/null 2>&1)
+      rmdir $lockdir > /dev/null 2>&1 
       exit 1
    fi
 else  
     echo initial-process has ben executed with error-code 0 ... 
+    sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Iinitialisation of the addon is now complete !" > /dev/null 2>&1)
 fi
 
 
+# show version of script prior to show menu 
 
+cd ~/Persistent/scripts/
+./swtor-about &
+sleep 4
+pid=$(ps | grep swtor-about | awk '{print $1}')
+kill -9 $(echo $pid) > /dev/null 2>&1 
 
 # Build main menu
 
@@ -88,6 +105,13 @@ if [ $selection == "6" ] ; then
 fi
 
 done
+
+
+# remove lockdir ...
+
+rmdir $lockdir > /dev/null 2>&1 
+echo >&2 "successfully removed lock: $lockdir"
+
 
 exit 0
 

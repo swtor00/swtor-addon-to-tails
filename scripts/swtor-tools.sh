@@ -29,14 +29,14 @@ while [ $menu -eq 1 ]; do
        selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
        "1"  "[01]  ->  Freeze current settings to persistent (needs dot-file activated)" \
        "2"  "[02]  ->  Unfreeze settings from persistent (needs dot-file activated) " \
-       "3"  "[03]  ->  Backup persistent" \
-       "4"  "[04]  ->  Check for updates" \
-       "5"  "[05]  ->  Reserved for a proxy-configuration" \
-       "6"  "[06]  ->  Import bookmarks for the TOR-Browser" \
-       "7"  "[07]  ->  Show documentation" \
+       "3"  "[03]  ->  Backup persistent volume" \
+       "4"  "[04]  ->  Check for updates on github" \
+       "5"  "[05]  ->  Import bookmarks for the TOR-Browser" \
+       "6"  "[06]  ->  Show documentation for swtor.cfg" \
+       "7"  "[07]  ->  Show documentation for the addon" \
        "8"  "[08]  ->  Clean current Profiles 1 & 2" \
-       "9"  "[09]  ->  Info" \
-       "10" "[10]  ->  Show Changes in this release" \
+       "9"  "[09]  ->  Show Changes in this release" \
+       "10" "[10]  ->  About swtor-addon" \
        "11" "[11]  ->  Back to the mainmenu" \
        --hide-column=1 \
        --print-column=1)
@@ -142,18 +142,18 @@ if [ $selection == "4" ] ; then
     fi
 fi
 
-if [ $selection == "5" ] ; then
-   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="This function is not working in this release" > /dev/null 2>&1)
+if [ $selection == "6" ] ; then
+   evince /home/amnesia/Persistent/doc/sample-configuration.pdf.pdf
 fi
 
 
-if [ $selection == "6" ] ; then
+if [ $selection == "5" ] ; then
    rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
 fi
 
 
 if [ $selection == "7" ] ; then
-    evince /home/amnesia/Persistent/doc/swtor0-41.pdf
+    evince /home/amnesia/Persistent/doc/swtor0-52.pdf
 fi
 
 if [ $selection == "8" ] ; then
@@ -163,11 +163,14 @@ if [ $selection == "8" ] ; then
     tar xzf tmp.tar.gz
 fi
 
-if [ $selection == "9" ] ; then
-   ./swtor-about 2>&1 > /dev/null
+if [ $selection == "10" ] ; then
+    ./swtor-about &
+    sleep 4
+    pid=$(ps | grep swtor-about | awk '{print $1}')
+    kill -9 $(echo $pid) > /dev/null 2>&1
 fi
 
-if [ $selection == "10" ] ; then
+if [ $selection == "9" ] ; then
    gedit ~/Persistent/swtor-addon-to-tails/CHANGES
 fi
 
