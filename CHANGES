@@ -34,7 +34,7 @@ Date		Release		Author		Description
                                                 libre2-3
                                                 sshpass
  
-08/26/2018      0.34		swtor00		Adding 1 Option CHECK-UPDATE:YES
+08/26/2018      0.34		swtor00		Adding one Option CHECK-UPDATE:YES
 						multiple little errors solved	
 
 09/10/2018	0.35		swtor00		Added a better documentation
@@ -122,7 +122,10 @@ Date		Release		Author		Description
 
 
 24/10/2021	0.60		swtor00		- Tails-update to Debian 11 needs some minor changes
-                                                  of the script.    
+                                                  of the script.
+                                                - The URL github.com do not longer working with old 
+                                                  credenstials like username and password. 
+        
                                                      
 
                     
