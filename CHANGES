@@ -99,18 +99,18 @@ Date		Release		Author		Description
                                                 - test for ssh persistent option
                                                 - test for additional-software option                                                                                   
                                                      
-02/01/2020	0.50 		swtor00         - New Tails 4.0 and and a lot of changes inside of the script to reflect 
+02/01/2020	0.50            swtor00         - New Tails 4.0 and and a lot of changes inside of the script to reflect 
                                                   them all
                                                 - For Debian 10 "chromium-sandbox" has to be installed.
                                                 - New Desktop wallpaper   
-						- SSH Server windows was not serialized. (fixed)  
+						- SSH Server window was not serialized. (fixed)  
 
 05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fild from 
                                                   the configuration file. Show a warning if the value 
                                                   don't match.
                                                 - Multiple little errors fixed. 
                                                 - Changed setting from VERSION to SWTOR-VERSION
-                                                - Added html2text to section software
+                                                - Added html2text to the section software
 
 20/12/2020	0.52            swtor00		- Script needs at least version 4.14 of tails 
                                                 - If there is no active Internet Connection, the script does 
@@ -121,7 +121,9 @@ Date		Release		Author		Description
                                                 - Bookmark cleaning for tor-browser.
 
 
-
+24/10/2021	0.60		swtor00		- Tails-update to Debian 11 needs some minor changes
+                                                  of the script.    
+                                                     
 
                     
    
