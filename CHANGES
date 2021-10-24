@@ -159,7 +159,20 @@ Date		Release		Author		Description
                                                 - Tails 4.23 or higher is now mandatory to execute this addon. 
                                                 - On the end of oktober 2022, ther onion site protocoll v2 can 
                                                   not be used anymore. After November 2021 all onion sites should 
-                                                  use the new protocoll V3 insted of V2.  
+                                                  use the new protocoll V3 insted of the old version V2.  
+
+                                                - Added a excellent manual(pdf) for Tails in "German". 
+                                                  The URL to this very helpfull manul, even for the beginner 
+                                                  is the following link.  
+
+                                                  https://capulcu.blackblogs.org/neue-texte/bandi/
+
+                                                - Added global timeout-value in secounds for 
+                                                  TOR-Testing inside of swtor.cfg. 
+                                                  TIMEOUT-TCHECK:10 
+                                                     
+                       
+                                                
 
  
         
