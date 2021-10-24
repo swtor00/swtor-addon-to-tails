@@ -114,20 +114,23 @@ Date		Release		Author		Description
 
 20/12/2020	0.52            swtor00		- Script needs at least version 4.14 of tails 
                                                 - If there is no active Internet Connection, the script does 
-                                                  now detect it on startup within 7 secounds ... instead of 
+                                                  now detect it on startup within 10 secounds ... instead of 
                                                   waiting a minute until a error comes up ..
                                                 - apt autoremove --yes is executed after the changing of
                                                   the firewall-settings is done.
                                                 - Bookmark cleaning for tor-browser.
-                                                - Addded yad to section software.  
+                                                - Addded yad to the section of installed software.  
 
 
-24/10/2021	0.60		swtor00		- Tails-update to Debian 11 needs some minor changes
-                                                  of the script.
+24/10/2021	0.60		swtor00		- Tails-update to Debian 11 (Bullseye) needs some minor changes
+                                                  of the scripts.
                                                 - The URL github.com do not longer working with old 
                                                   logins like username and password.
                                                 - change github push and pull protocoll from http to ssh.
-                                                - Tails 4.23 or higher is mandatory.
+                                                - Tails 4.23 or higher is now mandatory to execute this addon. 
+                                                - On the end of oktober 2022, ther onion site protocoll v2 can 
+                                                  not be used anymore. After 1. November 2021 all onion sites should 
+                                                  use V3.  
 
  
         
