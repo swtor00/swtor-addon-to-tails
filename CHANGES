@@ -126,11 +126,40 @@ Date		Release		Author		Description
                                                   of the scripts.
                                                 - The URL github.com do not longer working with old 
                                                   logins like username and password.
-                                                - change github push and pull protocoll from http to ssh.
+                                                - change github push protocoll from http to ssh.
+                                                
+                                                  old value of config 
+
+                                                  [core]
+	                                          repositoryformatversion = 0
+	                                          filemode = true
+	                                          bare = false
+	                                          logallrefupdates = true
+                                                  [remote "origin"]
+	                                          url = https://github.com/swtor00/swtor-addon-to-tails
+	                                          fetch = +refs/heads/*:refs/remotes/origin/*
+                                                  [branch "master"]
+	                                          remote = origin
+	                                          merge = refs/heads/master 
+
+                                                  new config
+
+                                                  [core]
+	                                          repositoryformatversion = 0
+	                                          filemode = true
+	                                          bare = false
+	                                          logallrefupdates = true
+                                                  [remote "origin"]
+	                                          url = git@github.com:swtor00/swtor-addon-to-tails
+	                                          fetch = +refs/heads/*:refs/remotes/origin/*
+                                                  [branch "master"]
+	                                          remote = origin
+	                                          merge = refs/heads/master 
+
                                                 - Tails 4.23 or higher is now mandatory to execute this addon. 
                                                 - On the end of oktober 2022, ther onion site protocoll v2 can 
-                                                  not be used anymore. After 1. November 2021 all onion sites should 
-                                                  use V3.  
+                                                  not be used anymore. After November 2021 all onion sites should 
+                                                  use the new protocoll V3 insted of V2.  
 
  
         
