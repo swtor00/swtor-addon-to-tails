@@ -172,8 +172,9 @@ Date		Release		Author		Description
                                                   TIMEOUT-TCHECK:10 
                                    
                                                 - without a valid hosty entry, a ssh communicaton to github with
-                                                  the command "git push" isn't possible. Therefore execute this command.
-                                                  ssh -T git@github.com to add the host entry.
+                                                  the command "git push" isn't possible at all. Therefore execute this command.
+                                                  "ssh -T git@github.com" to add the host entry permanently to the current 
+                                                  Tails in use.
 
                                                   The puplic fingerprint of the github servers can be found here. 
                                                  
