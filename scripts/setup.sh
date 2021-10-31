@@ -50,6 +50,8 @@ if [ $? -eq 0 ]
 else
    sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="ONION network is not ready or no active internet connection found !" > /dev/null 2>&1)
    rmdir $lockdir > /dev/null 2>&1
+   echo >&2 "removed acquired lock: $lockdir"
+   echo >&2 "setup.sh exiting with error-code 1"
    exit 1
 fi
 
@@ -65,6 +67,8 @@ if grep -q "password is disabled" ~/Persistent/test_admin
      rm ~/Persistent/test_admin > /dev/null 2>&1
      zenity --error --width=600 --text="This addon needs a administration password for Tails on startup !"
      rmdir $lockdir > /dev/null 2>&1
+     echo >&2 "removed acquired lock: $lockdir"
+     echo >&2 "setup.sh exiting with error-code 1"
      exit 1
 else
     rm ~/Persistent/test_admin > /dev/null 2>&1
@@ -83,6 +87,8 @@ else
     echo failure
     zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option first and restart Tails."
     rmdir $lockdir > /dev/null 2>&1
+    echo >&2 "removed acquired lock: $lockdir"
+    echo >&2 "setup.sh exiting with error-code 1"
     exit 1
 fi
 
@@ -100,6 +106,8 @@ else
 
     zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\nYou have to set this option first and restart Tails."
     rmdir $lockdir > /dev/null 2>&1
+    echo >&2 "removed acquired lock: $lockdir"
+    echo >&2 "setup.sh exiting with error-code 1"
     exit 1
 fi
 
@@ -133,6 +141,8 @@ if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ]
 else
    zenity --error --width=600 --text="setup.sh has failed. This programm was allready executed once on this volume !"
    rm -f $lockdir > /dev/null 2>&1
+   echo >&2 "removed acquired lock: $lockdir"
+   echo >&2 "setup.sh exiting with error-code 1"
    exit 1
 fi
 
@@ -145,6 +155,8 @@ if [ "$password" == "" ];then
    zenity --error --width=400 --text "Password was empty !"
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
+   echo >&2 "removed acquired lock: $lockdir"
+   echo >&2 "setup.sh exiting with error-code 1"
    exit 1
 fi
 
@@ -158,6 +170,8 @@ then
     rm ~/Persistent/password
     rm ~/Persistent/password_correct
     rmdir $lockdir > /dev/null 2>&1
+    echo >&2 "removed acquired lock: $lockdir"
+    echo >&2 "setup.sh exiting with error-code 1"
     exit 1
 fi
 
@@ -216,29 +230,32 @@ case $? in
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
 
+         echo >&2 "chromium is installed"
          zenity --info --width=600 --text="chromium has been installed. Please confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue."         
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
 
+         echo >&2 "chromium-sandbox is installed"
          zenity --info --width=600 --text="chromium-sandbox has been installed. Please confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue."
 
          cat ~/Persistent/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
 
-         zenity --info --width=600 --text="Html2text has been installed. Please confirm that this software has to be Installed on every Startup.\n\n\nPlease press OK to continue."
+         echo >&2 "html2text is installed"
+         zenity --info --width=600 --text="html2text has been installed. Please confirm that this software has to be Installed on every Startup.\n\n\nPlease press OK to continue."
 
          # Install sshpass
 
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass> /dev/null 2>&1
 
-
+         echo >&2 "sshpass is installed"
          zenity --info --width=600 --text="sshpass has been installed. Please confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue."
 
          # Install yad
 
          cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
 
+         echo >&2 "yad is installed"
          zenity --info --width=600 --text="yad has been installed. Please confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue."
-
 
          ;;
          1) echo nothing to do ..
@@ -250,6 +267,7 @@ rm ~/Persistent/password_correct
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
 
+echo >&2 "setup is now completed"
 sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now completed ! \nYou can now start the addon with the command swtor-menu.sh" > /dev/null 2>&1)
 
 # Delete the lock-file ...
@@ -258,6 +276,8 @@ sleep 1
 
 rmdir ~/Persistent/swtor-addon-to-tails/scripts/setup.lock > /dev/null 2>&1
 rm -f ~/Persistent/swtor-addon-to-tails/scripts/scripts > /dev/null 2>&1
+echo >&2 "removed acquired lock: $lockdir"
+echo >&2 "setup.sh was sucessfull exiting with return-code 0"
 
 exit 0
 
