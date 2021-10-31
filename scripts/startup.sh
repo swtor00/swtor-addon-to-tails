@@ -18,7 +18,7 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# This script has to run only once ... no more 
+# This script has to be run only once ... no more 
 
 if [ -f ~/swtor_init ]
    then
