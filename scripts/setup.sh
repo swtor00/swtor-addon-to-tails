@@ -189,11 +189,14 @@ case $? in
 esac
 
 
-# Restore bookmarks on demand pending on configuration file
+# Restore the bookmarks depending on the configuration file swtor.cfg
 
 if grep -q IMPORT-BOOKMARKS:YES ~/Persistent/swtorcfg/swtor.cfg
  then
- rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked > /dev/null 2>&1
+     echo importing bookmarks
+     rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked > /dev/null 2>&1
+else
+     echo bookmarks are not imported because the configuration is set to IMPORT-BOOKMARKS:NO
 fi
 
 
