@@ -114,7 +114,7 @@ rm ~/Persistent/mounted > /dev/null 2>&1
 if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ]
    then
 
-   zenity --info --width=600 --text="Welcome to the swto addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symlinks inside of persistent volume\n* We create a folder personal-files\n* We install additional software\n* We import bookmarks on demand\n\n\nPlease press OK to continue."
+   zenity --info --width=600 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue."
 
    echo creating symlinks
 
@@ -176,7 +176,7 @@ esac
 
 
 
-zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remain valid even after a reboot !"
+zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remains valid even after a reboot !"
 case $? in
          0) cd ~/Persistent/settings
             tar xzf tmp.tar.gz
@@ -203,11 +203,11 @@ case $? in
 
          # apt-get update
 
-         sleep 25 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list with apt-get update.\nThis may needs some time" > /dev/null 2>&1)
+         sleep 25 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list.\nThis may needs some very long time to complete !" > /dev/null 2>&1)
          sleep 1
          cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
          sleep 1
-         sleep 14 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update is done.\nNow we can install the additional software\n" > /dev/null 2>&1)
+         sleep 14 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Updating the list is now done.\nNow we can install the additional software\n" > /dev/null 2>&1)
 
          # Install chromium
 
@@ -223,7 +223,6 @@ case $? in
 
          zenity --info --width=600 --text="Html2text has been installed. Please confirm that this software has to be Installed on every Startup.\n\n\nPlease press OK to continue."
 
-
          # Install sshpass
 
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass> /dev/null 2>&1
@@ -235,7 +234,7 @@ case $? in
 
          cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
 
-         zenity --info --width=600 --text="yad has been installed. Please confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue." 
+         zenity --info --width=600 --text="yad has been installed. Please confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue."
 
 
          ;;
@@ -248,7 +247,7 @@ rm ~/Persistent/password_correct
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
 
-sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now completed ! \nYou can now start the addon with swtor-menu.sh" > /dev/null 2>&1)
+sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now completed ! \nYou can now start the addon with the command swtor-menu.sh" > /dev/null 2>&1)
 
 # Delete the lock-file ...
 
