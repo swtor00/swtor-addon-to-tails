@@ -203,7 +203,7 @@ case $? in
 esac
 
 
-# Restore the bookmarks depending on the configuration file swtor.cfg
+# Restore the TOR-Browser  bookmarks depending on the configuration file swtor.cfg
 
 if grep -q IMPORT-BOOKMARKS:YES ~/Persistent/swtorcfg/swtor.cfg
  then

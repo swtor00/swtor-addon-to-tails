@@ -4,9 +4,9 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.14 or higher                        #
+# OS      : Tails 4.23 or higher                        #
 #                                                       #
-# VERSION : 0.52                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # Main-Menu of of the swtor-addon-to-tails              #
@@ -41,29 +41,29 @@ if [ ! -f ~/swtor_init ]
    if [ ! -f ~/swtor_init ]
       then
           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Error during the initialisation of the addon !" > /dev/null 2>&1)
-      rmdir $lockdir > /dev/null 2>&1 
+      rmdir $lockdir > /dev/null 2>&1
       exit 1
    fi
-else  
-    echo initial-process has ben executed with error-code 0 ... 
+else
+    echo initial-process has ben executed with error-code 0 ...
     sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Iinitialisation of the addon is now complete !" > /dev/null 2>&1)
 fi
 
 
-# show version of script prior to show menu 
+# show version of script prior to show menu
 
 cd ~/Persistent/scripts/
 ./swtor-about &
 sleep 4
 pid=$(ps | grep swtor-about | awk '{print $1}')
-kill -9 $(echo $pid) > /dev/null 2>&1 
+kill -9 $(echo $pid) > /dev/null 2>&1
 
 # Build main menu
 
 menu=1
 while [ $menu -eq 1 ]; do
 
-      cd ~/Persistent/scripts
+       cd ~/Persistent/scripts
 
        selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
        "1"  "[01]  ->  Select SSH-Server to connect" \

@@ -18,7 +18,7 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# This script has to be run only once ... no more 
+# This script has to be run only once ... no more
 
 if [ -f ~/swtor_init ]
    then
@@ -56,7 +56,7 @@ else
 fi
 
 
-# if the directory ~/.ssh is empty ... this tails system never contacted never any remote ssh-server 
+# if the directory ~/.ssh is empty ... this tails system never contacted never any remote ssh-server
 
 sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing ssh files for the addon ..." > /dev/null 2>&1)
 
@@ -163,7 +163,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ]
             rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
             rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
 
-            zenity --info --width=600 --text="\nThis system was freezed with a older version of tails.\nYou have to reboot for a complete unfreezing\nPlease reboot ASAP !"
+            zenity --info --width=600 --text="\nThis system was freezed with a older version of Tails.\nYou have to reboot for a complete unfreezing\nPlease reboot ASAP !"
             exit 1
        fi
        rm ~/Persistent/scripts/current > /dev/null 2>&1
@@ -177,7 +177,7 @@ echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/scripts/test_admin 2>&1
 if grep -q "is not allowed to execute" ~/Persistent/scripts/test_admin
  then
      rm ~/Persistent/scripts/test_admin > /dev/null 2>&1
-     zenity --info --width=600 --text="\nYou have to set a administration password on\n the greeting-screen of tails!" 
+     zenity --info --width=600 --text="\nYou have to set a administration password on\n the greeting-screen of Tails!" 
      exit 1
 else
     rm ~/Persistent/scripts/test_admin > /dev/null 2>&1
@@ -186,7 +186,7 @@ else
     echo done
 fi
 
-sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Checking for updates ... Depending on the local configuration of swtor." > /dev/null 2>&1)
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Checking for updates\nDepending on the configuration of swtor.cfg" > /dev/null 2>&1)
 
 
 # Check for updates on demand if CHECK-UPDATE:YES is set of inside swtor.cfg
@@ -195,7 +195,7 @@ sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="In
 if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
  then
 
-    echo "Checking for updates on github because of update"
+    echo "Checking for updates on github"
 
     # If you don't like this behavior on startup, you should open the
     # configuration file ~/Persistent/swtorcfg/swtor.cfg and set the option
@@ -222,7 +222,6 @@ if grep -q CHECK-UPDATE:YES ~/Persistent/swtorcfg/swtor.cfg
         echo step 05
         echo "no updates found"
         echo done
-        sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="No updates found on github  ..." > /dev/null 2>&1)    
     else
 
          # Is this script controlled with git or not ?
@@ -349,10 +348,9 @@ else
    echo Browser-socks5 not selected
 fi
 
-# Creating Desktop links 
+# Creating Desktop link
 
-
-sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Creating links on Desktop  ..." > /dev/null 2>&1) 
+sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Creating symbolic link on Desktop  ..." > /dev/null 2>&1) 
 
 # Make symbolic links on the desktop for the main menu
 # This depends on the setting GUI-LINKS:YES and BROWSER-SOCKS5:YES inside of swtor.cfg
@@ -367,11 +365,11 @@ if grep -q BROWSER-SOCKS5:YES ~/Persistent/swtorcfg/swtor.cfg
              then
              ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
              echo step 08
-             echo symlink on desktop created  
+             echo symlink on desktop created
              echo done
           else
              echo step 08
-             echo symlink on desktop allready exist   
+             echo symlink on desktop allready exist
              echo done
           fi
    fi
@@ -380,18 +378,18 @@ fi
 if grep -q GUI-LINKS:NO  ~/Persistent/swtorcfg/swtor.cfg
    then
    echo step 08
-   echo no symlink on desktop created .. setting GUI-LINKS:NO 
+   echo no symlink on desktop created .. setting GUI-LINKS:NO
    echo done
 fi
 
 
-# We don't need longer the stored administration password 
+# We don't need longer the stored administration password
 
 if [ -f /home/amnesia/Persistent/scripts/password ]
 then
     cd /home/amnesia/Persistent/scripts
-    rm password 
-    rm password_correct 
+    rm password
+    rm password_correct
     echo step 09
     echo removing password
     echo done
