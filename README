@@ -5,6 +5,15 @@ and configure this addon for tails.
 
 mini ULTRA compressed steps to make the add-on working quick ... 
 
+
+the following things should be done prio to install this addon
+
+- get Tails and install it to a USB drive
+- create a persistent volume with at least ssh-client/additional-software/personal-data 
+- restart Tails with the opened persistent volume and administration password
+
+
+0.)  open a terminal inside of the persisten volume.
 1.)  git clone https://github.com/swtor00/swtor-addon-to-tails
 2.)  Edit the configuration file ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg
      and change the default settings if you wish.  
