@@ -116,7 +116,7 @@ echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/test_admin 2>&1
 
 if grep -q "password is disabled" ~/Persistent/test_admin ; then
      rm ~/Persistent/test_admin > /dev/null 2>&1
-     zenity --error --width=600 --text="This addon needs a administration password for Tails on startup !"
+     zenity --error --width=600 --text="This addon needs a administration password for Tails on startup ! \nYou have to set this option first and restart Tails."
      rmdir $lockdir > /dev/null 2>&1
      if [ $TERMINAL_VERBOSE == "1" ] ; then
         echo >&2 "removed acquired lock: $lockdir"
@@ -193,25 +193,65 @@ rm ~/Persistent/mounted > /dev/null 2>&1
 
 # Test for a prior execution of the script setup.sh
 
-if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ]
-   then
+if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
 
    zenity --info --width=600 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue."
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo creating symlinks
+      echo "creating symlinks inside of persistent"
    fi
 
-   ln -s ~/Persistent/swtor-addon-to-tails/settings ~/Persistent/settings > /dev/null 2>&1
-   ln -s ~/Persistent/swtor-addon-to-tails/scripts  ~/Persistent/scripts > /dev/null 2>&1
-   ln -s ~/Persistent/swtor-addon-to-tails/swtorcfg ~/Persistent/swtorcfg > /dev/null 2>&1
-   ln -s ~/Persistent/swtor-addon-to-tails/doc ~/Persistent/doc > /dev/null 2>&1
+   if [ ! -L ~/Persistent/settings ] ; then
+      ln -s ~/Persistent/swtor-addon-to-tails/settings ~/Persistent/settings > /dev/null 2>&1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "creating symlink ~/Persistent/settings"
+      fi
+   else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "symlink ~/Persistent/settings was allready made"
+       fi
+   fi
+
+   if [ ! -L ~/Persistent/scripts ] ; then
+      ln -s ~/Persistent/swtor-addon-to-tails/scripts  ~/Persistent/scripts > /dev/null 2>&1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "creating symlink ~/Persistent/scripts"
+      fi
+   else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "symlink ~/Persistent/scripts was allready made"
+       fi
+   fi
+
+   if [ ! -L ~/Persistent/swtorcfg ] ; then
+      ln -s ~/Persistent/swtor-addon-to-tails/swtorcfg ~/Persistent/swtorcfg > /dev/null 2>&1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "creating symlink ~/Persistent/swtorcfg"
+      fi
+   else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "symlink ~/Persistent/swtorcfg was allready made"
+      fi
+   fi
+
+   if [ ! -L ~/Persistent/doc ] ; then
+      ln -s ~/Persistent/swtor-addon-to-tails/doc ~/Persistent/doc > /dev/null 2>&1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "creating symlink ~/Persistent/doc"
+      fi
+   else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "symlink ~/Persistent/doc was allready made"
+       fi
+   fi
 
    # creating log-directory for ssh
 
-   if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ]
-      then
-          mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log > /dev/null 2>&1
+   if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
+      mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log > /dev/null 2>&1
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
+       fi
    fi
 
 else
@@ -224,13 +264,13 @@ else
    exit 1
 fi
 
-password=$(zenity --entry --text="Curent Tails administration-password ? " --title=Password --hide-text)
+password=$(zenity --entry --text="The Curent Tails administration-password ? " --title=Password --hide-text)
 echo $password > /home/amnesia/Persistent/password
 
 # Empty password ?
 
 if [ "$password" == "" ];then
-   zenity --error --width=400 --text "Password was empty !"
+   zenity --error --width=400 --text "The provided password was empty !"
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -246,7 +286,7 @@ gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ]
 then
-    zenity --info --width=400 --text="Password was not correct !"  > /dev/null 2>&1
+    zenity --info --width=400 --text="The provided password was not correct !"  > /dev/null 2>&1
     rm ~/Persistent/password
     rm ~/Persistent/password_correct
     rmdir $lockdir > /dev/null 2>&1
@@ -264,7 +304,21 @@ mkdir ~/Persistent/personal-files > /dev/null 2>&1
 zenity --question --width=600 --text="Should a symbolic link created for the directory ~/Persistent/personal-files ?"
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory  ?" --title=Directory)
-            ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir > /dev/null 2>&1
+
+            if [ "$symlinkdir" == "" ];then
+               if [ $TERMINAL_VERBOSE == "1" ] ; then
+                    echo not creating symlink $symlinkdir because the name was empty
+                    echo >&2 "removed acquired lock: $lockdir"
+                    echo >&2 "setup.sh exiting with error-code 1"
+               fi
+               exit 1
+            else
+
+                 ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir > /dev/null 2>&1
+                 if [ $TERMINAL_VERBOSE == "1" ] ; then
+                    echo creating symlink $symlinkdir
+                 fi
+            fi
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo not creating symlink
