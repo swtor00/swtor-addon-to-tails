@@ -426,7 +426,7 @@ case $? in
             echo >&2 "yad is installed"
          fi
 
-         zenity --info --width=600 --text="yad has been installed.\nPlease confirm that this software has to be installed on every Startup.\n\n\nPlease press OK to continue."
+         zenity --info --width=600 --text="yad has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -444,7 +444,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
-sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now complete !\nYou can now start the addon with the command swtor-menu.sh" > /dev/null 2>&1)
+sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
 # Delete the lock-file ...
 
