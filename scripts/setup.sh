@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.23 or higher                        #
+# OS      : Tails 4.24 or higher                        #
 #                                                       #
 #                                                       #
 # VERSION : 0.60                                        #
@@ -58,28 +58,26 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
-
 # Creating the lockdirectory ....
 
 lockdir=~/Persistent/swtor-addon-to-tails/scripts/setup.lock
-if mkdir "$lockdir" > /dev/null 2>&1
+if mkdir "$lockdir" > /dev/null 2>&1 ; then
 
-   then
-       # the directory did not exist, but was created successfully
+   # the directory did not exist, but was created successfully
 
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo >&2 "successfully acquired lock: $lockdir"
-       fi
-   else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "successfully acquired lock: $lockdir"
+   fi
+else
 
-       # failed to create the directory, presumably because it already exists
+    # failed to create the directory, presumably because it already exists
 
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo >&2 "cannot acquire lock, giving up on $lockdir"
-          echo >&2 "setup.sh exiting with error-code 1"
-       fi
-       zenity --error --width=600 --text="Lockdirectory can not be created !"
-       exit 1
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "cannot acquire lock, giving up on $lockdir"
+       echo >&2 "setup.sh exiting with error-code 1"
+    fi
+    zenity --error --width=600 --text="Lockdirectory can not be created !"
+    exit 1
 fi
 
 
@@ -191,6 +189,7 @@ fi
 
 rm ~/Persistent/mounted > /dev/null 2>&1
 
+
 # Test for a prior execution of the script setup.sh
 
 if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
@@ -269,8 +268,8 @@ echo $password > /home/amnesia/Persistent/password
 
 # Empty password ?
 
-if [ "$password" == "" ];then
-   zenity --error --width=400 --text "The provided password was empty !"
+if [ "$password" == "" ] ; then
+   zenity --error --width=400 --text "The password was empty !"
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -284,8 +283,7 @@ fi
 
 gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent/scripts/testroot.sh > /dev/null 2>&1
 
-if [ -s /home/amnesia/Persistent/scripts/password_correct ]
-then
+if [ -s /home/amnesia/Persistent/scripts/password_correct ] ; then
     zenity --info --width=400 --text="The provided password was not correct !"  > /dev/null 2>&1
     rm ~/Persistent/password
     rm ~/Persistent/password_correct
@@ -295,11 +293,26 @@ then
        echo >&2 "setup.sh exiting with error-code 1"
     fi
     exit 1
+
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "the provided administration password was correct"
+    fi
 fi
+
 
 # Creating personal-files
 
-mkdir ~/Persistent/personal-files > /dev/null 2>&1
+if [ ! -d ~/Persistent/personal-files ] ; then
+   mkdir ~/Persistent/personal-files > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "directory ~/Persistent/personal-files was created"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "directory ~/Persistent/personal-files not created"
+   fi
+fi
 
 zenity --question --width=600 --text="Should a symbolic link created for the directory ~/Persistent/personal-files ?"
 case $? in
@@ -313,7 +326,6 @@ case $? in
                fi
                exit 1
             else
-
                  ln -s ~/Persistent/personal-files ~/Persistent/$symlinkdir > /dev/null 2>&1
                  if [ $TERMINAL_VERBOSE == "1" ] ; then
                     echo creating symlink $symlinkdir
@@ -345,8 +357,7 @@ esac
 
 # Restore the TOR-Browser  bookmarks depending on the configuration file swtor.cfg
 
-if [ $IMPORT_BOOKMAKRS == "1" ]
-   then
+if [ $IMPORT_BOOKMAKRS == "1" ] ; then
    echo
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo importing bookmarks
@@ -360,7 +371,7 @@ else
 fi
 
 
-zenity --question --width=600 --text="Configure the additional software for the addon ?\n Only answer No if the stick alllready have the needet software."
+zenity --question --width=600 --text="Configure the additional software for the addon ?\n Only answer No if the 5 software-packages are allready installed."
 case $? in
          0)
 
