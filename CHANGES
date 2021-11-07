@@ -168,19 +168,23 @@ Date		Release		Author		Description
                                                   https://capulcu.blackblogs.org/neue-texte/bandi/
 
                                                 - Added global timeout-value in secounds for 
-                                                  TOR-Testing inside of swtor.cfg. 
-                                                  TIMEOUT-TCHECK:10 
+                                                  TOR-Testing inside of swtor.cfg.
+                                                  Also added a silent or verbose mode for 
+                                                  the scripts.  
+                                                  TIMEOUT-TB:10
+                                                  TERMINAL-VERBOSE:NO
                                    
                                                 - without a valid hosty entry, a ssh communicaton to github with
                                                   the command "git push" isn't possible at all. Therefore execute this command.
                                                   "ssh -T git@github.com" to add the host entry permanently to the current 
                                                   Tails in use.
 
-                                                  The puplic fingerprint of the github servers can be found here. 
-                                                 
-                                                  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
                        
-                                                
+                                                - Multiple settings for the GUI-settings that should be done 
+                                                  after every reboot of Tails is now made with a new script.
+                                                  swtor-tweak-gui.sh
+                                                  If DOTFILES are activated with the persistent volume, you 
+                                                  never have to make this settings again.   
 
  
         
