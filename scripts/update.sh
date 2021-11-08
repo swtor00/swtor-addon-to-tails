@@ -4,9 +4,9 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.14 or higher                        #
+# OS      : Tails 4.24 or higher                        #
 #                                                       #
-# VERSION : 0.52                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
@@ -18,21 +18,59 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Is this script controlled with git or not ?
 
-if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ]
-    then
-        yad --title="Information " --width=400 --height=100 --no-buttons --center --timeout=8  --no-buttons --text="\n\nAddon has no .git directory.\nThis means that this addon isn't controlled by git."
-        exit 1
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo This shell-script can not longer direct executed over the terminal.
+   echo You have to call this shell-script over swtor-menu.sh
+   exit 1
 fi
 
-# In the case, that someone changed the current confiuration-file
-# we copy the current config swtor.cfg
+# Is this script controlled with git or not ?
+# It is not possible to update this script over git just in case the git
+# directory has ben removed by the user.
 
-cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config
-cd ~/Persistent/swtor-addon-to-tails
 
-git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails
+if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
+
+   sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\nAddon has no .git directory.\nThis means that this addon isn't controlled by git." > /dev/null 2>&1)
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo no .git directory found.Update is not possible
+   fi
+   exit 1
+fi
+
+zenity --question --width=600 --text="Please read this warning carefully.\n\nIf you update the addon all local changes made by you,will be overwriten.\n\This also includes the configuration file swtor.cfg and all scripts.\n\nAre you sure, you would like to proceed with the update ?"
+case $? in
+         0)
+           # In the case, that someone changed the current confiuration-file
+           # we copy the current config swtor.cfg
+
+           cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config
+           cd ~/Persistent/swtor-addon-to-tails
+
+           sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The update is now executed. Please wait !" > /dev/null 2>&1)
+
+           git reset --hard > /dev/null 2>&1
+           git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
+
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo update was executed
+           fi
+
+           sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The update is now completed !" > /dev/null 2>&1)
+
+         ;;
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo update should not be executed
+            fi
+         ;;
+esac
+
+
+exit 0
+
+
+
 
 
 

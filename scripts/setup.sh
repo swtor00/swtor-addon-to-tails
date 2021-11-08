@@ -76,7 +76,7 @@ else
        echo >&2 "cannot acquire lock, giving up on $lockdir"
        echo >&2 "setup.sh exiting with error-code 1"
     fi
-    zenity --error --width=600 --text="Lockdirectory can not be created !"
+    zenity --error --width=600 --text="Lockdirectory for setup.sh can not be created !" > /dev/null 2>&1
     exit 1
 fi
 
@@ -93,9 +93,10 @@ if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo TOR is up and running and we can continue with the execution of the script ....
    fi
-   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Testing the Internet connection over TOR was successful !" > /dev/null 2>&1)
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\nTesting the Internet connection over TOR was successful ! \n" > /dev/null 2>&1)
 else
-   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Internet not ready or no active connection found !\nPlease make a connection first !" > /dev/null 2>&1)
+
+   zenity --error --width=600 --text="Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again !" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "removed acquired lock: $lockdir"
@@ -114,7 +115,7 @@ echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/test_admin 2>&1
 
 if grep -q "password is disabled" ~/Persistent/test_admin ; then
      rm ~/Persistent/test_admin > /dev/null 2>&1
-     zenity --error --width=600 --text="This addon needs a administration password for Tails on startup ! \nYou have to set this option first and restart Tails."
+     zenity --error --width=600 --text="This addon needs a administration password for Tails on startup ! \nYou have to set this option first and restart Tails." > /dev/null 2>&1
      rmdir $lockdir > /dev/null 2>&1
      if [ $TERMINAL_VERBOSE == "1" ] ; then
         echo >&2 "removed acquired lock: $lockdir"
@@ -137,7 +138,7 @@ if grep -q "/home/amnesia/.ssh" ~/Persistent/mounted ; then
        echo we have .ssh mounted
     fi
 else
-    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option first and restart Tails."
+    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option first and restart Tails." > /dev/null 2>&1
     rmdir $lockdir > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "removed acquired lock: $lockdir"
@@ -156,7 +157,7 @@ if grep -q "/var/cache/apt/archives" ~/Persistent/mounted ; then
      fi
 else
     rm ~/Persistent/mounted > /dev/null 2>&1
-    zenity --error --width=600 --text="This addon needs the additional-software feature inside of the persistent volume.\nYou have to set this option first and restart Tails."
+    zenity --error --width=600 --text="This addon needs the additional-software option inside of the persistent volume.\nYou have to set this option first and restart Tails." > /dev/null 2>&1
     rmdir $lockdir > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "removed acquired lock: $lockdir"
@@ -176,7 +177,7 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
         echo
      else
         rm ~/Persistent/mounted > /dev/null 2>&1
-        zenity --error --width=600 --text="The import of the bookmarks is not possible if the bookmark feature inside of the persistent volume is not set.\nYou have to set this option first and restart Tails."
+        zenity --error --width=600 --text="The import of the bookmarks is not possible if the bookmark option inside of the persistent volume is not set.\nYou have to set this option first and restart Tails." > /dev/null 2>&1
         if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo >&2 "removed acquired lock: $lockdir"
            echo >&2 "setup.sh exiting with error-code 1"
@@ -194,7 +195,7 @@ rm ~/Persistent/mounted > /dev/null 2>&1
 
 if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
 
-   zenity --info --width=600 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue."
+   zenity --info --width=600 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "creating symlinks inside of persistent"
@@ -254,7 +255,7 @@ if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
    fi
 
 else
-   zenity --error --width=600 --text="setup.sh has failed. This programm was allready executed once on this volume !"
+   zenity --error --width=600 --text="setup.sh has failed. \nThis programm was allready executed once on this volume !" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "removed acquired lock: $lockdir"
@@ -284,7 +285,7 @@ fi
 gnome-terminal --window-with-profile=Unnamed -x bash -c /home/amnesia/Persistent/scripts/testroot.sh > /dev/null 2>&1
 
 if [ -s /home/amnesia/Persistent/scripts/password_correct ] ; then
-    zenity --info --width=400 --text="The provided password was not correct !"  > /dev/null 2>&1
+    zenity --error --width=400 --text="\n\nThe provided password was not correct ! \n\n"  > /dev/null 2>&1
     rm ~/Persistent/password
     rm ~/Persistent/password_correct
     rmdir $lockdir > /dev/null 2>&1
@@ -314,7 +315,7 @@ else
    fi
 fi
 
-zenity --question --width=600 --text="Should a symbolic link created for the directory ~/Persistent/personal-files ?"
+zenity --question --width=600 --text="Should a symbolic link created for the directory ~/Persistent/personal-files ?" > /dev/null 2>&1
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory  ?" --title=Directory)
 
@@ -340,7 +341,7 @@ esac
 
 
 
-zenity --question --width=600 --text="Would you like to create a fixed chromium profile  ? \nAll information stored in this profile remains valid even after a reboot !"
+zenity --question --width=600 --text="Would you like to create a fixed chromium profile ? \nAll information stored in this profile remains valid even after a reboot !"
 case $? in
          0) cd ~/Persistent/settings
             tar xzf tmp.tar.gz
@@ -371,7 +372,8 @@ else
 fi
 
 
-zenity --question --width=600 --text="Configure the additional software for the addon ?\n Only answer No if the 5 software-packages are allready installed."
+zenity --question --width=600 --text="Configure the additional software for the addon ?\nOnly answer No if the 5 additional software packages are allready installed."  > /dev/null 2>&1
+
 case $? in
          0)
 
@@ -381,16 +383,15 @@ case $? in
 
          # apt-get update
 
-         sleep 25 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Update the paket-list.\nThis may needs some very long time to complete !" > /dev/null 2>&1)
+         sleep 25 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the paket-list.\nThis may needs some very long time to complete ! \n\n" > /dev/null 2>&1)
          sleep 1
          cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
          sleep 1
-         sleep 14 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Updating the list is complete.\nNow we can install the additional software\n" > /dev/null 2>&1)
+         sleep 14 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdating the list is now complete.\nNow we can install the additional software\n\n" > /dev/null 2>&1)
 
          # Install chromium
 
-
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="chromium will be installed. Please wait  !" > /dev/null 2>&1)
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nchromium will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
          cat ~/Persistent/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -408,7 +409,7 @@ case $? in
 
          zenity --info --width=600 --text="chromium-sandbox has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="html2text will be installed. Please wait  !" > /dev/null 2>&1)  
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nhtml2text will be installed. Please wait  ! \n\n" > /dev/null 2>&1)  
          cat ~/Persistent/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -419,7 +420,7 @@ case $? in
 
          # Install sshpass
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="sshpass will be installed. Please wait  !" > /dev/null 2>&1)
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nsshpass will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
          cat ~/Persistent/password | sudo -S apt-get install -y sshpass> /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -430,7 +431,7 @@ case $? in
 
          # Install yad
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="yad will be installed. Please wait  !" > /dev/null 2>&1)
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nyad will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
          cat ~/Persistent/password | sudo -S apt-get install -y yad > /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -455,7 +456,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
-sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Setup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
+sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
 # Delete the lock-file ...
 

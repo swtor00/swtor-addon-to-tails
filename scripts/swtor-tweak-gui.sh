@@ -27,7 +27,7 @@
 # [org/gnome/nautilus/preferences]                      #
 # executable-text-activation='launch'                   #
 #########################################################
-
+gsettings set org.gnome.nautilus.preferences executable-text-activation 'launch'
 
 
 #########################################################
@@ -37,7 +37,7 @@
 # [org/gtk/settings/file-chooser]                       #
 # show-hidden=true                                      #
 #########################################################
-
+gsettings set org.gtk.Settings.FileChooser show-hidden true
 
 
 #########################################################
