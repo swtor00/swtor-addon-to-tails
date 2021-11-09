@@ -76,7 +76,7 @@ else
        echo >&2 "cannot acquire lock, giving up on $lockdir"
        echo >&2 "setup.sh exiting with error-code 1"
     fi
-    zenity --error --width=600 --text="Lockdirectory for setup.sh can not be created !" > /dev/null 2>&1
+    zenity --error --width=600 --text="\n\nLockdirectory for setup.sh can not be created ! \n\n" > /dev/null 2>&1
     exit 1
 fi
 
@@ -93,10 +93,10 @@ if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo TOR is up and running and we can continue with the execution of the script ....
    fi
-   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\nTesting the Internet connection over TOR was successful ! \n" > /dev/null 2>&1)
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nTesting the Internet connection over TOR was successful ! \n\n" > /dev/null 2>&1)
 else
 
-   zenity --error --width=600 --text="\n\NInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
+   zenity --error --width=600 --text="\n\nInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "removed acquired lock: $lockdir"
@@ -115,7 +115,7 @@ echo _123UUU__ | sudo -S /bin/bash > ~/Persistent/test_admin 2>&1
 
 if grep -q "password is disabled" ~/Persistent/test_admin ; then
      rm ~/Persistent/test_admin > /dev/null 2>&1
-     zenity --error --width=600 --text="This addon needs a administration password for Tails on startup ! \nYou have to set this option first and restart Tails." > /dev/null 2>&1
+     zenity --error --width=600 --text="\n\nThis addon needs a administration password for Tails on startup ! \nYou have to set this option first and restart Tails.\n\n" > /dev/null 2>&1
      rmdir $lockdir > /dev/null 2>&1
      if [ $TERMINAL_VERBOSE == "1" ] ; then
         echo >&2 "removed acquired lock: $lockdir"
@@ -138,7 +138,7 @@ if grep -q "/home/amnesia/.ssh" ~/Persistent/mounted ; then
        echo we have .ssh mounted
     fi
 else
-    zenity --error --width=600 --text="This addon needs the ssh option inside of the persistent volume.\nYou have to set this option first and restart Tails." > /dev/null 2>&1
+    zenity --error --width=600 --text="\n\nThis addon needs the ssh option inside of the persistent volume.\nYou have to set this option first and restart Tails.\n\n" > /dev/null 2>&1
     rmdir $lockdir > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "removed acquired lock: $lockdir"
@@ -157,7 +157,7 @@ if grep -q "/var/cache/apt/archives" ~/Persistent/mounted ; then
      fi
 else
     rm ~/Persistent/mounted > /dev/null 2>&1
-    zenity --error --width=600 --text="This addon needs the additional-software option inside of the persistent volume.\nYou have to set this option first and restart Tails." > /dev/null 2>&1
+    zenity --error --width=600 --text="\n\nThis addon needs the additional-software option inside of the persistent volume.\nYou have to set this option first and restart Tails.\n\n" > /dev/null 2>&1
     rmdir $lockdir > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "removed acquired lock: $lockdir"
@@ -177,7 +177,7 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
         echo
      else
         rm ~/Persistent/mounted > /dev/null 2>&1
-        zenity --error --width=600 --text="The import of the bookmarks is not possible if the bookmark option inside of the persistent volume is not set.\nYou have to set this option first and restart Tails." > /dev/null 2>&1
+        zenity --error --width=600 --text="\n\nThe import of the bookmarks is not possible if the bookmark option inside of the persistent volume is not set.\nYou have to set this option first and restart Tails.\n\n" > /dev/null 2>&1
         if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo >&2 "removed acquired lock: $lockdir"
            echo >&2 "setup.sh exiting with error-code 1"
@@ -256,7 +256,7 @@ if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
    fi
 
 else
-   zenity --error --width=600 --text="setup.sh has failed. \nThis programm was allready executed once on this volume !" > /dev/null 2>&1
+   zenity --error --width=600 --text="\n\nsetup.sh has failed. \nThis programm was allready executed once on this volume ! \n\n" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "removed acquired lock: $lockdir"
@@ -306,9 +306,9 @@ fi
 # if this persistent volume has dotfiles activated or not.
 # We aren't able to freez the seetings without the option dotfiles.
 
-cat ~/Persistent/password | sudo -S cat /live/persistence/TailsData_unlocked/persistence.conf > /home/amnesia/Persistent/persistence.conf
-cat ~/Persistent/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf
- 
+cat ~/Persistent/password | sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf > /home/amnesia/Persistent /dev/null 2>&1
+cat ~/Persistent/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
+
 # grep #/home/amnesia	source=dotfiles,link
 
 
@@ -468,7 +468,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
-sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
+sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
 # Delete the lock-file ...
 
