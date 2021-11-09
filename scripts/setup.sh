@@ -315,12 +315,36 @@ if grep -q dotfiles ~/Persistent/persistence.conf ; then
        echo >&2 "dotfiles are present on this persistent volume"
        echo >&2 "a complete freezing of the settings from Tails is possible"
    fi
+   rm ~/Persistent/persistence.conf /dev/null 2>&1
+   echo 1  ~/Persistent/swtorcfg/freezing
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "dotfiles are not present on this persistent volume"
-       echo >&2 "freezing is not possible"
+       echo >&2 "freezing is not possible in the current state."
    fi
    zenity --question --width=600 --text="On this persistent volume the option for dotfiles isn't set.\nWould you like to stop here and set the option and restart Tails ?" > /dev/null 2>&1
+   case $? in
+         0) cd ~/Persistent/settings
+                 tar xzf tmp.tar.gz
+                 cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3
+                 rm -rf /Persistent/settings/2
+                 rm -rf /Persistent/settings/1
+         rm ~/Persistent/persistence.conf /dev/null 2>&1
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nPlease don't forget the dotfiles activation ! \n\n" > /dev/null 2>&1)
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+             echo >&2 "The user would like to stop here and reboot Tails."
+             echo >&2 "setup.sh exiting with error-code 0"
+         fi
+         exit 0
+         ;;
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo "the user would like to continue wihtout dotfiles activated ...."
+               echo "against the tip to activate this option"
+            fi
+         rm ~/Persistent/persistence.conf /dev/null 2>&1
+         echo 1  ~/Persistent/swtorcfg/no-freezing
+         ;;
+   esac
 fi
 
 
