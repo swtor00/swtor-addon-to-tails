@@ -41,7 +41,7 @@ gsettings set org.gtk.Settings.FileChooser show-hidden true
 
 
 #########################################################
-# some changes to the gnome-terminal                    #
+# some changes to the terminal for better reading       #
 #########################################################
 # dconf entry                                           #
 # [org/gnome/terminal/legacy/profiles                   #
@@ -52,15 +52,29 @@ gsettings set org.gtk.Settings.FileChooser show-hidden true
 # use-system-font=false                                 #
 # font='Noto Mono 12'                                   #
 #########################################################
- dconf write  /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
- dconf write  /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
- dconf write  /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/foreground-color "'rgb(131,148,150)'"
- dconf write  /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-system-font "false"
- dconf write  /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Noto Mono 12'"
+ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
+ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
+ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/foreground-color "'rgb(131,148,150)'"
+ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-system-font "false"
+ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Noto Mono 12'"
 
 
 
 
+######################################################################################
+# change solid background from Tails to a image that reflects we are freezed         #
+######################################################################################
+# dconf entry                                                                        #
+# [org/gnome/desktop/background]                                                     #
+#  picture-uri='file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg' #
+######################################################################################
+
+if [ ! -d ~/Pictures/Wallpapers ] ; then
+   mkdir ~/Pictures/Wallpapers
+   cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/Pictures/Wallpapers
+fi
+
+dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
 
 
