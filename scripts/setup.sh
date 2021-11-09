@@ -306,7 +306,7 @@ fi
 # if this persistent volume has dotfiles activated or not.
 # We aren't able to freeze the seetings without the option dotfiles.
 
-cat ~/Persistent/password | sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf > /home/amnesia/Persistent /dev/null 2>&1
+cat ~/Persistent/password | sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
 cat ~/Persistent/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
 
 
@@ -315,8 +315,8 @@ if grep -q dotfiles ~/Persistent/persistence.conf ; then
        echo >&2 "dotfiles are present on this persistent volume"
        echo >&2 "a complete freezing of the settings from Tails is possible"
    fi
-   rm ~/Persistent/persistence.conf /dev/null 2>&1
-   echo 1  ~/Persistent/swtorcfg/freezing
+   rm ~/Persistent/persistence.conf > /dev/null 2>&1
+   echo 1 > ~/Persistent/swtorcfg/freezing
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "dotfiles are not present on this persistent volume"
@@ -331,8 +331,11 @@ else
                  rm -rf /Persistent/settings/1
          rm ~/Persistent/persistence.conf /dev/null 2>&1
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nPlease don't forget the dotfiles activation ! \n\n" > /dev/null 2>&1)
+
+         rmdir $lockdir > /dev/null 2>&1
          if [ $TERMINAL_VERBOSE == "1" ] ; then
              echo >&2 "The user would like to stop here and reboot Tails."
+             echo >&2 "removed acquired lock: $lockdir"
              echo >&2 "setup.sh exiting with error-code 0"
          fi
          exit 0
@@ -342,7 +345,7 @@ else
                echo "against the tip to activate this option"
             fi
          rm ~/Persistent/persistence.conf /dev/null 2>&1
-         echo 1  ~/Persistent/swtorcfg/no-freezing
+         echo 1 > ~/Persistent/swtorcfg/no-freezing
          ;;
    esac
 fi

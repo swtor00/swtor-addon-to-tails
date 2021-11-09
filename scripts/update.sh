@@ -45,8 +45,7 @@ case $? in
            # In the case, that someone changed the current confiuration-file
            # we copy the current config swtor.cfg
 
-           cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config > /dev/null 2>&1
-           cd ~/Persistent/swtor-addon-to-tails 
+           cd ~/Persistent/swtor-addon-to-tails
 
            sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nThe update is now executed. Please wait ! \n\n" > /dev/null 2>&1)
 
