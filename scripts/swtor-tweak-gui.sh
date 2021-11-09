@@ -44,10 +44,13 @@ gsettings set org.gtk.Settings.FileChooser show-hidden true
 # some changes to the gnome-terminal                    #
 #########################################################
 # dconf entry                                           #
-# [org/gnome/terminal/legacy/profiles:                  #
+# [org/gnome/terminal/legacy/profiles                   #
+#  :/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]             #
+# background-color='rgb(0,43,54)'                       #
 # use-theme-colors=false                                #
+# foreground-color='rgb(131,148,150)'                   #
 # use-system-font=false                                 #
-# font='Noto Mono Bold 12'                              #
+# font='Noto Mono 12'                                   #
 #########################################################
 
 
