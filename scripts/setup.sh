@@ -366,7 +366,7 @@ fi
 
 zenity --question --width=600 --text="Should a symbolic link created for the directory ~/Persistent/personal-files ?" > /dev/null 2>&1
 case $? in
-         0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory  ?" --title=Directory)
+         0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory ?" --title=Directory)
 
             if [ "$symlinkdir" == "" ];then
                if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -421,7 +421,7 @@ else
 fi
 
 
-zenity --question --width=600 --text="Configure the additional software for the addon ?\nOnly answer No if the 5 additional software packages are allready installed."  > /dev/null 2>&1
+zenity --question --width=600 --text="Configure the additional software for the addon ?\nOnly answer No if the software packages are allready installed."  > /dev/null 2>&1
 
 case $? in
          0)
@@ -434,7 +434,15 @@ case $? in
 
          sleep 25 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the paket-list.\nThis may needs some very long time to complete ! \n\n" > /dev/null 2>&1)
          sleep 1
+
+         # Righ here would it be very nice
+         # to show the user that Tails is still working in the background
+
+
          cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
+
+         ###
+
          sleep 1
          sleep 14 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdating the list is now complete.\nNow we can install the additional software\n\n" > /dev/null 2>&1)
 
