@@ -96,7 +96,7 @@ if [ $? -eq 0 ] ; then
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\nTesting the Internet connection over TOR was successful ! \n" > /dev/null 2>&1)
 else
 
-   zenity --error --width=600 --text="Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again !" > /dev/null 2>&1
+   zenity --error --width=600 --text="\n\NInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "removed acquired lock: $lockdir"
@@ -186,6 +186,7 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
      fi
 fi
 
+
 # Delete test-file for mounting
 
 rm ~/Persistent/mounted > /dev/null 2>&1
@@ -270,7 +271,7 @@ echo $password > /home/amnesia/Persistent/password
 # Empty password ?
 
 if [ "$password" == "" ] ; then
-   zenity --error --width=400 --text "The password was empty !"
+   zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
    rm /home/amnesia/Persistent/password > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -300,6 +301,28 @@ else
        echo >&2 "the provided administration password was correct"
     fi
 fi
+
+# With all the above infos,we have enough information to testing
+# if this persistent volume has dotfiles activated or not.
+
+
+
+
+#root@amnesia:/live/persistence/TailsData_unlocked# cat persistence.conf
+#/home/amnesia/Persistent	source=Persistent
+#/var/lib/gdm3/settings/persistent	source=greeter-settings
+#/home/amnesia/.mozilla/firefox/bookmarks	source=bookmarks
+#/etc/NetworkManager/system-connections	source=nm-system-connections
+#/var/cache/apt/archives	source=apt/cache
+#/var/lib/apt/lists	source=apt/lists
+#/etc/cups	source=cups-configuration
+#/home/amnesia/.thunderbird	source=thunderbird
+#/home/amnesia/.gnupg	source=gnupg
+#/home/amnesia/.electrum	source=electrum
+#/home/amnesia/.purple	source=pidgin
+#/home/amnesia/.ssh	source=openssh-client
+#/home/amnesia	source=dotfiles,link
+#root@amnesia:/live/persistence/TailsData_unlocked# 
 
 
 # Creating personal-files

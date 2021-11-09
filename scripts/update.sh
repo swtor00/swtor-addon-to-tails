@@ -32,7 +32,7 @@ fi
 
 if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
 
-   sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\nAddon has no .git directory.\nThis means that this addon isn't controlled by git." > /dev/null 2>&1)
+   sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nAddon has no .git directory.\nThis means that this addon isn't controlled by git." > /dev/null 2>&1)
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo no .git directory found.Update is not possible
    fi
@@ -48,7 +48,7 @@ case $? in
            cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config
            cd ~/Persistent/swtor-addon-to-tails
 
-           sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The update is now executed. Please wait !" > /dev/null 2>&1)
+           sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nThe update is now executed. Please wait ! \n\n" > /dev/null 2>&1)
 
            git reset --hard > /dev/null 2>&1
            git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
@@ -57,7 +57,7 @@ case $? in
                echo update was executed
            fi
 
-           sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The update is now completed !" > /dev/null 2>&1)
+           sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nThe update is now completed ! \n\n" > /dev/null 2>&1)
 
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then

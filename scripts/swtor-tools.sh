@@ -59,10 +59,11 @@ if [ $selection == "1" ] ; then
             cp -r ~/.config/nautilus /live/persistence/TailsData_unlocked/dotfiles/.config
             cp -r ~/.config/gnome-session /live/persistence/TailsData_unlocked/dotfiles/.config
             cp -r ~/Desktop /live/persistence/TailsData_unlocked/dotfiles
+            cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles
 
             echo freezing done
 
-            # Do markup the version of Tails we used to freezing ... we store it right here 
+            # Do markup the version of Tails we used to freezing ... we store it right here
 
             tails-version > ~/Persistent/swtorcfg/freezed.cgf
             sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Current settings of Tails are now freezed !" > /dev/null 2>&1)
@@ -82,6 +83,8 @@ if [ $selection == "2" ] ; then
    else
           rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config
           rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop
+          rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures
+
           rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
 
           sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Current settings are now unfreezed.\nPlease reboot Tails now ! " > /dev/null 2>&1)
