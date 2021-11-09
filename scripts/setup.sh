@@ -304,14 +304,24 @@ fi
 
 # With all the above infos,we have enough information to testing
 # if this persistent volume has dotfiles activated or not.
-# We aren't able to freez the seetings without the option dotfiles.
+# We aren't able to freeze the seetings without the option dotfiles.
 
 cat ~/Persistent/password | sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf > /home/amnesia/Persistent /dev/null 2>&1
 cat ~/Persistent/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
 
-# grep #/home/amnesia	source=dotfiles,link
 
-
+if grep -q dotfiles ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "dotfiles are present on this persistent volume"
+       echo >&2 "a complete freezing of the settings from Tails is possible"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "dotfiles are not present on this persistent volume"
+       echo >&2 "freezing is not possible"
+   fi
+   zenity --question --width=600 --text="On this persistent volume the option for dotfiles isn't set.\nWould you like to stop here and set the option and restart Tails ?" > /dev/null 2>&1
+fi
 
 
 # Creating personal-files
