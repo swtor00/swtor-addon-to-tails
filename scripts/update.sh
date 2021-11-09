@@ -39,14 +39,14 @@ if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
    exit 1
 fi
 
-zenity --question --width=600 --text="Please read this warning carefully.\n\nIf you update the addon all local changes made by you,will be overwriten.\n\This also includes the configuration file swtor.cfg and all scripts.\n\nAre you sure, you would like to proceed with the update ?"
+zenity --question --width=600 --text="Please read this warning carefully.\n\nIf you update the addon, all local changes made by you,will be overwriten.\n\This also includes the configuration file swtor.cfg and all scripts.\n\nAre you sure, you would like to proceed with the update ?" > /dev/null 2>&1
 case $? in
          0)
            # In the case, that someone changed the current confiuration-file
            # we copy the current config swtor.cfg
 
-           cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config
-           cd ~/Persistent/swtor-addon-to-tails
+           cp ~/Persistent/swtorcfg/swtor.cfg ~/Persistent/swtorcfg/swtor.old-config > /dev/null 2>&1
+           cd ~/Persistent/swtor-addon-to-tails 
 
            sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nThe update is now executed. Please wait ! \n\n" > /dev/null 2>&1)
 

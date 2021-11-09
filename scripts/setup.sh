@@ -304,25 +304,14 @@ fi
 
 # With all the above infos,we have enough information to testing
 # if this persistent volume has dotfiles activated or not.
+# We aren't able to freez the seetings without the option dotfiles.
+
+cat ~/Persistent/password | sudo -S cat /live/persistence/TailsData_unlocked/persistence.conf > /home/amnesia/Persistent/persistence.conf
+cat ~/Persistent/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf
+ 
+# grep #/home/amnesia	source=dotfiles,link
 
 
-
-
-#root@amnesia:/live/persistence/TailsData_unlocked# cat persistence.conf
-#/home/amnesia/Persistent	source=Persistent
-#/var/lib/gdm3/settings/persistent	source=greeter-settings
-#/home/amnesia/.mozilla/firefox/bookmarks	source=bookmarks
-#/etc/NetworkManager/system-connections	source=nm-system-connections
-#/var/cache/apt/archives	source=apt/cache
-#/var/lib/apt/lists	source=apt/lists
-#/etc/cups	source=cups-configuration
-#/home/amnesia/.thunderbird	source=thunderbird
-#/home/amnesia/.gnupg	source=gnupg
-#/home/amnesia/.electrum	source=electrum
-#/home/amnesia/.purple	source=pidgin
-#/home/amnesia/.ssh	source=openssh-client
-#/home/amnesia	source=dotfiles,link
-#root@amnesia:/live/persistence/TailsData_unlocked# 
 
 
 # Creating personal-files
