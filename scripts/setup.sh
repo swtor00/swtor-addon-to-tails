@@ -456,7 +456,7 @@ case $? in
          fi
 
          zenity --info --width=600 --text="chromium has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."         
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="chromium-sandbox will be installed. Please wait  !" > /dev/null 2>&1)
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\nchromium-sandbox will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
 
          cat ~/Persistent/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
 
@@ -507,17 +507,22 @@ esac
 rm ~/Persistent/password
 rm ~/Persistent/password_correct
 
+
+
+
+
+
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
+
+
 sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
 # Delete the lock-file ...
-
-sleep 1
 
 rmdir ~/Persistent/swtor-addon-to-tails/scripts/setup.lock > /dev/null 2>&1
 rm -f ~/Persistent/swtor-addon-to-tails/scripts/scripts > /dev/null 2>&1

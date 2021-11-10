@@ -39,7 +39,6 @@ gsettings set org.gnome.nautilus.preferences executable-text-activation 'launch'
 #########################################################
 gsettings set org.gtk.Settings.FileChooser show-hidden true
 
-
 #########################################################
 # some changes to the terminal for better reading       #
 #########################################################
@@ -52,14 +51,25 @@ gsettings set org.gtk.Settings.FileChooser show-hidden true
 # use-system-font=false                                 #
 # font='Noto Mono 12'                                   #
 #########################################################
- dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
- dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
- dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/foreground-color "'rgb(131,148,150)'"
- dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-system-font "false"
- dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Noto Mono 12'"
+zenity --question --width=600 --text="Would you like to change the color of the Terminal inside Tails ?\nIf you are working very often with the Terminal I would say yes here, otherwise anwser no.\n\nFor me was the standard contrast of the Terminal of Tails allmost not readable so I made this little change."  > /dev/null 2>&1
+case $? in
+         0)
+           dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
+           dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
+           dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/foreground-color "'rgb(131,148,150)'"
+           dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-system-font "false"
+           dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font "'Noto Mono 12'"
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+              echo >&2 "terminal color changed"
+           fi
+           ;;
 
-
-
+         1)
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+              echo >&2 "terminal color is unchanged"
+           fi
+           ;;
+esac
 
 ######################################################################################
 # change solid background from Tails to a image that reflects we are freezed         #
