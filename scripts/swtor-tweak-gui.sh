@@ -19,6 +19,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo This shell-script can not longer direct executed over the terminal.
+   echo You have to call this shell-script over swtor-menu.sh
+   exit 1
+fi
 
 #########################################################
 # run all executables over the gui of Tails             #
