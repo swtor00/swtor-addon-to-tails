@@ -305,6 +305,7 @@ fi
 # With all the above infos,we have enough information to testing
 # if this persistent volume has dotfiles activated or not.
 # We aren't able to freeze the seetings without the option dotfiles.
+# And yes it is a advice ... activate it.
 
 cat ~/Persistent/password | sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
 cat ~/Persistent/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
@@ -324,11 +325,7 @@ else
    fi
    zenity --question --width=600 --text="On this persistent volume the option for dotfiles isn't set.\nWould you like to stop here and set the option and restart Tails ?" > /dev/null 2>&1
    case $? in
-         0) cd ~/Persistent/settings
-                 tar xzf tmp.tar.gz
-                 cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3
-                 rm -rf /Persistent/settings/2
-                 rm -rf /Persistent/settings/1
+         0) 
          rm ~/Persistent/persistence.conf /dev/null 2>&1
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nPlease don't forget the dotfiles activation ! \n\n" > /dev/null 2>&1)
 
@@ -397,9 +394,14 @@ case $? in
             cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3
             rm -rf /Persistent/settings/2
             rm -rf /Persistent/settings/1
+
+            if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo fixed profile created
+            fi
+
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo not creatinging fixed browsing profile
+               echo not creating fixed profile
             fi
          ;;
 esac
@@ -437,7 +439,6 @@ case $? in
 
          # Righ here would it be very nice
          # to show the user that Tails is still working in the background
-
 
          cat ~/Persistent/password | sudo -S apt-get update > /dev/null 2>&1
 
@@ -504,12 +505,59 @@ case $? in
          ;;
 esac
 
+# if we don't have a persistent volume with dotfiles activated ....
+# this next step make no sense ...
+
+if [ -f ~/Persistent/swtorcfg/freezing ] ; then
+
+   # apply all gui-tweaks over a script.
+
+   ./swtor-tweak-gui.sh
+
+    echo "gui-tweak is complete"
+
+    if [ $GUI_LINKS == "1" ] ; then
+       if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
+          ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
+          if [ $TERMINAL_VERBOSE == "1" ] ; then
+             echo symlink on desktop created
+          fi
+        else
+            if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo symlink on desktop allready exist
+            fi
+        fi
+    fi
+
+    # The question to freez or not  ...
+
+    zenity --question --width=600 --text="Should this Tails OS be freezed ? It would be possible to make this final step.\n\nIn the case you are unhappy about the configuration please execute\nthe script called cli_unfreezing.sh in a Terminal and make a reboot.\n"  > /dev/null 2>&1
+
+    case $? in
+         0)
+            ./cli_freezing.sh
+
+            if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo systen freezed
+            fi
+
+         ;;
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo not freezing
+            fi
+         ;;
+    esac
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "freezing not possible in the current state of the persistent volume"
+   fi
+fi
+
+
+# Ok .. we are done here ...
+
 rm ~/Persistent/password
 rm ~/Persistent/password_correct
-
-
-
-
 
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
@@ -517,8 +565,6 @@ echo 1 > ~/Persistent/swtor-addon-to-tails/setup
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
-
-
 
 sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
