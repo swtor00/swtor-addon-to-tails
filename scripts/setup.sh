@@ -512,6 +512,7 @@ if [ -f ~/Persistent/swtorcfg/freezing ] ; then
 
    # apply all gui-tweaks over a script.
 
+   cd ~/Persistent/scripts
    ./swtor-tweak-gui.sh
 
     echo "gui-tweak is complete"
