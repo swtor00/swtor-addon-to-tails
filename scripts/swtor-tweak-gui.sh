@@ -104,8 +104,20 @@ case $? in
            ;;
 esac
 
+# Create symbolic link on desktop
 
-
+if [ $GUI_LINKS == "1" ] ; then
+    if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
+       ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo symlink on desktop created
+       fi
+    else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo symlink on desktop allready exist
+       fi
+    fi
+ fi
 
 
 

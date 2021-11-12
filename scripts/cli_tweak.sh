@@ -35,7 +35,13 @@ fi
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
 
+# Create symbolic link on desktop
 
+if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
+   ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
+fi
+
+sleep 2
 
 
 

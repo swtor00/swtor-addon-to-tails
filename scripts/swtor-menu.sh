@@ -57,6 +57,38 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
+function check_tor_network()
+     {
+
+      # Check to see if the ONION Network is allready runnig ....
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo testing the internet-connection over the onion-network with TIMEOUT $TIMEOUT_TB
+      fi
+
+      curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m $TIMEOUT_TB | grep -m 1 Congratulations > /dev/null 2>&1
+
+      if [ $? -eq 0 ] ; then
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo "TOR is up and running and we can continue with the execution of the script ...."
+         fi
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nTesting the Internet connection over TOR was successful ! \n\n" > /dev/null 2>&1)
+         exit 0
+
+      else
+           zenity --error --width=600 --text="\n\nInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
+           rmdir $lockdir > /dev/null 2>&1
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+              echo >&2 "TOR is not ready"
+              echo >&2 "check_tor_network() exiting with error-code 1"
+           fi
+      exit 1
+      fi
+     }
+
+
+
+
 
 
 # Creating the lockdirectory ....
@@ -81,6 +113,10 @@ if mkdir "$lockdir" > /dev/null 2>&1
        zenity --error --width=600 --text="Lockdirectory can not be created !"
        exit 1
 fi
+
+
+
+
 
 
 # On every single startup of Tails, the initial process of the addon has to be run once ...

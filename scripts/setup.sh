@@ -91,7 +91,7 @@ curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.t
 
 if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo TOR is up and running and we can continue with the execution of the script ....
+      echo "TOR is up and running and we can continue with the execution of the script ...."
    fi
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nTesting the Internet connection over TOR was successful ! \n\n" > /dev/null 2>&1)
 else
@@ -99,6 +99,7 @@ else
    zenity --error --width=600 --text="\n\nInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "TOR is not ready"
       echo >&2 "removed acquired lock: $lockdir"
       echo >&2 "setup.sh exiting with error-code 1"
    fi
@@ -510,24 +511,13 @@ esac
 
 if [ -f ~/Persistent/swtorcfg/freezing ] ; then
 
-   # apply all gui-tweaks over a script.
+    # apply all gui-tweaks over a script.
 
-   cd ~/Persistent/scripts
-   ./swtor-tweak-gui.sh
+    cd ~/Persistent/scripts
+    ./swtor-tweak-gui.sh
 
-    echo "gui-tweak is complete"
-
-    if [ $GUI_LINKS == "1" ] ; then
-       if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
-          ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
-          if [ $TERMINAL_VERBOSE == "1" ] ; then
-             echo symlink on desktop created
-          fi
-        else
-            if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo symlink on desktop allready exist
-            fi
-        fi
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo "gui-tweak is complete"
     fi
 
     # The question to freez or not  ...
