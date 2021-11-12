@@ -22,7 +22,7 @@
 echo "please remove # from the next lines to make a tabula rasa"
 echo "this lines delete all from the script and make a factory-reset"
 
-# rm -rf ~/Persistent/personal
+# rm -rf ~/Persistent/personal-files
 # unlink ~/Persistent/doc
 # unlink ~/Persistent/scripts
 # unlink ~/Persistent/settings
