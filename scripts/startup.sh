@@ -81,6 +81,7 @@ fi
 
 sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing the installed additional software !" > /dev/null 2>&1)
 
+
 # test for installed yad command from persistent volume
 
 if grep -q "status installed yad" /var/log/dpkg.log ; then

@@ -4,10 +4,10 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.14 or higher                        #
+# OS      : Tails 4.24 or higher                        #
 # TASKS   : select ssh-server to use                    #
 #                                                       #
-# VERSION : 0.52                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
@@ -20,26 +20,33 @@
 #########################################################
 
 
-# Check for the configuration file ....
+# Check for the main configuration file for this addon
 
-if [ ! -f /home/amnesia/Persistent/swtorcfg/swtorssh.cfg ]
-then
-        zenity --info --width=600 --text="Configuration file ~/Persistent/swtorcfg/swtorssh.cfg was not found !"  > /dev/null 2>&1
-        exit 1
+if [ ! -f /home/amnesia/Persistent/swtorcfg/swtorssh.cfg ] ; then
+   zenity --info --width=600 title="Information" --text="\n\nConfiguration file ~/Persistent/swtorcfg/swtorssh.cfg was not found ! \n\n"  > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "configuration file ~/Persistent/swtorcfg/swtorssh.cfg was not found !"
+   fi
+   exit 1
 fi
 
 
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
 if [ -z "$ssh_pid" ]
 then
-    echo No active ssh-connection found.
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "no currently used ssh-connection was found."
+   fi
 else
-    zenity --info --width=600 --text="There is allready a ssh-connection ! Pleaase close the other connection first."  > /dev/null 2>&1
+    zenity --info --width=600 title="Information" --text="\n\nThere is allready a active connection ! Pleaase close the other connection first.\n\n"  > /dev/null 2>&1
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "we found a active comnnection.this connection needs to be closed."
+    fi
     exit 1
 fi
 
-cd /home/amnesia/Persistent/scripts/
 
+cd /home/amnesia/Persistent/scripts/
 
 # Cleanup old files
 
@@ -50,10 +57,10 @@ rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1
 # Extract the default directorys 1 & 2
 
 cd ~/Persistent/settings
-tar xzf tmp.tar.gz
-cd ~/Persistent/scripts
+tar xzf tmp.tar.gz  /dev/null 2>&1
+cd ~/Persistent/scripts  /dev/null 2>&1
 
-account=$(zenity --width=800 --height=400 --list --title "Please seleect the ssh-connection" \
+account=$(zenity --width=800 --height=400 --list --title "Please select the desired ssh-connection" \
           --column "Script" \
           --column "login with" \
           --column "Compress" \
@@ -67,13 +74,18 @@ account=$(zenity --width=800 --height=400 --list --title "Please seleect the ssh
           --column "Backup" \
           --column "Destination country" \
           --column "Addional description" \
-          --hide-column=3,4,5,7,8,10,11 \
-          --print-column=1,9,2 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
+          --hide-column=3,4,5,7,8,9,10, \
+          --print-column=1,2 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "no selection for a ssh-server was made"
+    fi
     exit 1
 fi
+
+
 
 # Right now, we have to decide what kind of connection we would like to use
 
@@ -83,9 +95,6 @@ arg2=$(echo $tmp | awk '{print $2}')
 arg3=$(echo $tmp | awk '{print $3}')
 
 
-# echo $arg1
-# echo $arg2
-# echo $arg3
 
 if [ $arg1 == "fullssh.sh" ] ; then
    if [ $arg3 == "ssh-id" ] ; then
