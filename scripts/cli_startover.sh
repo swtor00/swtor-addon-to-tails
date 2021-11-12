@@ -20,15 +20,17 @@
 #########################################################
 
 echo "please remove # from the next lines to make a tabula rasa"
-echo "this lines delete all from the script and make a factory-reset"
+echo "this lines delete all files from the script and make a factory-reset"
 
-# rm -rf ~/Persistent/personal-files
-# unlink ~/Persistent/doc
-# unlink ~/Persistent/scripts
-# unlink ~/Persistent/settings
-# unlink ~/Persistent/swtorcfg
-# unlink ~/Desktop/swtor-menu.sh
-# rm -rf ~/Persistent/swtor-addon-to-tails/swtorcfg
+# rm -rf ~/Persistent/personal-files > /dev/null 2>&1
+# unlink ~/Persistent/doc  > /dev/null 2>&1
+# unlink ~/Persistent/scripts  > /dev/null 2>&1
+# unlink ~/Persistent/settings  > /dev/null 2>&1
+# unlink ~/Persistent/swtorcfg  > /dev/null 2>&1
+# unlink ~/Desktop/swtor-menu.sh  > /dev/null 2>&1
+# rm -rf ~/Persistent/swtor-addon-to-tails/swtorcfg  > /dev/null 2>&1
+# rm /Persistent/swtor-addon-to-tails/setup  > /dev/null 2>&1
+
 # cd ~/Persistent/swtor-addon-to-tails
 # git reset --hard > /dev/null 2>&1
 # git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
