@@ -35,6 +35,9 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
   tails-version > ~/Persistent/swtorcfg/freezed.cgf
 
+else
+   echo "freezing is not possible. This system is allready freezed"
+   echo "according to the ~/Persistent/swtorcfg/freezed.cfg"
 fi
 
 
