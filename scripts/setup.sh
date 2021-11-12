@@ -388,24 +388,40 @@ esac
 
 
 
-zenity --question --width=600 --text="Would you like to create a fixed chromium profile ? \nAll information stored in this profile remains valid even after a reboot !"
+zenity --question --width=600 --text="Would you like to create a fixed chromium profile ? \nAll information stored in this profile remains valid even after a reboot !\n\nIf the directory ~Persistent/personal-files/3 allready exist, we don't copy anything."
 case $? in
          0) cd ~/Persistent/settings
-            tar xzf tmp.tar.gz
-            cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3
-            rm -rf /Persistent/settings/2
-            rm -rf /Persistent/settings/1
+            tar xzf tmp.tar.gz > /dev/null 2>&1
 
-            if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo fixed profile created
-            fi
+            if [ ! -d ~/Persistent/personal-files/3 ] ; then
+
+               mkdir ~/Persistent/personal-files/3 > /dev/null 2>&1
+
+               if [ $TERMINAL_VERBOSE == "1" ] ; then
+                  echo "empty directory ~/Persistent/personal-files/3 was created"
+               fi
+
+               cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3 > /dev/null 2>&1
+
+               if [ $TERMINAL_VERBOSE == "1" ] ; then
+                    echo "fixed profile created ~/Persistent/personal-files/3"
+               fi
+
+         else
+              if [ $TERMINAL_VERBOSE == "1" ] ; then
+                 echo "directory ~/Persistent/personal-files/3 not created because the directoy exist allready"
+              fi
+         fi
 
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo not creating fixed profile
+               echo "not creating fixed profile ~/Persistent/personal-files/3"
             fi
          ;;
 esac
+
+rm -rf /Persistent/settings/2 > /dev/null 2>&1
+rm -rf /Persistent/settings/1 > /dev/null 2>&1
 
 
 # Restore the TOR-Browser  bookmarks depending on the configuration file swtor.cfg
