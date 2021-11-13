@@ -18,7 +18,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
+   exit 1
+fi
 
 
 menu=1
@@ -26,7 +30,7 @@ while [ $menu -eq 1 ]; do
 
       cd ~/Persistent/scripts
 
-       selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
+       selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
        "1"  "[01]  ->  Freeze current settings to persistent (needs dot-file activated)" \
        "2"  "[02]  ->  Unfreeze settings from persistent (needs dot-file activated) " \
        "3"  "[03]  ->  Backup persistent volume" \
