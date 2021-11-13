@@ -20,8 +20,8 @@
 
 
 if [ "$TERMINAL_VERBOSE" == "" ];then
-   echo This shell-script can not longer direct executed over the terminal.
-   echo You have to call this shell-script over swtor-menu.sh
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
    exit 1
 fi
 

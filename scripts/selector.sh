@@ -20,6 +20,13 @@
 #########################################################
 
 
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
+   exit 1
+fi
+
+
 # Check for the main configuration file for this addon
 
 if [ ! -f /home/amnesia/Persistent/swtorcfg/swtorssh.cfg ] ; then
@@ -53,12 +60,12 @@ cd /home/amnesia/Persistent/scripts/
 rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
 rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1
 
-
 # Extract the default directorys 1 & 2
 
 cd ~/Persistent/settings
-tar xzf tmp.tar.gz  /dev/null 2>&1
-cd ~/Persistent/scripts  /dev/null 2>&1
+
+tar xzf tmp.tar.gz > /dev/null 2>&1
+cd ~/Persistent/scripts
 
 account=$(zenity --width=800 --height=400 --list --title "Please select the desired ssh-connection" \
           --column "Script" \
@@ -74,8 +81,8 @@ account=$(zenity --width=800 --height=400 --list --title "Please select the desi
           --column "Backup" \
           --column "Destination country" \
           --column "Addional description" \
-          --hide-column=3,4,5,7,8,9,10, \
-          --print-column=1,2 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
+          --hide-column=3,4,5,7,8,10,11 \
+          --print-column=1,9,2 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
@@ -86,15 +93,12 @@ if [ "$selection" == "" ] ; then
 fi
 
 
-
 # Right now, we have to decide what kind of connection we would like to use
 
 tmp=$(echo $account | tr "|" " ")
 arg1=$(echo $tmp | awk '{print $1}')
 arg2=$(echo $tmp | awk '{print $2}')
 arg3=$(echo $tmp | awk '{print $3}')
-
-
 
 if [ $arg1 == "fullssh.sh" ] ; then
    if [ $arg3 == "ssh-id" ] ; then

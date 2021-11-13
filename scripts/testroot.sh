@@ -18,5 +18,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
+   exit 1
+fi
+
 cat /home/amnesia/Persistent/scripts/password | sudo -S echo 1 > password_correct
 
