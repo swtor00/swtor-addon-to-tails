@@ -57,6 +57,7 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
+
 function check_tor_network()
      {
 

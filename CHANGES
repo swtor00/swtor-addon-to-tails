@@ -178,19 +178,26 @@ Date		Release		Author		Description
                                                   the command "git push" isn't possible at all. Therefore execute this command.
                                                   "ssh -T git@github.com" to add the host entry permanently to the current 
                                                   Tails in use.
-
                        
                                                 - Multiple settings for the GUI-settings that should be done 
                                                   after every reboot of Tails is now made with a new script.
                                                   swtor-tweak-gui.sh
                                                   If DOTFILES are activated with the persistent volume, you 
-                                                  never have to make this settings again.   
+                                                  never have to make this settings again.In this release of the 
+                                                  addon the Wallpaper made is also persistent.
+
+						- I had a incidence with github and ssh. Someone tried a bad thing 
+                                                  with me. 
+                                                    
+                                                  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
 
  
-        
+                                                - I have rewritten most of the code of all shell-scripts. 
+                                                  By now I have over 100 commits made. 
+
                                                      
 
-                    
+                                                    
    
 
   
