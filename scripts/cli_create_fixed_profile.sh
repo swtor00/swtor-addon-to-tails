@@ -29,4 +29,6 @@ tar xzf tmp.tar.gz > /dev/null 2>&1
 
 mkdir ~/Persistent/personal-files/3 > /dev/null 2>&1
 cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3 > /dev/null 2>&1
+rm  -rf ~/Persistent/settings/2  > /dev/null 2>&1
+rm  -rf ~/Persistent/settings/1  > /dev/null 2>&1
 

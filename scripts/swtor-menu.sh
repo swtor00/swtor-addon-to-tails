@@ -18,7 +18,6 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
 else
@@ -57,40 +56,7 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
-
-function check_tor_network()
-     {
-
-      # Check to see if the ONION Network is allready runnig ....
-
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo testing the internet-connection over the onion-network with TIMEOUT $TIMEOUT_TB
-      fi
-
-      curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m $TIMEOUT_TB | grep -m 1 Congratulations > /dev/null 2>&1
-
-      if [ $? -eq 0 ] ; then
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo "TOR is up and running and we can continue with the execution of the script ...."
-         fi
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nTesting the Internet connection over TOR was successful ! \n\n" > /dev/null 2>&1)
-         exit 0
-
-      else
-           zenity --error --width=600 --text="\n\nInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
-           rmdir $lockdir > /dev/null 2>&1
-           if [ $TERMINAL_VERBOSE == "1" ] ; then
-              echo >&2 "TOR is not ready"
-              echo >&2 "check_tor_network() exiting with error-code 1"
-           fi
-      exit 1
-      fi
-     }
-
-
-
-
-
+source ~/Persistent/scripts/swtor-global.sh
 
 # Creating the lockdirectory ....
 
@@ -117,22 +83,20 @@ fi
 
 
 
-
-
-
 # On every single startup of Tails, the initial process of the addon has to be run once ...
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo starting initial-process of the addon
 fi
 
-sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Initialisation has started !" > /dev/null 2>&1)
-
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+ --text="\n\n                           Initialisation has started !                           \n\n" > /dev/null 2>&1)
 
 if [ ! -f ~/swtor_init ] ; then
    ~/Persistent/scripts/init-swtor.sh
    if [ ! -f ~/swtor_init ] ; then
-          sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Error during the initialisation of the addon !" > /dev/null 2>&1)
+          sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+          --text="\n\n    Error during the initialisation of the addon !  \n\n " > /dev/null 2>&1)
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "initial-process swtor-init.sh has terminated with error-code 1"
          echo >&2 "swtor-menu.sh exiting with error-code 1"
@@ -144,8 +108,12 @@ else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo initial-process has ben executed successfully
     fi
-    sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Iinitialisation complete !" > /dev/null 2>&1)
+
+    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+    --text="\n\n                          Initialisation is now complete                          \n\n" > /dev/null 2>&1)
+
 fi
+
 
 # show version of script prior to show menu
 
@@ -170,11 +138,10 @@ while [ $menu -eq 1 ]; do
           echo show main menu of addon
        fi
 
-       if [ ! -d "~/Peristent/personal-files/3" ]
-          then
+       if [ ! -d ~/Persistent/personal-files/3 ] ; then
             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
             "1"  "[01]  ->  Select SSH-Server to connect" \
-            "2"  "[02]  ->  RESERVED-FOR-FIXED-PROFILE" \
+            "2"  "[02]  ->                              " \
             "3"  "[03]  ->  Browser for over ssh-socks 5 :Normal Profile" \
             "4"  "[04]  ->  Browser for over ssh-socks 5 :Anonymous Profile" \
             "5"  "[05]  ->  Utilitys & Help" \

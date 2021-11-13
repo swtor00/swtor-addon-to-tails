@@ -18,6 +18,14 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
+   exit 1
+fi
+
+source ~/Persistent/scripts/swtor-global.sh
+
 # the following global variables are exported from the main
 # script swtor-menu.sh and are visible here.
 #
@@ -30,20 +38,11 @@
 # TIMEOUT_TB
 
 
-# This script has to be run only once ... no more
-
-if [ -f ~/swtor_init ] ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="The command \"startup.sh\" was allready executed!" > /dev/null 2>&1)
-   fi
-   exit 0
-fi
-
-
 # Has setup ever run on this tails system ?
 
 if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
-   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Please execute the command \"setup-swtor.sh\" first !" > /dev/null 2>&1)
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
+    --text="\n\n                Please execute the command \"setup-swtor.sh\" first !                  \n\n" > /dev/null 2>&1)
    exit 1
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -52,25 +51,28 @@ else
     fi
 fi
 
+# This script has to be run only once ... no more
 
-# Check to see if ONION Network is allready runnig ....
-
-sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing the internet-connection !" > /dev/null 2>&1)
-
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 6 | grep -m 1 Congratulations > /dev/null
-if [ $? -eq 0 ] ; then
+if [ -f ~/swtor_init ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo step 01a.
-      echo TOR is up and running and we can continue with the execution of the script ....
-      echo done
+      echo "startup.sh was allready executed once"
    fi
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
+   --text="\n\n                 The command \"startup.sh\" was allready executed !                    \n\n" > /dev/null 2>&1)
+   exit 0
+fi
+
+# Check tails network
+
+check_tor_network
+if [ $? -eq 0 ] ; then
+   echo shaga 1 alles gut
 else
-  sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="TOR is not ready or no internet connection" > /dev/null 2>&1)
-  exit 1
+   echo shaga 2 nix gut
 fi
 
 
-# if the directory ~/.ssh is empty ... this tails system never contacted never any remote ssh-server
+
 
 sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing ssh files for the addon ..." > /dev/null 2>&1)
 
@@ -78,6 +80,7 @@ if [ -z "$(ls -A /home/amnesia/.ssh )" ] ; then
    sleep 8 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="The directory /home/amnesia/.ssh is empty.\n\nThis addons needs a predefined SSH connection" > /dev/null 2>&1)
    exit
 fi
+
 
 sleep 2 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Info" --text="Testing the installed additional software !" > /dev/null 2>&1)
 
@@ -437,6 +440,7 @@ if [ -f /home/amnesia/Persistent/scripts/password ] ; then
        echo done
     fi
 fi
+
 
 
 echo 1 > /home/amnesia/Persistent/scripts/state/offline

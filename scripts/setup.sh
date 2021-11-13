@@ -58,6 +58,9 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
+source ~/Persistent/scripts/swtor-global.sh
+
+
 # Creating the lockdirectory ....
 
 lockdir=~/Persistent/swtor-addon-to-tails/scripts/setup.lock
@@ -81,29 +84,37 @@ else
 fi
 
 
-# Check to see if the ONION Network is allready runnig ....
+# Check the TOR-Connection over Internet
 
-if [ $TERMINAL_VERBOSE == "1" ] ; then
-   echo testing the internet-connection over the onion-network with TIMEOUT $TIMEOUT_TB
+check_tor_network
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "internet is working as expected. we can go on with this script"
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "no active internet connection found !"
+       echo >&2 "setup.sh exiting with error-code 1"
+    fi
+    rmdir $lockdir > /dev/null 2>&1
+    exit 1
 fi
 
-curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m $TIMEOUT_TB | grep -m 1 Congratulations > /dev/null 2>&1
 
+# Check for ~/.ssh persistent
+
+test_ssh_persistent
 if [ $? -eq 0 ] ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo "TOR is up and running and we can continue with the execution of the script ...."
-   fi
-   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nTesting the Internet connection over TOR was successful ! \n\n" > /dev/null 2>&1)
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "we have .ssh on persistent.we can go on with this script"
+    fi
 else
-
-   zenity --error --width=600 --text="\n\nInternet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" > /dev/null 2>&1
-   rmdir $lockdir > /dev/null 2>&1
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo >&2 "TOR is not ready"
-      echo >&2 "removed acquired lock: $lockdir"
-      echo >&2 "setup.sh exiting with error-code 1"
-   fi
-   exit 1
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "no ssh option for persistent found !"
+       echo >&2 "setup.sh exiting with error-code 1"
+    fi
+    rmdir $lockdir > /dev/null 2>&1
+    exit 1
 fi
 
 
@@ -131,22 +142,6 @@ else
 fi
 
 
-# is .ssh persistent ?
-
-mount > ~/Persistent/mounted
-if grep -q "/home/amnesia/.ssh" ~/Persistent/mounted ; then
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo we have .ssh mounted
-    fi
-else
-    zenity --error --width=600 --text="\n\nThis addon needs the ssh option inside of the persistent volume.\nYou have to set this option first and restart Tails.\n\n" > /dev/null 2>&1
-    rmdir $lockdir > /dev/null 2>&1
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "removed acquired lock: $lockdir"
-       echo >&2 "setup.sh exiting with error-code 1"
-    fi
-    exit 1
-fi
 
 
 # is additional software peristent ?
@@ -573,7 +568,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
-sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
+sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
 # Delete the lock-file ...
 

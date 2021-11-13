@@ -4,10 +4,10 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
+# OS      : Tails 4.241                                 #
 # TASKS   : The mother script of all swtor scripts      #
 #                                                       #
-# VERSION : 0.51                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
