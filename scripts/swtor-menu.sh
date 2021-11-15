@@ -181,7 +181,12 @@ while [ $menu -eq 1 ]; do
        fi
 
 if [ -z ${selection} ]; then
-   menu=0
+   if [ ! -f ~/Persistent/scripts/state/online ] ; then
+      menu=0
+   else
+      sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+      --text="\n\n             please close the current connection first !          \n\n" > /dev/null 2>&1)
+   fi
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo chosen entry from menu :  $selection
@@ -208,7 +213,13 @@ else
    fi
 
    if [ $selection == "6" ] ; then
-       menu=0
+
+       if [ ! -f ~/Persistent/scripts/state/online ] ; then
+          menu=0
+       else
+           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+            --text="\n\n             please close the current connection first !          \n\n" > /dev/null 2>&1)
+       fi
    fi
 fi
 

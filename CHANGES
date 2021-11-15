@@ -105,7 +105,7 @@ Date		Release		Author		Description
                                                 - New Desktop wallpaper   
 						- SSH Server window was not serialized. (fixed)  
 
-05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fild from 
+05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fiEld from 
                                                   the configuration file. Show a warning if the value 
                                                   don't match.
                                                 - Multiple little errors fixed. 
@@ -119,7 +119,7 @@ Date		Release		Author		Description
                                                 - apt autoremove --yes is executed after the changing of
                                                   the firewall-settings is done.
                                                 - Bookmark cleaning for tor-browser.
-                                                - Addded yad to the section of installed software.  
+                                                - Added yad to the section of installed software.  
 
 
 24/10/2021	0.60		swtor00		- Tails-update to Debian 11 (Bullseye) needs some minor changes
@@ -206,7 +206,10 @@ Date		Release		Author		Description
                                                 - The ssh login used is not longer showed inside the menu.But instead 
                                                   you see the backup field.
 
-
+                                                - It is now not longer to exit the script swtor-menu.sh as long there 
+                                                  is a connected Server. You have to close the connection and you can 
+                                                  exit the script.
+       
 
                                                      
 
