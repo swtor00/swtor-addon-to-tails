@@ -54,9 +54,29 @@ else
      export TERMINAL_VERBOSE="0"
 fi
 
+if grep -q "BROWSER-SOCKS5:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BROWSER_SOCKS5="1"
+else
+     export BROWSER_SOCKS5="0"
+fi
+
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
+
 source ~/Persistent/scripts/swtor-global.sh
+global_init
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "global_init() done"
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "failure during initialisation of global-init() !"
+       echo >&2 "swtor-menu.sh exiting with error-code 1"
+    fi
+    exit 1
+fi
+
 
 # Creating the lockdirectory ....
 

@@ -186,14 +186,27 @@ Date		Release		Author		Description
                                                   never have to make this settings again.In this release of the 
                                                   addon the Wallpaper made is also persistent.
 
-						- I had a incidence with github and ssh. Someone tried a bad thing 
-                                                  with me. 
+						- I had a incidence with github and ssh. Someone tried a VERY bad thing 
+                                                  with me.Someone tried a little "man in the middle attack" with me.
+                                                  I was allready using ssh for "git push" so I saw the key-change. 
                                                     
                                                   https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
 
  
                                                 - I have rewritten most of the code of all shell-scripts. 
                                                   By now I have over 100 commits made. 
+
+
+                                                - After weekend full of shell-scripting I'am allmost finished.
+
+
+                                                - If you type the password wrong or empty ... you have other 2 times
+                                                  to correct it.
+                                             
+                                                - The ssh login used is not longer showed inside the menu.But instead 
+                                                  you see the backup field.
+
+
 
                                                      
 

@@ -20,15 +20,20 @@
 #########################################################
 
 
+
 if [ -d ~/Persistent/personal-files/3 ] ; then
-   rmdir ~/Persistent/personal-files/3
+   echo "removed old profile ~/Persistent/personal-files/3"
+   rm -rf ~/Persistent/personal-files/3
+else
+   echo "~/Persistent/personal-files/3 did not exist"
 fi
+
 
 cd ~/Persistent/settings
 tar xzf tmp.tar.gz > /dev/null 2>&1
 
-mkdir ~/Persistent/personal-files/3 > /dev/null 2>&1
-cp -r ~/Persistent/settings/2 ~/Persistent/personal-files/3 > /dev/null 2>&1
-rm  -rf ~/Persistent/settings/2  > /dev/null 2>&1
+mv  ~/Persistent/settings/2 ~/Persistent/personal-files/
+mv  ~/Persistent/personal-files/2 ~/Persistent/personal-files/3
+
 rm  -rf ~/Persistent/settings/1  > /dev/null 2>&1
 
