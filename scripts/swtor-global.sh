@@ -228,12 +228,6 @@ while [ $menu -gt 0 ]; do
 
       # We have 3 shoots to give the correct password
 
-      if [ "$menu" == "4" ] ; then
-         menu=0
-         zenity --error --width=400 --text "\n\nThe password was not correct entered 3 times ! \n\n"
-         break
-      fi
-
       password=$(zenity --entry --text="Please type the curent Tails administration-password ?" --title=Password --hide-text)
       echo $password > password
 
@@ -257,16 +251,22 @@ while [ $menu -gt 0 ]; do
              fi
 
              sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-             --text="\n\n                 the password was correct and we can continue as expected !         \n\n" > /dev/null 2>&1)
+             --text="\n\n              the password was correct and we can continue now as expected !         \n\n" > /dev/null 2>&1)
 
              menu=0
              correct=1
              break
          else
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
-                echo >&2 "password was not correct"
+             if [ "$menu" == "3" ] ; then
+                 menu=0
+                  zenity --error --width=400 --text "\n\nThe password was not correct for 3 times ! \n\n"
+                  break
+              else
+                  if [ $TERMINAL_VERBOSE == "1" ] ; then
+                  echo >&2 "password was not correct"
+                  fi
+                  zenity --error --width=400 --text "\n\nThis password was not correct ! \n\n"
              fi
-             zenity --error --width=400 --text "\n\nThis password was not correct ! \n\n"
          fi
 
        fi
