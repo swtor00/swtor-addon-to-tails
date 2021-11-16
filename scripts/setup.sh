@@ -335,7 +335,7 @@ if [ ! -d ~/Persistent/personal-files ] ; then
    fi
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "directory ~/Persistent/personal-files not created"
+         echo "directory ~/Persistent/personal-files not created because it allready exist"
    fi
 fi
 
@@ -542,6 +542,7 @@ fi
 sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
+
 # Delete the lock-file and all temporary files ...
 
 rm ~/Persistent/swtor-addon-to-tails/tmp/password > /dev/null 2>&1
@@ -549,6 +550,22 @@ rmdir ~/Persistent/swtor-addon-to-tails/scripts/setup.lock > /dev/null 2>&1
 rm -rf ~/Persistent/settings/1  > /dev/null 2>&1
 rm -rf ~/Persistent/settings/2  > /dev/null 2>&1
 rm -f ~/Persistent/swtor-addon-to-tails/scripts/scripts > /dev/null 2>&1
+
+
+# Create symbolic link on desktop
+
+if [ $GUI_LINKS == "1" ] ; then
+    if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
+       ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo symlink on desktop created
+       fi
+    else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo symlink on desktop allready exist
+       fi
+    fi
+fi
 
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then

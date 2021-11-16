@@ -117,7 +117,7 @@ if [ $GUI_LINKS == "1" ] ; then
           echo symlink on desktop allready exist
        fi
     fi
- fi
+fi
 
 
 

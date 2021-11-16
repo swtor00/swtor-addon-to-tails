@@ -81,7 +81,7 @@ account=$(zenity --width=800 --height=400 --list --title "Please select the desi
           --column "Backup" \
           --column "Destination country" \
           --column "Addional description" \
-          --hide-column=3,4,5,7,8,9,10 \
+          --hide-column=3,4,5,7,9,10 \
           --print-column=1,9,2 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
 
 selection=$(echo $account)

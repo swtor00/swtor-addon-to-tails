@@ -41,7 +41,7 @@ global_init() {
          echo "setting temporary global_init to ~/Persistent/tmp"
       fi
 
-      mkdir ~/Persistent/tmp
+
       export global_standard="0"
       export global_tmp="/home/amnesia/Persistent/tmp"
   else
@@ -230,6 +230,7 @@ while [ $menu -gt 0 ]; do
 
       if [ "$menu" == "4" ] ; then
          menu=0
+         zenity --error --width=400 --text "\n\nThe password was not correct entered 3 times ! \n\n"
          break
       fi
 
@@ -256,7 +257,8 @@ while [ $menu -gt 0 ]; do
              fi
 
              sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-             - -text="\n\n                 the password was correct and we can continue as expected !         \n\n" > /dev/null 2>&1)
+             --text="\n\n                 the password was correct and we can continue as expected !         \n\n" > /dev/null 2>&1)
+
              menu=0
              correct=1
              break
@@ -264,6 +266,7 @@ while [ $menu -gt 0 ]; do
              if [ $TERMINAL_VERBOSE == "1" ] ; then
                 echo >&2 "password was not correct"
              fi
+             zenity --error --width=400 --text "\n\nThis password was not correct ! \n\n"
          fi
 
        fi
@@ -447,7 +450,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
       # It seems all OK
 
-      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+      sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
       --text="\n\n      this system is current in the state  : [freezed]\n      this tails is the same as the freezed system        \n\n" > /dev/null 2>&1)
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then

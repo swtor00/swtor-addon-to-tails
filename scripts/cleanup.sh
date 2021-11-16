@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.14 or higher                        #
+# OS      : Tails 4.24 or higher                        #
 #                                                       #
-# VERSION : 0.52                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 30-12-2020                                  #
+# DATE    : 16-11-2021                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -19,28 +19,17 @@
 #########################################################
 
 
-if [ -d /home/amnesia/Persistent/settings/1  ]
-then
+if [ -d /home/amnesia/Persistent/settings/1  ] ; then
    rm -rf  ~/Persistent/settings/1 >/dev/null 2>&1
 fi
 
-if [ -d /home/amnesia/Persistent/settings/2  ]
-then
-  rm -rf  ~/Persistent/settings/2 >/dev/null 2>&1
+if [ -d /home/amnesia/Persistent/settings/2  ] ; then
+   rm -rf  ~/Persistent/settings/2 >/dev/null 2>&1
 fi
 
-if [ -f /home/amnesia/Persistent/scripts/password ]
-then
-    cd /home/amnesia/Persistent/scripts
-    rm password >/dev/null 2>&1
-    rm password_correct >/dev/null 2>&1
-fi
-
-if [ -f /home/amnesia/Persistent/password ]
-then
-    cd /home/amnesia/Persistent
-    rm password >/dev/null 2>&1
-    rm password_correct >/dev/null 2>&1
+if [ -f /home/amnesia/Persistent/swtor-addon-to-tails/tmp/password ] ; then
+   cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
+   rm password >/dev/null 2>&1
 fi
 
 rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1

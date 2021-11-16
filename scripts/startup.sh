@@ -209,30 +209,12 @@ else
 fi
 
 
-# Ask for the administration password and store it in the tmp directory
-
-test_admin_password
-if [ $? -eq 0 ] ; then
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "step11 : password was correct and stored ! "
-    fi
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "password was 3 times wrong"
-       echo >&2 "startupsh exiting with error-code 1"
-    fi
-    rmdir $lockdir > /dev/null 2>&1
-    exit 1
-fi
-
-
-
-# test for a frezzed system and comparing the state of freezing with the current Tails
+# test for a frezzed system and comparing the state of a freezed system  with the current Tails
 
 test_for_freezed
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "step12 : system not freezed or if freezed the system do match together ! "
+       echo "step11 : system not freezed or if freezed the system do match together ! "
     fi
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -249,7 +231,7 @@ fi
 change_tails_firewall
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "step13 : changed firewall settings for socks5 server !"
+       echo "step12 : changed firewall settings for socks5 server !"
     fi
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -259,6 +241,7 @@ else
     rmdir $lockdir > /dev/null 2>&1
     exit 1
 fi
+
 
 
 
