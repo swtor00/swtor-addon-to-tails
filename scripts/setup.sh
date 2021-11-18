@@ -466,7 +466,8 @@ case $? in
 
          # Install chromium
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nchromium will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n[        chromium will be installed. Please wait !          ] \n\n" > /dev/null 2>&1)
 
          sleep 1
          show_wait_dialog
@@ -481,7 +482,11 @@ case $? in
          sleep 1
 
          zenity --info --width=600 --text="chromium has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."         
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\nchromium-sandbox will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+
+         # Install chromium-sandbox
+
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n[        chromium-sandbox will be installed. Please wait !  ] \n\n" > /dev/null 2>&1)
 
          sleep 1
          show_wait_dialog
@@ -502,6 +507,12 @@ case $? in
          sleep 1
          show_wait_dialog
 
+         # Install html2text
+
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n[        html2text will be installed. Please wait !         ]  \n\n" > /dev/null 2>&1)
+
+
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -515,7 +526,8 @@ case $? in
 
          # Install sshpass
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nsshpass will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n[        sshpass will be installed. Please wait !           ]  \n\n" > /dev/null 2>&1)
 
          sleep 1
          show_wait_dialog
@@ -533,7 +545,8 @@ case $? in
 
          # Install yad
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nyad will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n[        yad will be installed. Please wait  !              ]  \n\n" > /dev/null 2>&1)
 
          sleep 1
          show_wait_dialog
@@ -608,7 +621,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
+--text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh over a Terminal or over the link on the Desktop\n\n" > /dev/null 2>&1)
+
 
 
 # Delete the lock-file and all temporary files ...
