@@ -18,6 +18,6 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-sleep 400  | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+sleep 900  | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
           --text="\n              [ please wait ]               \n")
 

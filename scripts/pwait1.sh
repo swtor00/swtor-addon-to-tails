@@ -23,7 +23,7 @@
 import os
 import sys
 
-os.system("/bin/bash /home/amnesia/Persistent/scripts/pwait2.sh")
+os.system("/bin/bash /home/amnesia/Persistent/swtor-addon-to-tails/pwait2.sh")
 
 
 

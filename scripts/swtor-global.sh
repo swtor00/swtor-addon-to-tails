@@ -279,7 +279,7 @@ while [ $menu -gt 0 ]; do
           # we have a password that isn't blank
 
           if [ "$global_standard" == "1" ] ; then
-              /home/amnesia/Persistent/scripts/testroot.sh >/dev/null 2>&1
+              /home/amnesia/Persistent/swtor-addon-to-tails/scripts/testroot.sh >/dev/null 2>&1
           fi
 
           # here comes the funny part

@@ -18,7 +18,7 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-cd ~/Persistent/scripts
+cd ~/Persistent/swtor-addon-to-tails/scripts
 
 ./pwait1.sh > /dev/null &
 
