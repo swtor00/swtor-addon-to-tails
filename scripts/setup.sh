@@ -620,8 +620,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
-sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh over a Terminal or over the link on the Desktop\n\n" > /dev/null 2>&1)
+sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\nSetup is now complete. Congratulations ! \n\nThere are two ways possible to start the addon : \n\n * execute the command ./swtor-menu.sh over a Terminal\n   inside of the directory ~/Persistent/scripts\n\n * By clicking on the symbolic link 'swtor-menu.sh' on the Desktop\n\n" > /dev/null 2>&1)
 
 
 
