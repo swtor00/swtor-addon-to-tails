@@ -80,12 +80,7 @@ if [ $? -eq 0 ] ; then
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n               Testing the Internet connection over TOR was successful !          \n\n" > /dev/null 2>&1)
 
-   # In the next big release this line will be activated
-   #
-   # curl -socks localhost:9050 -s https://github.com/swtor00/swtor-addon-to-tails/blob/master/tmp/tic_tac -m3  > /dev/null 2>&1
-   #
-   # It is only a counter that also Tails using
-   #
+   curl -socks localhost:9050 -s https://github.com/swtor00/swtor-addon-to-tails/blob/master/tmp/tic_tac -m3  > /dev/null 2>&1
 
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -112,6 +107,12 @@ if grep -q "/home/amnesia/.ssh" mounted ; then
        echo "we have .ssh mounted"
     fi
 else
+
+   # We have a open dialog to close
+
+   end_wait_dialog
+   sleep 2
+
    zenity --error --width=600 \
    --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
     > /dev/null 2>&1
@@ -136,6 +137,12 @@ if grep -q "/var/cache/apt/archives" ~/Persistent/swtor-addon-to-tails/tmp/mount
         echo "we have additional software active"
      fi
 else
+
+   # We have a open dialog to close
+
+   end_wait_dialog
+   sleep 2
+
    zenity --error --width=600 \
    --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
     > /dev/null 2>&1
@@ -159,13 +166,20 @@ echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
 
 if grep -q "password is disabled" test_admin ; then
 
-     rm test_admin > /dev/null 2>&1
+    rm test_admin > /dev/null 2>&1
+
+    # We have a open dialog to close
+
+    end_wait_dialog
+    sleep 2
+
+
      zenity --error --width=600 \
      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
     > /dev/null 2>&1
 
      if [ $TERMINAL_VERBOSE == "1" ] ; then
-        echo >&2 "we don't have a password"
+        echo >&2 "we don't have a password -> We have to restart Tails."
      fi
      return 1
 
@@ -174,8 +188,17 @@ else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "we have a administration password"
     fi
+
+    # We have a open dialog to close
+
+    end_wait_dialog
+    sleep 2
+
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
     --text="\n\n                 Tails is using a adminitration password !         \n\n" > /dev/null 2>&1)
+    sleep 1
+    show_wait_dialog
+    sleep 1
 fi
 
 rm test_admin > /dev/null 2>&1
@@ -194,9 +217,13 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
         if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo "we have bookmarks active and we can import them later"
         fi
-        echo
      else
         rm mounted > /dev/null 2>&1
+
+        # We have a open dialog to close
+
+        end_wait_dialog
+        sleep 2
 
         zenity --error --width=600 \
         --text="\n\n         The import of bookmarks is not possible (swtor.cfg), as long the bookmarks\n         option is not set on the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -223,19 +250,31 @@ cd ${global_tmp}
 rm password > /dev/null 2>&1
 rm password_correct > /dev/null 2>&1
 
+sleep 1
+end_wait_dialog
+sleep 1
+
 menu=1
 while [ $menu -gt 0 ]; do
 
-      # We have 3 shoots to give the correct password
+      # We have 3 shoots to give the correct password or we have to restart the script ...
 
       password=$(zenity --entry --text="Please type the curent Tails administration-password ?" --title=Password --hide-text)
       echo $password > password
 
       if [ "$password" == "" ] ; then
-          zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
-          if [ $TERMINAL_VERBOSE == "1" ] ; then
-             echo >&2 "password was empty !"
-          fi
+
+         if [ "$menu" == "3" ] ; then
+             menu=0
+             zenity --error --width=400 --text "\n\nThe password was not correct for 3 times ! \n\n"
+             break
+         else
+             zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo >&2 "password was empty !"
+             fi
+         fi
+
       else
           # we have a password that isn't blank
 
@@ -258,7 +297,7 @@ while [ $menu -gt 0 ]; do
              break
          else
              if [ "$menu" == "3" ] ; then
-                 menu=0
+                  menu=0
                   zenity --error --width=400 --text "\n\nThe password was not correct for 3 times ! \n\n"
                   break
               else
@@ -496,6 +535,35 @@ return 0
 }
 
 
+show_wait_dialog() {
+
+cd /home/amnesia/Persistent/swtor-addon-to-tails/scripts
+
+./wait.sh > /dev/null 2>&1 &
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "wait_dialog was started ..."
+fi
+return 0
+}
+
+
+
+end_wait_dialog() {
+
+
+cd ${global_tmp}
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "Try to kill wait_dialog ..."
+fi
+
+echo 1 > w-end
+return 0
+}
+
+
+
 
 export -f global_init
 export -f check_tor_network
@@ -512,8 +580,8 @@ export -f test_for_html2text
 export -f test_for_chromium
 export -f test_for_chromium-sandbox
 export -f test_for_freezed
-
-
+export -f show_wait_dialog
+export -f end_wait_dialog
 
 
 

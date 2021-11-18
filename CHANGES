@@ -196,12 +196,10 @@ Date		Release		Author		Description
                                                 - I have rewritten most of the code of all shell-scripts. 
                                                   By now I have over 100 commits made. 
 
-
                                                 - After weekend full of shell-scripting I'am allmost finished.
 
-
                                                 - If you type the password wrong or empty ... you have other 2 times
-                                                  to correct it.
+                                                  to correct it.After 3 x times wrong or empty, the script aborts. 
                                              
                                                 - The ssh login used is not longer showed inside the menu.But instead 
                                                   you see the backup field.
@@ -209,6 +207,15 @@ Date		Release		Author		Description
                                                 - It is now not longer to exit the script swtor-menu.sh as long there 
                                                   is a connected Server. You have to close the connection and you can 
                                                   exit the script.
+
+                                                - I found a way to display a message "please wait" with zenity during long operations
+                                                  of the script. This wish was a very long pending item on my personal$  
+                                                  wishlist.
+
+                                                - Inside setup.sh the checking for a previous execution of the script has moved 
+                                                  to the top.  
+
+
        
 
                                                      

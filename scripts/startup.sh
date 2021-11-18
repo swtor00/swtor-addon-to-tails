@@ -244,8 +244,6 @@ fi
 
 
 
-
-
 # cleanup old connection-files file inside cfg directory
 
 rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
@@ -274,7 +272,7 @@ fi
 echo 1 > /home/amnesia/Persistent/scripts/state/offline
 
 
-# We are done here , signal with Error Code 0
+# We are done here , signal swtor-menu.sh with Error Code 0
 
 echo 1 > ~/swtor_init
 

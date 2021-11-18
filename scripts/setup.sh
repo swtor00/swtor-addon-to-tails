@@ -62,9 +62,7 @@ else
      export BROWSER_SOCKS5="0"
 fi
 
-
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
-
 
 source ~/Persistent/scripts/swtor-global.sh
 global_init
@@ -104,6 +102,21 @@ else
 fi
 
 
+if [ -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
+   zenity --error --width=600 --text="\n\nsetup.sh has failed. \n\nThis programm was allready executed once on this persistent volume ! \nIf you would like to start it again, you have to remove the file\n~/Persisten/swtor-addon-to-tails/setup \n\n" > /dev/null 2>&1
+   rmdir $lockdir > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "removed acquired lock: $lockdir"
+      echo >&2 "setup.sh exiting with error-code 1"
+   fi
+   exit 1
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "swtor-setup.sh was not executed on this volume"
+   fi
+fi
+
+
 # Check the TOR-Connection over Internet
 
 check_tor_network
@@ -111,6 +124,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "internet is working as expected."
     fi
+    show_wait_dialog
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "no active internet connection found !"
@@ -155,24 +169,7 @@ else
 fi
 
 
-# Check for a administration password set or not ...
-
-test_password_greeting
-if [ $? -eq 0 ] ; then
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "we have a administration password"
-    fi
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "no password have ben set on the greeter-screen !"
-       echo >&2 "setup.sh exiting with error-code 1"
-    fi
-    rmdir $lockdir > /dev/null 2>&1
-    exit 1
-fi
-
-
-## Check for bookmarks persistent
+# Check for bookmarks persistent
 
 test_bookmarks_persistent
 if [ $? -eq 0 ] ; then
@@ -189,77 +186,20 @@ else
 fi
 
 
-# Test for a prior execution of the script setup.sh
+# Check for a administration password on startup set or not ...
 
-if [ ! -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
-
-   zenity --info --width=600 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
-
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo "creating symlinks inside of persistent"
-   fi
-
-   if [ ! -L ~/Persistent/settings ] ; then
-      ln -s ~/Persistent/swtor-addon-to-tails/settings ~/Persistent/settings > /dev/null 2>&1
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "creating symlink ~/Persistent/settings"
-      fi
-   else
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "symlink ~/Persistent/settings was allready made"
-       fi
-   fi
-
-   if [ ! -L ~/Persistent/scripts ] ; then
-      ln -s ~/Persistent/swtor-addon-to-tails/scripts  ~/Persistent/scripts > /dev/null 2>&1
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "creating symlink ~/Persistent/scripts"
-      fi
-   else
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "symlink ~/Persistent/scripts was allready made"
-       fi
-   fi
-
-   if [ ! -L ~/Persistent/swtorcfg ] ; then
-      ln -s ~/Persistent/swtor-addon-to-tails/swtorcfg ~/Persistent/swtorcfg > /dev/null 2>&1
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "creating symlink ~/Persistent/swtorcfg"
-      fi
-   else
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "symlink ~/Persistent/swtorcfg was allready made"
-      fi
-   fi
-
-   if [ ! -L ~/Persistent/doc ] ; then
-      ln -s ~/Persistent/swtor-addon-to-tails/doc ~/Persistent/doc > /dev/null 2>&1
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "creating symlink ~/Persistent/doc"
-      fi
-   else
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "symlink ~/Persistent/doc was allready made"
-       fi
-   fi
-
-   # creating log-directory for ssh
-
-   if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
-      mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log > /dev/null 2>&1
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
-       fi
-   fi
-
+test_password_greeting
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "we have a administration password"
+    fi
 else
-   zenity --error --width=600 --text="\n\nsetup.sh has failed. \nThis programm was allready executed once on this volume ! \n\n" > /dev/null 2>&1
-   rmdir $lockdir > /dev/null 2>&1
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo >&2 "removed acquired lock: $lockdir"
-      echo >&2 "setup.sh exiting with error-code 1"
-   fi
-   exit 1
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "no password have ben set on the greeter-screen !"
+       echo >&2 "setup.sh exiting with error-code 1"
+    fi
+    rmdir $lockdir > /dev/null 2>&1
+    exit 1
 fi
 
 
@@ -278,6 +218,82 @@ else
     rmdir $lockdir > /dev/null 2>&1
     exit 1
 fi
+
+
+# Ok ... we have all the things needet to start over with setup
+#
+# * We have at least, the needet options for the persistent volume
+# * We have a correct administration password for Tails
+# * We can nove forward ...
+#
+
+zenity --info --width=600 --title="" \
+--text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
+
+show_wait_dialog
+sleep1
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo "creating symlinks inside of ~/Persistent"
+fi
+
+if [ ! -L ~/Persistent/settings ] ; then
+   ln -s ~/Persistent/swtor-addon-to-tails/settings ~/Persistent/settings > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "creating symlink ~/Persistent/settings"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "symlink ~/Persistent/settings was allready made"
+   fi
+fi
+
+if [ ! -L ~/Persistent/scripts ] ; then
+   ln -s ~/Persistent/swtor-addon-to-tails/scripts  ~/Persistent/scripts > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "creating symlink ~/Persistent/scripts"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "symlink ~/Persistent/scripts was allready made"
+   fi
+fi
+
+if [ ! -L ~/Persistent/swtorcfg ] ; then
+   ln -s ~/Persistent/swtor-addon-to-tails/swtorcfg ~/Persistent/swtorcfg > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "creating symlink ~/Persistent/swtorcfg"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "symlink ~/Persistent/swtorcfg was allready made"
+   fi
+fi
+
+if [ ! -L ~/Persistent/doc ] ; then
+   ln -s ~/Persistent/swtor-addon-to-tails/doc ~/Persistent/doc > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "creating symlink ~/Persistent/doc"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "symlink ~/Persistent/doc was allready made"
+   fi
+fi
+
+# creating log-directory for ssh
+
+if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
+   mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log > /dev/null 2>&
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log allready existed"
+   fi
+fi
+
 
 # With all the above infos,we have enough information to testing
 # if this persistent volume has dotfiles activated or not.
@@ -301,6 +317,11 @@ else
        echo >&2 "dotfiles are not present on this persistent volume"
        echo >&2 "freezing is not possible in the current state."
    fi
+
+   sleep 1
+   end_wait_dialog
+   sleep 2
+
    zenity --question --width=600 --text="On this persistent volume the option for dotfiles isn't set.\nWould you like to stop here and set the option and restart Tails ?" > /dev/null 2>&1
    case $? in
          0)
@@ -321,9 +342,14 @@ else
             fi
          rm ~/Persistent/persistence.conf /dev/null 2>&1
          echo 1 > ~/Persistent/swtorcfg/no-freezing
+
+         show_wait_dialog
+         sleep1
+
          ;;
    esac
 fi
+
 
 
 # Creating personal-files
@@ -339,8 +365,13 @@ else
    fi
 fi
 
+
+sleep 1
+end_wait_dialog
+sleep 1
+
 zenity --question --width=600 \
---text="Should a symbolic link created for the directory ~/Persistent/personal-files ?\nIf you are unsure about this,please answer No.\n" > /dev/null 2>&1
+--text="Should a symbolic link created for the directory ~/Persistent/personal-files ?\nIf you are unsure about this,you can answer No.\n" > /dev/null 2>&1
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory ?" --title=Directory)
 
@@ -410,7 +441,8 @@ else
 fi
 
 
-zenity --question --width=600 --text="Configure the additional software for the addon ?\nOnly answer No if the software packages are allready installed."  > /dev/null 2>&1
+zenity --question --width=600 \
+--text="Configure the additional software for the addon ?\nOnly answer to No if the additional debian software packages are allready installed."  > /dev/null 2>&1
 
 case $? in
          0)
@@ -421,7 +453,8 @@ case $? in
 
          # apt-get update
 
-         sleep 25 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the paket-list.\nThis may needs some very long time to complete ! \n\n" > /dev/null 2>&1)
+         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the paket-list.\nThis may needs some very long time to complete ! \n\n" > /dev/null 2>&1)
+
          sleep 1
 
          # Righ here would it be very nice
