@@ -224,14 +224,14 @@ fi
 #
 # * We have at least, the needet options for the persistent volume
 # * We have a correct administration password for Tails
-# * We can nove forward ...
+# * We can move forward and make some changes to this persist volume.
 #
 
 zenity --info --width=600 --title="" \
 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
 
 show_wait_dialog
-sleep1
+sleep 1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo "creating symlinks inside of ~/Persistent"
@@ -281,28 +281,27 @@ else
    fi
 fi
 
-# creating log-directory for ssh
-
 if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
-   mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log > /dev/null 2>&
+
+   mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
-   fi
-else
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log allready existed"
+      echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
    fi
 fi
 
 
 # With all the above infos,we have enough information to testing
 # if this persistent volume has dotfiles activated or not.
-# We aren't able to freeze the seetings without the option dotfiles.
-# And yes it is only a advice ... activate it if eve possible.
+# We aren't able to freeze the seetings without the option of dotfiles.
+# And yes it is only a advice ... activate it if ever possible.
 
 
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
 
 
 if grep -q dotfiles ~/Persistent/persistence.conf ; then
@@ -371,7 +370,7 @@ end_wait_dialog
 sleep 1
 
 zenity --question --width=600 \
---text="Should a symbolic link created for the directory ~/Persistent/personal-files ?\nIf you are unsure about this,you can answer No.\n" > /dev/null 2>&1
+--text="Should a symbolic link created for the directory ~/Persistent/personal-files ?\nIf you are unsure about this,you can save answer No.\n" > /dev/null 2>&1
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory ?" --title=Directory)
 
@@ -442,7 +441,7 @@ fi
 
 
 zenity --question --width=600 \
---text="Configure the additional software for the addon ?\nOnly answer to No if the additional debian software packages are allready installed."  > /dev/null 2>&1
+--text="Configure the additional software for the addon ?\nOnly answer to 'No' if the additional debian software packages are allready installed."  > /dev/null 2>&1
 
 case $? in
          0)
@@ -453,22 +452,24 @@ case $? in
 
          # apt-get update
 
-         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the paket-list.\nThis may needs some very long time to complete ! \n\n" > /dev/null 2>&1)
+         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the debian packet-list.\nThis may needs very long time to complete ! \n\n" > /dev/null 2>&1)
 
          sleep 1
-
-         # Righ here would it be very nice
-         # to show the user that Tails is still working in the background
+         show_wait_dialog
 
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get update > /dev/null 2>&1
 
-         ###
+         end_wait_dialog
+         sleep 1
 
-         sleep 14 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdating the list is now complete.\nNow we can install the additional software\n\n" > /dev/null 2>&1)
+         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdating the debian packet list is now complete.\nNow we can install the additional software\n\n" > /dev/null 2>&1)
 
          # Install chromium
 
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nchromium will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+
+         sleep 1
+         show_wait_dialog
 
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
 
@@ -476,8 +477,14 @@ case $? in
             echo >&2 "chromium is installed"
          fi
 
+         end_wait_dialog
+         sleep 1
+
          zenity --info --width=600 --text="chromium has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."         
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\nchromium-sandbox will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+
+         sleep 1
+         show_wait_dialog
 
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
 
@@ -485,36 +492,60 @@ case $? in
             echo >&2 "chromium-sandbox is installed"
          fi
 
+         end_wait_dialog
+         sleep 1
+
          zenity --info --width=600 --text="chromium-sandbox has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nhtml2text will be installed. Please wait  ! \n\n" > /dev/null 2>&1)  
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nhtml2text will be installed. Please wait  ! \n\n" > /dev/null 2>&1) 
+
+         sleep 1
+         show_wait_dialog
+
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "html2text is installed"
          fi
 
+         end_wait_dialog
+         sleep 1
+
          zenity --info --width=600 --text="html2text has been installed.\nPlease confirm that this software has to be Installed on every startup.\n\n\nPlease press OK to continue."
 
          # Install sshpass
 
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nsshpass will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+
+         sleep 1
+         show_wait_dialog
+
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y sshpass> /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "sshpass is installed"
          fi
 
+         end_wait_dialog
+         sleep 1
+
          zenity --info --width=600 --text="sshpass has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
          # Install yad
 
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nyad will be installed. Please wait  ! \n\n" > /dev/null 2>&1)
+
+         sleep 1
+         show_wait_dialog
+
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y yad > /dev/null 2>&1
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "yad is installed"
          fi
+
+         end_wait_dialog
+         sleep 1
 
          zenity --info --width=600 --text="yad has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
@@ -525,10 +556,12 @@ case $? in
          ;;
 esac
 
+
 # if we don't have a persistent volume with dotfiles activated ....
 # this next step make no sense ...
+# But it is possible ... that system is allready freezed ....
 
-if [ -f ~/Persistent/swtorcfg/freezing ] ; then
+if [ -f ~/Persistent/swtorcfg/freezing ] && [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
     # apply all gui-tweaks over a script.
 
@@ -560,8 +593,10 @@ if [ -f ~/Persistent/swtorcfg/freezing ] ; then
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo "freezing not possible in the current state of the persistent volume"
+         echo "or this system is may allready in the state frezed "
    fi
 fi
+
 
 
 # Ok .. we are done here ...
@@ -572,7 +607,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"
 fi
 
-sleep 12 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\nSetup is now complete !\n\nYou can now start the addon with the command swtor-menu.sh\n\n" > /dev/null 2>&1)
 
 
