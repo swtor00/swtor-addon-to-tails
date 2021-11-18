@@ -64,7 +64,7 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
-source ~/Persistent/scripts/swtor-global.sh
+source ~/Persistent/swtor-addon-to-tails/scripts/swtor-global.sh
 global_init
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
