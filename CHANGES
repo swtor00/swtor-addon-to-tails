@@ -217,8 +217,13 @@ Date		Release		Author		Description
                                                   to the top.  
 
 
-       
+                                                - Added the following addon options:
 
+
+                                                  BYPASS-SOFTWARE-CHECK:YES
+                                                  CHECK-EMPTY-SSH:NO
+         
+                                                  Both default values alows us a faster initialisation  
                                                      
 
                                                     

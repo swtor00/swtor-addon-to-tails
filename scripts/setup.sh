@@ -62,7 +62,8 @@ else
      export BROWSER_SOCKS5="0"
 fi
 
-export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
 export  DEBUGW="0"
 
@@ -232,7 +233,7 @@ else
 fi
 
 
-# Check for active administration password on startup is  set or not ...
+# Check for active administration password on startup is set or not ...
 
 test_password_greeting
 if [ $? -eq 0 ] ; then

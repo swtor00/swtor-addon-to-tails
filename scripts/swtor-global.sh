@@ -365,6 +365,7 @@ if [ -z "$(ls -A /home/amnesia/.ssh )" ] ; then
    return 1
 
 else
+    end_wait_dialog && sleep 1
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
     --text="\n\n                  testing the ssh directoy for user amnesia was successful !          \n\n" > /dev/null 2>&1)
 
@@ -386,6 +387,8 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
       echo "changing iptables firewall to accept socks5 connections over port 9999"
       echo "autoremove old unused packages"
    fi
+
+   end_wait_dialog && sleep 6
    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n                 firewall changed to accept a local socks5 proxy on port 9999 !          \n\n" > /dev/null 2>&1)
 
@@ -410,6 +413,9 @@ return 0
 
 test_for_yad() {
 
+
+
+end_wait_dialog && sleep 1
 # test for installed yad from persistent volume
 
 if grep -q "status installed yad" /var/log/dpkg.log ; then
@@ -587,8 +593,9 @@ fi
 ./wait.sh > /dev/null 2>&1 &
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo >&2 "wait_dialog was started ..."
+   echo >&2 "process wait.sh started "
 fi
+
 
 return 0
 }
@@ -597,10 +604,11 @@ return 0
 
 end_wait_dialog() {
 
+
 cd ${global_tmp}
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo >&2 "Try to kill zenity wait_dialog ..."
+   echo >&2 "Try to kill zenity wait_dialog ..."
 fi
 
 pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
@@ -613,7 +621,7 @@ fi
 kill -9 $pid_to_kill
 
 # Wtith this file ... we signal the wait.sh process to be ending
-# instantly
+# instantly or we have fluded process-table with process wait.sh
 
 echo 1 > w-end
 return 0

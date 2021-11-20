@@ -97,7 +97,7 @@ fi
 
 
 if [ $selection == "3" ] ; then
-   ./create_image.sh 2>&1 > /dev/null
+   ./create_image.sh
 fi
 
 

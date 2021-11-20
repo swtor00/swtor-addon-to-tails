@@ -20,11 +20,78 @@
 #########################################################
 
 
+
+
+
 if [ "$TERMINAL_VERBOSE" == "" ];then
    echo "this shell-script can not longer direct executed over the terminal."
    echo "you have to call this shell-script over swtor-menu.sh"
    exit 1
 fi
+
+
+if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export IMPORT_BOOKMAKRS="1"
+else
+   export IMPORT_BOOKMAKRS="0"
+fi
+
+if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export GUI_LINKS="1"
+else
+   export GUI_LINKS="0"
+fi
+
+if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export CHECK_UPDATE="1"
+else
+   export CHECK_UPDATE="0"
+fi
+
+if grep -q "BACKUP-FIXED-PROFILE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export BACKUP_FIXED_PROFILE="1"
+else
+   export BACKUP_FIXED_PROFILE="0"
+fi
+
+if grep -q "BACKUP_APT_LIST:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BACKUP_APT_LIST="1"
+else
+     export BACKUP_APT_LIST="0"
+fi
+
+if grep -q "TERMINAL-VERBOSE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export TERMINAL_VERBOSE="1"
+else
+     export TERMINAL_VERBOSE="0"
+fi
+
+if grep -q "BROWSER-SOCKS5:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BROWSER_SOCKS5="1"
+else
+     export BROWSER_SOCKS5="0"
+fi
+
+export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+
+export  DEBUGW="0"
+
+
+source ~/Persistent/scripts/swtor-global.sh
+global_init
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "global_init() done"
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "failure during initialisation of global-init() !"
+       echo >&2 "fullssh.sh exiting with error-code 1"
+    fi
+    exit 1
+fi
+
 
 # Test needet parameters for this script
 
@@ -112,16 +179,18 @@ then
       echo $chain
       ssh $chain &
 
-      # we loook on the processes
+      show_wait_dialog && sleep 4
 
-      sleep 4
+      # we loook on the processes after the time out for ssh expires ...
+
+      sleep $TIMEOUT_SSH
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
       echo PID of encrypted ssh channel is $ssh_pid
 
-      if [ -z "$ssh_pid" ]
-      then
-          zenity --info --width=600 --text "ssh connection isn't active ! Script do exit now. Logs are inside of swtorcfg/log ! "
+      if [ -z "$ssh_pid" ] ; then
+          end_wait_dialog && sleep 1  
+          zenity --info --width=600  --title="Information" --text="\n\nThe desired SSH connection could not be made ! \nPlease have a closer look to the log-files inside of ~/Persistent/swtorcfg/log ! \n\n"
           exit 1
       fi
 
@@ -133,7 +202,8 @@ then
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
-      zenity --info  --width=600 --text "The encrypted ssh connection over the onion-network is now active.\nTo close this connection,please press the ok button on this window !"
+      end_wait_dialog && sleep 1
+      zenity --info  --width=600 --title="Information" --text="\n\nThe selected SSH connection is now active. \nTo close this connection, please press the 'OK' button on this window ! \n\n"
       sleep 1
 
       ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
@@ -156,6 +226,7 @@ else
       exit 1
 fi
 
+swtor_cleanup
 exit 0
 
 
