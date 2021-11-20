@@ -20,19 +20,24 @@
 
 cd ~/Persistent/swtor-addon-to-tails/scripts
 
-./pwait1.sh > /dev/null &
+# We have to be sure that w-end not exist
 
+if [ -f ~/Persistent/swtor-addon-to-tails/tmp/w-end ]  ; then
+    rm ~/Persistent/swtor-addon-to-tails/tmp/w-end > /dev/null
+fi
+
+./pwait1.sh &
+
+pid=$$
 menu=1
 while [ $menu -gt 0 ]; do
-      sleep 1
       if [ -f ~/Persistent/swtor-addon-to-tails/tmp/w-end ]  ; then
-         rm ~/Persistent/swtor-addon-to-tails/tmp/w-end > /dev/null
-         kill -15 $(ps axu | grep please | grep zenity | awk {'print $2'}) > /dev/null
+            rm ~/Persistent/swtor-addon-to-tails/tmp/w-end > /dev/null
+         pkill -15 -P $(cat $global_tmp/pid_wait) > /dev/null
          menu=0
       else
-          ((menu++))
+        ((menu++))
       fi
 done
-
-
+pkill -15  -P$pid > /dev/null
 exit 0

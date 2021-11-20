@@ -64,6 +64,9 @@ fi
 
 export TIMEOUT_TB=$(grep TIMEOUT ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
+export  DEBUGW="1"
+
+
 source ~/Persistent/swtor-addon-to-tails/scripts/swtor-global.sh
 global_init
 if [ $? -eq 0 ] ; then
@@ -78,6 +81,14 @@ else
     exit 1
 fi
 
+# After the initaliation we can use all the functions from swtor-global.sh
+
+show_wait_dialog && sleep 2
+
+if [ "$DEBUGW" == "1" ] ; then
+   pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+   echo wait_dialog 01 with PID $pid_to_kill created
+fi
 
 # Creating the lockdirectory ....
 
@@ -97,12 +108,33 @@ else
        echo >&2 "cannot acquire lock, giving up on $lockdir"
        echo >&2 "setup.sh exiting with error-code 1"
     fi
+
+    if [ "$DEBUGW" == "1" ] ; then
+       echo wait_dialog 01 with PID $pid_to_kill will be killed
+    fi
+
+    end_wait_dialog
     zenity --error --width=600 --text="\n\nLockdirectory for setup.sh can not be created ! \n\n" > /dev/null 2>&1
     exit 1
 fi
 
 
+# After the setup is completly executed the file "setup" will be created inside ~/Persistent/swtor-addon-to-tails
+# If this file exist , the setup will not executed. If you would like to start-over with ./swtor-setup.sh
+# I would recommand the following order.
+# 1. If the System is current freezed ... unfreez it and make reboot of Tails.
+# 2. Delete the file "setup" inside the directory ~/Persistent/swtor-addon-to-tails
+# 3. execute the command ./swtor-setup.sh and the hole setup process can be started again.
+
+
 if [ -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
+
+   if [ "$DEBUGW" == "1" ] ; then
+      pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+      echo wait_dialog 01 with PID $pid_to_kill will be killed
+   fi
+
+   end_wait_dialog
    zenity --error --width=600 --text="\n\nsetup.sh has failed. \n\nThis programm was allready executed once on this persistent volume ! \nIf you would like to start it again, you have to remove the file\n~/Persisten/swtor-addon-to-tails/setup \n\n" > /dev/null 2>&1
    rmdir $lockdir > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -124,7 +156,13 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "internet is working as expected."
     fi
-    show_wait_dialog
+    show_wait_dialog && sleep 2
+
+    if [ "$DEBUGW" == "1" ] ; then
+       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+       echo wait_dialog 02 with PID $pid_to_kill created
+    fi
+
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "no active internet connection found !"
@@ -142,6 +180,9 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "we have .ssh on persistent."
     fi
+
+    # We can still use the show_wait_dialog from check_tor_network
+
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "no ssh option for persistent found !"
@@ -159,6 +200,8 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "we have additional software persistent."
     fi
+
+    # We can still use the show_wait_dialog from check_tor_network
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "no additional software option for persistent found !"
@@ -176,6 +219,9 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "we have bookmarks set and can import them"
     fi
+
+    # We can still use the show_wait_dialog from check_tor_network
+
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "import of bookmarks not possible  !"
@@ -186,13 +232,20 @@ else
 fi
 
 
-# Check for a administration password on startup set or not ...
+# Check for active administration password on startup is  set or not ...
 
 test_password_greeting
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "we have a administration password"
     fi
+    show_wait_dialog && sleep 2
+
+    if [ "$DEBUGW" == "1" ] ; then
+       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+       echo wait_dialog 03 with PID $pid_to_kill created
+    fi
+
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "no password have ben set on the greeter-screen !"
@@ -201,6 +254,7 @@ else
     rmdir $lockdir > /dev/null 2>&1
     exit 1
 fi
+
 
 
 # Check for a valid administration password of Tails
@@ -230,8 +284,13 @@ fi
 zenity --info --width=600 --title="" \
 --text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
 
-show_wait_dialog
-sleep 1
+show_wait_dialog && sleep 2
+
+if [ "$DEBUGW" == "1" ] ; then
+   pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+   echo wait_dialog 04 with PID $pid_to_kill created
+fi
+
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo "creating symlinks inside of ~/Persistent"
@@ -317,9 +376,16 @@ else
        echo >&2 "freezing is not possible in the current state."
    fi
 
-   sleep 1
+   if [ "$DEBUGW" == "1" ] ; then
+      pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+      echo wait_dialog 04 with PID $pid_to_kill will be killed
+   fi
+
+
+   # We have a open dialog to close
+
    end_wait_dialog
-   sleep 2
+
 
    zenity --question --width=600 --text="On this persistent volume the option for dotfiles isn't set.\nWould you like to stop here and set the option and restart Tails ?" > /dev/null 2>&1
    case $? in
@@ -342,13 +408,9 @@ else
          rm ~/Persistent/persistence.conf /dev/null 2>&1
          echo 1 > ~/Persistent/swtorcfg/no-freezing
 
-         show_wait_dialog
-         sleep1
-
          ;;
    esac
 fi
-
 
 
 # Creating personal-files
@@ -364,13 +426,17 @@ else
    fi
 fi
 
+if [ "$DEBUGW" == "1" ] ; then
+      pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+      echo wait_dialog 04 with PID $pid_to_kill will be killed
+fi
 
-sleep 1
+# We have a open dialog to close
+
 end_wait_dialog
-sleep 1
 
 zenity --question --width=600 \
---text="Should a symbolic link created for the directory ~/Persistent/personal-files ?\nIf you are unsure about this,you can save answer No.\n" > /dev/null 2>&1
+--text="Should a symbolic link created for the directory ~/Persistent/personal-files ?\nIf you are unsure about this question, you can save answer No.\n" > /dev/null 2>&1
 case $? in
          0) symlinkdir=$(zenity --entry --width=600 --text="Please provide the name of the symlinked directory ?" --title=Directory)
 
@@ -420,6 +486,14 @@ case $? in
          ;;
 esac
 
+
+show_wait_dialog && sleep 2
+
+if [ "$DEBUGW" == "1" ] ; then
+   pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+   echo wait_dialog 05 with PID $pid_to_kill created
+fi
+
 rm -rf /Persistent/settings/2 > /dev/null 2>&1
 rm -rf /Persistent/settings/1 > /dev/null 2>&1
 
@@ -440,6 +514,13 @@ else
 fi
 
 
+if [ "$DEBUGW" == "1" ] ; then
+      pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+      echo wait_dialog 05 with PID $pid_to_kill will be killed
+fi
+
+end_wait_dialog
+
 zenity --question --width=600 \
 --text="Configure the additional software for the addon ?\nOnly answer to 'No' if the additional debian software packages are allready installed."  > /dev/null 2>&1
 
@@ -454,13 +535,9 @@ case $? in
 
          sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the debian packet-list.\nThis may needs very long time to complete ! \n\n" > /dev/null 2>&1)
 
-         sleep 1
-         show_wait_dialog
-
+         show_wait_dialog && sleep 2
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get update > /dev/null 2>&1
-
          end_wait_dialog
-         sleep 1
 
          sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdating the debian packet list is now complete.\nNow we can install the additional software\n\n" > /dev/null 2>&1)
 
@@ -469,17 +546,13 @@ case $? in
          sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n[        chromium will be installed. Please wait !          ] \n\n" > /dev/null 2>&1)
 
-         sleep 1
-         show_wait_dialog
-
+         show_wait_dialog && sleep 2
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
+         end_wait_dialog
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "chromium is installed"
          fi
-
-         end_wait_dialog
-         sleep 1
 
          zenity --info --width=600 --text="chromium has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."         
 
@@ -488,24 +561,17 @@ case $? in
          sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n[        chromium-sandbox will be installed. Please wait !  ] \n\n" > /dev/null 2>&1)
 
-         sleep 1
-         show_wait_dialog
-
+         show_wait_dialog && sleep 2
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
+         end_wait_dialog
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "chromium-sandbox is installed"
          fi
 
-         end_wait_dialog
-         sleep 1
-
          zenity --info --width=600 --text="chromium-sandbox has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nhtml2text will be installed. Please wait  ! \n\n" > /dev/null 2>&1) 
-
-         sleep 1
-         show_wait_dialog
 
          # Install html2text
 
@@ -513,14 +579,13 @@ case $? in
          --text="\n\n[        html2text will be installed. Please wait !         ]  \n\n" > /dev/null 2>&1)
 
 
+         show_wait_dialog && sleep 2
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
+         end_wait_dialog
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "html2text is installed"
          fi
-
-         end_wait_dialog
-         sleep 1
 
          zenity --info --width=600 --text="html2text has been installed.\nPlease confirm that this software has to be Installed on every startup.\n\n\nPlease press OK to continue."
 
@@ -529,17 +594,14 @@ case $? in
          sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n[        sshpass will be installed. Please wait !           ]  \n\n" > /dev/null 2>&1)
 
-         sleep 1
-         show_wait_dialog
-
+         show_wait_dialog && sleep 2
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y sshpass> /dev/null 2>&1
+         end_wait_dialog
+
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "sshpass is installed"
          fi
-
-         end_wait_dialog
-         sleep 1
 
          zenity --info --width=600 --text="sshpass has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
@@ -548,17 +610,14 @@ case $? in
          sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n[        yad will be installed. Please wait  !              ]  \n\n" > /dev/null 2>&1)
 
-         sleep 1
-         show_wait_dialog
-
+         show_wait_dialog && sleep 2
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y yad > /dev/null 2>&1
+         end_wait_dialog
+
 
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo >&2 "yad is installed"
          fi
-
-         end_wait_dialog
-         sleep 1
 
          zenity --info --width=600 --text="yad has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
 
@@ -611,7 +670,6 @@ else
 fi
 
 
-
 # Ok .. we are done here ...
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/setup
@@ -621,7 +679,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\nSetup is now complete. Congratulations ! \n\nThere are two ways possible to start the addon : \n\n * execute the command ./swtor-menu.sh over a Terminal\n   inside of the directory ~/Persistent/scripts\n\n * By clicking on the symbolic link 'swtor-menu.sh' on the Desktop\n\n" > /dev/null 2>&1)
+--text="\n\nSetup is now complete. Congratulations ! \n\nThere are two ways possible to start this addon : \n\n * execute the command ./swtor-menu.sh over a Terminal\n   inside of the directory ~/Persistent/scripts\n\n * By clicking on the symbolic link 'swtor-menu.sh' on the Desktop\n\n" > /dev/null 2>&1)
 
 
 
@@ -654,6 +712,11 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "removed acquired lock: $lockdir"
    echo >&2 "setup.sh was sucessfull exiting with return-code 0"
 fi
+
+
+# cleanup the mess with the wait dialog
+
+swtor_cleanup
 
 exit 0
 

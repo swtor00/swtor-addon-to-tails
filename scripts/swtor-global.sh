@@ -77,6 +77,16 @@ if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "TOR is up and running and we can continue with the execution of the script ...."
    fi
+
+   if [ "$DEBUGW" == "1" ] ; then
+      pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+      echo wait_dialog 01 with PID $pid_to_kill will be killed
+   fi
+
+   # We have a open dialog to close
+
+   end_wait_dialog
+
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n               Testing the Internet connection over TOR was successful !          \n\n" > /dev/null 2>&1)
 
@@ -87,6 +97,16 @@ else
       echo >&2 "TOR is not ready"
       echo >&2 "check_tor_network() exiting with error-code 1"
    fi
+
+   if [ "$DEBUGW" == "1" ] ; then
+      pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+      echo wait_dialog 01 with PID $pid_to_kill will be killed
+   fi
+
+   # We have a open dialog to close
+
+   end_wait_dialog
+
    zenity --error --width=600 \
    --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n"\
     > /dev/null 2>&1
@@ -111,7 +131,6 @@ else
    # We have a open dialog to close
 
    end_wait_dialog
-   sleep 2
 
    zenity --error --width=600 \
    --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -141,7 +160,6 @@ else
    # We have a open dialog to close
 
    end_wait_dialog
-   sleep 2
 
    zenity --error --width=600 \
    --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -166,13 +184,16 @@ echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
 
 if grep -q "password is disabled" test_admin ; then
 
-    rm test_admin > /dev/null 2>&1
+     rm test_admin > /dev/null 2>&1
 
-    # We have a open dialog to close
+     if [ "$DEBUGW" == "1" ] ; then
+       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+       echo wait_dialog 03 with PID $pid_to_kill will be killed
+     fi
 
-    end_wait_dialog
-    sleep 2
+     # We have a open dialog to close
 
+     end_wait_dialog && sleep 1
 
      zenity --error --width=600 \
      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
@@ -189,16 +210,17 @@ else
        echo "we have a administration password"
     fi
 
+    if [ "$DEBUGW" == "1" ] ; then
+       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+       echo wait_dialog 02 with PID $pid_to_kill will be killed
+    fi
+
     # We have a open dialog to close
 
-    end_wait_dialog
-    sleep 2
+    end_wait_dialog && sleep 1
 
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
     --text="\n\n                 Tails is using a adminitration password !         \n\n" > /dev/null 2>&1)
-    sleep 1
-    show_wait_dialog
-    sleep 1
 fi
 
 rm test_admin > /dev/null 2>&1
@@ -223,7 +245,6 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
         # We have a open dialog to close
 
         end_wait_dialog
-        sleep 2
 
         zenity --error --width=600 \
         --text="\n\n         The import of bookmarks is not possible (swtor.cfg), as long the bookmarks\n         option is not set on the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -250,9 +271,15 @@ cd ${global_tmp}
 rm password > /dev/null 2>&1
 rm password_correct > /dev/null 2>&1
 
-sleep 1
-end_wait_dialog
-sleep 1
+
+if [ "$DEBUGW" == "1" ] ; then
+       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+       echo wait_dialog 03 with PID $pid_to_kill will be killed
+fi
+
+# We have a open dialog to close
+
+end_wait_dialog && sleep 1
 
 menu=1
 while [ $menu -gt 0 ]; do
@@ -280,6 +307,10 @@ while [ $menu -gt 0 ]; do
 
           if [ "$global_standard" == "1" ] ; then
               /home/amnesia/Persistent/swtor-addon-to-tails/scripts/testroot.sh >/dev/null 2>&1
+          else
+              # Here we are running on restore mode
+
+              echo ...
           fi
 
           # here comes the funny part
@@ -490,7 +521,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
       # It seems all OK
 
       sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-      --text="\n\n      this system is current in the state  : [freezed]\n      this tails is the same as the freezed system        \n\n" > /dev/null 2>&1)
+      --text="\n\n      this system is current in the state  : [freezed]\n      this Tails is the same as the freezed system        \n\n" > /dev/null 2>&1)
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."
@@ -539,11 +570,26 @@ show_wait_dialog() {
 
 cd /home/amnesia/Persistent/swtor-addon-to-tails/scripts
 
+if [ "$global_standard" == "1" ] ; then
+   if [ -f ~/Persistent/swtor-addon-to-tails/tmp/w-end ] ; then
+      rm ~/Persistent/swtor-addon-to-tails/tmp/w-end
+   fi
+   cd /home/amnesia/Persistent/swtor-addon-to-tails/scripts
+else
+   if [ -f ~/Persistent/tmp/w-end ] ; then
+      rm ~/Persistent/tmp/w-end
+   fi
+
+   # we are in restore-mode
+
+fi
+
 ./wait.sh > /dev/null 2>&1 &
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "wait_dialog was started ..."
 fi
+
 return 0
 }
 
@@ -551,12 +597,23 @@ return 0
 
 end_wait_dialog() {
 
-
 cd ${global_tmp}
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo >&2 "Try to kill wait_dialog ..."
+         echo >&2 "Try to kill zenity wait_dialog ..."
 fi
+
+pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
+
+if [ "$pid_to_kill" == "" ] ; then
+   echo 1 > w-end
+   return 1
+fi
+
+kill -9 $pid_to_kill
+
+# Wtith this file ... we signal the wait.sh process to be ending
+# instantly
 
 echo 1 > w-end
 return 0
@@ -564,6 +621,13 @@ return 0
 
 
 
+
+swtor_cleanup() {
+
+cd ${global_tmp}
+
+return 0
+}
 
 export -f global_init
 export -f check_tor_network
@@ -582,6 +646,7 @@ export -f test_for_chromium-sandbox
 export -f test_for_freezed
 export -f show_wait_dialog
 export -f end_wait_dialog
+export -f swtor_cleanup
 
 
 

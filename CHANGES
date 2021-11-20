@@ -210,7 +210,8 @@ Date		Release		Author		Description
 
                                                 - I found a way to display a message "please wait" with zenity during long operations
                                                   of the script. This wish was a very long pending item on my personal$  
-                                                  wishlist.
+                                                  wishlist. Without the command "pkill -15  -P$pid > /dev/null" I filled 
+                                                  the process table with orphaned pwait1.sh processes. 
 
                                                 - Inside setup.sh the checking for a previous execution of the script has moved 
                                                   to the top.  
