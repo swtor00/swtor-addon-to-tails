@@ -411,9 +411,8 @@ return 0
 }
 
 
+
 test_for_yad() {
-
-
 
 end_wait_dialog && sleep 1
 # test for installed yad from persistent volume
@@ -637,6 +636,32 @@ cd ${global_tmp}
 return 0
 }
 
+ssh_connection_status(){
+
+cd ${global_tmp}
+
+menu=1
+while [ $menu -gt 0 ]; do
+      sleep 1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo ... waiting for ssh deamon reaction file ...
+      fi
+      if [ -f ssh_state ]  ; then
+         rm ssh_state > /dev/null
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo we can go back to the main menu
+            echo the connection was made or even not
+         fi
+         menu=0
+         sleep 12
+      else
+         ((menu++))
+      fi
+done
+exit 0
+}
+
+
 export -f global_init
 export -f check_tor_network
 export -f test_ssh_persistent
@@ -655,7 +680,7 @@ export -f test_for_freezed
 export -f show_wait_dialog
 export -f end_wait_dialog
 export -f swtor_cleanup
-
+export -f ssh_connection_status
 
 
 

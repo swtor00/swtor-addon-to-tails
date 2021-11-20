@@ -216,16 +216,25 @@ Date		Release		Author		Description
                                                 - Inside setup.sh the checking for a previous execution of the script has moved 
                                                   to the top.  
 
-
-                                                - Added the following addon options:
-
+                                                - Added the following addon 3 options:
 
                                                   BYPASS-SOFTWARE-CHECK:YES
-                                                  CHECK-EMPTY-SSH:NO
-         
-                                                  Both default values alows us a faster initialisation  
-                                                     
+                                                  CHECK-EMPTY-SSH:NO                                                  
+                                                  TIMEOUT-SSH:4
+ 
+                                                  Both default values for the next 2 options 
 
+                                                  BYPASS-SOFTWARE-CHECK:YES
+                                                  CHECK-EMPTY-SSH:NO  
+                                                  
+                                                  alows us a faster initialisation  
+                                                 
+                                                - If there is a active connection you can't connect again
+                                                  to select a SSH server from the main-menu. You have to close
+                                                  the current connection first.
+
+                                                        
+                                                        
                                                     
    
 

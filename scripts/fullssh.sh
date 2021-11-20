@@ -179,7 +179,7 @@ then
       echo $chain
       ssh $chain &
 
-      show_wait_dialog && sleep 4
+      show_wait_dialog && sleep 6
 
       # we loook on the processes after the time out for ssh expires ...
 
@@ -189,7 +189,10 @@ then
       echo PID of encrypted ssh channel is $ssh_pid
 
       if [ -z "$ssh_pid" ] ; then
-          end_wait_dialog && sleep 1  
+          end_wait_dialog && sleep 1
+
+          echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
+
           zenity --info --width=600  --title="Information" --text="\n\nThe desired SSH connection could not be made ! \nPlease have a closer look to the log-files inside of ~/Persistent/swtorcfg/log ! \n\n"
           exit 1
       fi
@@ -203,6 +206,9 @@ then
       fi
 
       end_wait_dialog && sleep 1
+
+      echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
+
       zenity --info  --width=600 --title="Information" --text="\n\nThe selected SSH connection is now active. \nTo close this connection, please press the 'OK' button on this window ! \n\n"
       sleep 1
 

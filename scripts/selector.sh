@@ -171,7 +171,10 @@ if [ $arg1 == "pfssh.sh" ] ; then
     fi
 fi
 
+# Ok , the user made a choice from the menu
+# Until we have a status message from the ssh connection
+# we should wait here.
 
-sleep 2
+ssh_connection_status
 
 exit 0
