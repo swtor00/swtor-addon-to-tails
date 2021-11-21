@@ -122,6 +122,7 @@ fi
 # If you delete the file swtor_init with the command rm ~/swtor_init the complete
 # process will start over again.
 
+
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo starting initial-process of the addon
 fi
@@ -218,6 +219,7 @@ while [ $menu -eq 1 ]; do
             "6"  "[06]  ->  Exit" \
             --hide-column=1 \
             --print-column=1)
+            columm2="0"  
        else
             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
             "1"  "[01]  ->  Select SSH-Server to connect" \
@@ -228,6 +230,7 @@ while [ $menu -eq 1 ]; do
             "6"  "[06]  ->  Exit" \
             --hide-column=1 \
             --print-column=1)
+            columm2="1" 
        fi
 
 if [ -z ${selection} ]; then
@@ -238,6 +241,7 @@ if [ -z ${selection} ]; then
       --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
    fi
 else
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo chosen entry from menu :  $selection
    fi
@@ -252,15 +256,43 @@ else
    fi
 
    if [ $selection == "2" ] ; then
-      ./browser_fix.sh 2>&1 > /dev/null &
+   if [ $columm2 == "1" ] ; then
+      if [ -f ~/Persistent/scripts/state/online ] ; then
+         ./browser_fix.sh 2>&1 > /dev/null &
+      else
+           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+           --text="\n\n             This is not possible without a active connection first !          \n\n" > /dev/null 2>&1)
+           sleep 1
+      fi
+   fi
+   fi
+
+   if [ $selection == "2" ] ; then 
+   if [ $columm2 == "0" ] ; then
+       sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+       --text="\n\n             This is not possible without a fixed profile inside ~/Persistent/personal-folder !          \n\n" > /dev/null 2>&1)
+       sleep 1
+   fi
    fi
 
    if [ $selection == "3" ] ; then
-      ./browser_normal.sh 2>&1 > /dev/null &
+      if [ -f ~/Persistent/scripts/state/online ] ; then
+         ./browser_normal.sh 2>&1  > /dev/null &
+      else
+           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+           --text="\n\n             This is not possible without a active connection first !          \n\n" > /dev/null 2>&1)
+           sleep 1
+      fi
    fi
 
    if [ $selection == "4" ] ; then
-      ./browser_anonymous.sh 2>&1 > /dev/null &
+      if [ -f ~/Persistent/scripts/state/online ] ; then
+         ./browser_anonymous.sh 2>&1 > /dev/null &
+      else
+           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+           --text="\n\n             This is not possible without a active connection first !          \n\n" > /dev/null 2>&1)
+           sleep 1
+      fi
    fi
 
    if [ $selection == "5" ] ; then
@@ -273,7 +305,8 @@ else
           menu=0
        else
            sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-            --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+           --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+           sleep 1
        fi
    fi
 fi

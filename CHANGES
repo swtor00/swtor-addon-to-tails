@@ -240,7 +240,7 @@ Date		Release		Author		Description
                                                   to select a SSH server from the main-menu. You have to close
                                                   the current connection first.
                                                         
-                                                - Both chromium profiles are now optimized.The size is now                                                                                                                                  
+                                                - Both chromium profiles are now optimized.The size is now
                                                   only 10MB. Ghostery as a addon is now disabled.The replacement 
                                                   for ghostery is the addon disconnect. A few little settings
                                                   are better now with this profiles.There is a new link in 
@@ -258,7 +258,14 @@ Date		Release		Author		Description
                                                   fullssh-interactive.sh 
                                          
                                                   Are rewriten from sratch. All dialogs are made new
-                                                  and the waiting screen is integrated.
+                                                  and the new waiting screen is integrated as well.
+
+                                                - It is not longer possible to start the browser from the 
+                                                  main-menu without a active connection. And I found a strange 
+                                                  behavior with a error-message. A error message should be on top 
+                                                  of the screen and not be hidden by a overlapping menu.
+                                                  This is fixed by now. 
+     
  
   
                                                     
