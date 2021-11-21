@@ -251,9 +251,17 @@ Date		Release		Author		Description
                                                   On this site , you can test mutliple settings that affect 
                                                   your privacy in general.
 
+       
+                                                - The 2 connection scripts (I guess the most used ones)
+                                    
+                                                  fullssh.sh
+                                                  fullssh-interactive.sh 
+                                         
+                                                  Are rewriten from sratch. All dialogs are made new
+                                                  and the waiting screen is integrated.
  
-      
-   
+  
+                                                    
 
   
 
