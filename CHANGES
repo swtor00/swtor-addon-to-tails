@@ -239,10 +239,20 @@ Date		Release		Author		Description
                                                 - If there is a active connection you can't connect again
                                                   to select a SSH server from the main-menu. You have to close
                                                   the current connection first.
+                                                        
+                                                - Both chromium profiles are now optimized.The size is now                                                                                                                                  
+                                                  only 10MB. Ghostery as a addon is now disabled.The replacement 
+                                                  for ghostery is the addon disconnect. A few little settings
+                                                  are better now with this profiles.There is a new link in 
+                                                  the bookmarks for the chromium browser 
 
-                                                        
-                                                        
-                                                    
+                                                  https://www.doileak.com/classic.html
+                                 
+                                                  On this site , you can test mutliple settings that affect 
+                                                  your privacy in general.
+
+ 
+      
    
 
   
