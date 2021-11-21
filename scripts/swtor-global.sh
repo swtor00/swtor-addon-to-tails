@@ -85,7 +85,7 @@ if [ $? -eq 0 ] ; then
 
    # We have a open dialog to close
 
-   end_wait_dialog
+   end_wait_dialog && sleep 1
 
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n               Testing the Internet connection over TOR was successful !          \n\n" > /dev/null 2>&1)
@@ -105,7 +105,7 @@ else
 
    # We have a open dialog to close
 
-   end_wait_dialog
+   end_wait_dialog && sleep 1
 
    zenity --error --width=600 \
    --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n"\
@@ -662,6 +662,49 @@ exit 0
 }
 
 
+swtor_no_ipv6(){
+zenity --info --width=600 --title="Information" \
+ --text="\n\n    Tails only supports IP Version 4. IP Verion 6 isn't supported   \n\n"  > /dev/null 2>&1
+return 0
+}
+
+
+swtor_ssh_failure(){
+
+echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
+zenity --info --width=600  --title="Information" --text="\n\nThe desired SSH connection could not be made ! \nPlease have a closer look to the log-files inside of ~/Persistent/swtorcfg/log ! \n\n"
+return 0
+}
+
+
+swtor_ssh_success(){
+
+echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
+zenity --info  --width=600 --title="Information" --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connection, please press the 'OK' button on this window ! \n\n"
+return 0
+}
+
+swtor_wrong_script() {
+zenity --info --width=600  --title="Information" \
+--text="\n\n    wrong script definition placed inside of fullssh.arg !           \n\n"  > /dev/null 2>&1
+return 0
+}
+
+swtor_missing_arg() {
+zenity --info --width=600  --title="Information" \
+--text="\n\n     The argument file for this SSH-Connection is missing !           \n\n"  > /dev/null 2>&1
+return 0
+}
+
+swtor_missing_password() {
+zenity --info --width=600  --title="Information" \
+--text="\n\n     The password file for this SSH-Connection is missing or empty !         \n\n"  > /dev/null 2>&1
+return 0
+}
+
+
+
+
 export -f global_init
 export -f check_tor_network
 export -f test_ssh_persistent
@@ -681,7 +724,12 @@ export -f show_wait_dialog
 export -f end_wait_dialog
 export -f swtor_cleanup
 export -f ssh_connection_status
-
+export -f swtor_no_ipv6
+export -f swtor_ssh_failure
+export -f swtor_ssh_success
+export -f swtor_wrong_script
+export -f swtor_missing_arg
+export -f swtor_missing_password
 
 
 

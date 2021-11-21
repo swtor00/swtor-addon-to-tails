@@ -20,9 +20,6 @@
 #########################################################
 
 
-
-
-
 if [ "$TERMINAL_VERBOSE" == "" ];then
    echo "this shell-script can not longer direct executed over the terminal."
    echo "you have to call this shell-script over swtor-menu.sh"
@@ -72,6 +69,18 @@ else
      export BROWSER_SOCKS5="0"
 fi
 
+if grep -q "BYPASS-SOFTWARE-CHECK:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BYPASS="1"
+else
+     export BYPASS="0"
+fi
+
+if grep -q "CHECK-EMPTY-SSH:NO" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export CHECK_SSH="0"
+else
+     export CHECK_SSH="1"
+fi
+
 export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
@@ -109,12 +118,12 @@ if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/fullssh.arg | awk '{print $9}')
 
 else
-    zenity --info  --text="File fullssh.arg do not exist !"  > /dev/null 2>&1
+    swtor_missing_arg
     exit 1
 fi
 
 if [ $arg1 != "fullssh.sh" ] ; then
-   zenity --info --width=600 --text="Wrong script definition inside fullssh.arg !"  > /dev/null 2>&1
+   swtor_wrong_script
    exit 1
 fi
 
@@ -129,7 +138,7 @@ if [ $arg4 == "4" ] ; then
 fi
 
 if [ $arg4 == "6" ] ; then
-    zenity --info --width=600 --text="IP V6 can not be used !"  > /dev/null 2>&1
+    swtor_no_ipv6
     exit 1
 fi
 
@@ -173,43 +182,47 @@ fi
 
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
 
-if [ -z "$ssh_pid" ]
-then
-      echo starting ssh command
-      echo $chain
+if [ -z "$ssh_pid" ] ; then 
+      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         echo starting ssh command
+         echo $chain
+      fi
+
       ssh $chain &
 
-      show_wait_dialog && sleep 6
+      show_wait_dialog && sleep 4
 
-      # we loook on the processes after the time out for ssh expires ...
+      # we loook on the process table after the time out for ssh expires ...
 
       sleep $TIMEOUT_SSH
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
-      echo PID of encrypted ssh channel is $ssh_pid
-
-      if [ -z "$ssh_pid" ] ; then
-          end_wait_dialog && sleep 1
-
-          echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
-
-          zenity --info --width=600  --title="Information" --text="\n\nThe desired SSH connection could not be made ! \nPlease have a closer look to the log-files inside of ~/Persistent/swtorcfg/log ! \n\n"
-          exit 1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         echo PID of encrypted ssh channel is $ssh_pid
       fi
 
-      echo ssh command succesfull executed
+      if [ -z "$ssh_pid" ] ; then
+         if [ $TERMINAL_VERBOSE == "1" ] ; then  
+            echo "ssh connection was not made" 
+         fi 
+         end_wait_dialog && sleep 1
+         swtor_ssh_failure
+         exit 1
+      fi
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then    
+         echo ssh command succesfull executed
+      fi 
+
       echo 1 > /home/amnesia/Persistent/scripts/state/online
 
-      if [ -f /home/amnesia/Persistent/scripts/state/offline ]
-         then
+      if [ -f /home/amnesia/Persistent/scripts/state/offline ] ; then 
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
       end_wait_dialog && sleep 1
+      swtor_ssh_success
 
-      echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
-
-      zenity --info  --width=600 --title="Information" --text="\n\nThe selected SSH connection is now active. \nTo close this connection, please press the 'OK' button on this window ! \n\n"
       sleep 1
 
       ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
@@ -226,13 +239,8 @@ then
       /home/amnesia/Persistent/scripts/cleanup.sh
 
       echo 1 > /home/amnesia/Persistent/scripts/state/offline
-else
-      echo cancel ...
-      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Connection allready estabishled !" > /dev/null 2>&1)
-      exit 1
 fi
 
 swtor_cleanup
 exit 0
-
 

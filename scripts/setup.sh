@@ -62,13 +62,25 @@ else
      export BROWSER_SOCKS5="0"
 fi
 
+if grep -q "BYPASS-SOFTWARE-CHECK:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BYPASS="1"
+else
+     export BYPASS="0"
+fi
+
+if grep -q "CHECK-EMPTY-SSH:NO" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export CHECK_SSH="0"
+else
+     export CHECK_SSH="1"
+fi
+
 export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
 export  DEBUGW="0"
 
 
-source ~/Persistent/swtor-addon-to-tails/scripts/swtor-global.sh
+source ~/Persistent/scripts/swtor-global.sh
 global_init
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then

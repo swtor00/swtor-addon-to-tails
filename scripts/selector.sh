@@ -100,6 +100,7 @@ arg1=$(echo $tmp | awk '{print $1}')
 arg2=$(echo $tmp | awk '{print $2}')
 arg3=$(echo $tmp | awk '{print $3}')
 
+
 if [ $arg1 == "fullssh.sh" ] ; then
    if [ $arg3 == "ssh-id" ] ; then
        grep fullssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/fullssh.arg
@@ -110,14 +111,16 @@ if [ $arg1 == "fullssh.sh" ] ; then
       ./1.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
 
    else
-       password=$(zenity --entry --width=600 --text="Password for the ssh-connection ? " --title=Password --hide-text)
+       password=$(zenity --entry --text="Please type the password for the selected SSH-Server" --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        chmod 600 /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        if [ "$password" == "" ] ; then
-           zenity --error --width=600 --text "No password provided on the keyboard !"
+           zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
            exit 1
        else
-           echo ... we have a password
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo ... we have a password to submit 
+           fi
        fi
 
        grep fullssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/fullssh.arg
@@ -132,7 +135,6 @@ fi
 
 
 if [ $arg1 == "chainssh.sh" ] ; then
-
    if [ $arg3 == "ssh-id" ] ; then
        grep chainssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/chainssh.arg
 
@@ -141,7 +143,7 @@ if [ $arg1 == "chainssh.sh" ] ; then
         touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./3.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
    else
-       zenity --error --width=600 --text "Only ssh-id authentification ist valid in chaimode of swtor !"
+       zenity --error --width=400 --text "\n\n Only the 'ssh-id' authentification is valid in \n chainssh-mode of swtor ! 'passwd' is not valid. \n\n"
        exit 1
    fi
 fi
@@ -149,14 +151,17 @@ fi
 
 if [ $arg1 == "pfssh.sh" ] ; then
    if [ $arg3 == "passwd" ] ; then
-       password=$(zenity --entry --width=600 --text="Password for the ssh-connection ? " --title=Password --hide-text)
+
+       password=$(zenity --entry --text="Please type the password for the selected SSH-Server" --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        chmod 600 /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        if [ "$password" == "" ] ; then
-           zenity --error --width=600 --text "No password provided on the keyboard !"
+           zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
            exit 1
        else
-           echo ... we have a password
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo ... we have a password to submit 
+           fi         
        fi
 
        grep pfssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/pfssh.arg
@@ -166,8 +171,8 @@ if [ $arg1 == "pfssh.sh" ] ; then
        touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./4.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
     else
-       zenity --error --width=600 --text "The script pfssh.sh only supports password-logins !"
-       exit
+       zenity --error --width=400 --text "\n\n Only the 'passwd' authentification is valid in \n pfssh-mode of swtor ! 'ssh-id' is not valid. \n\n"
+       exit 1
     fi
 fi
 

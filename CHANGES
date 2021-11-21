@@ -192,7 +192,7 @@ Date		Release		Author		Description
                                                     
                                                   https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
 
- 
+
                                                 - I have rewritten most of the code of all shell-scripts. 
                                                   By now I have over 100 commits made. 
 
@@ -201,10 +201,10 @@ Date		Release		Author		Description
                                                 - If you type the password wrong or empty ... you have other 2 times
                                                   to correct it.After 3 x times wrong or empty, the script aborts. 
                                              
-                                                - The ssh login used is not longer showed inside the menu.But instead 
-                                                  you see the backup field.
+                                                - The ssh login used is not longer shown inside the menu.But instead
+                                                  of the login-name you see the content of the backup field.
 
-                                                - It is now not longer to exit the script swtor-menu.sh as long there 
+                                                - It is now not longer possible to exit the script swtor-menu.sh as long there 
                                                   is a connected Server. You have to close the connection and you can 
                                                   exit the script.
 
@@ -227,7 +227,14 @@ Date		Release		Author		Description
                                                   BYPASS-SOFTWARE-CHECK:YES
                                                   CHECK-EMPTY-SSH:NO  
                                                   
-                                                  alows us a faster initialisation  
+                                                  alows us a faster initialisation.If you change the 
+                                                  values to
+                                                  
+                                                  BYPASS-SOFTWARE-CHECK:NO
+                                                  CHECK-EMPTY-SSH:YES
+                                                  
+                                                  The first initialisation takes much longer with this 
+                                                  values provided.    
                                                  
                                                 - If there is a active connection you can't connect again
                                                   to select a SSH server from the main-menu. You have to close

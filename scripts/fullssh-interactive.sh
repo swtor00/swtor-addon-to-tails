@@ -4,23 +4,107 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.1.1 or higher                       #
+# OS      : Tails 4.24 or higher                        #
 # TASKS   : run a ssh command with multipe options      #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
 #           given over sshpass.                         #
 #                                                       #
-# VERSION : 0.50                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-01-2020                                  #
+# DATE    : 21-11-2021                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
+
+
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
+   exit 1
+fi
+
+
+if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export IMPORT_BOOKMAKRS="1"
+else
+   export IMPORT_BOOKMAKRS="0"
+fi
+
+if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export GUI_LINKS="1"
+else
+   export GUI_LINKS="0"
+fi
+
+if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export CHECK_UPDATE="1"
+else
+   export CHECK_UPDATE="0"
+fi
+
+if grep -q "BACKUP-FIXED-PROFILE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export BACKUP_FIXED_PROFILE="1"
+else
+   export BACKUP_FIXED_PROFILE="0"
+fi
+
+if grep -q "BACKUP_APT_LIST:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BACKUP_APT_LIST="1"
+else
+     export BACKUP_APT_LIST="0"
+fi
+
+if grep -q "TERMINAL-VERBOSE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export TERMINAL_VERBOSE="1"
+else
+     export TERMINAL_VERBOSE="0"
+fi
+
+if grep -q "BROWSER-SOCKS5:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BROWSER_SOCKS5="1"
+else
+     export BROWSER_SOCKS5="0"
+fi
+
+if grep -q "BYPASS-SOFTWARE-CHECK:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BYPASS="1"
+else
+     export BYPASS="0"
+fi
+
+if grep -q "CHECK-EMPTY-SSH:NO" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export CHECK_SSH="0"
+else
+     export CHECK_SSH="1"
+fi
+
+export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+
+export  DEBUGW="0"
+
+
+source ~/Persistent/scripts/swtor-global.sh
+global_init
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "global_init() done"
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "failure during initialisation of global-init() !"
+       echo >&2 "fullssh_interactive.sh exiting with error-code 1"
+    fi
+    exit 1
+fi
+
+
 
 # Test needet parameters for this script
 
@@ -38,22 +122,24 @@ if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/fullssh.arg | awk '{print $9}')
 
 else
-    zenity --info --width=600 --text="No arguments supplied with fullssh-interactive.arg or this file do not exist."  > /dev/null 2>&1
+    swtor_missing_arg
     exit 1
 fi
 
-if [ -f /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg ]
-   then
-   echo We found a password-file that should contain the valid entry to the host
+if [ -f /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg ] ; then
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo We found a password-file that should contain the password to the host
+   fi
    password=$(cat ~/Persistent/swtorcfg/ssh-interactive.arg)
 else
-    zenity --info --width=600 --text="No password-file found."  > /dev/null 2>&1
+    swtor_missing_password
     exit 1
 fi
 
 if [ $arg1 != "fullssh.sh" ] ; then
-   zenity --info --width=600 --text="Wrong script definition inside fullssh-interactive.arg !"  > /dev/null 2>&1
-   exit 1
+   swtor_wrong_script
+   exit 1 
 fi
 
 if [ $arg3 != "Compress" ] ; then
@@ -67,7 +153,7 @@ if [ $arg4 == "4" ] ; then
 fi
 
 if [ $arg4 == "6" ] ; then
-    zenity --info --width=600 --text="IP V6 can not be used !"  > /dev/null 2>&1
+    swtor_no_ipv6
     exit 1
 fi
 
@@ -109,35 +195,48 @@ fi
 
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
 
-if [ -z "$ssh_pid" ]
-then
-      echo starting ssh command
-      echo $password $chain
-
-      sshpass -p $password ssh $chain &
-
-      # we loook on the shs processes .. If the password was correct or not
-
-      sleep 4
-
-      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
-      echo PID of encrypted ssh channel is $ssh_pid
-
-      if [ -z "$ssh_pid" ]
-      then
-          zenity --info --width=600 --text "ssh isn't active ! The password was wrong !"
-          exit 1
+if [ -z "$ssh_pid" ] ; then 
+      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         echo starting ssh command
+         echo $chain
       fi
 
-      echo ssh command succesfull executed
+      sshpass -p $password ssh $chain & 
+
+      show_wait_dialog && sleep 4
+
+      # we loook on the process table after the time out for ssh expires ...
+
+      sleep $TIMEOUT_SSH
+
+      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
+      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         echo PID of encrypted ssh channel is $ssh_pid
+      fi
+
+      if [ -z "$ssh_pid" ] ; then
+         if [ $TERMINAL_VERBOSE == "1" ] ; then  
+            echo "ssh connection was not made" 
+            echo "the provided password maybe was wrong"
+         fi 
+         end_wait_dialog && sleep 1
+         swtor_ssh_failure
+         exit 1
+      fi
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then    
+         echo ssh command succesfull executed
+      fi 
+
       echo 1 > /home/amnesia/Persistent/scripts/state/online
 
-      if [ -f /home/amnesia/Persistent/scripts/state/offline ]
-         then
+      if [ -f /home/amnesia/Persistent/scripts/state/offline ] ; then 
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
-      zenity --info  --width=600 --text "The encrypted ssh connection over the onion-network is now active.\nTo close this connection,please press the ok button on this window !"
+      end_wait_dialog && sleep 1
+      swtor_ssh_success
+
       sleep 1
 
       ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
@@ -151,15 +250,13 @@ then
 
       rm  /home/amnesia/Persistent/scripts/state/online
 
-     //home/amnesia/Persistent/scripts/cleanup.sh
+      /home/amnesia/Persistent/scripts/cleanup.sh
 
       echo 1 > /home/amnesia/Persistent/scripts/state/offline
-else
-      echo cancel ...
-      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Connection allready estabishled !" > /dev/null 2>&1)
-      exit 1
 fi
 
+swtor_cleanup
 exit 0
+
 
 

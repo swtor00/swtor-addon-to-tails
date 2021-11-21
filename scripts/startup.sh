@@ -113,8 +113,8 @@ fi
 
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "the option CHECK-EMPTY-SSH:NO was found inside configuration"
-       echo "we don't test for a empty ~/.ssh folder inside of startup.sh"
+       echo "the option CHECK-EMPTY-SSH:NO was found inside your configuration"
+       echo "we don't test for a empty ~/.ssh folder inside of this startup.sh"
     fi
 ##################################################################################################
 fi
@@ -231,8 +231,8 @@ fi
 
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "the option BYPASS-SOFTWARE-CHECK:YES was found inside configuration"
-       echo "we don't check all 5 packages on first startup of swtor-menu.sh inside Tails ... "
+       echo "the option BYPASS-SOFTWARE-CHECK:YES was found inside your configuration"
+       echo "we don't check all the 5 packages on first startup of swtor-menu.sh inside Tails ... "
     fi
 fi
 ##################################################################################################
@@ -315,7 +315,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step12 : changed firewall settings for socks5 server !"
     fi
-    show_wait_dialog && sleep 2
+    # show_wait_dialog && sleep 2
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "firewall was not changed because configuration"
