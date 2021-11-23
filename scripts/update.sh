@@ -11,7 +11,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 25-12-2020                                  #
+# DATE    : 22-11-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -25,32 +25,21 @@ if [ "$TERMINAL_VERBOSE" == "" ];then
    exit 1
 fi
 
-# Is this script controlled with git or not ?
-# It is not possible to update this script over git just in case the git
-# directory has ben removed by the user.
-
-
-if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
-
-   sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nAddon has no .git directory.\nThis means that this addon isn't controlled by git." > /dev/null 2>&1)
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo no .git directory found.Update is not possible
-   fi
-   exit 1
-fi
-
 zenity --question --width=600 --text="Please read this warning carefully.\n\nIf you update the addon, all local changes made by you,will be overwriten.\n\This also includes the configuration file swtor.cfg and all scripts.\n\nAre you sure, you would like to proceed with the update ?" > /dev/null 2>&1
 case $? in
          0)
-           # In the case, that someone changed the current confiuration-file
-           # we copy the current config swtor.cfg
-
            cd ~/Persistent/swtor-addon-to-tails
 
            sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nThe update is now executed. Please wait ! \n\n" > /dev/null 2>&1)
 
+           show_wait_dialog && sleep 2 
+
+   
            git reset --hard > /dev/null 2>&1
            git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
+
+
+           end_wait_dialog && sleep 1
 
            if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo update was executed

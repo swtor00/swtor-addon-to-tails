@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.241                                 #
+# OS      : Tails 4.24                                  #
 # TASKS   : The mother script of all swtor scripts      #
 #                                                       #
 # VERSION : 0.60                                        #

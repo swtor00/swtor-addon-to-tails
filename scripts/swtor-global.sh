@@ -703,7 +703,111 @@ return 0
 }
 
 
+swtor_update () {
 
+if [ $CHECK_UPDATE == "1" ] ; then
+
+   # Some maybe not so clever poeple may try to delete the .git directory from
+   # the addon itself and the configuration saying CHECK-UPDATE:YES  ...
+   # This will not work for now or in the future !!!!!!!
+   # This poeple should make a configuration change to CHECK-UPDATE:NO
+   # We report back a failure ..... until the user change the configuration.
+
+   if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
+      zenity --error --width=400 --text "\n\n    Houston, we have a problem !  \n    The .git directory was removed ! \n\n"
+      return 1
+   fi
+
+
+   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+   --text="\n\n      Checking for updates is active : 'yes'         \n\n" > /dev/null 2>&1)
+
+   # If you don't like this behavior on startup, you should open the
+   # configuration file ~/Persistent/swtorcfg/swtor.cfg and set the option
+   # CHECK-UPDATE:YES to the value CHECK-UPDATE:NO
+   # After this little change ... it will not longer look for a update on startup
+   # of the addon.
+   # The default configuration by downloading the addon from github is CHECK-UPDATE:NO
+
+   # We contact github to see what version is stored over there ....
+
+   show_wait_dialog && sleep 4
+
+
+   cd ${global_tmp}
+
+   wget -O REMOTE-VERSION https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/swtorcfg/swtor.cfg > /dev/null 2>&1
+
+   end_wait_dialog && sleep 1
+
+   REMOTE=$(grep "SWTOR-VERSION" REMOTE-VERSION | sed 's/[A-Z:-]//g')
+   LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+
+   # Comparing the remote and the local version of the scirpt..
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo REMOTE-VERSION [$REMOTE]
+       echo LOCAL-VERSION [$LOCAL]
+   fi
+
+   if [ "$REMOTE" == "$LOCAL" ] ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo "no updates found to install "
+          echo "both version are equal  ... "
+      fi
+      sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+      --text="\n\n      Checking for updates did not found a update to install !        \n\n" > /dev/null 2>&1)
+      return 0
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo "we found a difference ... "
+      fi
+      cd ~/Persistent/swtor-addon-to-tails/scripts
+      ./update.sh
+   fi
+
+else
+   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+   --text="\n\n      Checking for updates is active : 'no'         \n\n" > /dev/null 2>&1)
+fi
+
+return 0
+}
+
+
+swtor_clean_files() {
+
+sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+--text="\n\n        Cleanup old invalid log files and browser-files          \n\n" > /dev/null 2>&1)
+
+# cleanup old connection-files file inside cfg directory
+
+rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
+rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1
+
+
+# cleanup all browser-settings and extract all settings from tar file
+
+if [ -d /home/amnesia/Persistent/settings/1  ] ; then
+   rm -rf  ~/Persistent/settings/1 >/dev/null 2>&1
+fi
+
+if [ -d /home/amnesia/Persistent/settings/2  ] ; then
+  rm -rf  ~/Persistent/settings/2 >/dev/null 2>&1
+fi
+
+
+# Test the state of the connection
+
+if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
+    cd /home/amnesia/Persistent/scripts/state
+    rm online
+fi
+
+
+echo 1 > /home/amnesia/Persistent/scripts/state/offline
+
+}
 
 export -f global_init
 export -f check_tor_network
@@ -730,6 +834,7 @@ export -f swtor_ssh_success
 export -f swtor_wrong_script
 export -f swtor_missing_arg
 export -f swtor_missing_password
-
+export -f swtor_update
+export -f swtor_clean_files
 
 

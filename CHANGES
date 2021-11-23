@@ -170,7 +170,7 @@ Date		Release		Author		Description
                                                 - Added global timeout-value in secounds for 
                                                   TOR-Testing inside of swtor.cfg.
                                                   Also added a silent or verbose mode for 
-                                                  the scripts.  
+                                                  the scripts itself.  
                                                   TIMEOUT-TB:10
                                                   TERMINAL-VERBOSE:NO
                                    
@@ -201,7 +201,7 @@ Date		Release		Author		Description
                                                 - If you type the password wrong or empty ... you have other 2 times
                                                   to correct it.After 3 x times wrong or empty, the script aborts. 
                                              
-                                                - The ssh login used is not longer shown inside the menu.But instead
+                                                - The ssh login used is not longer shown inside the sss-servermenu.But instead
                                                   of the login-name you see the content of the backup field.
 
                                                 - It is now not longer possible to exit the script swtor-menu.sh as long there 
@@ -216,7 +216,7 @@ Date		Release		Author		Description
                                                 - Inside setup.sh the checking for a previous execution of the script has moved 
                                                   to the top.  
 
-                                                - Added the following addon 3 options:
+                                                - Added the following 3 new addon options:
 
                                                   BYPASS-SOFTWARE-CHECK:YES
                                                   CHECK-EMPTY-SSH:NO                                                  
@@ -266,11 +266,20 @@ Date		Release		Author		Description
                                                   of the screen and not be hidden by a overlapping menu.
                                                   This is fixed by now. 
      
+                                                - If you don't have created a fixed profile inside personal-files 
+                                                  it is not longer possible to call the fixed profile form the 
+                                                  main menu. The corresponding menu entry 02 will show nothing.
  
-  
-                                                    
+                                                - I found a real ugly bug inside the update-modul of the addon.
+                                                  I don't know how long it was in the shell-code, but I guess guthub.com
+                                                  changed the way to donwload a single file long time ago.
+                                                  This ugly bug is now fixed ... and the update now works.
+                                                       
+                                                - The auto-update function is now integrated into startup.sh 
+                                                  And after a test ... the function is ok.
+       
 
-  
+                                              
 
     
                                                        

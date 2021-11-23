@@ -30,6 +30,7 @@ echo "this lines delete all files from the script and make a factory-reset"
 # unlink ~/Desktop/swtor-menu.sh  > /dev/null 2>&1
 # rm -rf ~/Persistent/swtor-addon-to-tails/swtorcfg  > /dev/null 2>&1
 # rm /Persistent/swtor-addon-to-tails/setup  > /dev/null 2>&1
+# rn ~/swtor_init > /dev/null 2>&1
 
 # cd ~/Persistent/swtor-addon-to-tails
 # git reset --hard > /dev/null 2>&1

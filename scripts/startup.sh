@@ -326,34 +326,29 @@ else
 fi
 
 
+# The last thing is to check for udates or not. This depends on the configuration file
+# swtor.cfg.The default value is CHECK-UPDATE:NO
 
-# cleanup old connection-files file inside cfg directory
-
-rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
-rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1
-
-
-# cleanup all browser-settings and extract all settings from tar file
-
-if [ -d /home/amnesia/Persistent/settings/1  ] ; then
-   rm -rf  ~/Persistent/settings/1 >/dev/null 2>&1
-fi
-
-if [ -d /home/amnesia/Persistent/settings/2  ] ; then
-  rm -rf  ~/Persistent/settings/2 >/dev/null 2>&1
-fi
-
-
-# Test the state of the connection
-
-if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
-    cd /home/amnesia/Persistent/scripts/state
-    rm online
+swtor_update
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo "step 13 : update-check was executed"
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo "failure with auto-update !"
+    fi
+    rmdir $lockdir > /dev/null 2>&1
+    exit 1
 fi
 
 
-echo 1 > /home/amnesia/Persistent/scripts/state/offline
 
+swtor_clean_files
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo "step 14 : all files cleaned-up"
+fi
 
 # We are done here , signal swtor-menu.sh with Error Code 0
 
