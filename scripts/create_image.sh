@@ -240,8 +240,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 
-sleep 2
-end_wait_dialog
+
+end_wait_dialog && sleep 2
 
 # The backup is done here ....
 
@@ -257,10 +257,12 @@ fi
 # from root to amnesia, so we can copy it anywhere we would like to have it
 
 
-export filename="$(tails-version | head -n1 | awk {'print $1'})-$(date '+%Y-%m-%d-%H-%M')"
-export filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$(date '+%Y-%m-%d-%H-%M').tar.gz"
-export final_backup_directory="/home/amnesia/Persistent/$filename"
 
+time_stamp=$(date '+%Y-%m-%d-%H-%M')
+filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
+filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
+final_backup_directory="/home/amnesia/Persistent/$(echo $filename)"
+backup_stamp="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
 
 cat password | sudo -S tar czf "/home/amnesia/Persistent/$filename_tar" ~/Persistent/backup > /dev/null 2>&1
 cat password | sudo -S chmod 777 "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
@@ -274,8 +276,6 @@ cat password | sudo -S rm -rf ~/Persistent/backup > /dev/null 2>&1
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "temporary backup directory removed"
 fi
-
-backup_stamp="$(tails-version | head -n1 | awk {'print $1'})-$(date +"%Y-%m-%d-%H-%M")"
 
 mkdir -p $final_backup_directory
 mv ~/Persistent/$filename_tar $final_backup_directory
@@ -323,11 +323,12 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 tar czf $final_backup_file $final_backup_directory > /dev/null 2>&1
+md5sum $final_backup_file | awk {'print $1'} > $final_backup_file.md5
+
 rm -rf $final_backup_directory > /dev/null 2>&1
 
 
 # If there is no backup host defined inside swtorssh.cfg we are finished here ...
-
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
 --text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
@@ -340,11 +341,10 @@ fi
 
 if [ $BACKUP_HOST == "0" ] ; then
    zenity --info --width=600 --title="" \
-   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup file away from here asap to a very safe place.\n\n" > /dev/null 2>&1
+   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup file away from here to a very safe place. \n\n" > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "backup is now finished and stored : $final_backup_file"
    fi
-   exit 0
 fi
 
 if [ $WARNING_SSH == "1" ] ; then
@@ -364,7 +364,10 @@ port+=$(echo $line | awk '{print $6}' )
 ssh_host=$(echo $line | awk '{print $9}' )
 ssh_host+=":~/"
 
-echo $line 
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo $line
+fi
+
 
 
 sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\n    The transfer of the backup to the remote host is in progress. Please wait !     \n\n" > /dev/null 2>&1)
@@ -375,7 +378,15 @@ fi
 show_wait_dialog && sleep 2
 
 cd ~/Persistent
+
+# copy md5 checksum
+
+rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host
+
+# copy backup-file
+
 rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host
+
 
 
 if [ $? -eq 0 ] ; then
@@ -387,6 +398,10 @@ if [ $? -eq 0 ] ; then
 
    # After the transfer to the remote host , we restrict the access a bit to this file
    # by chmod 0600 on the remote host
+
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+   --text="\n\n      Backup was transfered successfull to the remote system with rsync     \n\n" > /dev/null 2>&1)
+
 
 
 else

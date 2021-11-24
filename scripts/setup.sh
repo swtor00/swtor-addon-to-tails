@@ -360,6 +360,11 @@ if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
    fi
+
+else 
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was allready made"
+   fi
 fi
 
 
