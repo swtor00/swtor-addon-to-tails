@@ -262,10 +262,9 @@ export filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$(date '+%Y-
 export final_backup_directory="/home/amnesia/Persistent/$filename"
 
 
-
 cat password | sudo -S tar czf "/home/amnesia/Persistent/$filename_tar" ~/Persistent/backup > /dev/null 2>&1
-cat password | sudo -S chmod 777 /home/amnesia/Persistent/tails-image*.tar.gz > /dev/null 2>&1
-cat password | sudo -S chown amnesia:amnesia /home/amnesia/Persistent/tails-image*.tar.gz > /dev/null 2>&1
+cat password | sudo -S chmod 777 "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
+cat password | sudo -S chown amnesia:amnesia "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
 
 
 # We delete now the temporary backup directory from ~/Persistent
@@ -279,10 +278,7 @@ fi
 backup_stamp="$(tails-version | head -n1 | awk {'print $1'})-$(date +"%Y-%m-%d-%H-%M")"
 
 mkdir -p $final_backup_directory
-
 mv ~/Persistent/$filename_tar $final_backup_directory
-
-
 
 backupdir=~/Persistent/$backup_stamp
 backupfile=$(cd ~/Persistent/$backup_stamp && ls *)
@@ -296,30 +292,108 @@ zenity --question --width 600 --text "\n\n         Should the created backup to 
 case $? in
     0)
        cd $final_backup_directory
-       gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg  $filename_tar
-       rm -f $filename_tar
+       gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
+       rm -f $filename_tar > /dev/null 
+       WARNING_SSH="0"
     ;;
     1)
-    echo no encrypt
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "no encryption chosen from the use  for the created backup"
+      fi
+      WARNING_SSH="1"
     ;;
 esac
 
-
 # By now , we have we have the following things ...
-# A sinle  backupfolder that contains a simple tar.gz file or a encrypted tar.gz file
+# A single backupfolder that contains a simple tar.gz file or a encrypted tar.gz file
 
+cp ~/Persistent/scripts/restore.sh $final_backup_directory
 
 cd ~/Persistent
 
+final_backup_file="persistent-$(date '+%Y-%m-%d-%H-%M').tar.gz"
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo final_directory : $final_backup_directory
+   echo final name      : $final_backup_file
+fi
+
+tar czf $final_backup_file $final_backup_directory > /dev/null 2>&1
+rm -rf $final_backup_directory > /dev/null 2>&1
 
 
+# If there is no backup host defined inside swtorssh.cfg we are finished here ...
 
 
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+--text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
-swtor_cleanup
+if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
+   BACKUP_HOST="1"
+else
+   BACKUP_HOST="0"
+fi
+
+if [ $BACKUP_HOST == "0" ] ; then
+   zenity --info --width=600 --title="" \
+   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup file away from here asap to a very safe place.\n\n" > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "backup is now finished and stored : $final_backup_file"
+   fi
+   exit 0
+fi
+
+if [ $WARNING_SSH == "1" ] ; then
+    zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to remote host over SSH.    \n\n" > /dev/null 2>&1
+    exit 1
+fi
+
+
+# we a found a backup-server
+
+line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
+
+# Ok.We found a backup host .... let's copy the files.
+
+port="ssh -p"
+port+=$(echo $line | awk '{print $6}' )
+ssh_host=$(echo $line | awk '{print $9}' )
+ssh_host+=":~/"
+
+echo $line 
+
+
+sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\n    The transfer of the backup to the remote host is in progress. Please wait !     \n\n" > /dev/null 2>&1)
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+    echo "transfer backup $final_backup_file file with rsync over ssh is in progress is in progess ..."
+fi
+show_wait_dialog && sleep 2
+ 
+cd ~/Persistent
+rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host
+
+
+if [ $? -eq 0 ] ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo backup-transfered
+   fi
+ 
+   end_wait_dialog && sleep 2
+
+   # After the transfer to the remote host , we restrict the access a bit to this file 
+   # by chmod 0600 on the remote host 
+
+
+else
+
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo "error on copy to the remote host" 
+    fi
+ 
+    end_wait_dialog && sleep 2
+    zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
+    exit 1
+fi 
 
 exit 0
-
-
-
-

@@ -708,7 +708,7 @@ swtor_update () {
 if [ $CHECK_UPDATE == "1" ] ; then
 
    # Some maybe not so clever poeple may try to delete the .git directory from
-   # the addon itself and the configuration saying CHECK-UPDATE:YES  ...
+   # the addon itself and the configuration saying explicit CHECK-UPDATE:YES  ...
    # This will not work for now or in the future !!!!!!!
    # This poeple should make a configuration change to CHECK-UPDATE:NO
    # We report back a failure ..... until the user change the configuration.

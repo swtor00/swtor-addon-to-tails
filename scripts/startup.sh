@@ -326,7 +326,7 @@ else
 fi
 
 
-# The last thing is to check for udates or not. This depends on the configuration file
+# The last thing to do is to check for udates or not. This depends on the configuration file
 # swtor.cfg.The default value is CHECK-UPDATE:NO
 
 swtor_update
