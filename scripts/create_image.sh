@@ -341,27 +341,30 @@ fi
 
 if [ $BACKUP_HOST == "0" ] ; then
    zenity --info --width=600 --title="" \
-   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup file away from here to a very safe place. \n\n" > /dev/null 2>&1
+   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup files away from here to a very safe place. \n\n" /
+   > /dev/  null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "backup is now finished and stored : $final_backup_file"
    fi
-
-
-   exit 0
 fi
 
 
-if [ $WARNING_SSH == "1" ] ; then
-    zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to remote host over SSH.    \n\n" > /dev/null 2>&1
-    exit 1
+sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+--text="\n\n      Found a valid backup server inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1
+
+
+if [ $BACKUP_HOST == "1" ] ; then
+   if [ $WARNING_SSH == "1" ] ; then
+       zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to remote host over SSH.    \n\n" > /dev/null 2>&1
+       exit 1
+   fi
 fi
 
-
-# we a found a backup-server
+# we can go away here ...
 
 line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
 
-# Ok.We found a backup host .... let's copy the files.
+# Ok.We found a backup host .... the backup is encrypted ... let's copy the files.
 
 port="ssh -p"
 port+=$(echo $line | awk '{print $6}' )
@@ -371,8 +374,6 @@ ssh_host+=":~/"
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo $line
 fi
-
-
 
 sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\n    The transfer of the backup to the remote host is in progress. Please wait !     \n\n" > /dev/null 2>&1)
 
@@ -413,11 +414,11 @@ else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "error on copy to the remote host"
     fi
-
-
     end_wait_dialog && sleep 2
     zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
     exit 1
+fi
+
 fi
 
 exit 0
