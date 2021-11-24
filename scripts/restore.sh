@@ -11,7 +11,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 30-12-2020                                  #
+# DATE    : 24-11-2020                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -19,7 +19,11 @@
 #########################################################
 
 
-
+wget -O restore.sh https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/scripts/restore.sh
+wget -O swtor-global.sh https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/scripts/swtor-global.sh
+wget -O wait.sh https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/scripts/wait.sh
+wget -O pwait1.sh https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/scripts/pwait1.sh
+wget -O pwait2.sh https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/scripts/pwait2.sh
 
 
 
