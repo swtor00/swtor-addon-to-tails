@@ -302,7 +302,7 @@ case $? in
     ;;
     1)
       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo "no encryption chosen from the use  for the created backup"
+         echo "no encryption chosen from the user for the created backup"
       fi
       WARNING_SSH="1"
     ;;
@@ -345,7 +345,11 @@ if [ $BACKUP_HOST == "0" ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "backup is now finished and stored : $final_backup_file"
    fi
+
+
+   exit 0
 fi
+
 
 if [ $WARNING_SSH == "1" ] ; then
     zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to remote host over SSH.    \n\n" > /dev/null 2>&1
@@ -383,6 +387,8 @@ cd ~/Persistent
 
 rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host
 
+sleep 1
+
 # copy backup-file
 
 rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host
@@ -402,13 +408,12 @@ if [ $? -eq 0 ] ; then
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
    --text="\n\n      Backup was transfered successfull to the remote system with rsync     \n\n" > /dev/null 2>&1)
 
-
-
 else
 
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "error on copy to the remote host" 
+       echo "error on copy to the remote host"
     fi
+
 
     end_wait_dialog && sleep 2
     zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
