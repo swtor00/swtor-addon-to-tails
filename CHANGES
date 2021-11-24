@@ -277,6 +277,24 @@ Date		Release		Author		Description
                                                        
                                                 - The auto-update function is now integrated into startup.sh 
                                                   And after a test ... the function is ok.
+
+                                                - The create_image.sh script was rewritten from scratch. 
+                                                  - The backup is protected against manipulations with a 
+                                                    md5 checksum. 
+                                                  - You can choose to encrypt the backup with pgp or not ... 
+                                                  - If you select not to enyrpt the backup you can not 
+                                                    transfer the backup to a remote host over SSH.
+                                                    
+                                                    Of course can you backup the not encrypted backup to 
+                                                    other host by hand ... but not with the help of this addon.
+                                                  
+                                                  - The file restrictions on a remote host where set to 
+                                                    chmod 0600     
+
+
+
+
+           
        
 
                                               

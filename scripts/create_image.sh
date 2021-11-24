@@ -283,6 +283,11 @@ mv ~/Persistent/$filename_tar $final_backup_directory
 backupdir=~/Persistent/$backup_stamp
 backupfile=$(cd ~/Persistent/$backup_stamp && ls *)
 
+# create md5 check for the tar
+
+cd $final_backup_directory
+md5sum $filename_tar |  awk  {'print $1'}  > md5check
+
 sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close \
 --text="\n\n     The backup was created inside of the directory $(echo $final_backup_directory)      \n\n      Please be informed that this backup is only a simple tar.gz file and is not protected by a password !  \n\n" > /dev/null 2>&1)
 
@@ -291,9 +296,8 @@ sleep 1
 zenity --question --width 600 --text "\n\n         Should the created backup to be encrypted with gpg ?    \n\n\n         If you say 'Yes' here and don't get the right password to decrypt it, nobody\n         can help you to get your data back from your encrypted backup ! \n\n"
 case $? in
     0)
-       cd $final_backup_directory
        gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
-       rm -f $filename_tar > /dev/null 
+       rm -f $filename_tar > /dev/null
        WARNING_SSH="0"
     ;;
     1)
@@ -369,7 +373,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
     echo "transfer backup $final_backup_file file with rsync over ssh is in progress is in progess ..."
 fi
 show_wait_dialog && sleep 2
- 
+
 cd ~/Persistent
 rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host
 
@@ -378,11 +382,11 @@ if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo backup-transfered
    fi
- 
+
    end_wait_dialog && sleep 2
 
-   # After the transfer to the remote host , we restrict the access a bit to this file 
-   # by chmod 0600 on the remote host 
+   # After the transfer to the remote host , we restrict the access a bit to this file
+   # by chmod 0600 on the remote host
 
 
 else
@@ -390,10 +394,10 @@ else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "error on copy to the remote host" 
     fi
- 
+
     end_wait_dialog && sleep 2
     zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
     exit 1
-fi 
+fi
 
 exit 0
