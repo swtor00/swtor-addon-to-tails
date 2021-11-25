@@ -339,6 +339,7 @@ else
    BACKUP_HOST="0"
 fi
 
+
 if [ $BACKUP_HOST == "0" ] ; then
    zenity --info --width=600 --title="" \
    --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup files away from here to a very safe place. \n\n" /
@@ -350,7 +351,7 @@ fi
 
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Found a valid backup server inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1
+--text="\n\n      Found a valid backup server inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
 
 if [ $BACKUP_HOST == "1" ] ; then
@@ -371,20 +372,21 @@ port+=$(echo $line | awk '{print $6}' )
 ssh_host=$(echo $line | awk '{print $9}' )
 ssh_host+=":~/"
 
-if [ $TERMINAL_VERBOSE == "1" ] ; then
-   echo $line
-fi
 
 sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\n    The transfer of the backup to the remote host is in progress. Please wait !     \n\n" > /dev/null 2>&1)
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
     echo "transfer backup $final_backup_file file with rsync over ssh is in progress is in progess ..."
 fi
+
+
 show_wait_dialog && sleep 2
 
 cd ~/Persistent
 
 # copy md5 checksum
+
+echo  -avHPe "$port" /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host
 
 rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host
 
