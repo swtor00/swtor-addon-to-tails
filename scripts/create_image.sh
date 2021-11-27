@@ -257,7 +257,6 @@ fi
 # from root to amnesia, so we can copy it anywhere we would like to have it
 
 
-
 time_stamp=$(date '+%Y-%m-%d-%H-%M')
 filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
 filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
@@ -356,7 +355,7 @@ sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="I
 
 if [ $BACKUP_HOST == "1" ] ; then
    if [ $WARNING_SSH == "1" ] ; then
-       zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to remote host over SSH.    \n\n" > /dev/null 2>&1
+       zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to a remote host over SSH.    \n\n" > /dev/null 2>&1
        exit 1
    fi
 fi
@@ -367,8 +366,10 @@ line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
 
 # Ok.We found a backup host .... the backup is encrypted ... let's copy the files.
 
-port="ssh -p"
+port="ssh -p "
 port+=$(echo $line | awk '{print $6}' )
+single_port=$(echo $line | awk '{print $6}' )
+ssh_hs=$(echo $line | awk '{print $9}' )
 ssh_host=$(echo $line | awk '{print $9}' )
 ssh_host+=":~/"
 
@@ -386,17 +387,13 @@ cd ~/Persistent
 
 # copy md5 checksum
 
-echo  -avHPe "$port" /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host
-
-rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host
+rsync -avHPe '"$port"' /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host > /dev/null 2>&1
 
 sleep 1
 
 # copy backup-file
 
-rsync -avHPe "$port" /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host
-
-
+rsync -avHPe '$port' /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -406,7 +403,17 @@ if [ $? -eq 0 ] ; then
    end_wait_dialog && sleep 2
 
    # After the transfer to the remote host , we restrict the access a bit to this file
-   # by chmod 0600 on the remote host
+   # by running chmod 0600 on the remote host over SSH.
+   # This little trick with "bash -s" amd SSH allows us to generate the sript localy and
+   # be executed after the connection over SSH was made.
+   # This single phrase from Dennis M. Ritchie may say it all.
+   #  „UNIX is very simple, it just needs a genius to understand its simplicity.“
+
+   echo "#/bin/bash" > tmp.sh
+   echo  "chmod 0600 ~/$final_backup_file.md5 && chmod 0600 ~/$final_backup_file && exit" >> tmp.sh
+   chmod +x tmp.sh > /dev/null 2>&1
+   ssh -42C -p $single_port $ssh_hs 'bash -s' < tmp.sh > /dev/null 2>&1
+   rm tmp.sh > /dev/null 2>&1
 
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
    --text="\n\n      Backup was transfered successfull to the remote system with rsync     \n\n" > /dev/null 2>&1)
@@ -421,6 +428,5 @@ else
     exit 1
 fi
 
-fi
 
 exit 0

@@ -267,7 +267,7 @@ else
    fi
    fi
 
-   if [ $selection == "2" ] ; then 
+   if [ $selection == "2" ] ; then
    if [ $columm2 == "0" ] ; then
        sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
        --text="\n\n             This is not possible without a fixed profile inside ~/Persistent/personal-folder !          \n\n" > /dev/null 2>&1)
@@ -296,8 +296,14 @@ else
    fi
 
    if [ $selection == "5" ] ; then
-      ./swtor-tools.sh
+      if [ ! -f ~/Persistent/scripts/state/online ] ; then
+         ./swtor-tools.sh
+      else
+          sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+          --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+      fi
    fi
+
 
    if [ $selection == "6" ] ; then
 

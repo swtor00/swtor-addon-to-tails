@@ -82,7 +82,7 @@ account=$(zenity --width=800 --height=400 --list --title "Please select the desi
           --column "Destination country" \
           --column "Addional description" \
           --hide-column=3,4,5,7,9,10 \
-          --print-column=1,9,2 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
+          --print-column=1,9,2,6 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
@@ -92,6 +92,7 @@ if [ "$selection" == "" ] ; then
     exit 1
 fi
 
+echo $account
 
 # Right now, we have to decide what kind of connection we would like to use
 
@@ -99,11 +100,11 @@ tmp=$(echo $account | tr "|" " ")
 arg1=$(echo $tmp | awk '{print $1}')
 arg2=$(echo $tmp | awk '{print $2}')
 arg3=$(echo $tmp | awk '{print $3}')
-
+arg4=$(echo $tmp | awk '{print $4}')
 
 if [ $arg1 == "fullssh.sh" ] ; then
    if [ $arg3 == "ssh-id" ] ; then
-       grep fullssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/fullssh.arg
+       grep fullssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 | grep $arg4 > ~/Persistent/swtorcfg/fullssh.arg
 
        # We start the little python-code to execute
 
