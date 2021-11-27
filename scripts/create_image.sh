@@ -256,7 +256,6 @@ fi
 # We create the non encrypted image (tar.gz) with the user root and after the creation of the backup we change the owner
 # from root to amnesia, so we can copy it anywhere we would like to have it
 
-
 time_stamp=$(date '+%Y-%m-%d-%H-%M')
 filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
 filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
@@ -309,6 +308,7 @@ esac
 
 # By now , we have we have the following things ...
 # A single backupfolder that contains a simple tar.gz file or a encrypted tar.gz file
+# depending on the user's action
 
 cp ~/Persistent/scripts/restore.sh $final_backup_directory
 
@@ -350,7 +350,7 @@ fi
 
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Found a valid backup server inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
+--text="\n\n      Found a backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
 
 
 if [ $BACKUP_HOST == "1" ] ; then
@@ -363,8 +363,33 @@ fi
 # we can go away here ...
 
 line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
+echo $line > check_parameters_backup
 
 # Ok.We found a backup host .... the backup is encrypted ... let's copy the files.
+# But only if the correct types of backup-servers are configured.
+# mode connection : fulssh
+# mode password   : ssid
+# otherwise get error-code 1
+
+if grep -q "fullssh" ./check_parameters_backup ; then
+   echo found fullssh.sh
+else
+   echo ... no fullssh.sh
+   zenity --error --width=600 --text="\n\n    This backup host definition is not valid without fullssh.sh !    \n\n" > /dev/null 2>&1
+   rm check_parameters_backup > /dev/null 2>&1
+   exit 1
+fi
+
+if grep -q "ssh-id" ./check_parameters_backup ; then
+   echo found ssh-id
+else
+   echo ... no ssh-id
+   zenity --error --width=600 --text="\n\n    This backup host definition is not valid without ssh-id !    \n\n" > /dev/null 2>&1
+   rm check_parameters_backup > /dev/null 2>&1
+   exit 1
+fi
+
+rm check_parameters_backup > /dev/null 2>&1
 
 port="ssh -p "
 port+=$(echo $line | awk '{print $6}' )
