@@ -1,11 +1,23 @@
-I would like to test this addon only, what SSH-Provider should I choose ?
+Is this addon a little helper to use a VPN within Tails ?
+----------------------------------------------------------
+No. We only use SSH to communicate with ohers Servers.  
+Only SSH to create a local SOCK5 Server on Tails.
 
-For a simple and cheap way to create a SSH-Account I would say here ... 
+
+Do you provide a free SSH account with this Add-on ? 
+----------------------------------------------------
+No ... You have to create your own SSH-Accounts. 
+
+
+I would like to test this addon only, what SSH-Provider should I choose ?
+-------------------------------------------------------------------------
+
+For a simple and cheap and easy way to create a SSH-Account I would say here ... 
 
 https://www.dewassh.net/server/SSH 
 
 They provide a SSH account for free (at least for 3 Days) that is made in less than one minute.
-The list of Countrys to create the account is wide. Create your own account for free and create
+The list of countrys to create the wished SSH account is wide. Create your own account for free and create
 the file ~/Persistent/swtorssh.cfg and fill it like this little example below.
 
 pfssh.sh     passwd Compress 4 2 143 9999   noshell LIiS-dewassh.net@us.serverkit.me   xxxxx           xxxxxx  USA          3-Day-account 
@@ -14,40 +26,52 @@ This is only a example. You have to fill it with you own data fron dewassh.net.(
 
 
 I would like to backup my persistent Data to a foreign host over SSH. What do I need for this  ? 
+-------------------------------------------------------------------------------------------------
 
 - A full featured mode SSH account (fullssh.sh) and a password less login. 
 - A login with password for backup is not supported.
+- You can still make Backups of your persistent Volume with the add-on
+  but not transfer the backup to a other host.
 
 
 What fullshell provider do you recommand as the author of this addon ? 
+----------------------------------------------------------------------
 
 My favorite is clear : https://www.freeshell.de
-
-Write a postcard and you have full featured Shell acount with 20GB.
+Write a postcard to Germany and you have full featured Shell acount with 20GB.
 
 
 Are there any backdoors inside the add-on ? 
-
-No. It is only shell-code (scripts) that is clear written and 
-there a no backdoors in the scripts or the 2 provided profiles 
+--------------------------------------------
+No. It is only pure shell-code (scripts) that is clear written and 
+there a no backdoors inside the scripts or the 2 provided profiles 
 for chromium.
 
 
-Is it possible to replace the file ~/Persistent/settings/tmp.tar.gz 
-with my own chromium profiles ? 
+Is it possible to replace the file ~/Persistent/settings/tmp.tar.gz with my own chromium profiles ?
+---------------------------------------------------------------------------------------------------- 
 
 Yes ... of course but be warned. If you replace the provided tmp.tar.gz 
-with your own version createdm , on every update over git your own settings are 
+with your own version created, on every update over git your own settings are 
 overwritten. I do try to implement this feature. 
 Just in case you aren't trusting my profiles. 
  
 
 
-I would like to use my own Desktop-Wallpaper as Background in freezed-mode.
-Is this possible ? 
+I would like to use my own Desktop-Wallpaper as a Background in freezed-mode.Is this possible ?
+--------------------------------------------------------------------------------------------- 
 
-Replace the file predefined swtor-desktop-freezed.jpeg inside the doc directory with your own
-Desktop-Wallpaper. 
+Replace the file predefined 'swtor-desktop-freezed.jpeg' inside the doc directory with your own
+Desktop-Wallpaper.Of couse you should do this , prior to freezing the system.
+
+
+
+Is there a other way to install the add-on instead of git ? 
+----------------------------------------------------------- 
+
+No
+
+
 
 
  
