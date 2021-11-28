@@ -299,18 +299,24 @@ Date		Release		Author		Description
                                                   lines as long they use a different ports.
                                                   What you should not do !
                                                   The same host and username with the same port ! 
+                                                  I don't check for same entrys on mutliple lines. 
 
                                                 - It is not longer possible to open Tools & Utilitys as 
                                                   long there is a open connection. 
 
-                                                - I had some issues with rsync / ssh over port 22 and somer other
-                                                  ports than 22. Now it works ,, but I don't know why ..
+                                                - I had some issues with rsync / ssh over port 443 than the normal 
+                                                  port 22. Now it works ,, but I don't know exactly why ..
 
                                                 - Prior to version 0.60 I did not check the entry of the backup host inside 
-                                                  swtorssh.cfh. If the backup entry isn't with filled with fullssh.sh and ssh-id 
-                                                  the backup stops ... with a charming error.
+                                                  swtorssh.cfh. If the backup entry line isn't filled with fullssh.sh and ssh-id 
+                                                  the backup stops ... with a charming error message.
 
                                                 - Added F.A.Q. to the doc section.
+
+                                                - Changed Parameter inside swtorssh.cfg fron "NoShell" to "noshell"
+
+                                                - Chnaged script pfssh-interactive.sh to new dialogs
+
 
 
   

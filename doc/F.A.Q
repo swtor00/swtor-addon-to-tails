@@ -43,7 +43,15 @@ Just in case you aren't trusting my profiles.
  
 
 
+I would like to use my own Desktop-Wallpaper as Background in freezed-mode.
+Is this possible ? 
 
+Replace the file predefined swtor-desktop-freezed.jpeg inside the doc directory with your own
+Desktop-Wallpaper. 
+
+
+ 
+ 
 
 
   

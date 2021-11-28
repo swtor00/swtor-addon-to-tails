@@ -157,7 +157,7 @@ chain+=$arg6
 chain+=" -D "
 chain+=$arg7
 
-if [ $arg8 == "NoShell" ]
+if [ $arg8 == "noshell" ]
    then
     chain+=" -N "
 fi

@@ -144,7 +144,7 @@ if [ $arg1 == "chainssh.sh" ] ; then
         touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./3.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
    else
-       zenity --error --width=400 --text "\n\n Only the 'ssh-id' authentification is valid in \n chainssh-mode of swtor ! 'passwd' is not valid. \n\n"
+       zenity --error --width=400 --text "\n\n Only the 'ssh-id' authentification is valid in \n chainssh.sh-mode of swtor ! 'passwd' is not valid. \n\n"
        exit 1
    fi
 fi
@@ -172,7 +172,7 @@ if [ $arg1 == "pfssh.sh" ] ; then
        touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./4.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
     else
-       zenity --error --width=400 --text "\n\n Only the 'passwd' authentification is valid in \n pfssh-mode of swtor ! 'ssh-id' is not valid. \n\n"
+       zenity --error --width=400 --text "\n\n Only the 'passwd' authentification is valid in \n pfssh.sh-mode of swtor ! 'ssh-id' is not valid. \n\n"
        exit 1
     fi
 fi

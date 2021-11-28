@@ -122,7 +122,7 @@ if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/fullssh.arg | awk '{print $9}')
 
 else
-    swtor_missing_arg
+    swtor_missing_arg 
     exit 1
 fi
 
@@ -131,7 +131,7 @@ if [ -f /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo We found a password-file that should contain the password to the host
    fi
-   password=$(cat ~/Persistent/swtorcfg/ssh-interactive.arg)
+  swtor_missing_arg password=$(cat ~/Persistent/swtorcfg/ssh-interactive.arg)
 else
     swtor_missing_password
     exit 1
@@ -172,7 +172,7 @@ chain+=$arg6
 chain+=" -D "
 chain+=$arg7
 
-if [ $arg8 == "NoShell" ]
+if [ $arg8 == "noshell" ]
    then
     chain+=" -N "
 fi
