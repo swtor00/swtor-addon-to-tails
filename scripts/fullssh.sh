@@ -182,8 +182,8 @@ fi
 
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
 
-if [ -z "$ssh_pid" ] ; then 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+if [ -z "$ssh_pid" ] ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo starting ssh command
          echo $chain
       fi

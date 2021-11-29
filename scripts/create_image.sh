@@ -366,10 +366,10 @@ line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
 echo $line > check_parameters_backup
 
 # Ok.We found a backup host .... the backup is encrypted ... let's copy the files.
-# But only if the correct types of backup-servers are configured.
+# But only if the correct type of backup-servers are configured.
 # mode connection : fulssh
 # mode password   : ssid
-# otherwise get error-code 1
+# otherwise go away with a  error-code 1
 
 if grep -q "fullssh" ./check_parameters_backup ; then
    echo found fullssh.sh

@@ -4,21 +4,103 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.14 or higher                        #
+# OS      : Tails 4.24 or higher                        #
 #                                                       #
-# VERSION : 0.52                                        #
+# VERSION : 0.60                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 30-12-2020                                  #
+# DATE    : 28-11-2021                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# Test all parameters for this script
+
+if [ "$TERMINAL_VERBOSE" == "" ];then
+   echo "this shell-script can not longer direct executed over the terminal."
+   echo "you have to call this shell-script over swtor-menu.sh"
+   exit 1
+fi
+
+
+if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export IMPORT_BOOKMAKRS="1"
+else
+   export IMPORT_BOOKMAKRS="0"
+fi
+
+if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export GUI_LINKS="1"
+else
+   export GUI_LINKS="0"
+fi
+
+if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export CHECK_UPDATE="1"
+else
+   export CHECK_UPDATE="0"
+fi
+
+if grep -q "BACKUP-FIXED-PROFILE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+   export BACKUP_FIXED_PROFILE="1"
+else
+   export BACKUP_FIXED_PROFILE="0"
+fi
+
+if grep -q "BACKUP_APT_LIST:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BACKUP_APT_LIST="1"
+else
+     export BACKUP_APT_LIST="0"
+fi
+
+if grep -q "TERMINAL-VERBOSE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export TERMINAL_VERBOSE="1"
+else
+     export TERMINAL_VERBOSE="0"
+fi
+
+if grep -q "BROWSER-SOCKS5:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BROWSER_SOCKS5="1"
+else
+     export BROWSER_SOCKS5="0"
+fi
+
+if grep -q "BYPASS-SOFTWARE-CHECK:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export BYPASS="1"
+else
+     export BYPASS="0"
+fi
+
+if grep -q "CHECK-EMPTY-SSH:NO" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export CHECK_SSH="0"
+else
+     export CHECK_SSH="1"
+fi
+
+export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+
+export  DEBUGW="0"
+
+
+source ~/Persistent/scripts/swtor-global.sh
+global_init
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "global_init() done"
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "failure during initialisation of global-init() !"
+       echo >&2 "chainssh.sh exiting with error-code 1"
+    fi
+    exit 1
+fi
+
+# Test needet parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
    then
@@ -34,41 +116,40 @@ if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/chainssh.arg | awk '{print $9}')
    arg10=$(cat /home/amnesia/Persistent/swtorcfg/chainssh.arg | awk '{print $10}')
    arg13=$(cat /home/amnesia/Persistent/swtorcfg/chainssh.arg | awk '{print $13}')
-
-
 else
-    zenity --info  -width=600 --text="No arguments supplied with chainssh.arg or this file do not exist !"  > /dev/null 2>&1
-    exit 1
-fi
-
-
-if [ ! -f /home/amnesia/Persistent/swtorcfg/$arg13 ]
-then
-       zenity --info -width=600 --text="Chain-configuration file not found inside ~/Persistent/swtorcfg !"  > /dev/null 2>&1
-       echo file $arg13 not found inside of ~/Persistent/swtorcfg
-       exit 1
-fi
-
-if [ $arg1 != "chainssh.sh" ] ;
-   then
-   zenity --info -width=600 --text="Wrong script definition inside fullssh.arg !"  > /dev/null 2>&1
+   swtor_missing_arg
    exit 1
 fi
 
 
-if [ $arg3 != "Compress" ] ; then
-   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -At"
-else
-   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -AtC"
+if [ ! -f /home/amnesia/Persistent/swtorcfg/$arg13 ] ; then
+   zenity --info --width=600  --title="Information" \
+   --text="\n\n     The chain-configuration file $arg13 not found inside ~/Persistent/swtorcfg !     \n\n"  > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "chain-configuration $arg13 not found"
+   fi
+   exit 1
 fi
+
+if [ $arg1 != "chainssh.sh" ] ; then
+   swtor_wrong_script
+   exit 1
+fi
+
+if [ $arg3 != "Compress" ] ; then
+   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -A"
+else
+   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -AC"
+fi
+
 
 if [ $arg4 == "4" ] ; then
     chain+="4"
 fi
 
 if [ $arg4 == "6" ] ; then
-    zenity --info -width=600 --text="IP V6 can not be used !"  > /dev/null 2>&1
-    exit 1
+   swtor_no_ipv6
+   exit 1
 fi
 
 if [ $arg5 != "2" ] ; then
@@ -91,8 +172,14 @@ chain+=":localhost:$arg10"
 
 
 if [ $arg8 != "chain" ] ; then
-    echo wrong argument inside chainssh.arg
+   zenity --info --width=600  --title="Information" \
+   --text="\n\n     The chain command was not found insde the configuration  !     \n\n"  > /dev/null 2>&1
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "chain-command inside swtossh.cfg '$arg8' is not correct"
+   fi
+
 fi
+
 
 chain+=" "
 chain+=$arg9
@@ -100,62 +187,96 @@ chain+=$arg9
 command1+=$chain
 command2=$(cat ~/Persistent/swtorcfg/$arg13)
 
-# One thing is very important :
+# One thing is very important to note here :
+#
 # In the case we would like to close the complete connection
-# we have to send a kill -9 to the remote host or the local
-# port 11000 remains closed for future connections
+# including the SSH-session from our SSH Host 1 to our secound SSH Host 2.
+# We have to send a kill -9 to the remote Host 1 or the local used port
+# remains in use with the SSH-connection from Host1 to Host2.
 
 username=$(echo $arg9 | tr "@" " " | awk '{print $1}')
-command3="sleep 2 |  pkill -u $username ssh"
-
+command3="sleep 1 |  pkill -u $username ssh > /dev/null 2>&1"
 
 # is allready a ssh deamon running ?
 
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
 
-if [ -z "$ssh_pid" ]
-   then
-      echo starting ssh command
-      echo $command1 $command2
-      ssh $command1 \
-          $command2 &
+if [ -z "$ssh_pid" ] ; then
 
-      # we loook on the processes
-
-      sleep 5
-
-      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
-      echo PID of encrypted ssh channel is $ssh_pid
-
-      if [ -z "$ssh_pid" ]
-          then
-          zenity --info -width=600 --text "ssh isn't active ! Script do exit now. "
-          exit 1
+      if [ $TERMINAL_VERBOSE == "1" ] ; then 
+         echo starting ssh command
+         echo $comnand1
+         echo $command2
       fi
 
-      echo ssh command succesfull executed
+
+      cd ${global_tmp}
+
+      rm tmp.sh > /dev/null 2>&1
+      echo "#/bin/bash" > tmp.sh
+      echo $command2 >> tmp.sh
+      echo "exit 0" >> tmp.sh 
+      chmod +x tmp.sh > /dev/null 2>&1
+
+      # We start the SSH command and send it in the backgroud 
+
+      ssh $command1 'bash -s' < tmp.sh  > /dev/null 2>&1 &
+
+      rm tmp.sh > /dev/null 2>&1
+
+      show_wait_dialog && sleep 4
+
+      # we loook on the process table after the time out for ssh expires ...
+
+      sleep $TIMEOUT_SSH
+
+      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh |awk '{print $2}')
+      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         echo PID of encrypted ssh channel is $ssh_pid
+      fi
+
+      if [ -z "$ssh_pid" ] ; then
+         if [ $TERMINAL_VERBOSE == "1" ] ; then  
+            echo "ssh connection was not made" 
+            echo "the provided password maybe was wrong"
+         fi
+         end_wait_dialog && sleep 1
+         swtor_ssh_failure
+         exit 1
+      fi
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo ssh command succesfull executed
+      fi
+
       echo 1 > /home/amnesia/Persistent/scripts/state/online
 
-      if [ -f /home/amnesia/Persistent/scripts/state/offline ]
-         then
+      if [ -f /home/amnesia/Persistent/scripts/state/offline ] ; then 
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
-      zenity --info --width=600 --text "The encrypted ssh connection over the onion-network is now active.\nTo close this connection,please press the ok button on this window !"
+      end_wait_dialog && sleep 1
+      swtor_ssh_success
 
-      # over ssh we send a kill -9 signal to ssh host1 , to relase port 11000 on host1
+      # creating killer script for host 1
 
-      ssh -p $port $arg9 \
-             $command3 &
-      sleep 2
+      rm tmp.sh > /dev/null 2>&1
+      echo "#/bin/bash" > tmp.sh
+      echo $command3 >> tmp.sh
+      echo "exit 0"
+      chmod +x tmp.sh > /dev/null 2>&1
+
+
+      ssh -p $port $arg9 'bash -s' < "tmp.sh &"  > /dev/null 2>&1
+
+      sleep 1
 
       ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
 
-      if [ -z "$ssh_pid" ]
-         then
-          echo local ssh daemon allready gone into the darkness
+      if [ -z "$ssh_pid" ] ; then
+         echo "the local ssh-daemon allready gone into the darkness ...."
       else
-          kill -9 $ssh_pid
+         kill -9 $ssh_pid
       fi
 
       rm  /home/amnesia/Persistent/scripts/state/online
@@ -163,12 +284,8 @@ if [ -z "$ssh_pid" ]
       /home/amnesia/Persistent/scripts/cleanup.sh
 
       echo 1 > /home/amnesia/Persistent/scripts/state/offline
-else
-      echo cancel ...
-      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Connection allready estabishled !" > /dev/null 2>&1)
-      exit 1
+
 fi
 
+swtor_cleanup
 exit 0
-
-

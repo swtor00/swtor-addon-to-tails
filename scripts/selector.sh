@@ -92,8 +92,6 @@ if [ "$selection" == "" ] ; then
     exit 1
 fi
 
-echo $account
-
 # Right now, we have to decide what kind of connection we would like to use
 
 tmp=$(echo $account | tr "|" " ")
@@ -137,12 +135,14 @@ fi
 
 if [ $arg1 == "chainssh.sh" ] ; then
    if [ $arg3 == "ssh-id" ] ; then
+
        grep chainssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/chainssh.arg
 
        # We start the little python-code to execute
 
         touch ~/Persistent/swtorcfg/log/ssh-command.log
        ./3.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
+
    else
        zenity --error --width=400 --text "\n\n Only the 'ssh-id' authentification is valid in \n chainssh.sh-mode of swtor ! 'passwd' is not valid. \n\n"
        exit 1

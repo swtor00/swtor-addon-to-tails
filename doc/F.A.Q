@@ -1,7 +1,7 @@
 Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
 No. We only use SSH to communicate with ohers Servers.  
-Only SSH to create a local SOCK5 Server on Tails.
+Only SSH is used to create a local SOCK5 Server on Tails.
 
 
 Do you provide a free SSH account with this Add-on ? 
@@ -29,6 +29,7 @@ I would like to backup my persistent Data to a foreign host over SSH. What do I 
 -------------------------------------------------------------------------------------------------
 
 - A full featured mode SSH account (fullssh.sh) and a password less login. 
+- rsync on the remote SSH-host
 - A login with password for backup is not supported.
 - You can still make Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
@@ -53,8 +54,7 @@ Is it possible to replace the file ~/Persistent/settings/tmp.tar.gz with my own 
 
 Yes ... of course but be warned. If you replace the provided tmp.tar.gz 
 with your own version created, on every update over git your own settings are 
-overwritten. I do try to implement this feature. 
-Just in case you aren't trusting my profiles. 
+overwritten. I do try to implement this feature. Just in case you aren't trusting my predefined profiles. 
  
 
 
@@ -69,9 +69,23 @@ Desktop-Wallpaper.Of couse you should do this , prior to freezing the system.
 Is there a other way to install the add-on instead of git ? 
 ----------------------------------------------------------- 
 
-No
+Simply No. 
 
 
+Could the add-on read my data ? 
+-------------------------------
+
+Only to create a backup of the persistent Volume.
+
+
+My specific question isn't found here. What should I do ? 
+---------------------------------------------------------
+
+Write me a email to swtor00@protonmail.com 
+
+
+Could you addon read my data ? 
+ 
 
 
  
