@@ -73,11 +73,18 @@ Simply No.
 
 
 Could the add-on read my data ? 
--------------------------------
+--------------------------------
+Only to create a backup of the persistent Volume. 
 
-Only to create a backup of the persistent Volume.
 
+For what reason do we need a Repair-Stick after after the Backup was made ? 
+----------------------------------------------------------------------------
 
+If your SSH-provider do not allow password logins .... only stored keys to login. 
+Without the right keys to store back to ~/.ssh you wouldn't have a chance to get 
+copy back the backup you made. 
+
+  
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
 
