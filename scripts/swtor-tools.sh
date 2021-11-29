@@ -102,55 +102,11 @@ fi
 
 
 if [ $selection == "4" ] ; then
-
-    cd ~/Persistent/scripts
-    sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Checking for updates ... please wait !" > /dev/null 2>&1)
-
-    # We contact github to see what version is over there stored ....
-
-    wget -O REMOTE.html  https://github.com/swtor00/swtor-addon-to-tails/blob/master/swtorcfg/swtor.cfg
-    html2text REMOTE.html > REMOTE.TXT
-
-    REMOTE=$(grep "SWTOR-VERSION" REMOTE.TXT)
-    REMOTE=$(echo $REMOTE | tr -d " ")
-    LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg)
-
-    rm REMOTE.html > /dev/null 2>&1
-    rm REMOTE.TXT > /dev/null 2>&1
-
-    # Comparing the remote and the local version of the scirpt..
-
-    echo REMOTE-VERSION [$REMOTE] LOCAL-VERSION [$LOCAL]
-
-    if [ "$REMOTE" == "$LOCAL" ]
-    then
-        echo "no updates found ...."
-        sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="No updates found to download." > /dev/null 2>&1) 
-    else
-
-         # Is this script controlled with git or not ?
-
-         if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ]
-         then
-             zenity --info --width=600 --text="Addon has no .git directory inside of ~/Persistent/swtor-addon-to-tails !"  > /dev/null 2>&1
-             exit 1
-         fi
-
-        zenity --question --width=600 --text "On Github is a newer version of swtor to download.\n Would you like to update the addon now ?"
-        case $? in
-                0) sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The addon is now updating to the latest release ... please wait !" > /dev/null 2>&1)
-                   ./udpate.sh
-                   sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="The addon is now ready to execute again." > /dev/null 2>&1)
-                   exit 0
-                ;;
-                1) echo update select was no
-                ;;
-        esac
-    fi
+  ./setup.sh
 fi
 
 if [ $selection == "6" ] ; then
-   evince /home/amnesia/Persistent/doc/sample-configuration.pdf.pdf
+   evince /home/amnesia/Persistent/doc/sample-configuration.pdf
 fi
 
 
@@ -160,12 +116,11 @@ fi
 
 
 if [ $selection == "7" ] ; then
-    evince /home/amnesia/Persistent/doc/swtor0-52.pdf
+    evince /home/amnesia/Persistent/doc/swtor0-60.pdf
 fi
 
 if [ $selection == "8" ] ; then
     ./cleanup.sh
-    sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Chromium profiles 1 & 2 deleted and new created !" > /dev/null 2>&1)
     cd ~/Persistent/settings
     tar xzf tmp.tar.gz
 fi
