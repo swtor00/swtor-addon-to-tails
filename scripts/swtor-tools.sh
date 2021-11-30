@@ -30,69 +30,88 @@ while [ $menu -eq 1 ]; do
 
       cd ~/Persistent/scripts
 
-       selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
-       "1"  "[01]  ->  Freeze current settings to persistent (needs dot-file activated)" \
-       "2"  "[02]  ->  Unfreeze settings from persistent (needs dot-file activated) " \
-       "3"  "[03]  ->  Backup persistent volume" \
-       "4"  "[04]  ->  Check for updates on github" \
-       "5"  "[05]  ->  Import bookmarks for the TOR-Browser" \
-       "6"  "[06]  ->  Show documentation for swtor.cfg" \
-       "7"  "[07]  ->  Show documentation for the addon" \
-       "8"  "[08]  ->  Clean current Profiles 1 & 2" \
-       "9"  "[09]  ->  Show Changes in this release" \
-       "10" "[10]  ->  About swtor-addon" \
-       "11" "[11]  ->  Back to the mainmenu" \
-       --hide-column=1 \
-       --print-column=1)
+      if [ ! -f ~/Persistent/swtorcfg/freezing ] ; then 
+         selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
+         "1"  "[01]                                             " \
+         "2"  "[02]                                             " \
+         "3"  "[03]      Backup persistent volume" \
+         "4"  "[04]      Check for updates on github" \
+         "5"  "[05]      Import bookmarks for the TOR-Browser" \
+         "6"  "[06]      Show documentation for the file swtor.cfg" \
+         "7"  "[07]      Show documentation for the addon" \
+         "8"  "[08]      Clean current Profiles 1 & 2" \
+         "9"  "[09]      Show Changes in this release (CHANGES)" \
+        "10"  "[10]      About swtor-addon" \
+        "11"  "[11]      Back to the mainmenu" \
+        --hide-column=1 \
+        --print-column=1)
+      else
+          if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
+             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
+             "1"  "[01]      Freezing the current state             " \
+             "2"  "[02]                                             " \
+             "3"  "[03]      Backup persistent volume" \
+             "4"  "[04]      Check for updates on github" \
+             "5"  "[05]      Import bookmarks for the TOR-Browser" \
+             "6"  "[06]      Show documentation for the file swtor.cfg" \
+             "7"  "[07]      Show documentation for the addon" \
+             "8"  "[08]      Clean current Profiles 1 & 2" \
+             "9"  "[09]      Show Changes in this release (CHANGES)" \
+             "10" "[10]      About swtor-addon" \
+            "11"  "[11]      Back to the mainmenu" \
+            --hide-column=1 \
+            --print-column=1)
+          else
+             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
+             "1"  "[01]                                   " \
+             "2"  "[02]      Unfreezing the current state" \
+             "3"  "[03]      Backup persistent volume" \
+             "4"  "[04]      Check for updates on github" \
+             "5"  "[05]      Import bookmarks for the TOR-Browser" \
+             "6"  "[06]      Show documentation for the file swtor.cfg" \
+             "7"  "[07]      Show documentation for the addon" \
+             "8"  "[08]      Clean current Profiles 1 & 2" \
+             "9"  "[09]      Show Changes in this release (CHANGES)" \
+             "10" "[10]      About swtor-addon" \
+            "11"  "[11]      Back to the mainmenu" \
+            --hide-column=1 \
+            --print-column=1)
+          fi
+      fi
+
 
 if [ "$selection" == "" ] ; then
     menu=0
 fi
 
-if [ $selection == "1" ] ; then
-   echo freezing
-
-   if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ]
-      then
-            mkdir /live/persistence/TailsData_unlocked/dotfiles/.config
-
-            cp -r ~/.config/dconf /live/persistence/TailsData_unlocked/dotfiles/.config
-            cp -r ~/.config/gtk-3.0 /live/persistence/TailsData_unlocked/dotfiles/.config
-            cp -r ~/.config/pulse /live/persistence/TailsData_unlocked/dotfiles/.config
-            cp -r ~/.config/ibus /live/persistence/TailsData_unlocked/dotfiles/.config
-            cp -r ~/.config/nautilus /live/persistence/TailsData_unlocked/dotfiles/.config
-            cp -r ~/.config/gnome-session /live/persistence/TailsData_unlocked/dotfiles/.config
-            cp -r ~/Desktop /live/persistence/TailsData_unlocked/dotfiles
-            cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles
-
-            echo freezing done
-
-            # Do markup the version of Tails we used to freezing ... we store it right here
-
-            tails-version > ~/Persistent/swtorcfg/freezed.cgf
-            sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Current settings of Tails are now freezed !" > /dev/null 2>&1)
+if [ "$selection" == "1" ] ; then
+   if [ -f ~/Persistent/swtorcfg/freezing ] ; then
+      if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
+         ./cli_tweak.sh
+         ./cli_freezing.sh
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n                          System has ben freezed !                       \n\n" > /dev/null 2>&1)
+      else
+         echo freezing not possible -> allready freezed
+      fi
    else
-            sleep 5 | tee >(zenity --error --text="Freezing not possible ! \nThis Tails system seems already in the state to be freezed !" > /dev/null 2>&1)
-
+       echo freezing not possible missing dotfile
    fi
 fi
 
 
 if [ $selection == "2" ] ; then
-   echo unfreezing
-
-   if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ]
-      then
-          sleep 5 | tee >(zenity --error --text="Unfreezing not possible ! \nThis Tails seems not to be in the state of to be freezed !" > /dev/null 2>&1)
+   if [ -f ~/Persistent/swtorcfg/freezing ] ; then
+      if [  -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
+         ./cli_unfreezing.sh
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+          --text="\n\n                            System has ben unfreezed !                         \n\n" > /dev/null 2>&1)
+      else
+          unfreezing not possible -> system not freezed
+      fi
    else
-          rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config
-          rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop
-          rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures
-
-          rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
-
-          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="Current settings are now unfreezed.\nPlease reboot Tails now ! " > /dev/null 2>&1)
-  fi 
+      echo unfreezing not possible missing dotfile
+   fi
 fi
 
 
@@ -102,7 +121,7 @@ fi
 
 
 if [ $selection == "4" ] ; then
-  ./setup.sh
+  ./update.sh
 fi
 
 if [ $selection == "6" ] ; then
@@ -126,10 +145,9 @@ if [ $selection == "8" ] ; then
 fi
 
 if [ $selection == "10" ] ; then
-    ./swtor-about &
-    sleep 4
-    pid=$(ps | grep swtor-about | awk '{print $1}')
-    kill -9 $(echo $pid) > /dev/null 2>&1
+   ./swtor-about & 2>&1 > /dev/null
+   sleep 3
+   pkill swtor-about
 fi
 
 if [ $selection == "9" ] ; then

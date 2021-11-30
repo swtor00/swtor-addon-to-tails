@@ -211,23 +211,23 @@ while [ $menu -eq 1 ]; do
 
        if [ ! -d ~/Persistent/personal-files/3 ] ; then
             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
-            "1"  "[01]  ->  Select SSH-Server to connect" \
-            "2"  "[02]  ->  ---------------------------------------------- " \
-            "3"  "[03]  ->  Browser for over ssh-socks 5 :Normal Profile" \
-            "4"  "[04]  ->  Browser for over ssh-socks 5 :Anonymous Profile" \
-            "5"  "[05]  ->  Utilitys & Help" \
-            "6"  "[06]  ->  Exit" \
+            "1"  "[01]      Select SSH-Server to connect" \
+            "2"  "[02]      ---------------------------------------------- " \
+            "3"  "[03]      Browser for over ssh-socks 5 :Normal Profile" \
+            "4"  "[04]      Browser for over ssh-socks 5 :Anonymous Profile" \
+            "5"  "[05]      Utilitys & Help" \
+            "6"  "[06]      Exit" \
             --hide-column=1 \
             --print-column=1)
             columm2="0"  
        else
             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
-            "1"  "[01]  ->  Select SSH-Server to connect" \
-            "2"  "[02]  ->  Browser for over ssh-socks 5 :Fixed Profile" \
-            "3"  "[03]  ->  Browser for over ssh-socks 5 :Normal Profile" \
-            "4"  "[04]  ->  Browser for over ssh-socks 5 :Anonymous Profile" \
-            "5"  "[05]  ->  Utilitys & Help" \
-            "6"  "[06]  ->  Exit" \
+            "1"  "[01]      Select SSH-Server to connect" \
+            "2"  "[02]      Browser for over ssh-socks 5 :Fixed Profile" \
+            "3"  "[03]      Browser for over ssh-socks 5 :Normal Profile" \
+            "4"  "[04]      Browser for over ssh-socks 5 :Anonymous Profile" \
+            "5"  "[05]      Utilitys & Help" \
+            "6"  "[06]      Exit" \
             --hide-column=1 \
             --print-column=1)
             columm2="1" 
