@@ -317,19 +317,30 @@ Date		Release		Author		Description
 
                                                 - Changed script pfssh-interactive.sh to new dialogs
 
-                                                - By now, all 3 conection-modes have new dialogs.
+                                                - By now, all 4 conection-modes have new dialogs.
                                     
-                                                  [fullssh.sh] 
+                                                  [fullssh.sh]
+                                                  [fullssh-interactive.sh]   
                                                   [chainssh.sh] 
                                                   [pfssh.sh]
                                                   
                                                 - Freezing / Unfreezing over tools-menu changed and 
-                                                  is working.
+                                                  is working. If the dot-files are not set the entrys
+                                                  freezing and unfreezing do not appear in the menu.
 
-   
-                                                 
+                                                - By now we have a running watchdog process that
+                                                  shows a window if a established connection is 
+                                                  disconnected.As long the addon is executed this 
+                                                  process (watchdog.sh) is executed in the background.
 
-  
+                                                - New parameter : AUTO-CLOSE for swtor.cfg         
+ 
+                                                - It is now possible to quit the remote X11 Xclock 
+                                                  ... You see the connection disconnected window.                                                             
+                                                  This was not possible prior the watchdog process.
+
+
+                                                         
  
                                                              
 

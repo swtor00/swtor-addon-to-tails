@@ -188,7 +188,7 @@ chain+=$arg9
 if [ $arg8 == "clock" ]
    then
    xhost +
-   chain+=" xclock -geometry 150x150+85+5"
+   chain+=" xclock -geometry 150x150+85+5 && pkill ssh"
 fi
 
 # is allready a ssh deamon running ?
@@ -210,23 +210,26 @@ if [ -z "$ssh_pid" ] ; then
       sleep $TIMEOUT_SSH
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
-      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+      echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
+      echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
       fi
 
       if [ -z "$ssh_pid" ] ; then
-         if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo "ssh connection was not made" 
             echo "the provided password maybe was wrong"
-         fi 
+         fi
          end_wait_dialog && sleep 1
          swtor_ssh_failure
          exit 1
       fi
 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then    
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo ssh command succesfull executed
-      fi 
+      fi
 
       echo 1 > /home/amnesia/Persistent/scripts/state/online
 
@@ -237,22 +240,14 @@ if [ -z "$ssh_pid" ] ; then
       end_wait_dialog && sleep 1
       swtor_ssh_success
 
-      sleep 1
+      # Here we signal the watchdog script to terminate the current connection
 
-      ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
+      echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/close__request
+      echo $arg9     >> ~/Persistent/swtor-addon-to-tails/tmp/close__request
 
-      kill -9 $ssh_pid
-
-      if [ $arg8 == "clock" ]
-         then
+      if [ $arg8 == "clock" ] ; then
          xhost -
       fi
-
-      rm  /home/amnesia/Persistent/scripts/state/online
-
-      /home/amnesia/Persistent/scripts/cleanup.sh
-
-      echo 1 > /home/amnesia/Persistent/scripts/state/offline
 fi
 
 swtor_cleanup

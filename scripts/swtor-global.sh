@@ -94,7 +94,7 @@ if [ $? -eq 0 ] ; then
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "Touching tic_tac on remote host."
-         echo >&2 "if you don't like to touch this file ....you have to remove the git directory"  
+         echo >&2 "if you don't like to touch this file ....you have to remove the git directory"
       fi
       curl -socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://github.com/swtor00/swtor-addon-to-tails/blob/master/tmp/tic_tac -m3  > /dev/null 2>&1
    fi

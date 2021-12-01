@@ -138,13 +138,13 @@ fi
 
 if [ $arg1 != "pfssh.sh" ] ; then
    swtor_wrong_script
-   exit 1 
+   exit 1
 fi
 
 if [ $arg3 != "Compress" ] ; then
-   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -"
+   chain="-vv -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -"
 else
-   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -C"
+   chain="-vv -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -C"
 fi
 
 if [ $arg4 == "4" ] ; then
@@ -203,7 +203,10 @@ if [ -z "$ssh_pid" ] ; then
 
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
-      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+      echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
+      echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
       fi
 
@@ -211,41 +214,31 @@ if [ -z "$ssh_pid" ] ; then
          if [ $TERMINAL_VERBOSE == "1" ] ; then  
             echo "ssh connection was not made" 
             echo "the provided password maybe was wrong"
-            echo "or the ssh-login is expired"
-         fi 
+            echo "or the ssh-login is expired by date"
+         fi
          end_wait_dialog && sleep 1
          swtor_ssh_failure
          exit 1
       fi
 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then    
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo ssh command succesfull executed
-      fi 
+      fi
 
       echo 1 > /home/amnesia/Persistent/scripts/state/online
 
-      if [ -f /home/amnesia/Persistent/scripts/state/offline ] ; then 
+      if [ -f /home/amnesia/Persistent/scripts/state/offline ] ; then
          rm  /home/amnesia/Persistent/scripts/state/offline
       fi
 
       end_wait_dialog && sleep 1
       swtor_ssh_success
 
-      sleep 1
+      # Here we signal the watchdog script to terminate the current connection
 
-      ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
+      echo $ssh_pid   > ~/Persistent/swtor-addon-to-tails/tmp/close__request
+      echo $arg9     >> ~/Persistent/swtor-addon-to-tails/tmp/close__request
 
-      sleep 1
-
-      ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
-
-      kill -9 $ssh_pid
-
-      rm  /home/amnesia/Persistent/scripts/state/online
-
-      /home/amnesia/Persistent/scripts/cleanup.sh
-
-      echo 1 > /home/amnesia/Persistent/scripts/state/offline
 fi
 
 

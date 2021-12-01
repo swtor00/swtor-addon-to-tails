@@ -72,6 +72,12 @@ else
      export CHECK_SSH="1"
 fi
 
+if grep -q "AUTOCLOSE-BROWSER:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export AUTOCLOSE_BROWSER="1"
+else
+     export AUTOCLOSE_BROWSER="0"
+fi
+
 export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
@@ -185,6 +191,11 @@ else
 fi
 
 
+# We are ready to start the watchdog script in the background
+
+cd ~/Persistent/scripts/
+./watchdog.sh & > /dev/null 2>&1
+sleep 1
 
 # show version of script prior to show menu
 
@@ -192,7 +203,6 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo show info about addon
 fi
 
-cd ~/Persistent/scripts/
 ./swtor-about & 2>&1 > /dev/null
 sleep 3
 pkill swtor-about
@@ -330,7 +340,7 @@ fi
 
 
 swtor_cleanup
-
+pkill watchdog.sh
 exit 0
 
 

@@ -137,9 +137,9 @@ if [ $arg1 != "chainssh.sh" ] ; then
 fi
 
 if [ $arg3 != "Compress" ] ; then
-   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -A"
+   chain="-vv -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -A"
 else
-   chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -AC"
+   chain="-vv -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -AC"
 fi
 
 
@@ -190,8 +190,8 @@ command2=$(cat ~/Persistent/swtorcfg/$arg13)
 # One thing is very important to note here :
 #
 # In the case we would like to close the complete connection
-# including the SSH-session from our SSH Host 1 to our secound SSH Host 2.
-# We have to send a kill -9 to the remote Host 1 or the local used port
+# including the SSH-session from our SSH Host1 to our secound SSH Host2.
+# We have to send a kill -9 to the remote Host1 or the local used port
 # remains in use with the SSH-connection from Host1 to Host2.
 
 username=$(echo $arg9 | tr "@" " " | awk '{print $1}')
@@ -218,7 +218,7 @@ if [ -z "$ssh_pid" ] ; then
       echo "exit 0" >> tmp.sh 
       chmod +x tmp.sh > /dev/null 2>&1
 
-      # We start the SSH command and send it in the backgroud 
+      # We start the SSH command on Host1 and send it in the backgroud
 
       ssh $command1 'bash -s' < tmp.sh  > /dev/null 2>&1 &
 
@@ -231,14 +231,16 @@ if [ -z "$ssh_pid" ] ; then
       sleep $TIMEOUT_SSH
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh |awk '{print $2}')
-      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+      echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
+      echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
       fi
 
       if [ -z "$ssh_pid" ] ; then
          if [ $TERMINAL_VERBOSE == "1" ] ; then  
-            echo "ssh connection was not made" 
-            echo "the provided password maybe was wrong"
+            echo "ssh connection was not made"
          fi
          end_wait_dialog && sleep 1
          swtor_ssh_failure
@@ -258,7 +260,8 @@ if [ -z "$ssh_pid" ] ; then
       end_wait_dialog && sleep 1
       swtor_ssh_success
 
-      # creating killer script for host 1
+      # creating killer script for Host1
+      # to kill SSH connection from Host1 to Host2
 
       rm tmp.sh > /dev/null 2>&1
       echo "#/bin/bash" > tmp.sh
@@ -266,24 +269,17 @@ if [ -z "$ssh_pid" ] ; then
       echo "exit 0"
       chmod +x tmp.sh > /dev/null 2>&1
 
+      # With this script the remote SSH connection from Host1 to
+      # Host2 will be disconnected
 
       ssh -p $port $arg9 'bash -s' < "tmp.sh &"  > /dev/null 2>&1
 
       sleep 1
 
-      ssh_pid=$(ps axu | grep ServerAliveInterval | grep ssh | awk '{print $2}')
+      # Here we signal the watchdog script to terminate the current connection
 
-      if [ -z "$ssh_pid" ] ; then
-         echo "the local ssh-daemon allready gone into the darkness ...."
-      else
-         kill -9 $ssh_pid
-      fi
-
-      rm  /home/amnesia/Persistent/scripts/state/online
-
-      /home/amnesia/Persistent/scripts/cleanup.sh
-
-      echo 1 > /home/amnesia/Persistent/scripts/state/offline
+      echo $ssh_pid   > ~/Persistent/swtor-addon-to-tails/tmp/close__request
+      echo $arg9     >> ~/Persistent/swtor-addon-to-tails/tmp/close__request
 
 fi
 
