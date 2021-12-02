@@ -22,7 +22,7 @@ pid=$$
 echo process pwait2.sh $pid
 echo global_tmp is defined as $global_tmp
 echo $pid > $global_tmp/pid_wait
-sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n              [ please wait ]               \n")
+sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n              [ Please wait ]               \n")
 
 pkill -15 -P $pid
 exit 0

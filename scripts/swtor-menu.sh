@@ -197,6 +197,9 @@ cd ~/Persistent/scripts/
 ./watchdog.sh & > /dev/null 2>&1
 sleep 1
 
+sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n                          Watchdog script is started                          \n\n" > /dev/null 2>&1)
+
 # show version of script prior to show menu
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then

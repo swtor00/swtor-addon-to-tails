@@ -30,7 +30,7 @@ while [ $menu -eq 1 ]; do
 
       cd ~/Persistent/scripts
 
-      if [ ! -f ~/Persistent/swtorcfg/freezing ] ; then 
+      if [ ! -f ~/Persistent/swtorcfg/freezing ] ; then
          selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
          "1"  "[01]                                             " \
          "2"  "[02]                                             " \
@@ -125,17 +125,27 @@ if [ $selection == "4" ] ; then
 fi
 
 if [ $selection == "6" ] ; then
-   evince /home/amnesia/Persistent/doc/sample-configuration.pdf
+   evince /home/amnesia/Persistent/doc/sample-configuration.pdf > /dev/null 2>&1
 fi
 
 
 if [ $selection == "5" ] ; then
-   rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
+    zenity --question --width=600 \\
+    --text="Please read this warning carefully.\n\nAll your current Bookmarks for the TOR-Browser will be overwritten\\nAre you sure, you would like to proceed with the   import  ?  \n\n" > /dev/null 2>&1
+case $? in
+         0)
+         sync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
+         ;;
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo no import
+            fi
+         ;;
+esac
 fi
 
 
 if [ $selection == "7" ] ; then
-    evince /home/amnesia/Persistent/doc/swtor0-60.pdf
+    evince /home/amnesia/Persistent/doc/swtor0-60.pdf > /dev/null 2>&1
 fi
 
 if [ $selection == "8" ] ; then

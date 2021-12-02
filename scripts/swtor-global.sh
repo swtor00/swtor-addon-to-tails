@@ -328,7 +328,7 @@ while [ $menu -gt 0 ]; do
              fi
 
              sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-             --text="\n\n              the password was correct and we can continue now as expected !         \n\n" > /dev/null 2>&1)
+             --text="\n\n              The password was correct and we can continue now as expected !         \n\n" > /dev/null 2>&1)
 
              menu=0
              correct=1
@@ -383,6 +383,10 @@ return 0
 
 change_tails_firewall(){
 
+# We have a open dialog to close
+
+end_wait_dialog && sleep 1
+
 cd ${global_tmp}
 
 if [ $BROWSER_SOCKS5 == "1" ] ; then
@@ -397,7 +401,7 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
 
    end_wait_dialog && sleep 6
    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-   --text="\n\n                 firewall changed to accept a local socks5 proxy on port 9999 !          \n\n" > /dev/null 2>&1)
+   --text="\n\n        [ Firewall changed to accept a local socks5 proxy ]       \n\n" > /dev/null 2>&1)
 
 else
     cat password | sudo -S apt autoremove --yes  > /dev/null 2>&1
@@ -520,7 +524,7 @@ test_for_freezed() {
 cd ${global_tmp}
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      testing if the current system is in state : freezed       \n\n" > /dev/null 2>&1)
+--text="\n\n      Testing if the current system is in state : freezed       \n\n" > /dev/null 2>&1)
 
 if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
@@ -533,7 +537,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
       # It seems all OK
 
       sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-      --text="\n\n      this system is current in the state  : [freezed]\n      this Tails is the same as the freezed system        \n\n" > /dev/null 2>&1)
+      --text="\n\n        This system is current in the state  : [freezed]        \n\n" > /dev/null 2>&1)
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."
