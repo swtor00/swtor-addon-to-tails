@@ -338,18 +338,35 @@ Date		Release		Author		Description
                                                 - It is now possible to quit the remote X11 Xclock 
                                                   ... You see the connection disconnected window.                                                             
                                                   This was not possible prior the watchdog process.
-
-                                                         
+                                                     
                                                 - By mistake the chromumd profile "anonmyous" did 
                                                   not have the extenstion "disconnect." 
   
                                                 - Added to 2 search engines to the bookmarks.
-            
 
-                                                                                                      
+                                                - Testing setup.sh with a new and empty Tails 4.25
+                                                  Found one uggly bug ...
+                                                  
+                                                  This is not working ...
 
+                                                  source ~/Persistent/scripts/swtor-global.sh
+                                                  global_init
+
+                                                  This is working 
+
+                                                  source ~/Persistent/swtor-addon-to-tails/scripts/swtor-global.sh
+                                                  global_init                                     
            
-       
+                                                - Setting the mandatory Tails from 4.23 to 4.25 
+
+                                                - Added new onion V3 of Z-library in the book-section
+                                                  of the bookmakrs
+                                                
+                                                - Added https://amiunique.org/ for fingerprint testing
+                                                  into section security.
+
+
+
 
                                               
 

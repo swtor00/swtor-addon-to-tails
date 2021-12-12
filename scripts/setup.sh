@@ -80,7 +80,7 @@ export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg
 export  DEBUGW="0"
 
 
-source ~/Persistent/scripts/swtor-global.sh
+source ~/Persistent/swtor-addon-to-tails/scripts/swtor-global.sh
 global_init
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
