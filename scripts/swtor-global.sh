@@ -561,7 +561,10 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
          rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
 
-         cat password | sudo -S shutdown -H now
+
+         rmdir ~/Persistent/scripts/menu.lock 2>&1 >/dev/null
+         cd ~/Persistent/swtor-addon-to-tails/tmp
+         cat password | sudo -S shutdown -r now
 
          ;;
 

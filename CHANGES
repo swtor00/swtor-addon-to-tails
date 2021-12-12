@@ -365,6 +365,10 @@ Date		Release		Author		Description
                                                 - Added https://amiunique.org/ for fingerprint testing
                                                   into section security.
 
+                                                - Reboot section inside of swtor-global.sh was not 
+                                                  working correctly. Fixed
+
+ 
 
 
 
