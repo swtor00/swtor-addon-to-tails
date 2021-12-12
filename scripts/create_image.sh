@@ -286,11 +286,6 @@ backupfile=$(cd ~/Persistent/$backup_stamp && ls *)
 cd $final_backup_directory
 md5sum $filename_tar |  awk  {'print $1'}  > md5check
 
-sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close \
---text="\n\n     The backup was created inside of the directory $(echo $final_backup_directory)      \n\n      Please be informed that this backup is only a simple tar.gz file and is not protected by a password !  \n\n" > /dev/null 2>&1)
-
-sleep 1
-
 zenity --question --width 600 --text "\n\n         Should the created backup to be encrypted with gpg ?    \n\n\n         If you say 'Yes' here and don't get the right password to decrypt it, nobody\n         can help you to get your data back from your encrypted backup ! \n\n"
 case $? in
     0)
@@ -332,25 +327,25 @@ rm -rf $final_backup_directory > /dev/null 2>&1
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
 --text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
+
+
 if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
    BACKUP_HOST="1"
+   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+   --text="\n\n      Found a backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
 else
    BACKUP_HOST="0"
-fi
 
-
-if [ $BACKUP_HOST == "0" ] ; then
    zenity --info --width=600 --title="" \
    --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup files away from here to a very safe place. \n\n" /
    > /dev/  null 2>&1
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "backup is now finished and stored : $final_backup_file"
    fi
+
+   exit 0
 fi
-
-
-sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Found a backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
 
 
 if [ $BACKUP_HOST == "1" ] ; then
@@ -372,18 +367,26 @@ echo $line > check_parameters_backup
 # otherwise go away with a  error-code 1
 
 if grep -q "fullssh" ./check_parameters_backup ; then
-   echo found fullssh.sh
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo found fullssh.sh
+   fi
 else
-   echo ... no fullssh.sh
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo ... no fullssh.sh
+   fi
    zenity --error --width=600 --text="\n\n    This backup host definition is not valid without fullssh.sh !    \n\n" > /dev/null 2>&1
    rm check_parameters_backup > /dev/null 2>&1
    exit 1
 fi
 
 if grep -q "ssh-id" ./check_parameters_backup ; then
-   echo found ssh-id
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo found ssh-id
+   fi
 else
-   echo ... no ssh-id
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo ... no ssh-id
+   fi
    zenity --error --width=600 --text="\n\n    This backup host definition is not valid without ssh-id !    \n\n" > /dev/null 2>&1
    rm check_parameters_backup > /dev/null 2>&1
    exit 1
@@ -453,5 +456,27 @@ else
     exit 1
 fi
 
+
+
+
+zenity --question --width=600 \
+--text="\n\nShould the local stored backupfile be deleted ? \n\n" > /dev/null 2>&1
+       case $? in
+         0)
+         rm  /home/amnesia/Persistent/$final_backup_file.md5 > /dev/null 2>&1
+         rm  /home/amnesia/Persistent/$final_backup_file > /dev/null 2>&1
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+           echo "backup files deleted"
+         fi
+
+         ;;
+
+         1)
+
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+           echo "backup files are not deleted"
+         fi
+         ;;
+esac
 
 exit 0
