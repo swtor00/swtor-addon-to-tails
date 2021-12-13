@@ -23,6 +23,8 @@ the file ~/Persistent/swtorssh.cfg and fill it like this little example below.
 pfssh.sh     passwd Compress 4 2 143 9999   noshell LIiS-dewassh.net@us.serverkit.me   xxxxx           xxxxxx  USA          3-Day-account 
 
 This is only a example. You have to fill it with you own data fron dewassh.net.(The username / server and port)
+And please do not try to connect to the remote host over my script, until the remote host has been added 
+into your known_hosts file. Therefore open a Terminal and let this happen by connecting once.
 
 
 I would like to backup my persistent Data to a foreign host over SSH. What do I need for this  ? 

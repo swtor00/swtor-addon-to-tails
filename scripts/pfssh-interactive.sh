@@ -3,8 +3,8 @@
 # SCRIPT  : pfssh-interactive.sh                        #
 #########################################################
 # AUTHORS : swtor00                                     #
-# EMAIL   : swtor00@protonmail.com                      # 
-# OS      : Tails 4.24 or higher                        #             
+# EMAIL   : swtor00@protonmail.com                      #
+# OS      : Tails 4.24 or higher                        #
 # TASKS   : run a ssh command with multipe options      #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
@@ -201,8 +201,7 @@ if [ -z "$ssh_pid" ] ; then
 
       sleep $TIMEOUT_SSH
 
-
-      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
+      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep sshpass  |awk '{print $2}')
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 
@@ -211,8 +210,8 @@ if [ -z "$ssh_pid" ] ; then
       fi
 
       if [ -z "$ssh_pid" ] ; then
-         if [ $TERMINAL_VERBOSE == "1" ] ; then  
-            echo "ssh connection was not made" 
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo "ssh connection was not made"
             echo "the provided password maybe was wrong"
             echo "or the ssh-login is expired by date"
          fi

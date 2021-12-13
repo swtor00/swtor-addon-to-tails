@@ -165,13 +165,14 @@ if [ $arg1 == "pfssh.sh" ] ; then
        password=$(zenity --entry --text="Please type the password for the selected SSH-Server" --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        chmod 600 /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
+
        if [ "$password" == "" ] ; then
            zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
            exit 1
        else
            if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo ... we have a password to submit 
-           fi         
+               echo ... we have a password to submit
+           fi
        fi
 
        grep pfssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/pfssh.arg
@@ -179,7 +180,9 @@ if [ $arg1 == "pfssh.sh" ] ; then
        # We start the little python-code to execute
 
        touch ~/Persistent/swtorcfg/log/ssh-command.log
+
        ./4.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
+
     else
        zenity --error --width=400 --text "\n\n Only the 'passwd' authentification is valid in \n pfssh.sh-mode of swtor ! 'ssh-id' is not valid. \n\n"
        exit 1
