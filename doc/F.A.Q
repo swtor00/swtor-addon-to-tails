@@ -2,7 +2,7 @@ Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
 No. We only use SSH to communicate with ohers Servers.  
 Only SSH is used to create a local SOCK5 Server on Tails.
-
+There is no VPN involved.
 
 Do you provide a free SSH account with this Add-on ? 
 ----------------------------------------------------
@@ -36,12 +36,12 @@ I would like to backup my persistent Data to a foreign host over SSH. What do I 
 - You can still make Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
 
-
 What fullshell provider do you recommand as the author of this addon ? 
 ----------------------------------------------------------------------
 
 My favorite is clear : https://www.freeshell.de
-Write a postcard to Germany and you have full featured Shell acount with 20GB.
+Write a postcard to Germany and you have full featured Shell acount with 
+20GB of HD space.
 
 
 Are there any backdoors inside the add-on ? 
@@ -63,7 +63,7 @@ overwritten. I do try to implement this feature. Just in case you aren't trustin
 I would like to use my own Desktop-Wallpaper as a Background in freezed-mode.Is this possible ?
 --------------------------------------------------------------------------------------------- 
 
-Replace the file predefined 'swtor-desktop-freezed.jpeg' inside the doc directory with your own
+Replace the predefined file 'swtor-desktop-freezed.jpeg' inside the doc directory with your own
 Desktop-Wallpaper.Of couse you should do this , prior to freezing the system.
 
 
@@ -76,7 +76,8 @@ Simply No.
 
 Could the add-on read my data ? 
 --------------------------------
-Yes but only to create a backup of the persistent Volume. 
+Yes but only to create a backup of the persistent Volume.
+My addon is not spying on anything from you.  
 
 
 For what reason do we need a Repair-Stick after after the Backup was made ? 
@@ -85,7 +86,18 @@ For what reason do we need a Repair-Stick after after the Backup was made ?
 If your SSH-provider do not allow password logins .... only stored keys to login. 
 Without the right keys to store back to ~/.ssh you wouldn't have a chance to get 
 copy back the backup you made. Also a empty known_hosts from a new tails maybe 
-also a problem. 
+also a problem for some users.In any case that you backup to a remote host, 
+please do copy the files from  ~/Persistent/personal-files/tails-repair-disk 
+to a seperate stick and place this stick on a very secure place.   
+
+
+Is the backup of Persistence (since Tails 3.25) better than your backup ? 
+-------------------------------------------------------------------------
+
+I guess No because I don't need a secound stick with the equal size to copy.
+I only backup files from the Persistent volume. The transfer to a foreign
+host is also no included in the Tails backup solution.
+But every user has to make this decission for himself.
 
 
 My specific question isn't found here. What should I do ? 
@@ -94,7 +106,6 @@ My specific question isn't found here. What should I do ?
 Write me a email to swtor00@protonmail.com 
 
 
-Could you addon read my data ? 
  
 
 

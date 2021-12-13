@@ -505,13 +505,19 @@ echo "#/bin/bash" > restore_from_external.sh
 echo "cp id_rsa ~/.ssh" >> restore_from_external.sh
 echo "cp id_rsa.pub ~/.ssh" >> restore_from_external.sh
 echo "cp known_hosts ~/.ssh"  >> restore_from_external.sh
+echo "chmod 600 ~/.ssh/id_rsa" >> restore_from_external.sh 
+echo "chmod 644 ~/.ssh/*.pub" >> restore_from_external.sh 
+echo "ssh-add" >> restore_from_external.sh 
+echo "sleep 1" >> restore_from_external.sh 
+echo "rm id_rsa" >> restore_from_external.sh
+echo "rm id_rsa.pub" >> restore_from_external.sh
 echo "scp -P "$single_port $ssh_host$final_backup_file.md5 . >>  restore_from_external.sh
 echo "scp -P "$single_port $ssh_host$final_backup_file . >>  restore_from_external.sh
 echo "git clone https://github.com/swtor00/swtor-addon-to-tails"  >>  restore_from_external.sh
 echo exit 0 >> restore_from_external.sh
 
 # We should show a very big Warning here :
-# If you have a damaged USB stick with Tails and you must replaceit with
+# If you have a damaged USB stick with Tails and you must replace it with
 # a new one .... We need that Data on this Repair-Disk or we can not
 # restore back from the remote SSH-Host.
 

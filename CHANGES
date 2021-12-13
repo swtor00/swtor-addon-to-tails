@@ -377,9 +377,14 @@ Date		Release		Author		Description
 
 
                                                 - copy & paste error on pfssh-interactive.sh.Fixed 
- 
-                                                  
 
+                                                - First run of the "Repair disk for Tails" has failed.
+ 
+                                                  amnesia@amnesia:~$ chmod 600 ~/.ssh/id_rsa
+                                                  amnesia@amnesia:~$ chmod 644 ~/.ssh/*.pub
+                                                  amnesia@amnesia:~$ ssh-add
+
+                                                  With this 3 lines of code ... it worked   
 
 
                                                    
