@@ -820,8 +820,45 @@ fi
 
 
 echo 1 > /home/amnesia/Persistent/scripts/state/offline
-
+return 0
 }
+
+
+swtor_connected() {
+
+# Check to see if the ONION Network is still runnig ....
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo testing the internet-connection over the onion-network with TIMEOUT $TIMEOUT_TB
+fi
+
+curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m $TIMEOUT_TB | grep -m 1 Congratulations > /dev/null 2>&1
+
+if [ $? -eq 0 ] ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "TOR is up and running and we can continue with the execution of the script ...."
+   fi
+
+   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+   --text="\n\n                 [ Connection check worked ]          \n\n" > /dev/null 2>&1)
+
+else
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "TOR is not ready"
+      echo >&2 "check_tor_network() exiting with error-code 1"
+   fi
+
+   zenity --error --width=600 \
+   --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n"\
+    > /dev/null 2>&1
+   return 1
+fi
+return 0
+}
+
+
+
 
 export -f global_init
 export -f check_tor_network
@@ -850,5 +887,5 @@ export -f swtor_missing_arg
 export -f swtor_missing_password
 export -f swtor_update
 export -f swtor_clean_files
-
+export -f swtor_connected
 

@@ -435,6 +435,7 @@ fi
 
 if [ ! -d ~/Persistent/personal-files ] ; then
    mkdir ~/Persistent/personal-files > /dev/null 2>&1
+   mkdir ~/Persistent/personal-files/tails-repair-disk > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo "directory ~/Persistent/personal-files was created"
    fi

@@ -6,7 +6,7 @@ Only SSH is used to create a local SOCK5 Server on Tails.
 
 Do you provide a free SSH account with this Add-on ? 
 ----------------------------------------------------
-No ... You have to create your own SSH-Accounts. 
+No ... You have to create your own personal SSH-Accounts. 
 
 
 I would like to test this addon only, what SSH-Provider should I choose ?
@@ -74,7 +74,7 @@ Simply No.
 
 Could the add-on read my data ? 
 --------------------------------
-Only to create a backup of the persistent Volume. 
+Yes but only to create a backup of the persistent Volume. 
 
 
 For what reason do we need a Repair-Stick after after the Backup was made ? 
@@ -82,9 +82,10 @@ For what reason do we need a Repair-Stick after after the Backup was made ?
 
 If your SSH-provider do not allow password logins .... only stored keys to login. 
 Without the right keys to store back to ~/.ssh you wouldn't have a chance to get 
-copy back the backup you made. 
+copy back the backup you made. Also a empty known_hosts from a new tails maybe 
+also a problem. 
 
-  
+
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
 

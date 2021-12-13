@@ -355,6 +355,17 @@ if [ $BACKUP_HOST == "1" ] ; then
    fi
 fi
 
+
+swtor_connected
+if [ $? -eq 0 ] ; then    
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "connection check executed"
+   fi
+else 
+    exit 1
+fi 
+
+
 # we can go away here ...
 
 line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
@@ -478,5 +489,33 @@ zenity --question --width=600 \
          fi
          ;;
 esac
+
+
+# Now we have to make a clean tails-repair-disk for this backup
+
+
+if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
+   mkdir ~/Persistent/personal-files/tails-repair-disk
+fi
+
+cd ~/Persistent/personal-files/tails-repair-disk
+cp ~/.ssh/* ~/Persistent/personal-files/tails-repair-disk
+
+echo "#/bin/bash" > restore_from_external.sh
+echo "cp id_rsa ~/.ssh" >> restore_from_external.sh
+echo "cp id_rsa.pub ~/.ssh" >> restore_from_external.sh
+echo "cp known_hosts ~/.ssh"  >> restore_from_external.sh
+echo "scp -P "$single_port $ssh_host$final_backup_file.md5 . >>  restore_from_external.sh
+echo "scp -P "$single_port $ssh_host$final_backup_file . >>  restore_from_external.sh
+echo "git clone https://github.com/swtor00/swtor-addon-to-tails"  >>  restore_from_external.sh
+echo exit 0 >> restore_from_external.sh
+
+# We should show a very big Warning here :
+# If you have a damaged USB stick with Tails and you must replaceit with
+# a new one .... We need that Data on this Repair-Disk or we can not
+# restore back from the remote SSH-Host.
+
+zenity --info --width=600 --title="" \
+--text="\n\n   Please do not forget to copy the repair-files to a own stick.\n   Copy all files from ~/Persistent/personal-files/tails-repair-disk    \n\n\n   Please press OK to continue." > /dev/null 2>&1
 
 exit 0

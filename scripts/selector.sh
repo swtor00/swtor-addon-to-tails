@@ -92,6 +92,15 @@ if [ "$selection" == "" ] ; then
     exit 1
 fi
 
+swtor_connected
+if [ $? -eq 0 ] ; then    
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "connection check executed"
+   fi
+else 
+    exit 1
+fi 
+
 # Right now, we have to decide what kind of connection we would like to use
 
 tmp=$(echo $account | tr "|" " ")

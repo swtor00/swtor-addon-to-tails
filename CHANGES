@@ -372,6 +372,13 @@ Date		Release		Author		Description
                                                   ./create_image.sh: line 338: unexpected EOF while looking for matching `)' 
                                                   ./create_image.sh: line 457: syntax error: unexpected end of file
 
+                                                - Repair disk for Tails can be created with the files from
+                                                  ~/Persistent/personal-files/tails-repair-disk
+ 
+                                                  
+
+
+
                                                    
 
 
