@@ -35,4 +35,15 @@ else
    fi
 fi
 
+if [ ! -d ~/Persistent/personal-files ] ; then
+   mkdir -p ~/Persistent/personal-files 
+   mkdir -p ~/Persistent/personal-files/tails-repair-disk
+   echo "directory ~/Persistent/personal-files created"
+   echo "directory ~/Persistent/personal-files created/tails-repair-disk"
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "directory ~/Persistent/personal-files was allready made"
+   fi
+fi
+
 
