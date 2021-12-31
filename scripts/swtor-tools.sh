@@ -130,17 +130,21 @@ fi
 
 
 if [ $selection == "5" ] ; then
-    zenity --question --width=600 \\
-    --text="Please read this warning carefully.\n\nAll your current Bookmarks for the TOR-Browser will be overwritten\\nAre you sure, you would like to proceed with the   import  ?  \n\n" > /dev/null 2>&1
-case $? in
+    zenity --question --width=600 \
+    --text="All your current Bookmarks for the TOR-Browser will be overwritten ! \n\n" > /dev/null 2>&1
+    case $? in
          0)
-         sync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
+         zenity --info --width=600 --title="" \
+         --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
+         rm ~/.mozilla/firefox/bookmarks/places.sqlite > /dev/null 2>&1
+         rm /live/persistence/TailsData_unlocked/bookmarks/places.sqlite > /dev/null 2>&1
+         rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo no import
             fi
          ;;
-esac
+    esac
 fi
 
 

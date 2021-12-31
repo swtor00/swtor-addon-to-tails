@@ -384,7 +384,49 @@ Date		Release		Author		Description
                                                   amnesia@amnesia:~$ chmod 644 ~/.ssh/*.pub
                                                   amnesia@amnesia:~$ ssh-add
 
-                                                  With this 3 lines of code ... it worked   
+                                                  With this 3 lines of code ... it worked 
+
+                                                - Import of Bookmarks is not working over 
+                                                  Tools Menu.Because one simple reason. 
+
+                                                  As long you are not using the TOR-Browser 
+                                                  an try to import the Bookmarks it is working 
+                                                  as expected. 
+
+                                                  But the file that contains the bookmarks is
+                                                  locked for security reason as long the Tor-Browser
+                                                  is open. Overwriting a active open file in use 
+                                                  is allmost impossible, even for rsync. 
+                                             
+                                                - If you would like to import the bookmarks
+                                                  there comes a warning, that all windows of 
+                                                  Tor Browser has to be closed or the import 
+                                                  would fail. 
+
+                                                - All options of the persistence configuration 
+                                                  are parsed during exection of setup.sh 
+                                                 
+                                                  ~/Persistent/swtorcfg/p_greeter
+                                                  ~/Persistent/swtorcfg/p_bookmarks
+                                                  ~/Persistent/swtorcfg/p_system-connection
+                                                  ~/Persistent/swtorcfg/p_cups-settings
+                                                  ~/Persistent/swtorcfg/p_thunderbird
+                                                  ~/Persistent/swtorcfg/p_gnupg
+                                                  ~/Persistent/swtorcfg/p_electrum
+                                                  ~/Persistent/swtorcfg/p_pidgin  
+
+
+    
+
+
+ 
+                                                         
+
+
+                                                 
+                                                                            
+
+  
 
 
                                                    

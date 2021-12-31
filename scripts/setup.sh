@@ -381,6 +381,86 @@ cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
 
 
+# Do we have greeter-settings active ? 
+
+if grep -q greeter-settings ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "greeter-settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_greeter 
+fi
+
+
+# Do we have Bookmarks active ? 
+
+if grep -q bookmarks ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "bookmarks are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_bookmarks
+fi
+
+
+# Do we have network-connections active ?
+
+if grep -q system-connection ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "network settings  are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_system-connection
+fi
+
+
+# Do we have cups active ?
+
+if grep -q cups-configuration ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "cups settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_cups-settings
+fi
+
+
+# Do we have thunderbird active ?
+
+if grep -q thunderbird ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "thunderbird settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_thunderbird
+fi
+
+
+# Do we have gnupg active ?
+
+if grep -q gnupg ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "gnupg settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_gnupg
+fi
+
+
+# Do we have electrum active ?
+
+if grep -q electrum ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "electrum settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_electrum
+fi
+
+
+# Do we have pidgin active ?
+
+if grep -q pidgin ~/Persistent/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "pidgin settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_pidgin
+fi
+
+
 if grep -q dotfiles ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "dotfiles are present on this persistent volume"
@@ -524,8 +604,11 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo importing bookmarks
    fi
-   rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked > /dev/null 2>&1
-   echo
+   zenity --info --width=600 --title="" \
+   --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
+   rm ~/.mozilla/firefox/bookmarks/places.sqlite > /dev/null 2>&1
+   rm /live/persistence/TailsData_unlocked/bookmarks/places.sqlite > /dev/null 2>&1
+   rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "bookmarks are not imported because the configuration is set to IMPORT-BOOKMARKS:NO"

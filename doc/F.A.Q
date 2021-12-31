@@ -41,7 +41,7 @@ What fullshell provider do you recommand as the author of this addon ?
 
 My favorite is clear : https://www.freeshell.de
 Write a postcard to Germany and you have full featured Shell acount with 
-20GB of HD space.
+20GB of HD space. 
 
 
 Are there any backdoors inside the add-on ? 
@@ -76,7 +76,7 @@ Simply No.
 
 Could the add-on read my data ? 
 --------------------------------
-Yes but only to create a backup of the persistent Volume.
+Yes,but only to create a backup of the persistent Volume.
 My addon is not spying on anything from you.  
 
 
@@ -98,6 +98,29 @@ I guess No because I don't need a secound stick with the equal size to copy.
 I only backup files from the Persistent volume. The transfer to a foreign
 host is also no included in the Tails backup solution.
 But every user has to make this decission for himself.
+
+
+Why is administation password needet on every startup ? 
+--------------------------------------------------------
+
+Wihtout a password you can not change the firewall to 
+accept a local socks5 proxy.
+
+
+Why do I have to close all programs prior to backup ? 
+-----------------------------------------------------
+
+A locked file (by a Programm) can not be transfered. 
+Depending on your own personal configuration of the 
+Persistence Volume,you have to close.
+ 
+- TOR Browser 
+- Electrum Bitcoin Wallet 
+- Thunderbird
+- Pidgin 
+- Stop any runing Printer jobs 
+
+
 
 
 My specific question isn't found here. What should I do ? 
