@@ -33,7 +33,7 @@ I would like to backup my persistent Data to a foreign host over SSH. What do I 
 - A full featured mode SSH account (fullssh.sh) and a password less login. 
 - rsync on the remote SSH-host
 - A login with password for backup is not supported.
-- You can still make Backups of your persistent Volume with the add-on
+- You can still make unencrypted Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
 
 What fullshell provider do you recommand as the author of this addon ? 
@@ -96,11 +96,11 @@ Is the backup of Persistence (since Tails 3.25) better than your backup ?
 
 I guess No because I don't need a secound stick with the equal size to copy.
 I only backup files from the Persistent volume. The transfer to a foreign
-host is also no included in the Tails backup solution.
+host is also not included in the Tails backup solution.
 But every user has to make this decission for himself.
 
 
-Why is administation password needet on every startup ? 
+Why is a administation password needet on every startup ? 
 --------------------------------------------------------
 
 Wihtout a password you can not change the firewall to 
@@ -118,9 +118,6 @@ Persistence Volume,you have to close.
 - Electrum Bitcoin Wallet 
 - Thunderbird
 - Pidgin 
-- Stop any runing Printer jobs 
-
-
 
 
 My specific question isn't found here. What should I do ? 
@@ -128,7 +125,10 @@ My specific question isn't found here. What should I do ?
 
 Write me a email to swtor00@protonmail.com 
 
-
+Today .. On 31/12/21 I have received my first first feature 
+request from user I don't know in person. It was easy to inplement 
+and the user hjhj65 don't need to change size of 
+the renote Xclock after every update. Thanks hjhj65 
  
 
 
