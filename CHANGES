@@ -422,6 +422,18 @@ Date		Release		Author		Description
                                                   Increase the value to 600 or 700 Pixels and the size 
                                                   is acceptable , even with a resolution of 4K. 
 
+
+                                                - Prior to create a backup of Persistent, the following programms 
+                                                  needs to be closed. 
+
+                                                  - TOR-Browser
+                                                  - Thunderbird 
+                                                  - Electrum Bitcoin Wallet 
+                                                  - Pidgin Internet Messanger 
+                                                  - Synaptic Package Manager
+ 
+                                                  
+
     
 
 
