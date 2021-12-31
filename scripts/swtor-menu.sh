@@ -11,12 +11,13 @@
 #                                                       #
 # Main-Menu of of the swtor-addon-to-tails              #
 #                                                       #
-# DATE    : 01-11-2021                                  #
+# DATE    : 31-12-2021                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
+
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
@@ -78,8 +79,10 @@ else
      export AUTOCLOSE_BROWSER="0"
 fi
 
+
 export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export XCLOCK_SIZE=$(grep XCLOCK-SIZE ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
 export  DEBUGW="0"
 

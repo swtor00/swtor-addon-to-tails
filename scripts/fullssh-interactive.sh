@@ -15,19 +15,12 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 21-11-2021                                  #
+# DATE    : 31-12-2021                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
-
-
-if [ "$TERMINAL_VERBOSE" == "" ];then
-   echo "this shell-script can not longer direct executed over the terminal."
-   echo "you have to call this shell-script over swtor-menu.sh"
-   exit 1
-fi
 
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
@@ -84,8 +77,16 @@ else
      export CHECK_SSH="1"
 fi
 
+if grep -q "AUTOCLOSE-BROWSER:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+     export AUTOCLOSE_BROWSER="1"
+else
+     export AUTOCLOSE_BROWSER="0"
+fi
+
+
 export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+export XCLOCK_SIZE=$(grep XCLOCK-SIZE ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
 export  DEBUGW="0"
 
@@ -188,7 +189,7 @@ chain+=$arg9
 if [ $arg8 == "clock" ]
    then
    xhost +
-   chain+=" xclock -geometry 150x150+85+5 && pkill ssh"
+   chain+=" xclock -geometry "$XCLOCK_SIZE"x"$XCLOCK_SIZE"+85+5 &&  pkill ssh"
 fi
 
 # is allready a ssh deamon running ?
