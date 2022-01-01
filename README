@@ -1,3 +1,17 @@
+
+Important Reminder for all users of the addon : 01/01/2021:
+
+If you are using a older version dated than 31/12/21 , please execute the following code 
+inside a terminal.
+
+cd ~/Persistent/swtor-addon-to-tails
+git reset --hard
+git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails
+rm ~/Persistent/setup
+cd scripts
+./swtor-setup.sh 
+
+
 Please have a closer look at ~/Persistent/swtor-addon-to-tails/doc 
 
 Inside of this directory, you find all the information to install 

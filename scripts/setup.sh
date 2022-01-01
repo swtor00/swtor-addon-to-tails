@@ -389,23 +389,27 @@ cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
 
 
-# Do we have greeter-settings active ? 
+# Do we have greeter-settings active ?
 
 if grep -q greeter-settings ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "greeter-settings are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_greeter.cfg
+else
+   rm ~/Persistent/swtorcfg/p_greeter.cfg > /dev/null 2>&1
 fi
 
 
-# Do we have Bookmarks active ? 
+# Do we have Bookmarks active ?
 
 if grep -q bookmarks ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "bookmarks are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_bookmarks.cfg
+else
+   rm ~/Persistent/swtorcfg/p_bookmarks.cfg > /dev/null 2>&1
 fi
 
 
@@ -416,6 +420,8 @@ if grep -q system-connection ~/Persistent/persistence.conf ; then
        echo >&2 "network settings  are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_system-connection.cfg
+else
+   rm  ~/Persistent/swtorcfg/p_system-connection.cfg > /dev/null 2>&1
 fi
 
 
@@ -426,6 +432,8 @@ if grep -q cups-configuration ~/Persistent/persistence.conf ; then
        echo >&2 "cups settings are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_cups-settings.cfg
+else
+  rm ~/Persistent/swtorcfg/p_cups-settings.cfg > /dev/null 2>&1
 fi
 
 
@@ -436,6 +444,8 @@ if grep -q thunderbird ~/Persistent/persistence.conf ; then
        echo >&2 "thunderbird settings are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_thunderbird.cfg
+else
+  rm  ~/Persistent/swtorcfg/p_thunderbird.cfg > /dev/null 2>&1
 fi
 
 
@@ -446,6 +456,8 @@ if grep -q gnupg ~/Persistent/persistence.conf ; then
        echo >&2 "gnupg settings are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_gnupg.cfg
+else
+  rm ~/Persistent/swtorcfg/p_gnupg.cfg  > /dev/null 2>&1
 fi
 
 
@@ -456,6 +468,8 @@ if grep -q electrum ~/Persistent/persistence.conf ; then
        echo >&2 "electrum settings are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_electrum.cfg
+else
+  rm ~/Persistent/swtorcfg/p_electrum.cfg > /dev/null 2>&1
 fi
 
 
@@ -466,6 +480,8 @@ if grep -q pidgin ~/Persistent/persistence.conf ; then
        echo >&2 "pidgin settings are present on this persistent volume"
    fi
    echo 1 > ~/Persistent/swtorcfg/p_pidgin.cfg
+else
+   rm ~/Persistent/swtorcfg/p_pidgin.cfg > /dev/null 2>&1
 fi
 
 
@@ -481,6 +497,7 @@ else
        echo >&2 "dotfiles are not present on this persistent volume"
        echo >&2 "freezing is not possible in the current state."
    fi
+
 
    if [ "$DEBUGW" == "1" ] ; then
       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
@@ -511,7 +528,10 @@ else
                echo "the user would like to continue wihtout dotfiles activated ...."
                echo "against the tip to activate this option"
             fi
-         rm ~/Persistent/persistence.conf /dev/null 2>&1
+
+         rm ~/Persistent/persistence.conf > /dev/null 2>&1
+         rm ~/Persistent/swtorcfg/freezing > /dev/null 2>&1
+
          echo 1 > ~/Persistent/swtorcfg/no-freezing
 
          ;;

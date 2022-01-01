@@ -406,14 +406,14 @@ Date		Release		Author		Description
                                                 - All options of the persistence configuration 
                                                   are parsed during exection of setup.sh 
                                                  
-                                                  ~/Persistent/swtorcfg/p_greeter
-                                                  ~/Persistent/swtorcfg/p_bookmarks
-                                                  ~/Persistent/swtorcfg/p_system-connection
-                                                  ~/Persistent/swtorcfg/p_cups-settings
-                                                  ~/Persistent/swtorcfg/p_thunderbird
-                                                  ~/Persistent/swtorcfg/p_gnupg
-                                                  ~/Persistent/swtorcfg/p_electrum
-                                                  ~/Persistent/swtorcfg/p_pidgin
+                                                  ~/Persistent/swtorcfg/p_greeter.cfg
+                                                  ~/Persistent/swtorcfg/p_bookmarks.cfg
+                                                  ~/Persistent/swtorcfg/p_system-connection.cfg
+                                                  ~/Persistent/swtorcfg/p_cups-settings.cfg
+                                                  ~/Persistent/swtorcfg/p_thunderbird.cfg
+                                                  ~/Persistent/swtorcfg/p_gnupg.cfg
+                                                  ~/Persistent/swtorcfg/p_electrum.cfg
+                                                  ~/Persistent/swtorcfg/p_pidgin.cfg
 
                                                 - Added XCLOCK-SIZE:150 inside configuration file 
                                                       
@@ -433,8 +433,14 @@ Date		Release		Author		Description
                                                   - Synaptic Package Manager
 
 
-                                                - Removed a old V2 Onion https://5h5ps743nnqsjq4l.onion/ 
+                                                - Removed a old V2 Onion from the Bookmarks
+
+                                                  https://5h5ps743nnqsjq4l.onion/ 
+                                                  
                                                   As soon I know the new V3 Onion, I wonna add it again.
+
+                                                - New Documentation is ready until chapter 02
+
 
  
                                                   

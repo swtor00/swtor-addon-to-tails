@@ -120,6 +120,18 @@ Persistence Volume,you have to close.
 - Pidgin 
 
 
+After every change of the settings of the Persistent Volume 
+you should execute "swtor-setup.sh" again. Why this ? 
+--------------------------------------------------------
+The configuruation options of the Persistent Volume are extracted 
+during the exection of "swtor-setup.sh" and are stored inside
+
+~/Persistent/swtor-addon-to-tails/swtorcfg
+
+You really need to rerun swtor-setup.sh after a chance 
+of one of the Persistent options.
+
+
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
 
