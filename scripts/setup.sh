@@ -455,7 +455,7 @@ if grep -q electrum ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "electrum settings are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_electrum
+   echo 1 > ~/Persistent/swtorcfg/p_electrum.cfg
 fi
 
 
