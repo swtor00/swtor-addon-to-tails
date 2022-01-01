@@ -395,7 +395,7 @@ if grep -q greeter-settings ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "greeter-settings are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_greeter 
+   echo 1 > ~/Persistent/swtorcfg/p_greeter.cfg
 fi
 
 
@@ -405,7 +405,7 @@ if grep -q bookmarks ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "bookmarks are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_bookmarks
+   echo 1 > ~/Persistent/swtorcfg/p_bookmarks.cfg
 fi
 
 
@@ -415,7 +415,7 @@ if grep -q system-connection ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "network settings  are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_system-connection
+   echo 1 > ~/Persistent/swtorcfg/p_system-connection.cfg
 fi
 
 
@@ -425,7 +425,7 @@ if grep -q cups-configuration ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "cups settings are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_cups-settings
+   echo 1 > ~/Persistent/swtorcfg/p_cups-settings.cfg
 fi
 
 
@@ -435,7 +435,7 @@ if grep -q thunderbird ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "thunderbird settings are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_thunderbird
+   echo 1 > ~/Persistent/swtorcfg/p_thunderbird.cfg
 fi
 
 
@@ -445,7 +445,7 @@ if grep -q gnupg ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "gnupg settings are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_gnupg
+   echo 1 > ~/Persistent/swtorcfg/p_gnupg.cfg
 fi
 
 
@@ -465,7 +465,7 @@ if grep -q pidgin ~/Persistent/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "pidgin settings are present on this persistent volume"
    fi
-   echo 1 > ~/Persistent/swtorcfg/p_pidgin
+   echo 1 > ~/Persistent/swtorcfg/p_pidgin.cfg
 fi
 
 
