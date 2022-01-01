@@ -11,6 +11,10 @@ rm ~/Persistent/setup
 cd scripts
 ./swtor-setup.sh 
 
+After the git commit b0d6b5a880170b25720748f400579002bdabb30a it is needet to rerun the
+the setup once. After this internal update to version 0.60 you have to run setup again
+if you add / or remove options from the Persistent Volume. 
+
 
 Please have a closer look at ~/Persistent/swtor-addon-to-tails/doc 
 
