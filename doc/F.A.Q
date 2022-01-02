@@ -2,11 +2,14 @@ Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
 No. We only use SSH to communicate with ohers Servers.  
 Only SSH is used to create a local SOCK5 Server on Tails.
-There is no VPN involved.
+There is no VPN involved. Some idiots from redit/tails forum
+may should read this file to know the difference between a real 
+VPN and a local socks5 proxy. 
 
 Do you provide a free SSH account with this Add-on ? 
 ----------------------------------------------------
-No ... You have to create your own personal SSH-Accounts. 
+No ... You have to create your own personal SSH-Accounts.
+There are plenty of options to create a free ssh-account.
 
 
 I would like to test this addon only, what SSH-Provider should I choose ?
@@ -41,7 +44,7 @@ What fullshell provider do you recommand as the author of this addon ?
 
 My favorite is clear : https://www.freeshell.de
 Write a postcard to Germany and you have full featured Shell acount with 
-20GB of HD space. 
+20GB of HD space. This one is the best of all free shell-providers.
 
 
 Are there any backdoors inside the add-on ? 
