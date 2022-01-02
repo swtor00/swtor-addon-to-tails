@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.24 or higher                        #
+# OS      : Tails 4.25 or higher                        #
 #                                                       #
 # VERSION : 0.60                                        #
 # STATE   : BETA                                        #
@@ -20,5 +20,5 @@
 
 cd ${global_tmp}
 
-cat password | sudo -S echo "1234" > password_correct
+cat password | sudo -S echo "1_234" > password_correct
 

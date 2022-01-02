@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.24 or higher                        #
+# OS      : Tails 4.25 or higher                        #
 #                                                       #
 #                                                       #
 # VERSION : 0.60                                        #
@@ -646,9 +646,9 @@ return 0
 swtor_cleanup() {
 
 cd ${global_tmp}
-
 return 0
 }
+
 
 ssh_connection_status(){
 

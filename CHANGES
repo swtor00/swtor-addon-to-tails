@@ -444,6 +444,23 @@ Date		Release		Author		Description
                                                 - New Documentation is ready until chapter 05
                                                 - New Documentation is ready until chapter 07
 
+                                                - Missing -o ServerAliveInterval=10 inside documentation
+                                                  for the chain mode.
+
+                                                - Added new TOR-Search engine from brave to search / Bookmarks
+
+                                                - The ssh-log files are now deleted ... only if the 
+                                                  connection was succesfull. In the case of a connection 
+					          error, the logs remain inside the log-directory.			
+
+      
+                                                - All url shoterner links are not working anymore ..  
+                                                  I have to replace all links.
+
+                                                - Cleanup the mess with the short-links
+      
+
+
 
 
  

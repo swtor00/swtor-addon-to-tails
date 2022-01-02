@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.24 or higher                        #
+# OS      : Tails 4.25 or higher                        #
 # TASKS   : run a ssh command with multipe options      #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
@@ -105,6 +105,9 @@ else
     exit 1
 fi
 
+# If there was error in the last connection, we kill the file
+
+rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
 
 
 # Test needet parameters for this script
@@ -123,7 +126,7 @@ if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/fullssh.arg | awk '{print $9}')
 
 else
-    swtor_missing_arg 
+    swtor_missing_arg
     exit 1
 fi
 
@@ -197,12 +200,14 @@ fi
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
 
 if [ -z "$ssh_pid" ] ; then 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo starting ssh command
          echo $chain
       fi
 
-      sshpass -p $password ssh $chain & 
+      # We start the ssh-process and send it directly into the background
+
+      sshpass -p $password ssh $chain &
 
       show_wait_dialog && sleep 4
 
@@ -223,6 +228,7 @@ if [ -z "$ssh_pid" ] ; then
             echo "ssh connection was not made" 
             echo "the provided password maybe was wrong"
          fi
+         echo 1 > /home/amnesia/Persistent/scripts/state/error
          end_wait_dialog && sleep 1
          swtor_ssh_failure
          exit 1

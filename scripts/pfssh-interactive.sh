@@ -105,6 +105,11 @@ else
     exit 1
 fi
 
+# If there was error in the last connection, we kill the file
+
+rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
+
+
 
 # Test needet parameters for this script
 
@@ -194,6 +199,8 @@ if [ -z "$ssh_pid" ] ; then
          echo $chain
       fi
 
+      # We start the ssh-process and send it directly into the background
+
       sshpass -p $password ssh $chain  &
 
       show_wait_dialog && sleep 4
@@ -216,6 +223,7 @@ if [ -z "$ssh_pid" ] ; then
             echo "the provided password maybe was wrong"
             echo "or the ssh-login is expired by date"
          fi
+         echo 1 > /home/amnesia/Persistent/scripts/state/error
          end_wait_dialog && sleep 1
          swtor_ssh_failure
          exit 1
@@ -240,7 +248,6 @@ if [ -z "$ssh_pid" ] ; then
       echo $arg9     >> ~/Persistent/swtor-addon-to-tails/tmp/close__request
 
 fi
-
 
 
 swtor_cleanup

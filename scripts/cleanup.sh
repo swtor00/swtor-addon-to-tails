@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.24 or higher                        #
+# OS      : Tails 4.25 or higher                        #
 #                                                       #
 # VERSION : 0.60                                        #
 # STATE   : BETA                                        #
@@ -33,6 +33,15 @@ if [ -f /home/amnesia/Persistent/swtor-addon-to-tails/tmp/password ] ; then
 fi
 
 rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
-rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1
+
+
+# This here is very important ! If we can connect to remote host
+# without any problem, we don't need longer the log-files.
+# But in case  we have some trouble ... we need them !
+
+
+if [ ! -f /home/amnesia/Persistent/scripts/state/error ] ; then
+     rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1
+fi
 
 

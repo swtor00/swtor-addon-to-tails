@@ -102,6 +102,12 @@ else
     exit 1
 fi
 
+
+# If there was error in the last connection, we kill the file
+
+rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
+
+
 # Test needet parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/chainssh.arg ]
@@ -217,10 +223,10 @@ if [ -z "$ssh_pid" ] ; then
       rm tmp.sh > /dev/null 2>&1
       echo "#/bin/bash" > tmp.sh
       echo $command2 >> tmp.sh
-      echo "exit 0" >> tmp.sh 
+      echo "exit 0" >> tmp.sh
       chmod +x tmp.sh > /dev/null 2>&1
 
-      # We start the SSH command on Host1 and send it in the backgroud
+      # We start the ssh-process and send it directly into the background
 
       ssh $command1 'bash -s' < tmp.sh  > /dev/null 2>&1 &
 
@@ -241,9 +247,10 @@ if [ -z "$ssh_pid" ] ; then
       fi
 
       if [ -z "$ssh_pid" ] ; then
-         if [ $TERMINAL_VERBOSE == "1" ] ; then  
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo "ssh connection was not made"
          fi
+         echo 1 > /home/amnesia/Persistent/scripts/state/error
          end_wait_dialog && sleep 1
          swtor_ssh_failure
          exit 1

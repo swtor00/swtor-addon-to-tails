@@ -103,6 +103,10 @@ else
     exit 1
 fi
 
+# If there was error in the last connection, we kill the file
+
+rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
+
 
 # Test needet parameters for this script
 
@@ -190,7 +194,8 @@ if [ -z "$ssh_pid" ] ; then
          echo $chain
       fi
 
- 
+      # We start the ssh-process and send it directly into the background
+
       ssh $chain &
 
       show_wait_dialog && sleep 4
@@ -204,14 +209,15 @@ if [ -z "$ssh_pid" ] ; then
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 
 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then  
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
       fi
 
       if [ -z "$ssh_pid" ] ; then
-         if [ $TERMINAL_VERBOSE == "1" ] ; then  
-            echo "ssh connection was not made" 
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo "ssh connection was not made"
          fi
+         echo 1 > /home/amnesia/Persistent/scripts/state/error
          end_wait_dialog && sleep 1
          swtor_ssh_failure
          exit 1

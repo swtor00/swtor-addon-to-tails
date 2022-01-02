@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.24 or higher                        #
+# OS      : Tails 4.25 or higher                        #
 #                                                       #
 # VERSION : 0.60                                        #
 # STATE   : BETA                                        #
@@ -60,9 +60,9 @@ while [ $menu -gt 0 ]; do
                 echo error : pid ssh [$ssh_pid] is not longer running !!!!
              fi
 
-             # We have to close the connection script and inform the user
+             # We have to close the active connection script and inform the user
              # about the termination.Only one connection script of the 4
-             # scripts can be active ....
+             # possible scripts can be active at any time
              # fullssh.sh fullssh-interactive.sh pfss-interactive.sh chainssh.sh
 
              shellcode_pid=$(cat ~/Persistent/swtor-addon-to-tails/tmp/script_connect)
@@ -92,6 +92,7 @@ while [ $menu -gt 0 ]; do
              xhost - > /dev/null  2>&1
 
              # And here comes the question ... to kill or not to kill
+             # This is depending on the configuration file
 
              if [ $AUTOCLOSE_BROWSER="1" ] ; then
                 kill -9 $(ps axu | grep chromium | grep settings | awk {'print $2'}) > /dev/null  2>&1
@@ -103,7 +104,7 @@ while [ $menu -gt 0 ]; do
 
          if [ -f ~/Persistent/swtor-addon-to-tails/tmp/close__request ] ; then
 
-            # Kill the SSH connection normal -> The users requested to terminate the
+            # Kill the SSH connection normal by the user  -> The users requested to terminate the
             # SSH-Connection  by pressing "OK" on the Connection Window
 
             kill -9 $ssh_pid
