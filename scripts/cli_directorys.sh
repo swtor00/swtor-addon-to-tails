@@ -44,6 +44,9 @@ else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "directory ~/Persistent/personal-files was allready made"
    fi
+   if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
+       mkdir -p ~/Persistent/personal-files/tails-repair-disk
+   fi 
 fi
 
 

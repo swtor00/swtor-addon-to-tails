@@ -157,6 +157,9 @@ if [ "$BACKUP_FIXED_PROFILE" == "0" ] ; then
    rm -rf /home/amnesia/Persistent/backup/personal-files/3 > /dev/null 2>&1
 fi
 
+# We don't copy the repair-disk folder into the backup 
+
+rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
 
 sleep 2
 end_wait_dialog
@@ -184,7 +187,7 @@ cd ~/Persistent/swtor-addon-to-tails/tmp
 
 # The following backup is only made if the configuration file swtor.cfg contains BACKUP-APT-LIST:YES
 # If your bandwith is very low and maybe limited, it may make sense to backup this files.
-# Please be warned,that the backup-size will grow by 300 MB or even more if you activate this option.
+# Please be warned,that the backup-size will grow by 400 MB or even more if you activate this option.
 # The standard  configuration for swtor.cfg is BACKUP-APT-LIST:NO
 
 if [ "$BACKUP_APT_LIST" == "1" ] ; then
@@ -198,24 +201,34 @@ else
     fi
 fi
 
-# CUPS
 
+
+# CUPS Configuration / this option is optional for the add-on
+
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_cups-settings.cfg ] ; then  
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/cups-configuration /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from cups-configuration"
 fi
 
+fi
 
-# Network connections
 
+# Network connections / this option is optional for the add-on
+
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_system-connection.cfg ] ; then
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/nm-system-connections /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from nm-system-connections"
 fi
 
-# Additional Software configuration
+fi
+
+
+
+# Additional Software configuration / this option is mandatory for the add-on
 
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/live-additional-software.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
 
@@ -223,7 +236,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from additional software configuration"
 fi
 
-# Configuration of Persysten Volume
+
+# Configuration of the Persistent Volume itself
 
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
 
@@ -231,13 +245,18 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from configuration of Persistent Volume"
 fi
 
-# Configuration of greeter-settings
 
+# Configuration of greeter-settings / only optional and not mandatory for the add-on
+
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_greeter.cfg ] ; then
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/greeter-settings /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from greeter-settings"
 fi
+fi
+
+
 
 
 
@@ -257,7 +276,7 @@ fi
 # from root to amnesia, so we can copy it anywhere we would like to have it
 
 time_stamp=$(date '+%Y-%m-%d-%H-%M')
-filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
+filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp"
 filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
 final_backup_directory="/home/amnesia/Persistent/$(echo $filename)"
 backup_stamp="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
@@ -279,7 +298,6 @@ mkdir -p $final_backup_directory
 mv ~/Persistent/$filename_tar $final_backup_directory
 
 backupdir=~/Persistent/$backup_stamp
-backupfile=$(cd ~/Persistent/$backup_stamp && ls *)
 
 # create md5 check for the tar
 
@@ -290,6 +308,7 @@ zenity --question --width 600 --text "\n\n         Should the created backup to 
 case $? in
     0)
        gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
+
        rm -f $filename_tar > /dev/null
        WARNING_SSH="0"
     ;;
@@ -303,9 +322,7 @@ esac
 
 # By now , we have we have the following things ...
 # A single backupfolder that contains a simple tar.gz file or a encrypted tar.gz file
-# depending on the user's action
-
-cp ~/Persistent/scripts/restore.sh $final_backup_directory
+# depending on the user's action to encrypt or leave it as a simple tar.gz file
 
 cd ~/Persistent
 
@@ -321,8 +338,46 @@ md5sum $final_backup_file | awk {'print $1'} > $final_backup_file.md5
 
 rm -rf $final_backup_directory > /dev/null 2>&1
 
+# If we don't have a encrypted Backup we are finished here ...
+# As we said multiples times ... no copy possible to a external ssh host without encryption
+# of the generated backup. The user could copy this file itself to anywhere ... but not within
+# this add-on
 
-# If there is no backup host defined inside swtorssh.cfg we are finished here ...
+if [ $WARNING_SSH == "1" ] ; then
+
+   # We delete all files here
+
+   rm -rf ~/Persistent/personal-files/tails-repair-disk/* > /dev/null 2>&1
+
+   # we move the backup file and the md5 checksum to ~/Persistent/personal-files/tails-repair-disk
+
+   mv $final_backup_file.md5 ~/Persistent/personal-files/tails-repair-disk
+   mv $final_backup_file ~/Persistent/personal-files/tails-repair-disk
+
+   cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
+
+   cd ~/Persistent/personal-files/tails-repair-disk
+
+   echo "file1="$final_backup_file.md5 > restore_part2.sh
+   echo "file2="$final_backup_file >> restore_part2.sh
+
+   cat restore_part2.sh >> restore.sh
+   cat ~/Persistent/scripts/restore_part3.sh >> restore.sh
+
+   rm restore_part2.sh
+
+
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+   --text="\n\n      Backup was made and stored inside ~/Persistent/personal-files/tails-repair-disk        \n\n" > /dev/null 2>&1)
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "backup is now finished and stored : $final_backup_file"
+   fi
+
+   exit 0
+fi
+
+# searching for a backup host
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
 --text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
@@ -336,24 +391,17 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
 else
    BACKUP_HOST="0"
 
-   zenity --info --width=600 --title="" \
-   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup files away from here to a very safe place. \n\n" /
-   > /dev/  null 2>&1
+#   zenity --info --width=600 --title="" \
+#   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup files away from here to a very safe place. \n\n" /
+#   > /dev/  null 2>&1
 
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo "backup is now finished and stored : $final_backup_file"
-   fi
-
-   exit 0
+#   if [ $TERMINAL_VERBOSE == "1" ] ; then
+#      echo "backup is now finished and stored : $final_backup_file"
+#  fi
+#
+#   exit 0
 fi
 
-
-if [ $BACKUP_HOST == "1" ] ; then
-   if [ $WARNING_SSH == "1" ] ; then
-       zenity --error --width=600 --text="\n\n    This simple unencrpyted backup can not be transfered to a remote host over SSH.    \n\n" > /dev/null 2>&1
-       exit 1
-   fi
-fi
 
 
 swtor_connected

@@ -458,7 +458,19 @@ Date		Release		Author		Description
                                                   I have to replace all links.
 
                                                 - Cleanup the mess with the short-links
+                                                - Cleanup with the bookmarks
       
+
+                                                - Restore and Backup scripts testing ....
+                                                  testing ... testing ... testing ... 
+                                                  and change a lot of code 
+
+
+                                                  - remove the last unused ) from the tar.gz file
+                                                  - restore.sh allmost working
+
+
+ 
 
 
 
