@@ -1,17 +1,21 @@
 
+
 # we calculate the md5 01 of the backup-file
 
 checksumm1=$(cat $file1)
 checksumm2=$(md5sum $file2 |  awk  {'print $1'})
 
+echo
 echo stored-----md5 01: $checksumm1
 echo calculated-md5 01: $checksumm2
-
+echo
 
 if [ $checksumm1 == $checksumm2 ] ; then
    echo checksumm 01 is correct
+   echo
 else
    echo warning : calculated checksum 01 and the stored checksumm do not match !!!!!!!
+   echo this tails backup is not valid !!!!
    exit 1
 fi
 
@@ -22,7 +26,18 @@ bfile1=$(tar -tvf $file2 | grep md5 | awk  {'print $6'} | xargs basename )
 
 # we extract the unencrypted tar.gz right here (2 filenames)
 
+echo
+echo "extracting backup file " $file2 " : please wait !"
+echo
 tar xvzf $file2
+
+if [ $? -eq 0 ] ; then
+   echo "extracting backup file " $file2 " : done"
+   echo
+else
+   echo "extracting backup file " $file2 " : failure !"
+   exit 1
+fi
 
 mfile1=$(find ./home | grep $bfile1)
 mfile2=$(find ./home | grep $bfile2)
@@ -42,19 +57,36 @@ file2=$(ls -al | grep tar.gz | awk  {'print $9'})
 checksumm1=$(cat $file1)
 checksumm2=$(md5sum $file2 |  awk  {'print $1'})
 
+echo
 echo stored-----md5 02: $checksumm1
 echo calculated-md5 02: $checksumm2
+echo
 
 if [ $checksumm1 == $checksumm2 ] ; then
    echo checksumm 02 is correct
+   echo
 else
    echo warning : calculated checksum 02 and the stored checksumm do not match !!!!!!!
+   echo this tails backup is not valid !!!!
    exit 1
 fi
 
 # Both provided md5 checksumms are correct ...we continue now
 
+echo
+echo "extracting backup file " $file2 " : please wait !"
+echo
 tar xvzf $file2
+
+if [ $? -eq 0 ] ; then
+   echo "extracting backup file " $file2 " : done"
+   echo
+else
+   echo "extracting backup file " $file2 " : failure !"
+   exit 1
+fi
+
+
 
 # we move the backup folder here to the root of ~/Persistent
 
@@ -66,11 +98,36 @@ rm -rf ./home
 rm -f $file1
 rm -f $file2
 
-# ok... we can copy back the data, but first we have to get the add-on itself
+
+# We have to get the add-on itself
+
+echo
+echo "download add-on from github.com : Please wait !"
+echo
 
 git clone https://github.com/swtor00/swtor-addon-to-tails
 
+if [ $? -eq 0 ] ; then
+   echo "download add-on from github.com : done"
+   echo
+else
+   echo "download add-on from github.com : failure ... We can not continue !"
+   exit 1
+fi
 
+# Our fist step is to create all directorys
+
+cd ~/Persistent/swtor-addon-to-tails/scripts
+
+echo
+echo "Creating directorys : cli_directorys.sh"
+echo
+
+./cli_directorys.sh
+
+echo
+echo "Creating directorys : done "
+echo
 
 
 
