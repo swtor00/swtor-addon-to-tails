@@ -468,6 +468,17 @@ Date		Release		Author		Description
 
                                                   - remove the last unused ) from the tar.gz file
                                                   - restore.sh allmost working
+                        
+                                                  - Restoring unencrypted backup tested :
+                                                    
+                                                    Restoring file over setup.sh in restore-mode works
+                                                    Restoring personal-files works   
+                                                    Restoring Tor-Browser from persistent works
+                                                    Restoring ssh-keys works
+                                                    Restoring gnupg works
+                                                    Restoring bookmarks works
+                                                    Restoring thunderbird works 
+                                                    
 
 
  

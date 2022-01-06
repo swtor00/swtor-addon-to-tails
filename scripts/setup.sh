@@ -148,7 +148,7 @@ if [ $# -eq 1 ] ; then
            cp ~/Persistent/backup/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks
            echo "Backup files bookmarks restored"
         else
-           echo "Bookmarks not restored .... option is not active on this volume"
+           echo "Bookmarks not restored .... option is not active on this persistent volume"
         fi
         fi
 
@@ -159,23 +159,21 @@ if [ $# -eq 1 ] ; then
            cp -r ~/Persistent/backup/gnupg/* ~/.gnupg/
            echo "Backup files gnupg restored"
         else
-           echo "gnupg not restored .... option is not active on this volume"
+           echo "gnupg not restored .... option is not active on this persistent volume"
         fi
         fi
-
-        # home/amnesia/.thunderbird
-
 
         # If the backup contains thunderbird we restore them back
 
         if [ -d ~/Persistent/backup/thunderbird ] ; then
         if mount | grep -q home/amnesia/.thunderbird ; then
-
+           cp -r ~/Persistent/backup/thunderbird/*  ~/.thunderbird
            echo "Backup files thunderbird restored"
         else
-           echo "thunderbird not restored .... option is not active on this volume"
+           echo "thunderbird not restored .... option is not active on this persistent volume"
         fi
         fi
+
 
 
 
