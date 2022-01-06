@@ -137,11 +137,12 @@ if [ $# -eq 1 ] ; then
     echo
 
     if [ "$backup_version" == "$current_version" ] ; then
+
         echo we have the same version of Tails to restore
         echo copy-back should work without any problem
         echo
 
-        # If the backup contains bookmarks we restore them back
+        # If the backup contains bookmarks from Tor-Browser we restore them back
 
         if [ -d ~/Persistent/backup/bookmarks ] ; then
         if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
@@ -163,7 +164,7 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
-        # If the backup contains thunderbird we restore them back
+        # If the backup contains thunderbird (Email) we restore them back
 
         if [ -d ~/Persistent/backup/thunderbird ] ; then
         if mount | grep -q home/amnesia/.thunderbird ; then
@@ -171,6 +172,46 @@ if [ $# -eq 1 ] ; then
            echo "Backup files thunderbird restored"
         else
            echo "thunderbird not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+
+        # If the backup contains pidgin (Messanger) we restore them back
+
+        if [ -d ~/Persistent/backup/pidgin ] ; then
+        if mount | grep -q /home/amnesia/.purple ; then
+           cp -r ~/Persistent/backup/pidgin/* /home/amnesia/.purple
+           echo "Backup files pidgin restored"
+        else
+           echo "pidgin not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+
+        # If the backup contains electrum bitcoin wallet we restore them back
+
+        if [ -d ~/Persistent/backup/electrum  ] ; then
+        if mount | grep -q /home/amnesia/.electrum  ; then
+           cp -r ~/Persistent/backup/electrum /*  /home/amnesia/.electrum
+           echo "Backup files electrum restored"
+        else
+           echo "electrum not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+
+
+
+
+
+        # If the backup contains cups (Printing) we restore them back
+
+        if [ -d ~/Persistent/backup/cups-configuration ] ; then
+        if mount | grep -q /home/amnesia/.purple ; then
+
+           echo "Backup files cups restored"
+        else
+           echo "cups not restored .... option is not active on this persistent volume"
         fi
         fi
 

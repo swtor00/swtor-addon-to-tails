@@ -477,10 +477,14 @@ Date		Release		Author		Description
                                                     Restoring ssh-keys works
                                                     Restoring gnupg works
                                                     Restoring bookmarks works
-                                                    Restoring thunderbird works 
-                                                    
+                                                    Restoring thunderbird works (with data)
+                                                    Restoring pidgin works (with data)
+                                                    Restoring electrum works (tested wihout any data)
+ 
+                                                    Restoring cups
+                                                    Restoring tca    
 
-
+                                                      
  
 
 
