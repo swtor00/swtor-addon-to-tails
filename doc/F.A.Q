@@ -101,7 +101,13 @@ I guess No because I don't need a secound stick with the equal size to copy.
 I only backup files from the Persistent volume. The transfer to a foreign
 host is also not included in the Tails backup solution.
 But every user has to make this decission for himself.
-
+As long the backup is encrypted with a very strong password
+and saved over ssh to a other country, you need only a little paper
+with ssh-credentials to store back the bassword.If you need
+the ssh-keys to login for the backup host, you have to copy
+all the files from ~/Persistent/personal-files/tails-repair-disk 
+to seperate stick and hide this stick.  
+ 
 
 Why is a administation password needet on every startup ? 
 --------------------------------------------------------
