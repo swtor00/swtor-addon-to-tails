@@ -192,17 +192,24 @@ if [ $# -eq 1 ] ; then
 
         if [ -d ~/Persistent/backup/electrum  ] ; then
         if mount | grep -q /home/amnesia/.electrum  ; then
-           cp -r ~/Persistent/backup/electrum /*  /home/amnesia/.electrum
+           cp -r ~/Persistent/backup/electrum/*  /home/amnesia/.electrum
            echo "Backup files electrum restored"
         else
            echo "electrum not restored .... option is not active on this persistent volume"
         fi
         fi
 
+        # If the backup contains tca (TOR-Nodes configuration)  we restore them back
 
+        if [ -d ~/Persistent/backup/tca  ] ; then
+        if mount | grep -q /var/lib/tca ; then
+           #    cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/tca /home/amnesia/Persistent/backup > /dev/null 2>&1
 
-
-
+           echo "Backup files tca restored"
+        else
+           echo "tca not restored .... option is not active on this persistent volume"
+        fi
+        fi
 
         # If the backup contains cups (Printing) we restore them back
 
