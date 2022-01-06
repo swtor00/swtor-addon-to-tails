@@ -19,9 +19,16 @@
 #########################################################
 
 
-cd ~/Persistent/personal-files/tails-repair-disk
-# cd ~/Persistent/
+cd ~/Persistent/
+files=$(ls -al * | wc -l)
 
+if [ $files == "8" ] ; then
+    echo "Persistent check for empty folder: done"
+else
+    echo "Persistent is not empty"
+    exit 1
+fi
+ 
 # We need to test, that we are able to download
 # the addon over internet, after checking the backup
 # with the provided md5 checksumm

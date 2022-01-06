@@ -138,7 +138,7 @@ if [ -z "$(ls -A ~/Persistent/swtorcfg )" ]; then
    fi
 else
     mkdir -p /home/amnesia/Persistent/backup/swtorcfg
-    cp ~/Persistent/swtorcfg/*.cfg /home/amnesia/Persistent/backup/swtorcfg
+    cp ~/Persistent/swtorcfg/* /home/amnesia/Persistent/backup/swtorcfg
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "backup made from configuration files addon [swtorcfg]"
     fi
@@ -157,9 +157,12 @@ if [ "$BACKUP_FIXED_PROFILE" == "0" ] ; then
    rm -rf /home/amnesia/Persistent/backup/personal-files/3 > /dev/null 2>&1
 fi
 
-# We don't copy the repair-disk folder into the backup 
+# We don't copy the repair-disk folder into the backup folder 
 
 rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
+
+tails-version | head -n1 | awk {'print $1'} > /home/amnesia/Persistent/backup/tails-backup-version
+
 
 sleep 2
 end_wait_dialog
@@ -258,8 +261,6 @@ fi
 
 
 
-
-
 end_wait_dialog && sleep 2
 
 # The backup is done here ....
@@ -279,7 +280,7 @@ time_stamp=$(date '+%Y-%m-%d-%H-%M')
 filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp"
 filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
 final_backup_directory="/home/amnesia/Persistent/$(echo $filename)"
-backup_stamp="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp)"
+backup_stamp="-$time_stamp)"
 
 cat password | sudo -S tar czf "/home/amnesia/Persistent/$filename_tar" ~/Persistent/backup > /dev/null 2>&1
 cat password | sudo -S chmod 777 "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
