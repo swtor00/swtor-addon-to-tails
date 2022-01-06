@@ -150,34 +150,18 @@ rm  p_system-connection.cfg > /dev/null 2>&1
 rm  p_thunderbird.cfg > /dev/null 2>&1
 rm  swtor.cfg > /dev/null 2>&1
 
-# all the remaining not deleted cfg files are user defined files from backup
+# all the remaining not deleted cfg files are user defined files 
+# restored from this backup
 
 # Ok ... we do copy back swtor.cfg from github
 
 cd ~/Persistent/scripts
 
 ./cli_update.sh
-cp ~/Persistent/backup/swtorcfg/*.cfg ~/Persistent/swtorcfg
 
-cd ~/Persistent/swtorcfg
+# Now we start setup.sh that is triggered to be in restore-mode 
 
-rm  p_bookmarks.cfg > /dev/null 2>&1
-rm  p_cups-settings.cfg > /dev/null 2>&1
-rm  p_electrum.cfg > /dev/null 2>&1
-rm  p_gnupg.cfg > /dev/null 2>&1
-rm  p_greeter.cfg > /dev/null 2>&1
-rm  p_pidgin.cfg > /dev/null 2>&1
-rm  p_system-connection.cfg > /dev/null 2>&1
-rm  p_thunderbird.cfg > /dev/null 2>&1
-rm  swtor.cfg > /dev/null 2>&1
-
-# all the remaining not deleted files are user files
-
-# Ok ... we do copy back swtor.cfg from github
-
-cd ~/Persistent/scripts
-
-./cli_update.sh
+./setup.sh restore-mode
 
 
 

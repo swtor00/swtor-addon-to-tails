@@ -102,6 +102,97 @@ else
     exit 1
 fi
 
+####################################################################################################################
+# if this script was started in restore-mode from a backup ..... we do copy back here
+####################################################################################################################
+if [ $# -eq 1 ] ; then
+
+    echo restore-mode from backup is active
+
+    cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
+    echo  "Backup files ~/Persistent/TOR Browser restored"
+    cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
+    echo  "Backup files ~/Persistent/personal-files restored"
+
+    cd ~/Persistent/backup/openssh-client
+
+    cp id_rsa ~/.ssh
+    cp id_rsa.pub ~/.ssh
+    cp known_hosts ~/.ssh
+
+    chmod 600 ~/.ssh/id_rsa
+    chmod 644 ~/.ssh/*.pub
+    ssh-add
+    echo  "Backup files ~/.ssh restored"
+
+    # The above part was easy ... the restored files are independet from the version
+    # of the running Tails-OS
+
+    backup_version=$(cat ~/Persistent/backup/tails-backup-version)
+    current_version=$(tails-version | head -n1 | awk {'print $1'})
+
+    echo
+    echo the backup-was made with version :$backup_version
+    echo the current tails is :$current_version
+    echo
+
+    if [ "$backup_version" == "$current_version" ] ; then
+        echo we have the same version of Tails to restore
+        echo copy-back should work without any problem
+        echo
+
+        # If the backup contains bookmarks we restore them back
+
+        if [ -d ~/Persistent/backup/bookmarks ] ; then
+        if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
+           cp ~/Persistent/backup/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks
+           echo "Backup files bookmarks restored"
+        else
+           echo "Bookmarks not restored .... option is not active on this volume"
+        fi
+        fi
+
+        # If the backup contains gnupg we restore them back
+
+        if [ -d ~/Persistent/backup/gnupg ] ; then
+        if mount | grep -q /home/amnesia/.gnupg ; then
+           cp -r ~/Persistent/backup/gnupg/* ~/.gnupg/
+           echo "Backup files gnupg restored"
+        else
+           echo "gnupg not restored .... option is not active on this volume"
+        fi
+        fi
+
+        # home/amnesia/.thunderbird
+
+
+        # If the backup contains thunderbird we restore them back
+
+        if [ -d ~/Persistent/backup/thunderbird ] ; then
+        if mount | grep -q home/amnesia/.thunderbird ; then
+
+           echo "Backup files thunderbird restored"
+        else
+           echo "thunderbird not restored .... option is not active on this volume"
+        fi
+        fi
+
+
+
+
+    else
+        echo The backup was made with a older version of Tails ..
+        echo
+    fi
+
+    exit 0
+fi
+####################################################################################################################
+
+
+
+
+
 # After the initaliation we can use all the functions from swtor-global.sh
 
 show_wait_dialog && sleep 2
