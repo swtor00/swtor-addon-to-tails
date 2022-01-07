@@ -163,6 +163,11 @@ rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/n
 
 tails-version | head -n1 | awk {'print $1'} > /home/amnesia/Persistent/backup/tails-backup-version
 
+# If you are a like me a developer  .... you need this file also 
+
+mkdir /home/amnesia/Persistent/backup/git
+cp ~/Persistent/swtor-addon-to-tails/.git/config /home/amnesia/Persistent/backup/git
+
 
 sleep 2
 end_wait_dialog
