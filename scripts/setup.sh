@@ -199,7 +199,7 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
-        # If the backup contains tca (TOR-Nodes configuration)  we restore them back
+        # If the backup contains tca (TOR-Nodes configuration) we restore them back
 
         if [ -d ~/Persistent/backup/tca  ] ; then
         if mount | grep -q /var/lib/tca ; then
@@ -221,7 +221,6 @@ if [ $# -eq 1 ] ; then
            echo "cups not restored .... option is not active on this persistent volume"
         fi
         fi
-
 
 
 
@@ -525,101 +524,6 @@ sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/P
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
 
-
-# Do we have greeter-settings active ?
-
-if grep -q greeter-settings ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "greeter-settings are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_greeter.cfg
-else
-   rm ~/Persistent/swtorcfg/p_greeter.cfg > /dev/null 2>&1
-fi
-
-
-# Do we have Bookmarks active ?
-
-if grep -q bookmarks ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "bookmarks are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_bookmarks.cfg
-else
-   rm ~/Persistent/swtorcfg/p_bookmarks.cfg > /dev/null 2>&1
-fi
-
-
-# Do we have network-connections active ?
-
-if grep -q system-connection ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "network settings  are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_system-connection.cfg
-else
-   rm  ~/Persistent/swtorcfg/p_system-connection.cfg > /dev/null 2>&1
-fi
-
-
-# Do we have cups active ?
-
-if grep -q cups-configuration ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "cups settings are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_cups-settings.cfg
-else
-  rm ~/Persistent/swtorcfg/p_cups-settings.cfg > /dev/null 2>&1
-fi
-
-
-# Do we have thunderbird active ?
-
-if grep -q thunderbird ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "thunderbird settings are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_thunderbird.cfg
-else
-  rm  ~/Persistent/swtorcfg/p_thunderbird.cfg > /dev/null 2>&1
-fi
-
-
-# Do we have gnupg active ?
-
-if grep -q gnupg ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "gnupg settings are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_gnupg.cfg
-else
-  rm ~/Persistent/swtorcfg/p_gnupg.cfg  > /dev/null 2>&1
-fi
-
-
-# Do we have electrum active ?
-
-if grep -q electrum ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "electrum settings are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_electrum.cfg
-else
-  rm ~/Persistent/swtorcfg/p_electrum.cfg > /dev/null 2>&1
-fi
-
-
-# Do we have pidgin active ?
-
-if grep -q pidgin ~/Persistent/persistence.conf ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "pidgin settings are present on this persistent volume"
-   fi
-   echo 1 > ~/Persistent/swtorcfg/p_pidgin.cfg
-else
-   rm ~/Persistent/swtorcfg/p_pidgin.cfg > /dev/null 2>&1
-fi
 
 
 if grep -q dotfiles ~/Persistent/persistence.conf ; then

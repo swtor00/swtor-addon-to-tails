@@ -403,18 +403,6 @@ Date		Release		Author		Description
                                                   Tor Browser has to be closed or the import 
                                                   would fail. 
 
-                                                - All options of the persistence configuration 
-                                                  are parsed during exection of setup.sh 
-                                                 
-                                                  ~/Persistent/swtorcfg/p_greeter.cfg
-                                                  ~/Persistent/swtorcfg/p_bookmarks.cfg
-                                                  ~/Persistent/swtorcfg/p_system-connection.cfg
-                                                  ~/Persistent/swtorcfg/p_cups-settings.cfg
-                                                  ~/Persistent/swtorcfg/p_thunderbird.cfg
-                                                  ~/Persistent/swtorcfg/p_gnupg.cfg
-                                                  ~/Persistent/swtorcfg/p_electrum.cfg
-                                                  ~/Persistent/swtorcfg/p_pidgin.cfg
-
                                                 - Added XCLOCK-SIZE:150 inside configuration file 
                                                       
                                                   If you are running Tails with a very high resolution 
@@ -485,9 +473,27 @@ Date		Release		Author		Description
                                                     Restoring tca    
 
                                                       
- 
+                                                  - The process to parsing persistent only during the 
+                                                    execution of setup.sh was a failure from me . On every startup 
+                                                    of the add-on, we know exactly what options are present.
+                                                    All this file are generated inside of startup.sh and the 
+                                                    extenstion changed from cfg to config.  
+
+                                                    ~/Persistent/swtorcfg/p_system-connection.config 
+                                                    ~/Persistent/swtorcfg/p_greeter.config   
+                                                    ~/Persistent/swtorcfg/p_bookmarks.config
+                                                    ~/Persistent/swtorcfg/p_cups-settings.config  
+                                                    ~/Persistent/swtorcfg/p_thunderbird.config
+                                                    ~/Persistent/swtorcfg/p_gnupg.config   
+                                                    ~/Persistent/swtorcfg/p_electrum.config
+                                                    ~/Persistent/swtorcfg/p_pidgin.config
+                                                    ~/Persistent/swtorcfg/p_tca.config 
+                                                    ~/Persistent/swtorcfg/p_dotfiles.config
 
 
+                                                    Sorry , for the change. 
+
+                                                   
 
 
  

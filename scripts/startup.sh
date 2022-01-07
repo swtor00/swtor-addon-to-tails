@@ -273,7 +273,198 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step10 : password was correct and stored ! "
     fi
-    show_wait_dialog && sleep 2
+
+    # It is better to parse the persistent.conf on every startup here
+    # than inside setup.sh. It is faster and cleaner.
+    #
+    # So we know on every startup of Tails , the current status of all options from
+    # persistent volume.
+
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+    sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/swtorcfg > /dev/null 2>&1
+
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+    sudo -S chmod 666 /home/amnesia/Persistent/swtorcfg/persistence.conf > /dev/null 2>&1
+
+
+    # If any of the 2  mandatory options for Persistent have changed from on to off ..
+    # We have a important error.
+
+    # Mandatory : openssh-client
+
+    if grep -q openssh-client ~/Persistent/swtorcfg/persistence.conf ; then
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo >&2 "ssh settings are present on this persistent volume"
+       fi
+    else
+       echo "ssh settings are not longer present on this persistent Volume"
+       exit 1
+    fi
+
+    # Mandatory : additional software part01
+
+    if grep -q /var/cache/apt/archives  ~/Persistent/swtorcfg/persistence.conf ; then
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo >&2 "additional-software is  present on this persistent volume"
+       fi
+    else
+       echo "additional-software is  not longer present on this persistent Volume"
+       exit 1
+    fi
+
+    # Mandatory : additional software part02
+
+    if grep -q /var/lib/apt/lists ~/Persistent/swtorcfg/persistence.conf ; then
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo >&2 "additional-software is  present on this persistent volume"
+       fi
+    else
+       echo "additional-software is  not longer present on this persistent Volume"
+       exit 1
+    fi
+
+
+    # Do we have network-connections active ?
+    # This option is not mandatory
+
+    if grep -q system-connection ~/Persistent/swtorcfg/persistence.conf ; then
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo >&2 "network settings are present on this persistent volume"
+       fi
+       echo 1 > ~/Persistent/swtorcfg/p_system-connection.config
+    else
+       rm  ~/Persistent/swtorcfg/p_system-connection.config > /dev/null 2>&1
+    fi
+
+    # Do we have greeter-settings active ?
+    # This option is not mandatory
+
+   if grep -q greeter-settings ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo >&2 "greeter-settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_greeter.config
+   else
+      rm ~/Persistent/swtorcfg/p_greeter.config > /dev/null 2>&1
+   fi
+
+   # Do we have Bookmarks active ?
+   # This option is not mandatory
+
+   if grep -q bookmarks ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "bookmarks are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_bookmarks.config
+   else
+      rm ~/Persistent/swtorcfg/p_bookmarks.config > /dev/null 2>&1
+   fi
+
+   # Do we have cups active ?
+   # This option is not mandatory
+
+   if grep -q cups-configuration ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "cups settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_cups-settings.config
+   else
+      rm ~/Persistent/swtorcfg/p_cups-settings.config > /dev/null 2>&1
+   fi
+
+   # Do we have thunderbird active ?
+   # This option is not mandatory
+
+   if grep -q thunderbird ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "thunderbird settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_thunderbird.config
+   else
+      rm  ~/Persistent/swtorcfg/p_thunderbird.config > /dev/null 2>&1
+   fi
+
+   # Do we have gnupg active ?
+   # This option is not mandatory
+
+   if grep -q gnupg ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "gnupg settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_gnupg.config
+   else
+      rm ~/Persistent/swtorcfg/p_gnupg.config  > /dev/null 2>&1
+   fi
+
+   # Do we have electrum active ?
+   # This option is not mandatory
+
+   if grep -q electrum ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "electrum settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_electrum.config
+   else
+      rm ~/Persistent/swtorcfg/p_electrum.config > /dev/null 2>&1
+   fi
+
+   # Do we have pidgin active ?
+   # This option is not mandatory
+
+   if grep -q pidgin ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "pidgin settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_pidgin.config
+   else
+      rm ~/Persistent/swtorcfg/p_pidgin.config > /dev/null 2>&1
+   fi
+
+   # Do we have tca active ?
+   # This option is not mandatory
+
+   if grep -q tca ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "tca settings are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/p_tca.config
+   else
+      rm ~/Persistent/swtorcfg/p_tca.config > /dev/null 2>&1
+   fi
+
+
+   # Do we have dotfiles active ?
+   # This option is not mandatory but highly recommandet
+
+   if grep -q dotfiles ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "dotfiles are present on this persistent volume"
+      fi
+      echo 1 > ~/Persistent/swtorcfg/freezing
+      echo 1 > ~/Persistent/swtorcfg/p_dotfiles.config
+
+      # The user may have jumped from non dotfiles to activated dotfiles
+
+      rm  ~/Persistent/swtorcfg/no-freezing > /dev/null 2>&1
+
+   else
+
+      rm ~/Persistent/swtorcfg/freezing > /dev/null 2>&1
+      rm ~/Persistent/swtorcfg/p_dotfiles.config > /dev/null 2>&1
+
+      echo 1 > ~/Persistent/swtorcfg/no-freezing
+
+      # This volume may was once actived with dotfiles and in the state freezed  ....
+      # but by now it is not longer  possible ... missing dotfiles option
+      # We have to clean up the mess.
+
+
+
+   fi
+
+
+
+   show_wait_dialog && sleep 2
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "password was 3 times wrong"

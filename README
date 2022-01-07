@@ -1,21 +1,4 @@
 
-Important Reminder for all users of the addon : 01/01/2022:
-
-If you are using a older version dated than 31/12/21 , please execute the following code 
-inside a terminal.
-
-cd ~/Persistent/swtor-addon-to-tails
-git reset --hard
-git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails
-rm ~/Persistent/setup
-cd scripts
-./swtor-setup.sh 
-
-After the git commit b0d6b5a880170b25720748f400579002bdabb30a it is needet to rerun the
-the setup once. After this internal update to version 0.60 you have to run setup again
-if you add / or remove options from the Persistent Volume. 
-
-
 Please have a closer look at ~/Persistent/swtor-addon-to-tails/doc 
 
 Inside of this directory, you find all the information to install 

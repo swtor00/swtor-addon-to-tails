@@ -98,9 +98,20 @@ Is the backup of Persistence (since Tails 3.25) better than your backup ?
 -------------------------------------------------------------------------
 
 I guess No because I don't need a secound stick with the equal size to copy.
-I only backup files from the Persistent volume. The transfer to a foreign
+I only backup all files from the Persistent volume. The transfer to a foreign
 host is also not included in the Tails backup solution.
 But every user has to make this decission for himself.
+
+- The backup integrated into Tails is a online-backup
+  to a other USB Stick
+- The backup is fast and works perfect but you could copy 
+  the persistenst Volume of Tails 4.25 to a empty persistent 
+  of Tails 4.23 as a example,that could be a problem.
+
+- The backup integrated into the addon works as a offline-backup. 
+- You can copy the files to any location as long this location 
+  is secure.
+ 
 As long the backup is encrypted with a very strong password
 and saved over ssh to a other country, you need only a little paper
 with ssh-credentials to store back the bassword.If you need
@@ -127,18 +138,6 @@ Persistence Volume,you have to close.
 - Electrum Bitcoin Wallet 
 - Thunderbird
 - Pidgin 
-
-
-After every change of the settings of the Persistent Volume 
-you should execute "swtor-setup.sh" again. Why this ? 
---------------------------------------------------------
-The configuruation options of the Persistent Volume are extracted 
-during the exection of "swtor-setup.sh" and are stored inside
-
-~/Persistent/swtor-addon-to-tails/swtorcfg
-
-You really need to rerun swtor-setup.sh after a chance 
-of one of the Persistent options.
 
 
 My specific question isn't found here. What should I do ? 
