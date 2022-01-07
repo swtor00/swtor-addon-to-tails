@@ -149,7 +149,10 @@ rm  swtor.cfg > /dev/null 2>&1
 
 cd ~/Persistent/scripts
 
-./cli_update.sh
+./cli_update.sh 
+
+# This update was only made to be sure, we have the default configuration 
+# file swtor.cfg
 
 # Now we start setup.sh that is triggered to be in restore-mode 
 

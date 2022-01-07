@@ -127,6 +127,8 @@ if [ $# -eq 1 ] ; then
 
     # The above part was easy ... the restored files are independet from the version
     # of the running Tails-OS
+    # Even the configuration files are not critical, as long we are using the same
+    # Version of Tails.
 
     backup_version=$(cat ~/Persistent/backup/tails-backup-version)
     current_version=$(tails-version | head -n1 | awk {'print $1'})
@@ -187,7 +189,6 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
-
         # If the backup contains electrum bitcoin wallet we restore them back
 
         if [ -d ~/Persistent/backup/electrum  ] ; then
@@ -199,12 +200,41 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
+        # Even if we are in restore mode ... we need a administration password
+
+        test_password_greeting
+        if [ $? -eq 0 ] ; then
+           echo "We have a password"
+        else
+           echo "Error !!!! No Password set on the Greeting-Screen"
+           echo
+           echo "You have to start over again ... "
+           echo "cd ~/Persistent/scripts"
+           echo "./setup.sh restore-mode"
+           echo
+           exit 1
+        fi
+
+        test_admin_password
+        if [ $? -eq 0 ] ; then
+           echo "Password stored"
+        else
+           echo "password wrong or empty"
+           echo
+           echo "You have to start over again ... "
+           echo "cd ~/Persistent/scripts"
+           echo "./setup.sh restore-mode"
+           echo
+           exit 1
+        fi
+
+
         # If the backup contains tca (TOR-Nodes configuration) we restore them back
 
         if [ -d ~/Persistent/backup/tca  ] ; then
         if mount | grep -q /var/lib/tca ; then
-           #    cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/tca /home/amnesia/Persistent/backup > /dev/null 2>&1
-
+           echo "cat ~/Persistent/swtor-addon-to-tails/tmp/password | \"
+           echo "sudo -S cp ~/Persistent/backup/tca       "
            echo "Backup files tca restored"
         else
            echo "tca not restored .... option is not active on this persistent volume"
@@ -221,8 +251,6 @@ if [ $# -eq 1 ] ; then
            echo "cups not restored .... option is not active on this persistent volume"
         fi
         fi
-
-
 
 
     else
@@ -279,7 +307,7 @@ fi
 # After the setup is completly executed the file "setup" will be created inside ~/Persistent/swtor-addon-to-tails
 # If this file exist , the setup will not executed. If you would like to start-over with ./swtor-setup.sh
 # I would recommand the following order.
-# 1. If the System is current freezed ... unfreez it and make reboot of Tails.
+# 1. If the System is current freezed ... unfreez it and make a reboot of Tails.
 # 2. Delete the file "setup" inside the directory ~/Persistent/swtor-addon-to-tails
 # 3. execute the command ./swtor-setup.sh and the hole setup process can be started again.
 
