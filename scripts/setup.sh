@@ -200,6 +200,11 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
+        # I don't know the reason ... we copy back config from backup git
+        # and we are able to make a git push without a password
+
+        cp /home/amnesia/Persistent/backup/git/config ~/Persistent/swtor-addon-to-tails/.git
+
         # Even if we are in restore mode ... we need a administration password
 
         test_password_greeting
@@ -233,8 +238,6 @@ if [ $# -eq 1 ] ; then
 
         if [ -d ~/Persistent/backup/tca  ] ; then
         if mount | grep -q /var/lib/tca ; then
-           echo "cat ~/Persistent/swtor-addon-to-tails/tmp/password | \"
-           echo "sudo -S cp ~/Persistent/backup/tca       "
            echo "Backup files tca restored"
         else
            echo "tca not restored .... option is not active on this persistent volume"
