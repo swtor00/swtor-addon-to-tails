@@ -431,8 +431,11 @@ if [ $# -eq 1 ] ; then
 
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
         sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf > /dev/null 2>&1
+        
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S apt-get update > /dev/null 2>&1
 
-        echo "Backup files additional-software restored"
+        echo "Backup files additional-software restored and excuted debian command apt-get update"
 
         # Do we have dotfiles inside the backup  ?
 

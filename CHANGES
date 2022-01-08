@@ -508,6 +508,21 @@ Date		Release		Author		Description
                                                     ./restore.sh
 
                                                     changing restore_part3.sh and more testing 
+                                                    and sooner or later we are done here .....
+
+                                                    It is not enough to copy back the file to
+ 
+                                                    sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+
+                                                    # We have to execute this , to be certain that the software is installed on next boot 
+                                                
+                                                    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+                                                    sudo -S apt-get update > /dev/null 2>&1 
+
+                                                   
+
+
+
 
                                                                            
 

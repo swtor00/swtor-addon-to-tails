@@ -24,7 +24,7 @@ bfile1=$(tar -tvf $file2 | grep md5 | awk  {'print $6'} | xargs basename )
 # we extract the unencrypted tar.gz right here (2 filenames)
 
 echo "extracting backup file " $file2 " : please wait !"
-tar xzf $file2
+tar xzf $file2 > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
    echo "extracting backup file " $file2 " : done"
@@ -39,9 +39,9 @@ mfile2=$(find ./home | grep $bfile2)
 mv $mfile1 .
 mv $mfile2 .
 
-rm -rf ./home
-rm $file1
-rm $file2
+rm -rf ./home > /dev/null 2>&1
+rm $file1 > /dev/null 2>&1
+rm $file2 > /dev/null 2>&1
 
 file1=$(ls -al | grep md5check    | awk  {'print $9'})
 file2=$(ls -al | grep tar.gz | awk  {'print $9'})
@@ -66,7 +66,7 @@ fi
 
 echo "extracting backup file " $file2 " : please wait !"
 
-tar xzf $file2
+tar xzf $file2 > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
    echo "extracting backup file " $file2 " : done"
@@ -80,10 +80,10 @@ fi
 # we move the backup folder here to the root of ~/Persistent
 
 backup_folder=$(find ./home | grep backup | head -1)
-mv $backup_folder .
-rm -rf ./home
-rm -f $file1
-rm -f $file2
+mv $backup_folder . > /dev/null 2>&1
+rm -rf ./home > /dev/null 2>&1
+rm -f $file1 > /dev/null 2>&1
+rm -f $file2 > /dev/null 2>&1
 
 # We have to get the add-on itself
 
@@ -135,6 +135,22 @@ cd ~/Persistent/scripts
 # Now we start setup.sh that is triggered to be in restore-mode
 
 ./setup.sh restore-mode
+if [ $? -eq 0 ] ; then
+   rm ~/Persistent/persistence.conf > /dev/null 2>&1
+   rm -rf ~/Persistent/backup > /dev/null 2>&1
 
+   cd ~/Persistent/swtor-addon-to-tails/tmp
+  
+   rm password > /dev/null 2>&1
+   rm w-end > /dev/null 2>&1
+
+   # We are ready here to start again 
+
+else
+
+   # We are not ready ... 
+   exit 1
+
+fi
 
 
