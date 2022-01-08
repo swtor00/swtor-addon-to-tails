@@ -35,7 +35,15 @@ source ~/Persistent/scripts/swtor-global.sh
 # BACKUP_FIXED_PROFILE
 # BACKUP_APT_LIST
 # TERMINAL_VERBOSE
+# BROWSER_SOCKS5
+# BYPASS
+# CHECK_SSH
+# AUTOCLOSE_BROWSER
 # TIMEOUT_TB
+# TIMEOUT_SSH
+# XCLOCK_SIZE
+# DEBUGW
+# 
 
 
 # Has setup ever run on this tails system ?

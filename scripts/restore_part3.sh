@@ -142,19 +142,19 @@ cd ~/Persistent/swtorcfg
 
 rm  swtor.cfg > /dev/null 2>&1
 
-# all the remaining not deleted cfg files are user defined files 
+# all the remaining not deleted cfg files are user defined files
 # restored from this backup
 
 # Ok ... we do copy back swtor.cfg from github
 
 cd ~/Persistent/scripts
 
-./cli_update.sh 
+./cli_update.sh
 
-# This update was only made to be sure, we have the default configuration 
+# This update was only made to be sure, we have the default configuration
 # file swtor.cfg
 
-# Now we start setup.sh that is triggered to be in restore-mode 
+# Now we start setup.sh that is triggered to be in restore-mode
 
 ./setup.sh restore-mode
 
