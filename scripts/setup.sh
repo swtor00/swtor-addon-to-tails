@@ -110,9 +110,12 @@ if [ $# -eq 1 ] ; then
     echo restore-mode from backup is active
 
     cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
-    echo  "Backup files ~/Persistent/TOR Browser restored"
+    echo ------------------------------------------------
+    echo "Backup files ~/Persistent/TOR Browser restored"
+    echo ------------------------------------------------
     cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
-    echo  "Backup files ~/Persistent/personal-files restored"
+    echo "Backup files ~/Persistent/personal-files restored"
+    echo ---------------------------------------------------
 
     cd ~/Persistent/backup/openssh-client
 
@@ -123,8 +126,10 @@ if [ $# -eq 1 ] ; then
     chmod 600 ~/.ssh/id_rsa
     chmod 644 ~/.ssh/*.pub
     ssh-add
+    echo ------------------------------
     echo "Backup files ~/.ssh restored"
-    echo "without testing ~.ssh mounted" 
+    echo "without testing for ~.ssh mounted on Persistent"
+    echo ------------------------------
 
     # The above part was easy ... the restored files are independet from the version
     # of the running Tails-OS
@@ -141,11 +146,12 @@ if [ $# -eq 1 ] ; then
 
     if [ "$backup_version" == "$current_version" ] ; then
 
+        echo
         echo we have the same version of Tails to restore
         echo copy-back should work without any problem
         echo
 
-        # If the backup contains bookmarks from Tor-Browser we restore them back
+        # If the backup contains bookmarks from Tor-Browser : we restore them back
 
         if [ -d ~/Persistent/backup/bookmarks ] ; then
         if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
@@ -156,7 +162,7 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
-        # If the backup contains gnupg we restore them back
+        # If the backup contains gnupg : we restore them back
 
         if [ -d ~/Persistent/backup/gnupg ] ; then
         if mount | grep -q /home/amnesia/.gnupg ; then
@@ -179,7 +185,7 @@ if [ $# -eq 1 ] ; then
         fi
 
 
-        # If the backup contains pidgin (Messanger) we restore them back
+        # If the backup contains pidgin (Messanger) : we restore them back
 
         if [ -d ~/Persistent/backup/pidgin ] ; then
         if mount | grep -q /home/amnesia/.purple ; then
@@ -190,7 +196,7 @@ if [ $# -eq 1 ] ; then
         fi
         fi
 
-        # If the backup contains electrum bitcoin wallet we restore them back
+        # If the backup contains electrum bitcoin wallet : we restore them back
 
         if [ -d ~/Persistent/backup/electrum  ] ; then
         if mount | grep -q /home/amnesia/.electrum  ; then
@@ -248,15 +254,17 @@ if [ $# -eq 1 ] ; then
         if grep -q openssh-client ~/Persistent/persistence.conf ; then
             echo >&2 "ssh settings are present on this persistent volume"
         else
-            echo "ssh settings are not present on this persistent Volume"
-            echo
-            echo "You have to start over again ... "
-            echo "cd ~/Persistent/scripts"
-            echo "./setup.sh restore-mode"
-            echo
-            exit 1
+           echo "ssh-settings is not present on this persistent Volume"
+           echo
+           echo "You have to start over again ... "
+           echo "Activate ssh-settings on this persistent Volume"
+           echo "and restart Tails"
+           echo
+           echo "After booting : "
+           echo "cd ~/Persistent/scripts"
+           echo "./setup.sh restore-mode"
+           exit 1
         fi
-
 
         # Mandatory : additional software part01
 
@@ -266,9 +274,12 @@ if [ $# -eq 1 ] ; then
            echo "additional-software is not present on this persistent Volume"
            echo
            echo "You have to start over again ... "
+           echo "Activate additional-software on this persistent Volume"
+           echo "and restart Tails"
+           echo
+           echo "After booting : "
            echo "cd ~/Persistent/scripts"
            echo "./setup.sh restore-mode"
-           echo
            exit 1
         fi
 
@@ -280,16 +291,53 @@ if [ $# -eq 1 ] ; then
            echo "additional-software is not present on this persistent Volume"
            echo
            echo "You have to start over again ... "
+           echo "Activate additional-software on this persistent Volume"
+           echo "and restart Tails"
+           echo
+           echo "After booting : "
            echo "cd ~/Persistent/scripts"
            echo "./setup.sh restore-mode"
            echo
            exit 1
         fi
 
-        # If the backup contains network-connections  we restore them back
+
+        # If the backup contains network-connections : we restore them back
+
+        if [ -d ~/Persistent/backup/nm-system-connections ] ; then
+        if grep -q system-connection ~/Persistent/persistence.conf ; then
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/nm-system-connections /live/persistence/TailsData_unlocked/
+
+           # Very important  here after the copy :
+           # We need to change the owner and group to root:root for all the files or
+           # the owner and group is amnesia:amnesia and this would not work on the next boot
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S cd /live/persistence/TailsData_unlocked/nm-system-connections && chown -R root:root *
+
+           echo "Backup files system-connection restored"
+        else
+           echo "system-connection not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+
+        # If the backup contains tca (TOR-Nodes configuration) : we restore them back
 
         if [ -d ~/Persistent/backup/tca  ] ; then
-        if mount | grep -q /var/lib/tca ; then
+        if grep -q tca ~/Persistent/persistence.conf ; then
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/tca /live/persistence/TailsData_unlocked/
+
+           # Very important  here after the copy :
+           # We need to change the owner and group to root:root for all the files or
+           # the owner and group is amnesia:amnesia
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S cd /live/persistence/TailsData_unlocked/tca && chown -R root:root *
 
            echo "Backup files tca restored"
         else
@@ -298,28 +346,133 @@ if [ $# -eq 1 ] ; then
         fi
 
 
-
-
-
-        # If the backup contains tca (TOR-Nodes configuration) we restore them back
-
-        if [ -d ~/Persistent/backup/tca  ] ; then
-        if mount | grep -q /var/lib/tca ; then
-
-           echo "Backup files tca restored"
-        else
-           echo "tca not restored .... option is not active on this persistent volume"
-        fi
-        fi
-
-        # If the backup contains cups (Printing) we restore them back
+        # If the backup contains cups (Printing) : we restore them back
 
         if [ -d ~/Persistent/backup/cups-configuration ] ; then
-        if mount | grep -q /home/amnesia/.purple ; then
+        if grep -q cups-configuration ~/Persistent/persistence.conf ; then
+
+           # The owner and groups of the cups configuration
+           #
+           # root root 6402 Dec  6 15:03 cupsd.conf
+           # root root 2923 Nov 28  2020 cups-files.conf
+           # root root 4096 Nov 28  2020 interfaces
+           # root lp   4096 Nov 28  2020 ppd
+           # root root  240 Dec  6 15:03 raw.convs
+           # root root  211 Dec  6 15:03 raw.types
+           # root root  142 Nov 28  2020 snmp.conf
+           # root lp   4096 Nov 28  2020 ssl
+           # root lp    694 Jan  8 12:08 subscriptions.conf
+           # root lp    392 Jan  8 12:04 subscriptions.conf.O
+
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/cups-configuration /live/persistence/TailsData_unlocked/
+
+           # Very important  here after the copy :
+           # We need to change the owner and group to root:root for all the files or
+           # the owner and group is amnesia:amnesia
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S cd /live/persistence/TailsData_unlocked/cups-configuration && chown -R root:root *
+
+           # special owner and group for ppd
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ppd
+
+           # special owner and group for ssl
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ssl
+
+           # special owner and group for subscriptions.conf
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf
+
+
+           # Is this really needet ? We see
+           # special owner and group for subscriptions.conf.0
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf.0
+
 
            echo "Backup files cups restored"
         else
            echo "cups not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+
+        # If the backup contains greeter-settings : we restore them back
+
+        if [ -d ~/Persistent/backup/greeter-settings ] ; then
+        if grep -q greeter-settings ~/Persistent/persistence.conf ; then
+
+           # The owner and groups of the greeter-settings
+           #
+           # Debian-gdm Debian-gdm   37 Jan  7 21:48 tails.formats
+           # Debian-gdm Debian-gdm   75 Jan  8 12:08 tails.keyboard
+           # Debian-gdm Debian-gdm   41 Jan  7 21:48 tails.language
+           # Debian-gdm Debian-gdm   28 Jan  7 21:48 tails.macspoof
+           # Debian-gdm Debian-gdm   19 Jan  7 21:48 tails.network
+           # Debian-gdm Debian-gdm  160 Jan  7 21:48 tails.password
+           # Debian-gdm Debian-gdm   35 Jan  7 21:48 tails.unsafe-browser
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/greeter-settings /live/persistence/TailsData_unlocked/
+
+           # Very important  here after the copy :
+           # We need to change the owner and group to Debian-gdm:Debian-gdm for all the files or
+           # the owner and group is amnesia:amnesia
+
+           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+           sudo -S cd /live/persistence/TailsData_unlocked/greeter-settings && chown -R Debian-gdm:Debian-gdm *
+
+           echo "Backup files greeter-settings restored"
+        else
+           echo "greeter-settings not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+        # We copy back the configuration for the additional-Software that is stored here
+        #
+        # tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
+        #
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf
+
+
+        # Do we have dotfiles inside the backup  ?
+
+        if [ -d ~/Persistent/backup/dotfiles ] ; then
+        if grep -q dotfiles  ~/Persistent/persistence.conf ; then
+
+           # We don't restore back the files from dotfiles by now
+
+           cd ~/Persistent/scripts
+
+           # Was the system during Backup in state freezed ?
+           # If this is the case ... we are freezing this Tails as well
+
+           echo 1 > ~/Persistent/swtorcfg/freezing
+
+           if [ -f ~/Persistent/backup/swtorcfg/freezed.cfg ]  ; then
+              ./cli_tweak.sh
+              ./cli_freezing.sh
+              echo state : freezed
+           else
+              echo state : not-freezed
+           fi
+
+        else
+           echo 1 > ~/Persistent/swtorcfg/no-freezing
+           echo "dotfiles not restored .... option is not active on this persistent volume"
         fi
         fi
 
