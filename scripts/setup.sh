@@ -123,7 +123,8 @@ if [ $# -eq 1 ] ; then
     chmod 600 ~/.ssh/id_rsa
     chmod 644 ~/.ssh/*.pub
     ssh-add
-    echo  "Backup files ~/.ssh restored"
+    echo "Backup files ~/.ssh restored"
+    echo "without testing ~.ssh mounted" 
 
     # The above part was easy ... the restored files are independet from the version
     # of the running Tails-OS
@@ -233,11 +234,78 @@ if [ $# -eq 1 ] ; then
            exit 1
         fi
 
+        # We need to know , what options are active inside of the persistent volume
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
+
+
+        # Test mandatory option : ssh
+
+        if grep -q openssh-client ~/Persistent/persistence.conf ; then
+            echo >&2 "ssh settings are present on this persistent volume"
+        else
+            echo "ssh settings are not present on this persistent Volume"
+            echo
+            echo "You have to start over again ... "
+            echo "cd ~/Persistent/scripts"
+            echo "./setup.sh restore-mode"
+            echo
+            exit 1
+        fi
+
+
+        # Mandatory : additional software part01
+
+        if grep -q /var/cache/apt/archives  ~/Persistent/persistence.conf ; then
+           echo >&2 "additional-software is present on this persistent volume"
+        else
+           echo "additional-software is not present on this persistent Volume"
+           echo
+           echo "You have to start over again ... "
+           echo "cd ~/Persistent/scripts"
+           echo "./setup.sh restore-mode"
+           echo
+           exit 1
+        fi
+
+        # Mandatory : additional software part02
+
+        if grep -q /var/lib/apt/lists ~/Persistent/persistence.conf ; then
+           echo >&2 "additional-software is present on this persistent volume"
+        else
+           echo "additional-software is not present on this persistent Volume"
+           echo
+           echo "You have to start over again ... "
+           echo "cd ~/Persistent/scripts"
+           echo "./setup.sh restore-mode"
+           echo
+           exit 1
+        fi
+
+        # If the backup contains network-connections  we restore them back
+
+        if [ -d ~/Persistent/backup/tca  ] ; then
+        if mount | grep -q /var/lib/tca ; then
+
+           echo "Backup files tca restored"
+        else
+           echo "tca not restored .... option is not active on this persistent volume"
+        fi
+        fi
+
+
+
+
 
         # If the backup contains tca (TOR-Nodes configuration) we restore them back
 
         if [ -d ~/Persistent/backup/tca  ] ; then
         if mount | grep -q /var/lib/tca ; then
+
            echo "Backup files tca restored"
         else
            echo "tca not restored .... option is not active on this persistent volume"
@@ -536,7 +604,7 @@ if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
       echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was created"
    fi
 
-else 
+else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log was allready made"
    fi
