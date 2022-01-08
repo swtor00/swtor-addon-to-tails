@@ -500,6 +500,7 @@ Date		Release		Author		Description
                                                     - Even git push works now 
 
                                                     Bootstrapping .....
+
                                                     Boot Tails 4.25 and make a bacckup 
                                                     copy ~/Persistent/personal-files/tails-repair-disk to a usb 
                                                     Starting empty Tails 4.25 and copy back files to persistent 
