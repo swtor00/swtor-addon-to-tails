@@ -213,7 +213,7 @@ fi
 
 # CUPS Configuration / this option is optional for the add-on
 
-if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_cups-settings.cfg ] ; then
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_cups-settings.config ] ; then
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/cups-configuration /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -225,7 +225,7 @@ fi
 
 # Network connections / this option is optional for the add-on
 
-if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_system-connection.cfg ] ; then
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_system-connection.config ] ; then
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/nm-system-connections /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -235,16 +235,16 @@ fi
 fi
 
 
-
 # TOR-Node configuration / this option is optional for the add-on
 
-if mount | grep -q /var/lib/tca ; then
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_tca.config ] ; then
    cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/tca /home/amnesia/Persistent/backup > /dev/null 2>&1
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from tor-node configuration"
 fi
 
 fi
+
 
 
 # Additional Software configuration / this option is mandatory for the add-on
@@ -267,7 +267,7 @@ fi
 
 # Configuration of greeter-settings / only optional and not mandatory for the add-on
 
-if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_greeter.cfg ] ; then
+if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_greeter.config ] ; then
 cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/greeter-settings /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
