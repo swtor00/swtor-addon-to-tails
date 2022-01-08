@@ -19,6 +19,7 @@
 #########################################################
 
 
+
 cd ~/Persistent/
 files=$(ls -al * | wc -l)
 
@@ -28,7 +29,8 @@ else
     echo "Persistent is not empty"
     exit 1
 fi
- 
+
+
 # We need to test, that we are able to download
 # the addon over internet, after checking the backup
 # with the provided md5 checksumm
@@ -40,6 +42,7 @@ if [ $? -eq 0 ] ; then
    echo "testing internet-connection : done "
 else
    echo "testing internet-connection : failure ... please activate a connection to the internet first !"
+   echo "and restart this script with ./restore.sh from the persistent folder"
    exit 1
 fi
 
