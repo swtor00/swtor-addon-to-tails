@@ -145,6 +145,9 @@ if [ $? -eq 0 ] ; then
    rm w-end > /dev/null 2>&1
 
    # We are ready here to start again 
+   # we delete also this file ... the last remaining part of restore.sh 
+   
+   rm ~/Persistent/restore.sh > /dev/null 2>&1
 
 else
 

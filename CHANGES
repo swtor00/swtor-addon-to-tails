@@ -566,7 +566,23 @@ Date		Release		Author		Description
                                                     - install of the software was not executed 
                                                     - maybe a wrong permission ?
                                                     - creation of ~/Persistent/setup 
-                                                                             
+
+                                                    Date : 09/01/2022 
+                                                    - fine ... The restore of a unecpryted file is now working perfect. 
+                                                    - The stupid little trick to copy live-additional-software.conf
+                                                      directly into the persistent folder works. I will integrate this 
+                                                      trick into the setup.sh script. For this reason we have a new file 
+                                                      inside ~/Persistent/swtorcfg. 
+                                                    - In the last few weeks I made over 200 pushes to github. As soon I 
+                                                      make the restore script for the encrypted Backup inluding transfer from 
+                                                      SSH i do change the Version from 0.60 to 0.80
+                                                    - Still working on Chapter 08 on the Documentation.
+                                                    - Testing Backup with fixed-profile 
+
+
+ 
+
+ 
 
      
 
