@@ -520,11 +520,53 @@ Date		Release		Author		Description
                                                     sudo -S apt-get update > /dev/null 2>&1 
 
                                                    
+                                                    This was the last run of restore.sh with a new Tails 
 
-
-
-
-                                                                           
+                                                    amnesia@amnesia:~/Persistent$ ./restore.sh 
+                                                    Persistent check for empty folder: done
+                                                    testing internet-connection : Please wait !
+                                                    testing internet-connection : done 
+                                                    stored-----md5 01: 285b7f76540e8c6d730289d95c20f20e
+                                                    calculated-md5 01: 285b7f76540e8c6d730289d95c20f20e
+                                                    checksumm 01 is correct
+                                                    extracting backup file  persistent-2022-01-09-09-17.tar.gz  : please wait !
+                                                    extracting backup file  persistent-2022-01-09-09-17.tar.gz  : done
+                                                    stored-----md5 02: 554813863f6eac93257ebcbcb429bee2
+                                                    calculated-md5 02: 554813863f6eac93257ebcbcb429bee2
+                                                    checksumm 02 is correct
+                                                    extracting backup file  4.25-2022-01-09-09-17.tar.gz  : please wait !
+                                                    extracting backup file  4.25-2022-01-09-09-17.tar.gz  : done
+                                                    download add-on from github.com : Please wait !
+                                                    download add-on from github.com : done
+                                                    Creating directorys : cli_directorys.sh
+                                                    Creating directorys : done 
+                                                    restore-mode from backup is active
+                                                    Backup files ~/Persistent/TOR Browser restored
+                                                    Backup files ~/Persistent/personal-files restored
+                                                    the backup-was made with version :4.25
+                                                    the current tails is :4.25
+                                                    Backup files bookmarks restored
+                                                    Backup files gnupg restored
+                                                    Backup files thunderbird restored
+                                                    Backup files pidgin restored
+                                                    Backup files electrum restored
+                                                    ssh settings are present on this persistent volume
+                                                    Backup files ~/.ssh restored
+                                                    additional-software part 01 is present on this persistent volume
+                                                    additional-software part 02 is present on this persistent volume
+                                                    Backup files system-connection restored
+                                                    tca not restored .... option is not active on this persistent volume
+                                                    Backup files cups restored
+                                                    Backup files greeter-settings restored
+                                                    Backup files additional-software restored and excuted debian command apt-get update
+                                                    state : now this Tails is [freezed]                           
+                                                    amnesia@amnesia:~/Persistent$ 
+ 
+                                                    On the first look .... OK ... but I missed 
+                                                    - install of the software was not executed 
+                                                    - maybe a wrong permission ?
+                                                    - creation of ~/Persistent/setup 
+                                                                             
 
      
 

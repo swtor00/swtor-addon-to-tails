@@ -426,6 +426,9 @@ if [ $# -eq 1 ] ; then
         # tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
         #
 
+        echo "Execute command apt-get update. Please wait !!!! "
+        echo "Please do not interrupt here .... This commands need a lot of time !!!" 
+
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
         sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
 
@@ -433,9 +436,24 @@ if [ $# -eq 1 ] ; then
         sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf > /dev/null 2>&1
         
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get update > /dev/null 2>&1
+        sudo -S apt-get update > /dev/null 2>&1 
 
-        echo "Backup files additional-software restored and excuted debian command apt-get update"
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S apt-get install -y chromium > /dev/null 2>&1 
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1 
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S apt-get install -y html2text > /dev/null 2>&1 
+
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S apt-get install -y sshpass > /dev/null 2>&1
+ 
+        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+        sudo -S apt-get install -y yad > /dev/null 2>&1
+
+        echo "Backup files additional-software restored and software installed"
 
         # Do we have dotfiles inside the backup  ?
 
@@ -464,12 +482,12 @@ if [ $# -eq 1 ] ; then
            echo "dotfiles not restored .... option is not active on this persistent volume"
         fi
         fi
-
+        echo 1 > ~/Persistent/swtor-addon-to-tails/setup
     else
         echo The backup was made with a older version of Tails ..
         echo
     fi
-
+    
     exit 0
 fi
 ####################################################################################################################
