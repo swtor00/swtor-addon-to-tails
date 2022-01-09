@@ -387,13 +387,15 @@ if [ $WARNING_SSH == "1" ] ; then
 
    rm restore_part2.sh
 
-
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
    --text="\n\n      Backup was made and stored inside ~/Persistent/personal-files/tails-repair-disk        \n\n" > /dev/null 2>&1)
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "backup is now finished and stored : $final_backup_file"
    fi
+
+   zenity --info --width=600 --title="" \
+   --text="\n\n   Please do not forget to copy the repair-files to a other storage.\n   Copy all files from ~/Persistent/personal-files/tails-repair-disk    \n\n\n   Please press OK to continue." > /dev/null 2>&1
 
    exit 0
 fi
@@ -591,6 +593,6 @@ echo exit 0 >> restore_from_external.sh
 # restore back from the remote SSH-Host.
 
 zenity --info --width=600 --title="" \
---text="\n\n   Please do not forget to copy the repair-files to a own stick.\n   Copy all files from ~/Persistent/personal-files/tails-repair-disk    \n\n\n   Please press OK to continue." > /dev/null 2>&1
+--text="\n\n   Please do not forget to copy the repair-files to a other storage.\n   Copy all files from ~/Persistent/personal-files/tails-repair-disk    \n\n\n   Please press OK to continue." > /dev/null 2>&1
 
 exit 0
