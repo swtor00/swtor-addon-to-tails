@@ -375,11 +375,15 @@ if [ $WARNING_SSH == "1" ] ; then
 
    cd ~/Persistent/personal-files/tails-repair-disk
 
-   echo "file1="$final_backup_file.md5 > restore_part2.sh
+   cp ~/Persistent/scripts/restore_p21.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
+
+   echo "file1="$final_backup_file.md5 >> restore_part2.sh
    echo "file2="$final_backup_file >> restore_part2.sh
 
    cat restore_part2.sh >> restore.sh
    cat ~/Persistent/scripts/restore_part3.sh >> restore.sh
+
+   # The restore-script is now complete 
 
    rm restore_part2.sh
 
