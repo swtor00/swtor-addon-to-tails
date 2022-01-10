@@ -656,9 +656,9 @@ Date		Release		Author		Description
 
                                                     - Integrate software installation from restore-script into 
                                                       setup.sh 
-
-    
- 
+                                                    - Testing setup.sh on a new Tails  
+                                                    
+                                               
 
      
 
