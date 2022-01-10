@@ -109,10 +109,22 @@ if [ $# -eq 1 ] ; then
 
     echo restore-mode from backup is active
 
-    cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
-    echo "Backup files ~/Persistent/TOR Browser restored"
-    cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
-    echo "Backup files ~/Persistent/personal-files restored"
+    browser="/home/amnesia/Persistent/backup/Tor Browser/"
+    pfiles="/home/amnesia/Persistent/backup/personal-files/"
+
+    if [ -z "$browser" ] ; then
+       echo "directory "$browser" was empty so nothing restored"
+    else
+       cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
+       echo "Backup files ~/Persistent/TOR Browser restored"
+    fi
+
+    if [ -z "$pfiles" ] ; then
+       echo "directory "$pfiles" was empty so nothing restored"
+    else
+       cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
+       echo "Backup files ~/Persistent/personal-files restored"
+    fi
 
     # The above part was easy ... the restored files are independet from the version
     # of the running Tails-OS
@@ -464,8 +476,8 @@ if [ $# -eq 1 ] ; then
 
            cd ~/Persistent/scripts
 
-           # Was the system during Backup in state freezed ?
-           # If this is the case ... we are freezing this Tails as well
+           # Was the system during Backup in the state freezed ?
+           # If this is the case ... we are freezing this Tails as well again 
 
            echo 1 > ~/Persistent/swtorcfg/freezing
 

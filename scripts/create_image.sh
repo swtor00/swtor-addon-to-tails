@@ -325,9 +325,15 @@ zenity --question --width 600 --text "\n\n         Should the created backup to 
 case $? in
     0)
        gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
-
-       rm -f $filename_tar > /dev/null
-       WARNING_SSH="0"
+       if [ $? -eq 0 ] ; then
+          rm -f $filename_tar > /dev/null 2>&1
+          WARNING_SSH="0" 
+       else
+          zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
+          rm -f crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
+          rm -f $filename_tar > /dev/null 2>&1
+          exit 1
+       fi
     ;;
     1)
       if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -566,31 +572,47 @@ esac
 
 if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
    mkdir ~/Persistent/personal-files/tails-repair-disk
+else
+   rm -rf ~/Persistent/personal-files/tails-repair-disk/* > /dev/null 2>&1
 fi
+
+# We copy the key files
 
 cd ~/Persistent/personal-files/tails-repair-disk
 cp ~/.ssh/* ~/Persistent/personal-files/tails-repair-disk
 
-echo "#/bin/bash" > restore_from_external.sh
-echo "cp id_rsa ~/.ssh" >> restore_from_external.sh
-echo "cp id_rsa.pub ~/.ssh" >> restore_from_external.sh
-echo "cp known_hosts ~/.ssh"  >> restore_from_external.sh
-echo "chmod 600 ~/.ssh/id_rsa" >> restore_from_external.sh
-echo "chmod 644 ~/.ssh/*.pub" >> restore_from_external.sh
-echo "ssh-add" >> restore_from_external.sh
-echo "sleep 1" >> restore_from_external.sh
-echo "rm id_rsa" >> restore_from_external.sh
-echo "rm id_rsa.pub" >> restore_from_external.sh
-echo "rm known_hosts"  >> restore_from_external.sh
-echo "scp -P "$single_port $ssh_host$final_backup_file.md5 . >>  restore_from_external.sh
-echo "scp -P "$single_port $ssh_host$final_backup_file . >>  restore_from_external.sh
-echo "git clone https://github.com/swtor00/swtor-addon-to-tails"  >>  restore_from_external.sh
-echo exit 0 >> restore_from_external.sh
+cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
+cp ~/Persistent/scripts/restore_p22.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
 
-# We should show a very big Warning here :
-# If you have a damaged USB stick with Tails and you must replace it with
-# a new one .... We need that Data on this Repair-Disk or we can not
-# restore back from the remote SSH-Host.
+   echo " " >> restore_part2.sh
+   echo "file1="$final_backup_file.md5 >> restore_part2.sh
+   echo "file2="$final_backup_file >> restore_part2.sh
+   echo >> restore_part2.sh
+   echo "echo Transfer files from remote host" >> restore_part2.sh
+   echo "scp -P" $single_port $ssh_host$final_backup_file.md5 ". > /dev/null 2>&1" >> restore_part2.sh
+   echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
+   echo "   echo file "$final_backup_file".md5 downloaded" >> restore_part2.sh
+   echo "else" >> restore_part2.sh
+   echo "   echo file "$final_backup_file".md5 not downloaded" >> restore_part2.sh
+   echo "   exit 1" >> restore_part2.sh
+   echo "fi"  >> restore_part2.sh
+   echo " " >> restore_part2.sh
+   echo "scp -P" $single_port $ssh_host$final_backup_file ". > /dev/null 2>&1" >> restore_part2.sh
+   echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
+   echo "   echo file "$final_backup_file" downloaded" >> restore_part2.sh
+   echo "else" >> restore_part2.sh
+   echo "   echo file "$final_backup_file" not downloaded" >> restore_part2.sh
+   echo "   exit 1" >> restore_part2.sh
+   echo "fi"  >> restore_part2.sh
+   echo "echo Transfer files from remote host are done" >> restore_part2.sh
+   echo " " >> restore_part2.sh
+
+   # The last part of the script is added 
+
+   cat ~/Persistent/scripts/restore_part4.sh >> restore_part2.sh
+
+   cat restore_part2.sh >> restore.sh
+   rm restore_part2.sh
 
 zenity --info --width=600 --title="" \
 --text="\n\n   Please do not forget to copy the repair-files to a other storage.\n   Copy all files from ~/Persistent/personal-files/tails-repair-disk    \n\n\n   Please press OK to continue." > /dev/null 2>&1
