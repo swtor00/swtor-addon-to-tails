@@ -38,14 +38,29 @@ I would like to backup my persistent Data to a foreign host over SSH. What do I 
 - A login with password for backup is not supported.
 - You can still make unencrypted Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
+- You can still encrypt the backukup and use your on tool to encrypt.
 
+Please be warned by me. There are Countrys on this world,that can demand
+by law to force every passwword for a found encrypted stick or HD. 
+In England and the USA it is common law to demand all password or keys.
+
+So ... Copy the backup to a other country. Far a way froum your own country.
+
+He, with 20GB space you could store plenty of Tails-Images ?
+
+But be sure, you can restore back the files.
+   
 What fullshell provider do you recommand as the author of this addon ? 
 ----------------------------------------------------------------------
 
 My favorite is clear : https://www.freeshell.de
+
+In Germany all data-connections are stored for about 10 Weeks. 
 Write a postcard to Germany and you have full featured Shell acount with 
 20GB of HD space. This one is the best of all free shell-providers.
 
+Little Note : If you are living in Germany, it may would be wise to 
+store your backup in Switzerland. 
 
 Are there any backdoors inside the add-on ? 
 --------------------------------------------
@@ -93,6 +108,13 @@ also a problem for some users.In any case that you backup to a remote host,
 please do copy the files from  ~/Persistent/personal-files/tails-repair-disk 
 to a seperate stick and place this stick on a very secure place.   
 
+You may have a secound Tails with persistent Volume, you could copy the 
+files to this secound system ? 
+
+Backup Tails stick ONE and transfer the backup to Tailstick TWO.
+After the exchange over stick ... you do securly format that stick that 
+nobody can read the data left on device.
+ 
 
 Is the backup of Persistence (since Tails 3.25) better than your backup ? 
 -------------------------------------------------------------------------
@@ -105,10 +127,11 @@ But every user has to make this decission for himself.
 - The backup integrated into Tails is a online-backup
   to a other USB Stick
 - The backup is fast and works perfect but you could copy 
-  the persistenst Volume of Tails 4.25 to a empty persistent 
+  the persistent Volume of Tails 4.25 to a empty persistent 
   of Tails 4.23 as a example,that could be a problem.
 
 - The backup integrated into the addon works as a offline-backup. 
+- The backup itself is protected againts manipulation with a md5 checksum.
 - You can copy the files to any location as long this location 
   is secure.
  
@@ -124,7 +147,9 @@ Why is a administation password needet on every startup ?
 --------------------------------------------------------
 
 Wihtout a password you can not change the firewall to 
-accept a local socks5 proxy.
+accept a local socks5 proxy. You need also the password 
+to install the software during setup.sh and if you would
+like to backup persistent volume.
 
 
 Why do I have to close all programs prior to backup ? 

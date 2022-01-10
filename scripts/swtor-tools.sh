@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.14 or higher                        #
+# OS      : Tails 4.25 or higher                        #
 #                                                       #
 # VERSION : 0.60                                        #
 # STATE   : BETA                                        #
@@ -102,12 +102,12 @@ fi
 
 if [ $selection == "2" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
-      if [  -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
+      if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          ./cli_unfreezing.sh
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
           --text="\n\n                            System has ben unfreezed !                         \n\n" > /dev/null 2>&1)
       else
-          unfreezing not possible -> system not freezed
+          echo unfreezing not possible -> system not freezed
       fi
    else
       echo unfreezing not possible missing dotfile
@@ -142,9 +142,10 @@ fi
 
 
 if [ $selection == "5" ] ; then
+if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
     zenity --question --width=600 \
     --text="All your current Bookmarks for the TOR-Browser will be overwritten ! \n\n" > /dev/null 2>&1
-    case $? in
+    case $? in; 
          0)
          zenity --info --width=600 --title="" \
          --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
@@ -157,6 +158,10 @@ if [ $selection == "5" ] ; then
             fi
          ;;
     esac
+else
+    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+     --text="\n\n   Import not possible because the bookmark-option not activated for persistent !     \n\n" > /dev/null 2>&1) 
+fi
 fi
 
 

@@ -419,16 +419,6 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
    --text="\n\n      Found a backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
 else
    BACKUP_HOST="0"
-
-#   zenity --info --width=600 --title="" \
-#   --text="\n\n     Backup was created and stored in the file '$final_backup_file'      \n     Please copy this backup files away from here to a very safe place. \n\n" /
-#   > /dev/  null 2>&1
-
-#   if [ $TERMINAL_VERBOSE == "1" ] ; then
-#      echo "backup is now finished and stored : $final_backup_file"
-#  fi
-#
-#   exit 0
 fi
 
 
