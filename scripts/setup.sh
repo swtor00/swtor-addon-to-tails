@@ -109,17 +109,26 @@ if [ $# -eq 1 ] ; then
 
     echo restore-mode from backup is active
 
-    browser="/home/amnesia/Persistent/backup/Tor Browser/"
+    browser='/home/amnesia/Persistent/backup/Tor*Browser/'
     pfiles="/home/amnesia/Persistent/backup/personal-files/"
 
-    if [ -z "$browser" ] ; then
+    cd $browser && cbrowser=$(ls -A)
+
+    cd $pfiles && cpfiles=$(ls -A)
+
+    echo $cbrowser
+    echo $cpfiles
+
+    cd ~/Persistent/scripts
+
+    if [ "$cbrowser" == "" ] ; then
        echo "directory "$browser" was empty so nothing restored"
     else
        cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
        echo "Backup files ~/Persistent/TOR Browser restored"
     fi
 
-    if [ -z "$pfiles" ] ; then
+    if [ "$cpfiles" == "" ] ; then
        echo "directory "$pfiles" was empty so nothing restored"
     else
        cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
@@ -972,96 +981,38 @@ case $? in
             echo we do install the additional software
          fi
 
+         sleep 13 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\n    Update the debian packet-list and installing all the software.\n     This may need very long time to complete ! \n\n" > /dev/null 2>&1)
+
+         show_wait_dialog && sleep 2
+
          # apt-get update
 
-         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdate the debian packet-list.\nThis may needs very long time to complete ! \n\n" > /dev/null 2>&1)
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S cp ~/Persistent/swtorcfg/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
 
-         show_wait_dialog && sleep 2
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get update > /dev/null 2>&1
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf > /dev/null 2>&1
+        
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S apt-get update > /dev/null 2>&1 
+
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S apt-get install -y chromium > /dev/null 2>&1 
+
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1 
+
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S apt-get install -y html2text > /dev/null 2>&1 
+
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S apt-get install -y sshpass > /dev/null 2>&1
+ 
+         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         sudo -S apt-get install -y yad > /dev/null 2>&1
+
          end_wait_dialog
-
-         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nUpdating the debian packet list is now complete.\nNow we can install the additional software\n\n" > /dev/null 2>&1)
-
-         # Install chromium
-
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-         --text="\n\n[        chromium will be installed. Please wait !          ] \n\n" > /dev/null 2>&1)
-
-         show_wait_dialog && sleep 2
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y chromium > /dev/null 2>&1
-         end_wait_dialog
-
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo >&2 "chromium is installed"
-         fi
-
-         zenity --info --width=600 --text="chromium has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."         
-
-         # Install chromium-sandbox
-
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-         --text="\n\n[        chromium-sandbox will be installed. Please wait !  ] \n\n" > /dev/null 2>&1)
-
-         show_wait_dialog && sleep 2
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
-         end_wait_dialog
-
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo >&2 "chromium-sandbox is installed"
-         fi
-
-         zenity --info --width=600 --text="chromium-sandbox has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
-
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nhtml2text will be installed. Please wait  ! \n\n" > /dev/null 2>&1) 
-
-         # Install html2text
-
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-         --text="\n\n[        html2text will be installed. Please wait !         ]  \n\n" > /dev/null 2>&1)
-
-
-         show_wait_dialog && sleep 2
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y html2text > /dev/null 2>&1
-         end_wait_dialog
-
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo >&2 "html2text is installed"
-         fi
-
-         zenity --info --width=600 --text="html2text has been installed.\nPlease confirm that this software has to be Installed on every startup.\n\n\nPlease press OK to continue."
-
-         # Install sshpass
-
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-         --text="\n\n[        sshpass will be installed. Please wait !           ]  \n\n" > /dev/null 2>&1)
-
-         show_wait_dialog && sleep 2
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y sshpass> /dev/null 2>&1
-         end_wait_dialog
-
-
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo >&2 "sshpass is installed"
-         fi
-
-         zenity --info --width=600 --text="sshpass has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
-
-         # Install yad
-
-         sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-         --text="\n\n[        yad will be installed. Please wait  !              ]  \n\n" > /dev/null 2>&1)
-
-         show_wait_dialog && sleep 2
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S apt-get install -y yad > /dev/null 2>&1
-         end_wait_dialog
-
-
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo >&2 "yad is installed"
-         fi
-
-         zenity --info --width=600 --text="yad has been installed.\nPlease confirm that this software has to be installed on every startup.\n\n\nPlease press OK to continue."
-
+         sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nInstalling software is now complete.\n\n" > /dev/null 2>&1)
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo nothing to install  ..

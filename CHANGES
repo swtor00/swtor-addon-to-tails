@@ -596,6 +596,68 @@ Date		Release		Author		Description
                                                     This is fixed.
     
 
+                                                    Test of the restore script with downloading from 
+                                                    a remote host and decrypt the backup. Works ... 
+
+                                                    Shit .. Still this .... error with the two empty directorys
+
+                                                    amnesia@amnesia:~/Persistent$ ./restore.sh 
+                                                    Persistent check for empty folder: done
+                                                    testing internet-connection : Please wait !
+                                                    testing internet-connection : done 
+                                                    Copy key files temporary to folder ~./ssh
+                                                    Transfer files from remote host
+                                                    file persistent-2022-01-10-15-09.tar.gz.md5 downloaded
+                                                    file persistent-2022-01-10-15-09.tar.gz downloaded
+                                                    Transfer files from remote host are done
+                                                    stored-----md5 01: d41e939d76d4dc536c41c2457e5f8f35
+                                                    calculated-md5 01: d41e939d76d4dc536c41c2457e5f8f35
+                                                    checksumm 01 is correct
+                                                    extracting backup file  persistent-2022-01-10-15-09.tar.gz  : please wait !
+                                                    extracting backup file  persistent-2022-01-10-15-09.tar.gz  : done
+                                                    gpg: AES256 encrypted data
+                                                    gpg: encrypted with 1 passphrase
+                                                    Decryption of file [crypted_tails_image.tar.gz.gpg] : done
+                                                    File crypted_tails_image.tar.gz.gpg deleted
+                                                    stored-----md5 02: 4b4f5af0547e9bcc69d5eaa03bd3e162
+                                                    calculated-md5 02: 4b4f5af0547e9bcc69d5eaa03bd3e162
+                                                    checksumm 02 is correct
+                                                    extracting backup file  tails_image.tar.gz  : please wait !
+                                                    extracting backup file  tails_image.tar.gz  : done
+                                                    download add-on from github.com : Please wait !
+                                                    download add-on from github.com : done
+                                                    Creating directorys : cli_directorys.sh
+                                                    Creating directorys : done 
+                                                    restore-mode from backup is active
+                                                    cp: cannot stat '/home/amnesia/Persistent/backup/Tor Browser/*': No such file or directory
+                                                    Backup files ~/Persistent/TOR Browser restored
+                                                    cp: cannot stat '/home/amnesia/Persistent/backup/personal-files/*': No such file or directory
+                                                    Backup files ~/Persistent/personal-files restored
+                                                    the backup-was made with version :4.25
+                                                    the current tails is :4.25
+                                                    Backup files bookmarks restored
+                                                    Backup files gnupg restored
+                                                    Backup files pidgin restored
+                                                    Backup files electrum restored
+                                                    ssh settings are present on this persistent volume
+                                                    Backup files ~/.ssh restored
+                                                    additional-software part 01 is present on this persistent volume
+                                                    additional-software part 02 is present on this persistent volume
+                                                    Backup files system-connection restored
+                                                    Backup files cups restored
+                                                    Backup files greeter-settings restored
+                                                    Execute command apt-get update. Please wait !!!! 
+                                                    Please do not interrupt here .... This commands need a lot of time !!!
+                                                    Backup files additional-software restored and software installed
+                                                    state : now this Tails is [freezed]
+                                                    amnesia@amnesia:~/Persistent$ 
+
+						    ... stupid masking ""
+
+                                                    - Integrate software installation from restore-script into 
+                                                      setup.sh 
+
+    
  
 
      
