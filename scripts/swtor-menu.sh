@@ -253,8 +253,7 @@ if [ -z ${selection} ]; then
    if [ ! -f ~/Persistent/scripts/state/online ] ; then
       menu=0
    else
-      sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-      --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+      swtor_close_first
    fi
 else
 
@@ -266,8 +265,7 @@ else
        if [ ! -f ~/Persistent/scripts/state/online ] ; then
           ./selector.sh
        else
-           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-            --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+          swtor_close_first
        fi
    fi
 
@@ -276,9 +274,7 @@ else
       if [ -f ~/Persistent/scripts/state/online ] ; then
          ./browser_fix.sh 2>&1 > /dev/null &
       else
-           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-           --text="\n\n             This is not possible without a active connection first !          \n\n" > /dev/null 2>&1)
-           sleep 1
+         swtor_no_connection
       fi
    fi
    fi
@@ -295,9 +291,7 @@ else
       if [ -f ~/Persistent/scripts/state/online ] ; then
          ./browser_normal.sh 2>&1  > /dev/null &
       else
-           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-           --text="\n\n             This is not possible without a active connection first !          \n\n" > /dev/null 2>&1)
-           sleep 1
+         swtor_no_connection
       fi
    fi
 
@@ -305,9 +299,7 @@ else
       if [ -f ~/Persistent/scripts/state/online ] ; then
          ./browser_anonymous.sh 2>&1 > /dev/null &
       else
-           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-           --text="\n\n             This is not possible without a active connection first !          \n\n" > /dev/null 2>&1)
-           sleep 1
+         swtor_no_connection
       fi
    fi
 
@@ -315,20 +307,16 @@ else
       if [ ! -f ~/Persistent/scripts/state/online ] ; then
          ./swtor-tools.sh
       else
-          sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-          --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+         swtor_close_first
       fi
    fi
 
 
    if [ $selection == "6" ] ; then
-
        if [ ! -f ~/Persistent/scripts/state/online ] ; then
           menu=0
        else
-           sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-           --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
-           sleep 1
+          swtor_close_first
        fi
    fi
 fi

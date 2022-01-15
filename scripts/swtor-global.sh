@@ -857,8 +857,17 @@ fi
 return 0
 }
 
+swtor_no_connection() {
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n             This is not possible without a active ssh connection !          \n\n" > /dev/null 2>&1)
+sleep 1
+}
 
-
+swtor_close_first() {
+sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+sleep 1
+}
 
 export -f global_init
 export -f check_tor_network
@@ -888,4 +897,6 @@ export -f swtor_missing_password
 export -f swtor_update
 export -f swtor_clean_files
 export -f swtor_connected
+export -f swtor_close_first
+export -f swtor_no_connection
 

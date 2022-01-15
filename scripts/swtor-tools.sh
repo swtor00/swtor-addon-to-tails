@@ -120,12 +120,12 @@ if [ $selection == "3" ] ; then
     --text="\n\n   Prior to make a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n\n If none of the above programms is open,please continue the backub by pressing 'Yes'.\n Otherwise press 'No' to cancel the backup.  \n\n"
     case $? in
          0) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo backup started 
+               echo backup started
             fi
             ./create_image.sh
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo backup not started 
+               echo backup not started
             fi
          ;;
     esac
@@ -143,15 +143,14 @@ fi
 
 if [ $selection == "5" ] ; then
 if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
-    zenity --question --width=600 \
-    --text="All your current Bookmarks for the TOR-Browser will be overwritten ! \n\n" > /dev/null 2>&1
-    case $? in; 
-         0)
-         zenity --info --width=600 --title="" \
-         --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
-         rm ~/.mozilla/firefox/bookmarks/places.sqlite > /dev/null 2>&1
-         rm /live/persistence/TailsData_unlocked/bookmarks/places.sqlite > /dev/null 2>&1
-         rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
+
+    zenity --question --width=600 --text="All your current Bookmarks for the TOR-Browser will be overwritten ! \n\n" > /dev/null 2>&1
+    case $? in
+         0) zenity --info --width=600 --title="" \
+            --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
+            rm ~/.mozilla/firefox/bookmarks/places.sqlite > /dev/null 2>&1
+            rm /live/persistence/TailsData_unlocked/bookmarks/places.sqlite > /dev/null 2>&1
+            rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo no import
@@ -160,7 +159,7 @@ if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
     esac
 else
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-     --text="\n\n   Import not possible because the bookmark-option not activated for persistent !     \n\n" > /dev/null 2>&1) 
+     --text="\n\n   Import not possible because the bookmark-option not activated for persistent !     \n\n" > /dev/null 2>&1)
 fi
 fi
 

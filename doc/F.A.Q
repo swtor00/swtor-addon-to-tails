@@ -27,7 +27,7 @@ pfssh.sh     passwd Compress 4 2 143 9999   noshell LIiS-dewassh.net@us.serverki
 
 This is only a example. You have to fill it with you own data fron dewassh.net.(The username / server and port)
 And please do not try to connect to the remote host over my script, until the remote host has been added 
-into your known_hosts file. Therefore open a Terminal and let this happen by connecting once.
+into your own known_hosts file. Therefore open a Terminal and let this happen by connecting once.
 
 
 I would like to backup my persistent Data to a foreign host over SSH. What do I need for this  ? 
@@ -49,6 +49,8 @@ So ... Copy the backup to a other country. Far a way froum your own country.
 He, with 20GB space you could store plenty of Tails-Images ?
 
 But be sure, you can restore back the files.
+
+
    
 What fullshell provider do you recommand as the author of this addon ? 
 ----------------------------------------------------------------------
@@ -116,7 +118,7 @@ After the exchange over stick ... you do securly format that stick that
 nobody can read the data left on device.
  
 
-Is the backup of Persistence (since Tails 3.25) better than your backup ? 
+Is the backup of Persistence (since Tails 4.25) better than your backup ? 
 -------------------------------------------------------------------------
 
 I guess No because I don't need a secound stick with the equal size to copy.
@@ -128,10 +130,10 @@ But every user has to make this decission for himself.
   to a other USB Stick
 - The backup is fast and works perfect but you could copy 
   the persistent Volume of Tails 4.25 to a empty persistent 
-  of Tails 4.23 as a example,that could be a problem.
+  of Tails 4.23 as a example,that could lead to a problem.
 
 - The backup integrated into the addon works as a offline-backup. 
-- The backup itself is protected againts manipulation with a md5 checksum.
+- The backup itself is protected against manipulations with a md5 checksum.
 - You can copy the files to any location as long this location 
   is secure.
  
@@ -140,8 +142,9 @@ and saved over ssh to a other country, you need only a little paper
 with ssh-credentials to store back the bassword.If you need
 the ssh-keys to login for the backup host, you have to copy
 all the files from ~/Persistent/personal-files/tails-repair-disk 
-to seperate stick and hide this stick.  
- 
+to seperate stick and hide this stick.You may create a secound stick 
+with Tails and copy the backup of Tails 1 to persistent of Tails 2.
+   
 
 Why is a administation password needet on every startup ? 
 --------------------------------------------------------
@@ -164,6 +167,24 @@ Persistence Volume,you have to close.
 - Thunderbird
 - Pidgin 
 
+
+After upgrading Tails, the system is not longer freezed.
+What should I do ?
+--------------------------------------------------------
+There a 2 ways possible to freez again. 
+
+1. Open a Terminal in the script folder and execute in 
+   this order 
+   ./cli_tweak.sh 
+   ./cli_freezing.sh 
+
+2.) Open a Terminal in the script folder and execute.
+
+    ./swtor-mennu.sh 
+
+    Open menu "Utilitys & Help" -> Freezing the current state 
+
+  
 
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
