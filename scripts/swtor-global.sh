@@ -869,6 +869,58 @@ sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="In
 sleep 1
 }
 
+swtor_ask_passphrase() {
+
+menu=1
+while [ $menu -gt 0 ]; do
+
+   # Pass 1
+
+   encryption_password=$(zenity --entry --text="Please type the phrase for the file encrypting " --title=Entry-1 --hide-text)
+
+   # We do not store this phrase on a volume, that could be recovered !
+
+   echo $encryption_password > /dev/shm/password1
+
+   # Pass 2
+
+   encryption_password=$(zenity --entry --text="Please retype the phrase for the file encrypting " --title=Entry-2 --hide-text)
+
+   # We do not store this phrase on a volume, that could be recovered !
+
+   echo $encryption_password > /dev/shm/password2
+
+   if  diff /dev/shm/password1 /dev/shm/password2 ; then
+   if [ $? -eq 0 ] ; then
+      menu=0
+      zenity --question --width=600 \
+      --text="\n\nWould you like to encrypt the backup with the following passphrase : \n\n$(cat /dev/shm/password2)\n\nPlease be very carefull where to store this passphrase and don't try\nto make a photo with your Smartphone and store it in a cloud !\n\n\nIf you answer is "Yes" this passphrase will be used to encrypt.\nIf you answer "No" this backup will be canceled !!! " > /dev/null 2>&1
+       case $? in
+         0) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo "encryption"
+            fi
+            return 0
+         ;;
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo "no encryption and cancel backup"
+            fi
+            menu=0
+            return 1
+         ;;             
+       esac
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo not equal passphrases !!!
+      fi  
+      menu=0   
+      return 1
+   fi
+   fi
+done
+
+}
+
+
 export -f global_init
 export -f check_tor_network
 export -f test_ssh_persistent
@@ -899,4 +951,5 @@ export -f swtor_clean_files
 export -f swtor_connected
 export -f swtor_close_first
 export -f swtor_no_connection
+export -f swtor_ask_passphrase
 

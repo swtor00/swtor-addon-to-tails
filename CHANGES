@@ -657,6 +657,31 @@ Date		Release		Author		Description
                                                     - Integrate software installation from restore-script into 
                                                       setup.sh 
                                                     - Testing setup.sh on a new Tails  
+
+
+                                                  - Found one little bug inside the backup and restore script.
+
+                                                    If the pgp Window to encrypt or decrypt is open and no key 
+                                                    is pressed within one minute, pgp quits with a error.
+
+                                                    Small test with flag --verbose show this entry.
+
+                                                    gpg: problem with the agent: Timeout
+  
+                                                    In the create_image.sh script there is still one directory
+                                                    to be removed with rm -rf, in the case the user cancel the backup.
+ 
+                                                  - Timout problem with gpg and create_image.sh solved.
+                                                    The dialog will be shown with zenity instead pgp. 
+
+ 
+                                                          
+
+                                                        
+
+ 
+
+  
                                                     
                                                
 

@@ -324,16 +324,43 @@ md5sum $filename_tar |  awk  {'print $1'}  > md5check
 zenity --question --width 600 --text "\n\n         Should the created backup to be encrypted with gpg ?    \n\n\n         If you say 'Yes' here and don't get the right password to decrypt it, nobody\n         can help you to get your data back from your encrypted backup ! \n\n"
 case $? in
     0)
-       gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
+
+       # We need a passphrase to encrypt .... gpg does terminate after one min. without any activity from the keyboard
+       # Therefore a zenity dialog. 
+
+       swtor_ask_passphrase
        if [ $? -eq 0 ] ; then
-          rm -f $filename_tar > /dev/null 2>&1
-          WARNING_SSH="0" 
+          gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar > /dev/null 2>&1
+          if [ $? -eq 0 ] ; then
+             WARNING_SSH="0" 
+             rm /dev/shm/password1 > /dev/null 2>&1
+             rm /dev/shm/password2 > /dev/null 2>&1
+          else 
+             zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
+             rm -f crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
+             rm -f $filename_tar > /dev/null 2>&1
+             rm /dev/shm/password1 > /dev/null 2>&1
+             rm /dev/shm/password2 > /dev/null 2>&1
+          fi
        else
           zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
-          rm -f crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
           rm -f $filename_tar > /dev/null 2>&1
           exit 1
        fi
+#
+#       gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar
+#       # gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
+#       if [ $? -eq 0 ] ; then
+#          rm -f $filename_tar > /dev/null 2>&1
+#          WARNING_SSH="0" 
+#          rm /dev/shm/password1 > /dev/null 2>&1
+#          rm /dev/shm/password2 > /dev/null 2>&1
+#       else
+#          zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
+#          rm -f crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
+#          rm -f $filename_tar > /dev/null 2>&1
+#          exit 1
+#       fi
     ;;
     1)
       if [ $TERMINAL_VERBOSE == "1" ] ; then
