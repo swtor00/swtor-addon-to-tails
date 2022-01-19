@@ -874,51 +874,57 @@ swtor_ask_passphrase() {
 menu=1
 while [ $menu -gt 0 ]; do
 
-   # Pass 1
+# Pass 1
 
-   encryption_password=$(zenity --entry --text="Please type the phrase for the file encrypting " --title=Entry-1 --hide-text)
+encryption_password=$(zenity --entry --text="Please type the phrase for the file encrypting " --title=Entry-1 --hide-text)
 
-   # We do not store this phrase on a volume, that could be recovered !
+# We do not store this phrase on a volume, that could be recovered !
 
-   echo $encryption_password > /dev/shm/password1
+echo $encryption_password > /dev/shm/password1
 
-   # Pass 2
+# Pass 2
 
-   encryption_password=$(zenity --entry --text="Please retype the phrase for the file encrypting " --title=Entry-2 --hide-text)
+encryption_password=$(zenity --entry --text="Please retype the phrase for the file encrypting " --title=Entry-2 --hide-text)
 
-   # We do not store this phrase on a volume, that could be recovered !
+# We do not store this phrase on a volume, that could be recovered !
 
-   echo $encryption_password > /dev/shm/password2
+echo $encryption_password > /dev/shm/password2
 
-   if  diff /dev/shm/password1 /dev/shm/password2 ; then
-   if [ $? -eq 0 ] ; then
-      menu=0
-      zenity --question --width=600 \
-      --text="\n\nWould you like to encrypt the backup with the following passphrase : \n\n$(cat /dev/shm/password2)\n\nPlease be very carefull where to store this passphrase and don't try\nto make a photo with your Smartphone and store it in a cloud !\n\n\nIf you answer is "Yes" this passphrase will be used to encrypt.\nIf you answer "No" this backup will be canceled !!! " > /dev/null 2>&1
-       case $? in
-         0) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo "encryption"
-            fi
-            return 0
-         ;;
-         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo "no encryption and cancel backup"
-            fi
-            menu=0
-            return 1
-         ;;             
-       esac
-   else
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo not equal passphrases !!!
-      fi  
-      menu=0   
-      return 1
-   fi
-   fi
+if diff /dev/shm/password1 /dev/shm/password2 > /dev/null 2>&1 ; then
+
+if [ $? -eq 0 ] ; then
+    menu=0
+    zenity --question --width=600 \
+    --text="\n\nWould you like to encrypt the backup with the following passphrase : \n\n$(cat /dev/shm/password2)\n\nPlease be very carefull where to store this passphrase and don't try\nto make a photo with your Smartphone and store it in a cloud !\n\n\nIf you answer is "Yes" this passphrase will be used to encrypt.\nIf you answer "No" this backup will be canceled !!! " > /dev/null 2>&1
+    case $? in
+    0) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo "encryption with passphrase"
+       fi
+    return 0
+    ;;
+     1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+           echo "no encryption and cancel backup"
+        fi
+        return 1
+    ;;             
+    esac
+fi
+fi
+
+((menu++)) 
+
+if [ "$menu" -ge "4" ] ; then 
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+   --text="\n\n           You had your chance to type it correct ! Backup canceled !       \n\n" > /dev/null 2>&1)
+   return 1 
+else
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+   --text="\n\n           The two passphrases don't match. Please try it again !          \n\n" > /dev/null 2>&1)
+fi
+
 done
-
 }
+
 
 
 export -f global_init

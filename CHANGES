@@ -669,10 +669,16 @@ Date		Release		Author		Description
                                                     gpg: problem with the agent: Timeout
   
                                                     In the create_image.sh script there is still one directory
-                                                    to be removed with rm -rf, in the case the user cancel the backup.
+                                                    to be removed with rm -rf, in the case the user cancel the backup.(fixed)
  
                                                   - Timout problem with gpg and create_image.sh solved.
-                                                    The dialog will be shown with zenity instead pgp. 
+                                                    The dialog will be shown with zenity instead pgp. (fixed)
+
+                                                  - If the password is entered 3 times wrong with create_image.sh,
+                                                    the backup folder ~/Persistent/backup still exists. (Fixed)
+ 
+                                                      
+                                                                 
 
  
                                                           

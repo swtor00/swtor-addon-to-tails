@@ -138,7 +138,7 @@ if [ -z "$(ls -A ~/Persistent/swtorcfg )" ]; then
    fi
 else
     mkdir -p /home/amnesia/Persistent/backup/swtorcfg
-    cp ~/Persistent/swtorcfg/* /home/amnesia/Persistent/backup/swtorcfg
+    cp ~/Persistent/swtorcfg/* /home/amnesia/Persistent/backup/swtorcfg > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "backup made from configuration files addon [swtorcfg]"
     fi
@@ -147,8 +147,8 @@ fi
 mkdir -p "/home/amnesia/Persistent/backup/Tor Browser"
 mkdir -p /home/amnesia/Persistent/backup/personal-files
 
-cp -r ~/Persistent/Tor\ Browser/*  "/home/amnesia/Persistent/backup/Tor Browser"
-cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files
+cp -r ~/Persistent/Tor\ Browser/*  "/home/amnesia/Persistent/backup/Tor Browser" > /dev/null 2>&1
+cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
 
 # the fixed profile was controlled by a configuration setting
 # The default setting is no ...
@@ -184,6 +184,7 @@ else
        echo >&2 "password was 3 times wrong"
        echo >&2 "create_image.sh exiting with error-code 1"
     fi
+    rm -f ~/Persistent/backup > /dev/null 2>&1
     exit 1
 fi
 
@@ -231,7 +232,6 @@ cat password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/nm-syste
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from nm-system-connections"
 fi
-
 fi
 
 
@@ -242,7 +242,6 @@ if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_tca.config ] ; then
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from tor-node configuration"
 fi
-
 fi
 
 
@@ -335,32 +334,25 @@ case $? in
              WARNING_SSH="0" 
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "enryption without any error ...."
+             fi
           else 
-             zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
-             rm -f crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
-             rm -f $filename_tar > /dev/null 2>&1
+             zenity --error --width=600 --text="\n\n     Backup canceled by gpg !      \n\n" > /dev/null 2>&1
+             cd ~/Persistent             
+             rm -rf $final_backup_directory > /dev/null 2>&1  
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
+             exit 1
           fi
        else
           zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
-          rm -f $filename_tar > /dev/null 2>&1
+          cd ~/Persistent
+          rm -rf $final_backup_directory > /dev/null 2>&1 
+          rm /dev/shm/password1 > /dev/null 2>&1
+          rm /dev/shm/password2 > /dev/null 2>&1
           exit 1
        fi
-#
-#       gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar
-#       # gpg --symmetric --cipher-algo aes256  -o crypted_tails_image.tar.gz.gpg $filename_tar
-#       if [ $? -eq 0 ] ; then
-#          rm -f $filename_tar > /dev/null 2>&1
-#          WARNING_SSH="0" 
-#          rm /dev/shm/password1 > /dev/null 2>&1
-#          rm /dev/shm/password2 > /dev/null 2>&1
-#       else
-#          zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
-#          rm -f crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
-#          rm -f $filename_tar > /dev/null 2>&1
-#          exit 1
-#       fi
     ;;
     1)
       if [ $TERMINAL_VERBOSE == "1" ] ; then
