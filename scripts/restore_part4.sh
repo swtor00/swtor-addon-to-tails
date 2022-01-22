@@ -57,7 +57,7 @@ while [ $menu -gt 0 ]; do
 
       if [ "$menu" -ge "4" ] ; then 
           sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-          --text="\n\n           You had your 3 chances to decrypt the file  ! restore is now canceled !       \n\n" > /dev/null 2>&1)
+          --text="\n\n           You had your 3 chances to decrypt the file ! The restore is now canceled !       \n\n" > /dev/null 2>&1)
           exit 1
       fi
 
