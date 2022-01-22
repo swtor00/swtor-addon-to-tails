@@ -676,8 +676,10 @@ Date		Release		Author		Description
 
                                                   - If the password is entered 3 times wrong with create_image.sh,
                                                     the backup folder ~/Persistent/backup still exists. (Fixed)
- 
-                                                      
+                                                    
+                                                  - If you are echo a password to a file, it should contain
+                                                    the -n option. Otherwise a newline character is added. 
+                                                    Ups .. mea culpa     
                                                                  
 
  

@@ -880,7 +880,7 @@ encryption_password=$(zenity --entry --text="Please type the phrase for the file
 
 # We do not store this phrase on a volume, that could be recovered !
 
-echo $encryption_password > /dev/shm/password1
+echo -n $encryption_password > /dev/shm/password1
 
 # Pass 2
 
@@ -888,7 +888,7 @@ encryption_password=$(zenity --entry --text="Please retype the phrase for the fi
 
 # We do not store this phrase on a volume, that could be recovered !
 
-echo $encryption_password > /dev/shm/password2
+echo -n  $encryption_password > /dev/shm/password2
 
 if diff /dev/shm/password1 /dev/shm/password2 > /dev/null 2>&1 ; then
 

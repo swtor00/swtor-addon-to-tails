@@ -47,17 +47,43 @@ rm $file2 > /dev/null 2>&1
 file1=$(ls -al | grep md5check    | awk  {'print $9'})
 file2=$(ls -al | grep tar.gz | awk  {'print $9'})
 
-gpg --decrypt $file2 > tails_image.tar.gz
-if [ $? -eq 0 ] ; then
-   echo "Decryption of file ["$file2"] : done"
-   rm $file2 > /dev/null 2>&1
-   echo "File "$file2" deleted"
-   file2=tails_image.tar.gz
-else
-   echo "Failure with decryption ..."
-   echo "Pleas provide the right password or this backup can not be restored !"
-   exit 1
-fi
+# Get the password for decrypting ...
+# 3 x times wrong and this script will be terminated
+# with the error-code 1
+
+menu=1
+while [ $menu -gt 0 ]; do
+
+
+      if [ "$menu" -ge "4" ] ; then 
+          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+          --text="\n\n           You had your 3 chances to decrypt the file  ! restore is now canceled !       \n\n" > /dev/null 2>&1)
+          exit 1
+      fi
+
+      decryption_password=$(zenity --entry --text="Please type the phrase for the file decrypting " --title="Decrypting-Phrase" --hide-text)  
+      if [ $? -eq 0 ] ; then
+          echo -n $decryption_password > /dev/shm/password1
+          rm tails_image_tar.gz > /dev/null 2>&1
+          gpg --batch --passphrase-file /dev/shm/password1 --decrypt $file2 > tails_image.tar.gz > /dev/null 2>&1
+          if [ $? -eq 0 ] ; then
+             echo "Decryption of file ["$file2"] : done"
+              rm $file2 > /dev/null 2>&1
+             echo "File "$file2" deleted"
+             file2=tails_image.tar.gz
+             break
+          else
+              echo "Failure with decryption ..."
+              sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+             --text="\n\n          Password for decrypting was wrong !       \n\n" > /dev/null 2>&1)
+              ((menu++))
+          fi
+
+     else
+         ((menu++))
+     fi
+done
+
 
 # we calculate the md5 02 of the backup-file that we extracted above
 
