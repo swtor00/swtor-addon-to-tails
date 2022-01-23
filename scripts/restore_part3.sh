@@ -34,12 +34,15 @@ bfile1=$(tar -tvf $file2 | grep md5 | awk  {'print $6'} | xargs basename )
 
 # we extract the unencrypted tar.gz right here (2 filenames)
 
-echo "extracting backup file " $file2 " : please wait !"
+if [ $? -eq 0 ] ; then
+   echo "extracting backup file " $file2 " : please wait !"
+fi 
+
 tar xzf $file2 > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
    if [ $CLI_OUT == "1" ] ; then
-      echo "extracting backup file " $file2 " : done"
+      echo "extracting backup file "$file2" : done"
    fi
 else
    if [ $CLI_OUT == "1" ] ; then
@@ -130,7 +133,7 @@ if [ $CLI_OUT == "1" ] ; then
    echo "download add-on from github.com : Please wait !"
 fi
 
-sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the addon from github is in progress ]           \n") & > /dev/null 2>&1
+set +m && sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the addon from github is in progress ]           \n") & > /dev/null 2>&1
 
 if [ $CLI_OUT == "1" ] ; then
    echo downloading addon
@@ -142,7 +145,7 @@ if [ $? -eq 0 ] ; then
    if [ $CLI_OUT == "1" ] ; then
       echo "download add-on from github.com : done"
    fi
-   killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &
+   killCMD & > /dev/null 2>&1
    sleep 1
    sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") & > /dev/null 2>&1
 else
@@ -155,14 +158,14 @@ else
       if [ $CLI_OUT == "1" ] ; then
          echo "download add-on from github.com : done"
       fi
-      killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &
+      killCMD & > /dev/null 2>&1
       sleep 1
       sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") & > /dev/null 2>&1
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "download add-on from github.com : failure"
       fi
-      killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &
+      killCMD & > /dev/null 2>&1
 
       # It is not possible to download .. even after secound try ... we do quit here ...
 
@@ -182,7 +185,6 @@ fi
 
 rm -rf ~/Persistent/*.tar.gz > /dev/null 2>&1
 rm -rf ~/Persistent/*.md5 > /dev/null 2>&1
-
 
 
 

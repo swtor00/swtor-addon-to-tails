@@ -226,7 +226,9 @@ if [ $# -eq 1 ] ; then
         if [ -d ~/Persistent/backup/electrum  ] ; then
         if mount | grep -q /home/amnesia/.electrum  ; then
            cp -r ~/Persistent/backup/electrum/*  /home/amnesia/.electrum
-           echo "Backup files electrum restored"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "Backup files electrum restored"
+           fi
         else
            if [ $CLI_OUT == "1" ] ; then 
               echo "electrum not restored .... option is not active on this persistent volume"
@@ -246,6 +248,7 @@ if [ $# -eq 1 ] ; then
            if [ $CLI_OUT == "1" ] ; then
               echo "passwowrd is set" 
            fi
+
            sleep 1
         else
            echo "Error !!!! No Password set on the Greeting-Screen"
@@ -511,8 +514,8 @@ if [ $# -eq 1 ] ; then
 
         # This could use a very long time 
 
-        sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Installing softwate is in progress ]           \n") & > /dev/null 2>&1
-
+        show_wait_dialog && sleep 2
+       
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
         sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
 
@@ -537,9 +540,11 @@ if [ $# -eq 1 ] ; then
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
         sudo -S apt-get install -y yad > /dev/null 2>&1
           
-        # Killing Wait Window 
+ 
 
-        killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &  
+        # We have a open dialog to close
+
+        end_wait_dialog && sleep 1
 
         if [ $CLI_OUT == "1" ] ; then 
            echo "Backup files additional-software restored and software installed"

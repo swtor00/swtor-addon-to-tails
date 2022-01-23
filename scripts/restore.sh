@@ -21,8 +21,9 @@
 export CLI_OUT="0"
 
 function killCMD() {
-  kill $1
+  pid=$(ps axu | grep zenity | grep progress | awk {'print $2'})
+  set +m && kill $pid > /dev/null 2>&1 &
 }
 
 export -f killCMD
-
+y

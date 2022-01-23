@@ -283,6 +283,7 @@ end_wait_dialog && sleep 2
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n           Backup was created inside of the Persistent Volume !          \n\n" > /dev/null 2>&1)
 
+show_wait_dialog sleep 2
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup completed"
@@ -319,6 +320,13 @@ backupdir=~/Persistent/$backup_stamp
 
 cd $final_backup_directory
 md5sum $filename_tar |  awk  {'print $1'}  > md5check
+
+
+# We have to close the wait-dialog 
+
+sleep 2
+end_wait_dialog
+sleep 1
 
 zenity --question --width 600 --text "\n\n         Should the created backup to be encrypted with gpg ?    \n\n\n         If you say 'Yes' here and don't get the right password to decrypt it, nobody\n         can help you to get your data back from your encrypted backup ! \n\n"
 case $? in
