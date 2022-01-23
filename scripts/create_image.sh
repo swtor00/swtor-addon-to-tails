@@ -209,7 +209,8 @@ sleep 2
 # The standard  configuration for swtor.cfg is BACKUP-APT-LIST:NO
 
 if [ "$BACKUP_APT_LIST" == "1" ] ; then
-    cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rsync -avzh /live/persistence/TailsData_unlocked/apt /home/amnesia/Persistent/backup > /dev/null 2>&1
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password \ 
+    | sudo -S rsync -avzh /live/persistence/TailsData_unlocked/apt /home/amnesia/Persistent/backup > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "backup made from apt-lists: BACKUP-APT-LIST:YES"
     fi
@@ -224,7 +225,8 @@ fi
 # CUPS Configuration / this option is optional for the add-on
 
 if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_cups-settings.config ] ; then
-   cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/cups-configuration /home/amnesia/Persistent/backup > /dev/null 2>&1
+   cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+   | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/cups-configuration /home/amnesia/Persistent/backup > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "backup made from cups-configuration"
    fi
@@ -234,7 +236,8 @@ fi
 # Network connections / this option is optional for the add-on
 
 if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_system-connection.config ] ; then
-   cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/nm-system-connections /home/amnesia/Persistent/backup > /dev/null 2>&1
+   cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+   | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/nm-system-connections /home/amnesia/Persistent/backup > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "backup made from nm-system-connections"
    fi
@@ -254,7 +257,8 @@ fi
 
 # Additional Software configuration / this option is mandatory for the add-on
 
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/live-additional-software.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
+cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+| sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/live-additional-software.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from additional software configuration"
@@ -263,7 +267,8 @@ fi
 
 # Configuration of the Persistent Volume itself
 
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
+cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+| sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/backup > /dev/null 2>&1
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from configuration of Persistent Volume"
@@ -273,12 +278,12 @@ fi
 # Configuration of greeter-settings / only optional and not mandatory for the add-on
 
 if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_greeter.config ] ; then
-   cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/greeter-settings /home/amnesia/Persistent/backup > /dev/null 2>&1
+   cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+   | sudo -S rsync -aqzh /live/persistence/TailsData_unlocked/greeter-settings /home/amnesia/Persistent/backup > /dev/null 2>&1
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "backup made from greeter-settings"
    fi
 fi
-
 
 
 end_wait_dialog && sleep 2
@@ -303,12 +308,14 @@ filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
 final_backup_directory="/home/amnesia/Persistent/$(echo $filename)"
 backup_stamp="-$time_stamp)"
 
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S tar czf "/home/amnesia/Persistent/$filename_tar" ~/Persistent/backup > /dev/null 2>&1
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S chmod 777 "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S chown amnesia:amnesia "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
+cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+| sudo -S tar czf "/home/amnesia/Persistent/$filename_tar" ~/Persistent/backup > /dev/null 2>&1
+cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+| sudo -S chmod 777 "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
+cat ~/Persistent/swtor-addon-to-tails/tmp/password \
+| sudo -S chown amnesia:amnesia "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
 
-
-# We delete now the temporary backup directory from ~/Persistent
+# We delete now the temporary backup directory from the Persistent Volume 
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rm -rf ~/Persistent/backup > /dev/null 2>&1
 
@@ -316,8 +323,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "temporary backup directory removed"
 fi
 
-mkdir -p $final_backup_directory
-mv ~/Persistent/$filename_tar $final_backup_directory
+mkdir -p $final_backup_directory > /dev/null 2>&1
+mv ~/Persistent/$filename_tar $final_backup_directory > /dev/null 2>&1
 
 backupdir=~/Persistent/$backup_stamp
 
@@ -326,12 +333,10 @@ backupdir=~/Persistent/$backup_stamp
 cd $final_backup_directory
 md5sum $filename_tar |  awk  {'print $1'}  > md5check
 
-
 # We have to close the wait-dialog
 
 sleep 2
 end_wait_dialog
-sleep 1
 
 zenity --question --width 600 --text "\n\n         Should the created backup to be encrypted with gpg ?    \n\n\n         If you say 'Yes' here and don't get the right password to decrypt it, nobody\n         can help you to get your data back from your encrypted backup ! \n\n"
 case $? in
