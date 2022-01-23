@@ -430,6 +430,8 @@ if [ $WARNING_SSH == "1" ] ; then
    zenity --info --width=600 --title="" \
    --text="\n\n   Please do not forget to copy the repair-files to a other storage.\n   Copy all files from ~/Persistent/personal-files/tails-repair-disk    \n\n\n   Please press OK to continue." > /dev/null 2>&1
 
+   rm -f ~/Persistent/backup > /dev/null 2>&1
+
    exit 0
 fi
 
