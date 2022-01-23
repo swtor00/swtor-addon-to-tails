@@ -58,13 +58,40 @@ mfile1=$(find ./home | grep $bfile1)
 mfile2=$(find ./home | grep $bfile2)
 
 mv $mfile1 .
+if [ $? -eq 0 ] ; then
+   if [ $CLI_OUT == "1" ] ; then
+      echo "moving "$mfile1" to ~/Persistent/ done"
+   fi
+else 
+   if [ $CLI_OUT == "1" ] ; then
+      echo "moving "$mfile1" to ~/Persistent error"
+   fi
+   zenity --error --width=600 \
+   --text="\n\n            Error on moving file : '$mfile1' !       \n\n"\
+   > /dev/null 2>&1
+   exit 1
+fi 
+
+
 mv $mfile2 .
+if [ $? -eq 0 ] ; then
+   if [ $CLI_OUT == "1" ] ; then
+      echo "moving "$mfile2" to ~/Persistent/ done"
+   fi
+else
+   if [ $CLI_OUT == "1" ] ; then
+      echo "moving "$mfile1" to ~/Persistent error"
+   fi
+   zenity --error --width=600 \
+   --text="\n\n            Error on moving file : '$mfile2' !       \n\n"\
+   > /dev/null 2>&1
+fi 
 
 rm -rf ./home > /dev/null 2>&1
 rm $file1 > /dev/null 2>&1
 rm $file2 > /dev/null 2>&1
 
-file1=$(ls -al | grep md5check    | awk  {'print $9'})
+file1=$(ls -al | grep md5check | awk  {'print $9'})
 file2=$(ls -al | grep tar.gz | awk  {'print $9'})
 
 # we calculate the md5 02 of the backup-file that we extracted above
