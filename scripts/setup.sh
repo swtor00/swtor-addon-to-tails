@@ -106,8 +106,10 @@ fi
 # if this script was started in restore-mode from a backup ..... we do copy back here
 ####################################################################################################################
 if [ $# -eq 1 ] ; then
-
-    echo restore-mode from backup is active
+    
+    if [ $CLI_OUT == "1" ] ; then 
+       echo restore-mode from backup is active
+    fi
 
     browser='/home/amnesia/Persistent/backup/Tor*Browser/'
     pfiles="/home/amnesia/Persistent/backup/personal-files/"
@@ -116,23 +118,33 @@ if [ $# -eq 1 ] ; then
 
     cd $pfiles && cpfiles=$(ls -A)
 
-    echo $cbrowser
-    echo $cpfiles
+    if [ $CLI_OUT == "1" ] ; then  
+       echo $cbrowser
+       echo $cpfiles
+    fi 
 
     cd ~/Persistent/scripts
 
     if [ "$cbrowser" == "" ] ; then
-       echo "directory "$browser" was empty so nothing restored"
+       if [ $CLI_OUT == "1" ] ; then        
+          echo "directory "$browser" was empty so nothing restored"
+       fi   
     else
        cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
-       echo "Backup files ~/Persistent/TOR Browser restored"
+       if [ $CLI_OUT == "1" ] ; then 
+          echo "Backup files ~/Persistent/TOR Browser restored"
+       fi 
     fi
 
     if [ "$cpfiles" == "" ] ; then
-       echo "directory "$pfiles" was empty so nothing restored"
+       if [ $CLI_OUT == "1" ] ; then 
+          echo "directory "$pfiles" was empty so nothing restored"
+       fi
     else
        cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
-       echo "Backup files ~/Persistent/personal-files restored"
+       if [ $CLI_OUT == "1" ] ; then
+          echo "Backup files ~/Persistent/personal-files restored"
+       fi 
     fi
 
     # The above part was easy ... the restored files are independet from the version
@@ -143,8 +155,10 @@ if [ $# -eq 1 ] ; then
     backup_version=$(cat ~/Persistent/backup/tails-backup-version)
     current_version=$(tails-version | head -n1 | awk {'print $1'})
 
-    echo the backup-was made with version :$backup_version
-    echo the current tails is :$current_version
+    if [ $CLI_OUT == "1" ] ; then
+       echo the backup-was made with version :$backup_version
+       echo the current tails is :$current_version
+    fi
 
     if [ "$backup_version" == "$current_version" ] ; then
 
@@ -153,9 +167,13 @@ if [ $# -eq 1 ] ; then
         if [ -d ~/Persistent/backup/bookmarks ] ; then
         if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
            cp ~/Persistent/backup/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks
-           echo "Backup files bookmarks restored"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo "Backup files bookmarks restored"
+           fi
         else
-           echo "Bookmarks not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "Bookmarks not restored .... option is not active on this persistent volume"
+           fi
         fi
         fi
 
@@ -164,9 +182,13 @@ if [ $# -eq 1 ] ; then
         if [ -d ~/Persistent/backup/gnupg ] ; then
         if mount | grep -q /home/amnesia/.gnupg ; then
            cp -r ~/Persistent/backup/gnupg/* ~/.gnupg/
-           echo "Backup files gnupg restored"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "Backup files gnupg restored"
+           fi
         else
-           echo "gnupg not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "gnupg not restored .... option is not active on this persistent volume"
+           fi  
         fi
         fi
 
@@ -175,9 +197,13 @@ if [ $# -eq 1 ] ; then
         if [ -d ~/Persistent/backup/thunderbird ] ; then
         if mount | grep -q home/amnesia/.thunderbird ; then
            cp -r ~/Persistent/backup/thunderbird/*  ~/.thunderbird
-           echo "Backup files thunderbird restored"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "Backup files thunderbird restored"
+           fi
         else
-           echo "thunderbird not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "thunderbird not restored .... option is not active on this persistent volume"
+           fi   
         fi
         fi
 
@@ -187,8 +213,10 @@ if [ $# -eq 1 ] ; then
         if [ -d ~/Persistent/backup/pidgin ] ; then
         if mount | grep -q /home/amnesia/.purple ; then
            cp -r ~/Persistent/backup/pidgin/* /home/amnesia/.purple
-           echo "Backup files pidgin restored"
-        else
+           if [ $CLI_OUT == "1" ] ; then
+              echo "Backup files pidgin restored"
+           fi
+        else   
            echo "pidgin not restored .... option is not active on this persistent volume"
         fi
         fi
@@ -200,7 +228,9 @@ if [ $# -eq 1 ] ; then
            cp -r ~/Persistent/backup/electrum/*  /home/amnesia/.electrum
            echo "Backup files electrum restored"
         else
-           echo "electrum not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo "electrum not restored .... option is not active on this persistent volume"
+           fi
         fi
         fi
 
@@ -213,6 +243,9 @@ if [ $# -eq 1 ] ; then
 
         test_password_greeting
         if [ $? -eq 0 ] ; then
+           if [ $CLI_OUT == "1" ] ; then
+              echo "passwowrd is set" 
+           fi
            sleep 1
         else
            echo "Error !!!! No Password set on the Greeting-Screen"
@@ -226,6 +259,9 @@ if [ $# -eq 1 ] ; then
 
         test_admin_password
         if [ $? -eq 0 ] ; then
+           if [ $CLI_OUT == "1" ] ; then
+              echo "provided passwowrd is valid" 
+           fi
            sleep 1
         else
            echo "password wrong or empty"
@@ -249,17 +285,19 @@ if [ $# -eq 1 ] ; then
         # Test mandatory option : ssh
 
         if grep -q openssh-client ~/Persistent/persistence.conf ; then
-            echo >&2 "ssh settings are present on this persistent volume"
-            cd ~/Persistent/backup/openssh-client
-            cp id_rsa ~/.ssh
-            cp id_rsa.pub ~/.ssh
-            cp known_hosts ~/.ssh
-            chmod 600 ~/.ssh/id_rsa
-            chmod 644 ~/.ssh/*.pub
-            ssh-add > /dev/null 2>&1
-
-            echo "Backup files ~/.ssh restored"
-
+           if [ $CLI_OUT == "1" ] ; then
+              echo >&2 "ssh settings are present on this persistent volume"
+           fi
+           cd ~/Persistent/backup/openssh-client
+           cp id_rsa ~/.ssh
+           cp id_rsa.pub ~/.ssh
+           cp known_hosts ~/.ssh
+           chmod 600 ~/.ssh/id_rsa
+           chmod 644 ~/.ssh/*.pub
+           ssh-add > /dev/null 2>&1
+           if [ $CLI_OUT == "1" ] ; then
+              echo "Backup files ~/.ssh restored"
+           fi
         else
            echo "ssh-settings is not present on this persistent Volume"
            echo
@@ -276,7 +314,9 @@ if [ $# -eq 1 ] ; then
         # Mandatory : additional software part01
 
         if grep -q /var/cache/apt/archives  ~/Persistent/persistence.conf ; then
-           echo >&2 "additional-software part 01 is present on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo >&2 "additional-software part 01 is present on this persistent volume"
+           fi  
         else
            echo "additional-software is not present on this persistent Volume"
            echo
@@ -293,7 +333,9 @@ if [ $# -eq 1 ] ; then
         # Mandatory : additional software part02
 
         if grep -q /var/lib/apt/lists ~/Persistent/persistence.conf ; then
-           echo >&2 "additional-software part 02 is present on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo >&2 "additional-software part 02 is present on this persistent volume"
+           fi 
         else
            echo "additional-software is not present on this persistent Volume"
            echo
@@ -323,10 +365,14 @@ if [ $# -eq 1 ] ; then
 
            cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
            sudo -S  chown -R root:root /live/persistence/TailsData_unlocked/nm-system-connections > /dev/null 2>&1
-
-           echo "Backup files system-connection restored"
+           
+           if [ $CLI_OUT == "1" ] ; then   
+              echo "Backup files system-connection restored"
+           fi 
         else
-           echo "system-connection not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "system-connection not restored .... option is not active on this persistent volume"
+           fi  
         fi
         fi
 
@@ -345,9 +391,13 @@ if [ $# -eq 1 ] ; then
            cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
            sudo -S chown -R root:root /live/persistence/TailsData_unlocked/tca  > /dev/null 2>&1
 
-           echo "Backup files tca restored"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo "Backup files tca restored"
+           fi
         else
-           echo "tca not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "tca not restored .... option is not active on this persistent volume"
+           fi
         fi
         fi
 
@@ -403,10 +453,13 @@ if [ $# -eq 1 ] ; then
 
            cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
            sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf.0 > /dev/null 2>&1
-
-           echo "Backup files cups restored"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo "Backup files cups restored"
+           fi
         else
-           echo "cups not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo "cups not restored .... option is not active on this persistent volume"
+           fi
         fi
         fi
 
@@ -435,10 +488,14 @@ if [ $# -eq 1 ] ; then
 
            cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
            sudo -S chown -R Debian-gdm:Debian-gdm /live/persistence/TailsData_unlocked/greeter-settings > /dev/null 2>&1
-
-           echo "Backup files greeter-settings restored"
+            
+           if [ $CLI_OUT == "1" ] ; then      
+              echo "Backup files greeter-settings restored"
+           fi
         else
-           echo "greeter-settings not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then 
+              echo "greeter-settings not restored .... option is not active on this persistent volume"
+           fi 
         fi
         fi
 
@@ -447,8 +504,14 @@ if [ $# -eq 1 ] ; then
         # tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
         #
 
-        echo "Execute command apt-get update. Please wait !!!! "
-        echo "Please do not interrupt here .... This commands need a lot of time !!!" 
+        if [ $CLI_OUT == "1" ] ; then 
+           echo "Execute command apt-get update. Please wait !!!! "
+           echo "Please do not interrupt here .... This commands need a lot of time !!!"
+        fi 
+
+        # This could use a very long time 
+
+        sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Installing softwate is in progress ]           \n") & > /dev/null 2>&1
 
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
         sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
@@ -473,8 +536,14 @@ if [ $# -eq 1 ] ; then
  
         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
         sudo -S apt-get install -y yad > /dev/null 2>&1
+          
+        # Killing Wait Window 
 
-        echo "Backup files additional-software restored and software installed"
+        killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &  
+
+        if [ $CLI_OUT == "1" ] ; then 
+           echo "Backup files additional-software restored and software installed"
+        fi
 
         # Do we have dotfiles inside the backup  ?
 
@@ -493,20 +562,32 @@ if [ $# -eq 1 ] ; then
            if [ -f ~/Persistent/backup/swtorcfg/freezed.cgf ]  ; then
               ./cli_tweak.sh > /dev/null 2>&1
               ./cli_freezing.sh > /dev/null 2>&1
-              echo state : now this Tails is [freezed]
+              if [ $CLI_OUT == "1" ] ; then
+                 echo state : now this Tails is [freezed]
+              fi
            else
-              echo state : not-freezed here because backup was not freezed
+              if [ $CLI_OUT == "1" ] ; then
+                 echo state : not-freezed here because backup was not freezed
+              fi  
            fi
 
         else
            echo 1 > ~/Persistent/swtorcfg/no-freezing
-           echo "dotfiles not restored .... option is not active on this persistent volume"
+           if [ $CLI_OUT == "1" ] ; then
+              echo "dotfiles not restored .... option is not active on this persistent volume"
+           fi 
         fi
         fi
         echo 1 > ~/Persistent/swtor-addon-to-tails/setup
     else
-        echo The backup was made with a older version of Tails ..
-        echo
+        if [ $CLI_OUT == "1" ] ; then   
+           echo The backup was made with a older version of Tails ..
+        fi 
+       
+        # Because the backup was made with a older version of Tails ..
+        # We have to ask on very restore .... 
+ 
+
     fi
     
     exit 0
