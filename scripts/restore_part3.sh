@@ -173,6 +173,19 @@ else
    fi
 fi
 
+
+# We move to the next level 
+
+if [ $CLI_OUT == "1" ] ; then
+   echo delete all restore-files from directory ~/Persistent
+fi 
+
+rm -rf ~/Persistent/*.tar.gz > /dev/null 2>&1
+rm -rf ~/Persistent/*.md5 > /dev/null 2>&1
+
+
+
+
 # Our fist step is to create all directorys
 
 cd ~/Persistent/swtor-addon-to-tails/scripts
