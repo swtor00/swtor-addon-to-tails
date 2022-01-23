@@ -5,16 +5,27 @@
 checksumm1=$(cat $file1)
 checksumm2=$(md5sum $file2 |  awk  {'print $1'})
 
-echo stored-----md5 01: $checksumm1
-echo calculated-md5 01: $checksumm2
+if [ $CLI_OUT == "1" ] ; then
+   echo stored-----md5 01: $checksumm1
+   echo calculated-md5 01: $checksumm2
+fi
 
 if [ $checksumm1 == $checksumm2 ] ; then
-   echo checksumm 01 is correct
+   if [ $CLI_OUT == "1" ] ; then
+      echo checksumm 01 is correct
+   fi
+   sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Checksumm 01 is correct ]           \n") & > /dev/null 2>&1
 else
-   echo "warning : calculated checksum 01 and the stored checksumm do not match !!!!!!!"
-   echo "this tails backup is not valid !!!!"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "warning : calculated checksum 01 and the stored checksumm do not match !!!!!!!"
+      echo "this tails backup is not valid !!!!"
+   fi 
+   zenity --error --width=600 \
+   --text="\n\n             Checksumm 01 is not correct. This Backup is not valid !       \n\n"\
+   > /dev/null 2>&1
    exit 1
 fi
+
 
 # we need to know the generated filenames inside the backup
 
@@ -27,9 +38,16 @@ echo "extracting backup file " $file2 " : please wait !"
 tar xzf $file2 > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
-   echo "extracting backup file " $file2 " : done"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "extracting backup file " $file2 " : done"
+   fi
 else
-   echo "extracting backup file " $file2 " : failure !"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "extracting backup file " $file2 " : failure !"
+   fi 
+   zenity --error --width=600 \
+   --text="\n\n            Error on extracting tar file : '$file2' !       \n\n"\
+   > /dev/null 2>&1
    exit 1
 fi
 
@@ -51,27 +69,47 @@ file2=$(ls -al | grep tar.gz | awk  {'print $9'})
 checksumm1=$(cat $file1)
 checksumm2=$(md5sum $file2 |  awk  {'print $1'})
 
-echo stored-----md5 02: $checksumm1
-echo calculated-md5 02: $checksumm2
+if [ $CLI_OUT == "1" ] ; then
+   echo stored-----md5 02: $checksumm1
+   echo calculated-md5 02: $checksumm2
+fi
 
 if [ $checksumm1 == $checksumm2 ] ; then
-   echo checksumm 02 is correct
+   if [ $CLI_OUT == "1" ] ; then
+      echo checksumm 02 is correct
+   fi
+   sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Checksumm 02 is correct ]           \n") & > /dev/null 2>&1
 else
-   echo "warning : calculated checksum 02 and the stored checksumm do not match !!!!!!!"
-   echo "this tails backup is not valid !!!!"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "warning : calculated checksum 02 and the stored checksumm do not match !!!!!!!"
+      echo "this tails backup is not valid !!!!"
+   fi 
+   zenity --error --width=600 \
+   --text="\n\n             Checksumm 02 is not correct. This Backup is not valid !       \n\n"\
+   > /dev/null 2>&1
    exit 1
 fi
 
-# Both provided md5 checksumms are correct ...we continue now
 
-echo "extracting backup file " $file2 " : please wait !"
+# Both provided md5 checksumms are correct ...we continue now
+ 
+if [ $CLI_OUT == "1" ] ; then
+   echo "extracting backup file " $file2 " : please wait !"
+fi 
 
 tar xzf $file2 > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
-   echo "extracting backup file " $file2 " : done"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "extracting backup file " $file2 " : done"
+   fi
 else
-   echo "extracting backup file " $file2 " : failure !"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "extracting backup file " $file2 " : failure !"
+   fi
+   zenity --error --width=600 \
+   --text="\n\n            Error on extracting tar file : '$file2' !       \n\n"\
+   > /dev/null 2>&1
    exit 1
 fi
 
@@ -87,19 +125,50 @@ rm -f $file2 > /dev/null 2>&1
 
 # We have to get the add-on itself
 
-echo "download add-on from github.com : Please wait !"
+
+if [ $CLI_OUT == "1" ] ; then
+   echo "download add-on from github.com : Please wait !"
+fi
+
+sleep 800 |  tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the addon from github is in progress ]           \n") & > /dev/null 2>&1
+
+if [ $CLI_OUT == "1" ] ; then
+   echo downloading addon
+fi
 
 git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then
-   echo "download add-on from github.com : done"
+   if [ $CLI_OUT == "1" ] ; then
+      echo "download add-on from github.com : done"
+   fi
+   killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &
+   sleep 1
+   sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") & > /dev/null 2>&1
 else
-   echo "download add-on from github.com : failure ... We try a secound time to download"
+
+   if [ $CLI_OUT == "1" ] ; then
+      echo "download add-on from github.com : failure ... We try a secound time to download"
+   fi
    git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
    if [ $? -eq 0 ] ; then
-      echo "download add-on from github.com : done"
+      if [ $CLI_OUT == "1" ] ; then
+         echo "download add-on from github.com : done"
+      fi
+      killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &
+      sleep 1
+      sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") & > /dev/null 2>&1
    else
-      echo "download add-on from github.com : failure"
+      if [ $CLI_OUT == "1" ] ; then
+         echo "download add-on from github.com : failure"
+      fi
+      killCMD $(ps axu | grep zenity | head -1 | awk {'print $2'}) &
+
+      # It is not possible to download .. even after secound try ... we do quit here ...
+
+      zenity --error --width=600 \
+      --text="\n\n         Error on downloading for the addon from github !       \n\n"\
+      > /dev/null 2>&1
       exit 1
    fi
 fi
@@ -108,11 +177,15 @@ fi
 
 cd ~/Persistent/swtor-addon-to-tails/scripts
 
-echo "Creating directorys : cli_directorys.sh"
+if [ $CLI_OUT == "1" ] ; then
+   echo "Creating directorys : cli_directorys.sh"
+fi 
 
 ./cli_directorys.sh > /dev/null 2>&1
 
-echo "Creating directorys : done "
+if [ $CLI_OUT == "1" ] ; then
+   echo "Creating directorys : done "
+fi
 
 cp ~/Persistent/backup/swtorcfg/*.cfg ~/Persistent/swtorcfg
 
@@ -151,7 +224,7 @@ if [ $? -eq 0 ] ; then
 
 else
 
-   # We are not ready ... 
+   # We are not ready ...  
    exit 1
 
 fi

@@ -18,3 +18,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+export CLI_OUT="0"
+
+function killCMD() {
+  kill $1
+}
+
+export -f killCMD
+

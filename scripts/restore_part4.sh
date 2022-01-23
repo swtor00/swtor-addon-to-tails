@@ -68,7 +68,8 @@ while [ $menu -gt 0 ]; do
           gpg --batch --passphrase-file /dev/shm/password1 --decrypt $file2 > tails_image.tar.gz > /dev/null 2>&1
           if [ $? -eq 0 ] ; then
              echo "Decryption of file ["$file2"] : done"
-              rm $file2 > /dev/null 2>&1
+             rm $file2 > /dev/null 2>&1
+             rm dev/shm/password1 > /dev/null 2>&1
              echo "File "$file2" deleted"
              file2=tails_image.tar.gz
              break
