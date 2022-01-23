@@ -26,4 +26,4 @@ function killCMD() {
 }
 
 export -f killCMD
-y
+
