@@ -26,6 +26,10 @@ fi
 if [ $CLI_OUT == "1" ] ; then
    echo "testing internet-connection : Please wait !"
 fi
+
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n               Testing the Internet connection          \n\n" > /dev/null 2>&1)
+
 curl --socks5 localhost:9050 --socks5-hostname localhost:9050 -s https://check.torproject.org/ -m 10 | grep -m 1 Congratulations > /dev/null 2>&1
 
 if [ $? -eq 0 ] ; then

@@ -492,7 +492,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step11 : system not freezed or if freezed and the two system do match together ! "
     fi
-    show_wait_dialog
+    show_wait_dialog && sleep 2
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "freezed system missmatch !"
@@ -505,7 +505,8 @@ fi
 
 # change the firewall to accept a socks5 server on port 9999
 
-sleep 2 && end_wait_dialog
+sleep 2
+end_wait_dialog
 
 change_tails_firewall
 if [ $? -eq 0 ] ; then

@@ -677,11 +677,26 @@ Date		Release		Author		Description
                                                   - If the password is entered 3 times wrong with create_image.sh,
                                                     the backup folder ~/Persistent/backup still exists. (Fixed)
                                                     
-                                                  - If you are echo a password to a file, it should contain
-                                                    the -n option. Otherwise a newline character is added. 
-                                                    Ups .. mea culpa 
+                                                  - If you are stupid enough to echo a password to a file, it 
+                                                    should contain the -n option. Otherwise a newline character is added. 
+                                                    Ups .. mea culpa,my fault :-(
 
-                                                  - Unencrypted tar.gz restore testing.     
+                                                  - Unencrypted tar.gz restore testing.
+ 
+                                                  - The file setup has now a entry with 0.
+                                                    On every startup the value inside setup will 
+                                                    be incremented by one. If the value is zero,
+                                                    the first startup of the script takes very long
+                                                    to complete. This is the simple reason. 
+
+                                                    - We did not install all the completed software packages 
+                                                      one by one. We only copy the file that describes what
+                                                      additional software should be installed to the right place. 
+                                                 
+                                                    With this in mind ... we can show a window that this first start 
+                                                    is slow and depending on your current internet speed. 
+
+
                                                                  
 
  

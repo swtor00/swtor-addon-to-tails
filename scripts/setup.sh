@@ -583,7 +583,7 @@ if [ $# -eq 1 ] ; then
            fi 
         fi
         fi
-        echo 1 > ~/Persistent/swtor-addon-to-tails/setup
+        echo 0 > ~/Persistent/swtor-addon-to-tails/setup
     else
         if [ $CLI_OUT == "1" ] ; then   
            echo The backup was made with a older version of Tails ..
@@ -1150,7 +1150,7 @@ fi
 
 # Ok .. we are done here ...
 
-echo 1 > ~/Persistent/swtor-addon-to-tails/setup
+echo 0 > ~/Persistent/swtor-addon-to-tails/setup
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "setup.sh is now completed"

@@ -335,6 +335,13 @@ fi
 
 swtor_cleanup
 pkill watchdog.sh
+
+# Increment startup value inside ~/Persistent/swtor-addon-to-tails/setup by one 
+
+oldnum=$(cat ~/Persistent/swtor-addon-to-tails/setup)  
+newnum=`expr $oldnum + 1`
+echo $newnum > ~/Persistent/swtor-addon-to-tails/setup
+
 exit 0
 
 
