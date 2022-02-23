@@ -900,13 +900,13 @@ if [ $? -eq 0 ] ; then
     0) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo "encryption with passphrase"
        fi
-    return 0
+       return 0
     ;;
      1) if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo "no encryption and cancel backup"
         fi
         return 1
-    ;;             
+    ;;
     esac
 fi
 fi

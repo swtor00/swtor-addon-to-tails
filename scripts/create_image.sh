@@ -348,26 +348,26 @@ case $? in
 
        swtor_ask_passphrase
        if [ $? -eq 0 ] ; then
+          cd ~/Persistent
+          tar czf $filename_tar $final_backup_directory > /dev/null 2>&1
           gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar > /dev/null 2>&1
           if [ $? -eq 0 ] ; then
              WARNING_SSH="0"
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
-                echo "enryption without any error ...."
-             fi
           else
-             zenity --error --width=600 --text="\n\n     Backup canceled by gpg !      \n\n" > /dev/null 2>&1
-             cd ~/Persistent
+             zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
+             cd ~/Persistent  
              rm -rf $final_backup_directory > /dev/null 2>&1
+             rm -rf $filename_tar > /dev/null 2>&1 
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
              exit 1
           fi
        else
-          zenity --error --width=600 --text="\n\n     Backup canceled by user !      \n\n" > /dev/null 2>&1
+          zenity --error --width=600 --text="\n\n     Backup canceled by user in the password-screen !      \n\n" > /dev/null 2>&1
           cd ~/Persistent
-          rm -rf $final_backup_directory > /dev/null 2>&1 
+          rm -rf $final_backup_directory > /dev/null 2>&1
           rm /dev/shm/password1 > /dev/null 2>&1
           rm /dev/shm/password2 > /dev/null 2>&1
           exit 1
