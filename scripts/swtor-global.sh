@@ -85,7 +85,7 @@ if [ $? -eq 0 ] ; then
 
    # We have a open dialog to close
 
-   end_wait_dialog && sleep 1
+   end_wait_dialog && sleep 0.5
 
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n               Testing the Internet connection over TOR was successful !          \n\n" > /dev/null 2>&1)
@@ -112,7 +112,7 @@ else
 
    # We have a open dialog to close
 
-   end_wait_dialog && sleep 1
+   end_wait_dialog && sleep 0.5
 
    zenity --error --width=600 \
    --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n"\
@@ -137,7 +137,7 @@ else
 
    # We have a open dialog to close
 
-   end_wait_dialog
+   end_wait_dialog && sleep 0.5
 
    zenity --error --width=600 \
    --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -166,7 +166,7 @@ else
 
    # We have a open dialog to close
 
-   end_wait_dialog
+   end_wait_dialog && sleep 0.5
 
    zenity --error --width=600 \
    --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -200,7 +200,7 @@ if grep -q "password is disabled" test_admin ; then
 
      # We have a open dialog to close
 
-     end_wait_dialog && sleep 1
+     end_wait_dialog && sleep 0.5
 
      zenity --error --width=600 \
      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
@@ -224,7 +224,7 @@ else
 
     # We have a open dialog to close
 
-    end_wait_dialog && sleep 1
+    end_wait_dialog && sleep 0.5
 
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
     --text="\n\n                 Tails is using a adminitration password !         \n\n" > /dev/null 2>&1)
@@ -251,7 +251,7 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
 
         # We have a open dialog to close
 
-        end_wait_dialog
+        end_wait_dialog && sleep 0.5
 
         zenity --error --width=600 \
         --text="\n\n         The import of bookmarks is not possible (swtor.cfg), as long the bookmarks\n         option is not set on the persistent volume.\n         You have to set this option first ! \n\n" \
@@ -286,7 +286,7 @@ fi
 
 # We have a open dialog to close
 
-end_wait_dialog && sleep 1
+end_wait_dialog && sleep 0.5
 
 menu=1
 while [ $menu -gt 0 ]; do
@@ -383,10 +383,6 @@ return 0
 
 change_tails_firewall(){
 
-# We have a open dialog to close
-
-end_wait_dialog && sleep 1
-
 cd ${global_tmp}
 
 if [ $BROWSER_SOCKS5 == "1" ] ; then
@@ -399,7 +395,10 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
       echo "autoremove old unused packages"
    fi
 
-   end_wait_dialog && sleep 6
+   # We have a open dialog to close
+   
+   end_wait_dialog && sleep 0.5
+
    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n        [ Firewall changed to accept a local socks5 proxy ]       \n\n" > /dev/null 2>&1)
 
@@ -425,7 +424,7 @@ return 0
 
 test_for_yad() {
 
-end_wait_dialog && sleep 1
+end_wait_dialog && sleep 0.5
 # test for installed yad from persistent volume
 
 if grep -q "status installed yad" /var/log/dpkg.log ; then
@@ -637,6 +636,7 @@ kill -9 $pid_to_kill
 # instantly or we have fluded process-table with process wait.sh
 
 echo 1 > w-end
+sleep 0.1
 return 0
 }
 
@@ -667,7 +667,7 @@ while [ $menu -gt 0 ]; do
             echo the connection was made or even not
          fi
          menu=0
-         sleep 12
+         sleep 9
       else
          ((menu++))
       fi
@@ -745,14 +745,14 @@ if [ $CHECK_UPDATE == "1" ] ; then
 
    # We contact github to see what version is stored over there ....
 
-   show_wait_dialog && sleep 4
+   show_wait_dialog && sleep 3.5
 
 
    cd ${global_tmp}
 
    wget -O REMOTE-VERSION https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/swtorcfg/swtor.cfg > /dev/null 2>&1
 
-   end_wait_dialog && sleep 1
+   end_wait_dialog && sleep 0.5
 
    REMOTE=$(grep "SWTOR-VERSION" REMOTE-VERSION | sed 's/[A-Z:-]//g')
    LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
@@ -860,13 +860,13 @@ return 0
 swtor_no_connection() {
 sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n             This is not possible without a active ssh connection !          \n\n" > /dev/null 2>&1)
-sleep 1
+sleep 0.5
 }
 
 swtor_close_first() {
 sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
-sleep 1
+sleep 0.5
 }
 
 swtor_ask_passphrase() {

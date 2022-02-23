@@ -50,9 +50,7 @@ source ~/Persistent/scripts/swtor-global.sh
 # Prior to use the menu, you have to execute the script swtor-setup.sh
 
 if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
-
-   sleep 2
-   end_wait_dialog
+   end_wait_dialog && sleep 0.5
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
     --text="\n\n                Please execute the command \"setup-swtor.sh\" first !                  \n\n" > /dev/null 2>&1)
    exit 1
@@ -69,8 +67,7 @@ if [ -f ~/swtor_init ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "startup.sh was allready executed once"
    fi
-   sleep 2
-   end_wait_dialog
+   end_wait_dialog && sleep 0.5
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
    --text="\n\n                 The command \"startup.sh\" was allready executed !                    \n\n" > /dev/null 2>&1)
    exit 0
@@ -79,8 +76,7 @@ fi
 
 # Check the TOR-Connection over Internet
 
-sleep 2
-end_wait_dialog
+end_wait_dialog && sleep 0.5
 
 check_tor_network
 if [ $? -eq 0 ] ; then
@@ -102,13 +98,13 @@ if [ "$CHECK_SSH" == "1" ] ; then
 
 # check for a empty ~/.ssh directory
 
-end_wait_dialog && sleep 2
+end_wait_dialog && sleep 0.5
 test_empty_ssh
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step03 : ~/.ssh for user amnesia is not empty ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0,5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "~/.ssh is empty !"
@@ -147,7 +143,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step04 : yad is installed  ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0.5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "yad is not installed !"
@@ -159,15 +155,14 @@ fi
 
 # test for installed sshpass from persistent volume
 
-sleep 2
-end_wait_dialog
+end_wait_dialog && sleep 0.5
 
 test_for_sshpass
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step05 : sshpass is installed  ! "
     fi
-    show_wait_dialog sleep 2
+    show_wait_dialog sleep 0.5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "sshpass is not installed !"
@@ -179,16 +174,14 @@ fi
 
 # test for installed html2text from persistent volume
 
-
-sleep 2
-end_wait_dialog
+end_wait_dialog && sleep 0.5
 
 test_for_html2text
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step06 : html2text is installed  ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0,5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "html2text is not installed !"
@@ -208,7 +201,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step07 : chromium is installed  ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0.5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "chromium is not installed !"
@@ -220,15 +213,14 @@ fi
 
 # test for installed chromium-sandbox from persistent volume
 
-sleep 2
-end_wait_dialog
+end_wait_dialog && sleep 0.5
 
 test_for_chromium-sandbox
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step08 : chromium-sandbox is installed  ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0,5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "chromium-sandbox is not installed !"
@@ -252,15 +244,14 @@ fi
 
 # Check for a existing administration password on startup of Tails ?
 
-sleep 2
-end_wait_dialog
+end_wait_dialog && sleep 1.5
 
 test_password_greeting
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step09 : password was set on startup of Tails  ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 1.5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "no password set on startup !"
@@ -273,8 +264,7 @@ fi
 
 # Ask for the administration password and store it in the tmp directory
 
-sleep 2
-end_wait_dialog
+end_wait_dialog & sleep 0.5
 
 test_admin_password
 if [ $? -eq 0 ] ; then
@@ -469,8 +459,6 @@ if [ $? -eq 0 ] ; then
 
 
    fi
-
-
    show_wait_dialog && sleep 2
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -484,15 +472,14 @@ fi
 
 # test for a frezzed system and comparing the state of a freezed system  with the current Tails
 
-sleep 2
-end_wait_dialog
+end_wait_dialog && sleep 0.5
 
 test_for_freezed
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step11 : system not freezed or if freezed and the two system do match together ! "
     fi
-    show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0.5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "freezed system missmatch !"
@@ -502,18 +489,15 @@ else
 fi
 
 
-
 # change the firewall to accept a socks5 server on port 9999
 
-sleep 2
-end_wait_dialog
-
+end_wait_dialog && sleep 0.5
 change_tails_firewall
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step12 : changed firewall settings for socks5 server !"
     fi
-    # show_wait_dialog && sleep 2
+    show_wait_dialog && sleep 0.5
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "firewall was not changed because configuration"
@@ -527,6 +511,7 @@ fi
 # The last thing to do is to check for udates or not. This depends on the configuration file
 # swtor.cfg.The default value is CHECK-UPDATE:NO
 
+end_wait_dialog && sleep 0.5
 swtor_update
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then

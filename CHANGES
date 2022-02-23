@@ -695,6 +695,10 @@ Date		Release		Author		Description
                                                  
                                                     With this in mind ... we can show a window that this first start 
                                                     is slow and depending on your current internet speed. 
+                                                    
+                                                    On a very low speed usb disk , the script doesn't behave like 
+                                                    it would do on USB 3. Some littel fixes to meet this.
+ 
 
 
                                                                  

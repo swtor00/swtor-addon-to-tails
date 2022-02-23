@@ -142,13 +142,12 @@ sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="In
 
 # After the initaliation we can use all the functions from swtor-global.sh
 
-show_wait_dialog && sleep 2
+show_wait_dialog && sleep 1.5
 
 if [ "$DEBUGW" == "1" ] ; then
    pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
    echo wait_dialog 01 with PID $pid_to_kill created
 fi
-
 
 if [ ! -f ~/swtor_init ] ; then
 
@@ -162,7 +161,7 @@ if [ ! -f ~/swtor_init ] ; then
             echo wait_dialog from init-swtor_init with PID $pid_to_kill will be killed
          fi
 
-         end_wait_dialog && sleep 1
+         end_wait_dialog && sleep 0.5
          sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
           --text="\n\n    Error during the initialisation of the addon !  \n\n " > /dev/null 2>&1)
 
@@ -186,7 +185,8 @@ else
        echo wait_dialog 01 with PID $pid_to_kill will be killed
     fi
 
-    end_wait_dialog && sleep 1
+    end_wait_dialog && sleep 1.5
+    killall zenity > /dev/null 2>&1
 
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
     --text="\n\n                          Initialisation is now complete                          \n\n" > /dev/null 2>&1)
@@ -198,7 +198,7 @@ fi
 
 cd ~/Persistent/scripts/
 ./watchdog.sh & > /dev/null 2>&1
-sleep 1
+sleep 0.3
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n                          Watchdog script is started                          \n\n" > /dev/null 2>&1)
@@ -212,7 +212,7 @@ fi
 ./swtor-about & 2>&1 > /dev/null
 sleep 3
 pkill swtor-about
-
+killall zenity > /dev/null 2>&1
 
 # Build main menu
 
