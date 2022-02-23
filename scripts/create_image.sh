@@ -200,6 +200,7 @@ fi
 show_wait_dialog
 sleep 1
 
+
 cd ~/Persistent/swtor-addon-to-tails/tmp
 sleep 2
 
@@ -209,8 +210,8 @@ sleep 2
 # The standard  configuration for swtor.cfg is BACKUP-APT-LIST:NO
 
 if [ "$BACKUP_APT_LIST" == "1" ] ; then
-    cat ~/Persistent/swtor-addon-to-tails/tmp/password \ 
-    | sudo -S rsync -avzh /live/persistence/TailsData_unlocked/apt /home/amnesia/Persistent/backup > /dev/null 2>&1
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \  
+    sudo -S rsync -avzh /live/persistence/TailsData_unlocked/apt /home/amnesia/Persistent/backup > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "backup made from apt-lists: BACKUP-APT-LIST:YES"
     fi
