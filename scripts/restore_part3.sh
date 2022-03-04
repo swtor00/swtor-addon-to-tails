@@ -155,7 +155,7 @@ if [ ! -f ~/Persistent/stage7 ] ; then
       if [ $CLI_OUT == "1" ] ; then
          echo checksumm 02 is correct
       fi
-      sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Checksumm 02 is correct ]           \n") & > /dev/null 2>&1
+      sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Checksumms 01 and 02 are correct ]           \n")  > /dev/null 2>&1
       echo 1 > ~/Persistent/stage7  
    else
       if [ $CLI_OUT == "1" ] ; then
@@ -245,12 +245,15 @@ if [ ! -f ~/Persistent/stage11 ] ; then
       echo "download add-on from github.com : Please wait !"
    fi
 
-   sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the Addon.Please wait ]           \n") & > /dev/null 2>&1
+   sleep 1200 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the Addon.Please wait ]           \n") & > /dev/null 2>&1
 
-   git clone https://github.com/swtor00/swtor-addon-to-tails
+   git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
 
    if [ $? -eq 0 ] ; then
-      sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") & > /dev/null 2>&1
+      sleep 1
+      killall zenity  > /dev/null 2>&1
+      sleep 1   
+      sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n")  > /dev/null 2>&1
       echo 1 > ~/Persistent/stage11       
    else
 
@@ -258,10 +261,13 @@ if [ ! -f ~/Persistent/stage11 ] ; then
           echo "download add-on from github.com : failure ... We try a secound time to download"
        fi
 
-       git clone https://github.com/swtor00/swtor-addon-to-tails
+       git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
        
-       if [ $? -eq 0 ] ; then
-          sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") & > \
+       if [ $? -eq 0 ] ; then     killall zenity
+          sleep 1
+          killall zenity  > /dev/null 2>&1
+          sleep 1  
+          sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") > \
           /dev/null 2>&1
           echo 1 > ~/Persistent/stage11  
        else
@@ -269,7 +275,11 @@ if [ ! -f ~/Persistent/stage11 ] ; then
              echo "download add-on from github.com : failure"
           fi
 
-          # It is not possible to download .. even after the secound possbile try do download it ... we do quit here ...
+          sleep 1 
+          killall zenity  > /dev/null 2>&1
+          sleep 1
+
+          # It is not possible to download .. even after 1200 secounds ... we do quit here ...
 
           zenity --error --width=600 \
           --text="\n\n         Error on downloading for the addon from github !       \n\n" > /dev/null 2>&1
@@ -363,6 +373,9 @@ if [ $? -eq 0 ] ; then
    
    rm ~/Persistent/restore.sh > /dev/null 2>&1
 
+   sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is fnished. PLeasse reboot Tails ]           \n")  > /dev/null 2>&1
+   
+   exit 0
 else
 
    # We are not ready yet.Restore mode had a failure 
