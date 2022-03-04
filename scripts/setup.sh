@@ -487,6 +487,10 @@ if [ $# -eq 1 ] ; then
         fi
     fi
 
+    # From here to the end of the script ... we show the wait dialog 
+  
+    show_wait_dialog & sleep 1
+    
     browser='/home/amnesia/Persistent/backup/Tor*Browser/'
     pfiles="/home/amnesia/Persistent/backup/personal-files/"
 
@@ -561,11 +565,19 @@ if [ $# -eq 1 ] ; then
         fi 
        
         # Because the backup was made with a older version of Tails ..
-        # We have to ask on very restore-point  
+        # We have to ask on very restore-point with the exception 
+        # of the following entrys ... 
  
+        restore_bookmarks  
+        restore_ssh 
+        restore_git 
+        restore_software
+         
+        end_wait_dialog && sleep 1.5  
 
     fi
     
+    end_wait_dialog && sleep 1.5 
     exit 0
 fi
 ####################################################################################################################

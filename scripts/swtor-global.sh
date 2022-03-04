@@ -1224,11 +1224,6 @@ if [ $CLI_OUT == "1" ] ; then
    echo "Execute command apt-get update. Please wait !!!! "
    echo "Please do not interrupt here .... This commands need a lot of time !!!"
 fi 
-
-
-# This could use a very long time 
-
-show_wait_dialog && sleep 2
        
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
@@ -1253,10 +1248,6 @@ sudo -S apt-get install -y sshpass > /dev/null 2>&1
  
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S apt-get install -y yad > /dev/null 2>&1 
-
-# We have a open dialog to close
-
-end_wait_dialog && sleep 1
 
 if [ $CLI_OUT == "1" ] ; then 
    echo "Backup files additional-software restored and software installed"
