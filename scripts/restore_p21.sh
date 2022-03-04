@@ -1,27 +1,7 @@
 
-
-
-cd ~/Persistent/
-files=$(ls -al * | wc -l)
-
-if [ $files == "8" ] ; then         
-    if [ $CLI_OUT == "1" ] ; then
-       echo "Persistent check for empty folder: done"
-    fi
-else
-   if [ $CLI_OUT == "1" ] ; then
-    echo "Persistent is not empty"
-  fi
-  zenity --error --width=600 \
-  --text="\n\n        Persistent folder is not empty !    \n\n"\
-  > /dev/null 2>&1 
-  exit 1
-fi
-
-
 # We need to test, that we are able to download
-# the addon over internet, after checking the backup
-# with the provided md5 checksumm
+# the addon over internet
+
 
 if [ $CLI_OUT == "1" ] ; then
    echo "testing internet-connection : Please wait !"
@@ -48,5 +28,31 @@ else
    > /dev/null 2>&1
    exit 1
 fi
+
+cd ~/Persistent/
+files=$(ls -Al | wc -l)
+
+if [ ! -f ~/Persistent/stage1 ] ; then
+
+   if [ $files == "5" ] ; then 
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Persistent check for empty folder: done"
+      fi
+      echo 1 > ~/Persistent/stage1 
+   else
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Persistent is not empty"
+      fi
+      zenity --error --width=600 \
+      --text="\n\n  The persistent folder should contain only the following files and directorys: \n\n   - One directory 'Tor Browser'\n   - One file with the backup (tar.gz)\n   - One file containg the checksumm of the backup (md5)\n   - One executeable script restore.sh\n\n"\ 
+      > /dev/null 2>&1
+      exit 1
+   fi
+else
+   if [ $CLI_OUT == "1" ] ; then
+       echo "check for stage1 passed : done"
+   fi
+fi
+
 
 

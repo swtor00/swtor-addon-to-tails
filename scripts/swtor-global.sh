@@ -915,7 +915,7 @@ fi
 
 if [ "$menu" -ge "4" ] ; then 
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-   --text="\n\n           You had your chance to type it correct ! Backup canceled !       \n\n" > /dev/null 2>&1)
+   --text="\n\n           You had your chance to type it correct ! Backup is canceled !      \n\n" > /dev/null 2>&1)
    return 1 
 else
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
@@ -925,6 +925,383 @@ fi
 done
 }
 
+
+restore_bookmarks() {
+
+# If the backup contains bookmarks from Tor-Browser : we restore them back
+
+if [ -d ~/Persistent/backup/bookmarks ] ; then
+   if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
+      cp ~/Persistent/backup/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks
+       if [ $CLI_OUT == "1" ] ; then 
+          echo "Backup files bookmarks restored"
+       fi
+   else
+       if [ $CLI_OUT == "1" ] ; then
+          echo "Bookmarks not restored .... option is not active on this persistent volume"
+       fi
+   fi
+fi
+}
+
+
+restore_gnupg() {
+
+# If the backup contains gnupg : we restore them back
+
+if [ -d ~/Persistent/backup/gnupg ] ; then
+   if mount | grep -q /home/amnesia/.gnupg ; then
+      cp -r ~/Persistent/backup/gnupg/* ~/.gnupg/
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Backup files gnupg restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then
+         echo "gnupg not restored .... option is not active on this persistent volume"
+      fi  
+   fi
+fi
+}
+
+
+
+restore_thunderbird() {
+
+# If the backup contains thunderbird (Email) we restore them back
+
+if [ -d ~/Persistent/backup/thunderbird ] ; then
+   if mount | grep -q home/amnesia/.thunderbird ; then
+      cp -r ~/Persistent/backup/thunderbird/*  ~/.thunderbird
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Backup files thunderbird restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then
+         echo "thunderbird not restored .... option is not active on this persistent volume"
+      fi
+   fi
+fi
+}
+
+restore_pidgin() {
+
+# If the backup contains pidgin (Messanger) : we restore them back
+
+if [ -d ~/Persistent/backup/pidgin ] ; then
+   if mount | grep -q /home/amnesia/.purple ; then
+      cp -r ~/Persistent/backup/pidgin/* /home/amnesia/.purple
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Backup files pidgin restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then
+         echo "pidgin not restored .... option is not active on this persistent volume"
+      fi
+    fi
+fi
+}
+
+
+restore_electrum() {
+
+# If the backup contains electrum bitcoin wallet : we restore them back
+
+if [ -d ~/Persistent/backup/electrum  ] ; then
+   if mount | grep -q /home/amnesia/.electrum  ; then
+      cp -r ~/Persistent/backup/electrum/*  /home/amnesia/.electrum
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Backup files electrum restored"
+      fi
+   else
+       if [ $CLI_OUT == "1" ] ; then
+          echo "electrum not restored .... option is not active on this persistent volume"
+       fi
+   fi
+fi
+}
+
+
+
+restore_git() {
+
+# I don't know the exactly reason ... we copy back config from backup git
+# and we are able to make a git push without any password
+
+cp /home/amnesia/Persistent/backup/git/config ~/Persistent/swtor-addon-to-tails/.git
+
+}
+
+
+
+restore_ssh() {
+
+cd ~/Persistent/backup/openssh-client
+
+cp config ~/.ssh > /dev/null 2>&1
+cp id_rsa ~/.ssh > /dev/null 2>&1
+cp id_rsa.pub ~/.ssh > /dev/null 2>&1
+cp known_hosts ~/.ssh > /dev/null 2>&1
+chmod 600 ~/.ssh/id_rsa > /dev/null 2>&1
+chmod 644 ~/.ssh/*.pub > /dev/null 2>&1
+
+ssh-add > /dev/null 2>&1
+if [ $CLI_OUT == "1" ] ; then
+   echo "Backup files ~/.ssh restored"
+fi
+}
+
+
+restore_network_connections() {
+
+# If the backup contains network-connections : we restore them back
+
+if [ -d ~/Persistent/backup/nm-system-connections ] ; then
+   if grep -q system-connection ~/Persistent/persistence.conf ; then
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S rsync -aqzh /home/amnesia/Persistent/backup/nm-system-connections /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+
+      # Very important  here after the copy :
+      # We need to change the owner and group to root:root for all the files or
+      # the owner and group is amnesia:amnesia and this would not work on the next boot
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S  chown -R root:root /live/persistence/TailsData_unlocked/nm-system-connections > /dev/null 2>&1
+
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Backup files system-connection restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then
+         echo "system-connection not restored .... option is not active on this persistent volume"
+      fi
+   fi
+fi
+}
+
+
+
+restore_tca() {
+
+# If the backup contains tca (TOR-Nodes configuration) : we restore them back
+
+if [ -d ~/Persistent/backup/tca  ] ; then
+   if grep -q tca ~/Persistent/persistence.conf ; then
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S rsync -aqzh /home/amnesia/Persistent/backup/tca /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+
+      # Very important  here after the copy :
+      # We need to change the owner and group to root:root for all the files or
+      # the owner and group is amnesia:amnesia
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S chown -R root:root /live/persistence/TailsData_unlocked/tca  > /dev/null 2>&1
+
+      if [ $CLI_OUT == "1" ] ; then
+         echo "Backup files tca restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then
+         echo "tca not restored .... option is not active on this persistent volume"
+      fi
+   fi
+fi
+}
+
+
+restore_cups() {
+
+# If the backup contains cups (Printing) : we restore them back
+
+if [ -d ~/Persistent/backup/cups-configuration ] ; then
+   if grep -q cups-configuration ~/Persistent/persistence.conf ; then
+
+      # The owner and groups of the cups configuration
+      #
+      # root root 6402 Dec  6 15:03 cupsd.conf
+      # root root 2923 Nov 28  2020 cups-files.conf
+      # root root 4096 Nov 28  2020 interfaces
+      # root lp   4096 Nov 28  2020 ppd
+      # root root  240 Dec  6 15:03 raw.convs
+      # root root  211 Dec  6 15:03 raw.types
+      # root root  142 Nov 28  2020 snmp.conf
+      # root lp   4096 Nov 28  2020 ssl
+      # root lp    694 Jan  8 12:08 subscriptions.conf
+      # root lp    392 Jan  8 12:04 subscriptions.conf.O
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S rsync -aqzh /home/amnesia/Persistent/backup/cups-configuration /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+
+      # Very important  here after the copy :
+      # We need to change the owner and group to root:root for all the files or
+      # the owner and group is amnesia:amnesia
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S chown -R root:root /live/persistence/TailsData_unlocked/cups-configuration > /dev/null 2>&1
+
+      # special owner and group for ppd
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ppd > /dev/null 2>&1
+
+      # special owner and group for ssl
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ssl > /dev/null 2>&1
+
+
+      # special owner and group for subscriptions.conf
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf > /dev/null 2>&1
+
+      # Is this really needet ? We see
+      # special owner and group for subscriptions.conf.0
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf.0 > /dev/null 2>&1
+
+      if [ $CLI_OUT == "1" ] ; then 
+         echo "Backup files cups restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then 
+         echo "cups not restored .... option is not active on this persistent volume"
+      fi
+   fi
+fi
+}
+
+
+restore_greeter_screen() {
+
+# If the backup contains greeter-settings : we restore them back
+
+if [ -d ~/Persistent/backup/greeter-settings ] ; then
+   if grep -q greeter-settings ~/Persistent/persistence.conf ; then
+
+      # The owner and groups of the greeter-settings
+      #
+      # Debian-gdm Debian-gdm   37 Jan  7 21:48 tails.formats
+      # Debian-gdm Debian-gdm   75 Jan  8 12:08 tails.keyboard
+      # Debian-gdm Debian-gdm   41 Jan  7 21:48 tails.language
+      # Debian-gdm Debian-gdm   28 Jan  7 21:48 tails.macspoof
+      # Debian-gdm Debian-gdm   19 Jan  7 21:48 tails.network
+      # Debian-gdm Debian-gdm  160 Jan  7 21:48 tails.password
+      # Debian-gdm Debian-gdm   35 Jan  7 21:48 tails.unsafe-browser
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S rsync -aqzh /home/amnesia/Persistent/backup/greeter-settings /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+
+      # Very important  here after the copy :
+      # We need to change the owner and group to Debian-gdm:Debian-gdm for all the files or
+      # the owner and group is amnesia:amnesia
+
+      cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+      sudo -S chown -R Debian-gdm:Debian-gdm /live/persistence/TailsData_unlocked/greeter-settings > /dev/null 2>&1
+            
+      if [ $CLI_OUT == "1" ] ; then      
+         echo "Backup files greeter-settings restored"
+      fi
+   else
+      if [ $CLI_OUT == "1" ] ; then 
+         echo "greeter-settings not restored .... option is not active on this persistent volume"
+      fi 
+   fi
+fi
+}
+ 
+
+
+restore_software() {
+
+# We copy back the configuration for the additional-Software that is stored here
+#
+# tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
+#
+
+if [ $CLI_OUT == "1" ] ; then 
+   echo "Execute command apt-get update. Please wait !!!! "
+   echo "Please do not interrupt here .... This commands need a lot of time !!!"
+fi 
+
+
+# This could use a very long time 
+
+show_wait_dialog && sleep 2
+       
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf > /dev/null 2>&1
+        
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get update > /dev/null 2>&1 
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get install -y chromium > /dev/null 2>&1 
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1 
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get install -y html2text > /dev/null 2>&1 
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get install -y sshpass > /dev/null 2>&1
+ 
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get install -y yad > /dev/null 2>&1 
+
+# We have a open dialog to close
+
+end_wait_dialog && sleep 1
+
+if [ $CLI_OUT == "1" ] ; then 
+   echo "Backup files additional-software restored and software installed"
+fi
+}
+
+
+
+restore_dotfiles() {
+
+# Do we have dotfiles inside the backup  ?
+
+if [ -d ~/Persistent/backup/dotfiles ] ; then
+   if grep -q dotfiles  ~/Persistent/persistence.conf ; then
+      cd ~/Persistent/scripts
+
+      # Was the system during Backup in the state freezed ?
+      # If this is the case ... we are freezing this Tails as well again 
+
+      echo 1 > ~/Persistent/swtorcfg/freezing
+
+      if [ -f ~/Persistent/backup/swtorcfg/freezed.cgf ]  ; then
+         ./cli_tweak.sh > /dev/null 2>&1
+         ./cli_freezing.sh > /dev/null 2>&1
+         if [ $CLI_OUT == "1" ] ; then
+            echo state : now this Tails is [freezed]
+         fi
+      else
+        if [ $CLI_OUT == "1" ] ; then
+           echo state : not-freezed here because backup was not freezed
+        fi  
+      fi
+   else
+      echo 1 > ~/Persistent/swtorcfg/no-freezing
+      if [ $CLI_OUT == "1" ] ; then
+         echo "dotfiles not restored .... option is not active on this persistent volume"
+      fi 
+   fi
+fi
+}
+
+
+restore_finish() {
+echo 0 > ~/Persistent/swtor-addon-to-tails/setup
+}
 
 
 export -f global_init
@@ -958,4 +1335,19 @@ export -f swtor_connected
 export -f swtor_close_first
 export -f swtor_no_connection
 export -f swtor_ask_passphrase
+export -f restore_bookmarks
+export -f restore_gnupg
+export -f restore_thunderbird
+export -f restore_pidgin
+export -f restore_electrum
+export -f restore_git
+export -f restore_ssh
+export -f restore_network_connections
+export -f restore_tca
+export -f restore_cups
+export -f restore_greeter_screen
+export -f restore_software
+export -f restore_dotfiles
+export -f restore_finish
+ 
 

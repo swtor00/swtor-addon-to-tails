@@ -698,6 +698,11 @@ Date		Release		Author		Description
                                                     
                                                     On a very low speed usb disk , the script doesn't behave like 
                                                     it would do on USB 3. Some littel fixes to meet this.
+
+                                                    - If someone is using a other language than english ... 
+                                                      freezing will not work because he hasn't a folder 
+                                                      Pictures ... He may have Bilder, if he using German.
+
  
 
 

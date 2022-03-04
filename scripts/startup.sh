@@ -497,7 +497,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step12 : changed firewall settings for socks5 server !"
     fi
-    show_wait_dialog && sleep 0.5
+    show_wait_dialog && sleep 2
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "firewall was not changed because configuration"

@@ -32,6 +32,13 @@ if [ ! -d ~/Pictures/Wallpapers ] ; then
    mkdir ~/Pictures/Wallpapers
    cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/Pictures/Wallpapers
 fi
+
+# If someone is using a other language than english, the folder Pictures needs to be created 
+
+if [ ! -f ~/Pictures ] ; then
+   mkdir ~/Pictures   
+fi 
+
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
 

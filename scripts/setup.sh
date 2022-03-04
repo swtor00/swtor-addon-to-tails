@@ -111,6 +111,382 @@ if [ $# -eq 1 ] ; then
        echo restore-mode from backup is active
     fi
 
+    # Even if we are in restore mode ... we need a administration password
+    # or the installation of software is not working.
+
+    test_password_greeting
+    if [ $? -eq 0 ] ; then
+       if [ $CLI_OUT == "1" ] ; then
+          echo "passwowrd is set" 
+       fi
+       sleep 0.5
+    else
+       echo "Error !!!! No Password set on the Greeting-Screen"
+       echo "Please make a rebooot and set a password"
+       echo
+       echo "After booting please open a terminal and type : "
+       echo "cd ~/Persistent"
+       echo "./restore.sh"
+       exit 1
+    fi
+
+    test_admin_password
+    if [ $? -eq 0 ] ; then
+       if [ $CLI_OUT == "1" ] ; then
+          echo "provided password is valid" 
+       fi
+       sleep 0.5
+    else
+        echo "Password was wrong or empty"
+        echo "Please make a rebooot and set a password"
+        echo
+        echo "After booting please open a terminal and type : "
+        echo "cd ~/Persistent"
+        echo "./restore.sh"
+        exit 1
+    fi
+
+    # We need to know exactly, what options are active inside of the persistent volume by now 
+
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+    sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
+
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+    sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
+
+    # Test mandatory option : ssh
+
+    if grep -q openssh-client ~/Persistent/persistence.conf ; then
+       if [ $CLI_OUT == "1" ] ; then
+          echo >&2 "ssh settings are present on this persistent volume"
+       fi
+    else
+        zenity --error --width=600 \
+        --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+        > /dev/null 2>&1
+       echo "ssh-settings is not present on this persistent Volume"
+       echo
+       echo "You have to start over again ... "
+       echo "Activate ssh-settings on this persistent Volume"
+       echo "and restart Tails"
+       echo
+       echo "After booting please open a terminal and type : "
+       echo "cd ~/Persistent"
+       echo "./restore.sh"
+       exit 1
+    fi
+
+    # Mandatory : additional software part01
+
+    if grep -q /var/cache/apt/archives  ~/Persistent/persistence.conf ; then
+       if [ $CLI_OUT == "1" ] ; then 
+          echo >&2 "additional-software part 01 is present on this persistent volume"
+       fi  
+    else
+       zenity --error --width=600 \
+       --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+       > /dev/null 2>&1
+       echo "additional-software is not present on this persistent Volume"
+       echo
+       echo "You have to start over again ... "
+       echo "Activate additional-software on this persistent Volume"
+       echo "and restart Tails"
+       echo
+       echo "After booting please open a terminal and type : "
+       echo "cd ~/Persistent"
+       echo "./restore.sh"
+       exit 1
+    fi
+
+    # Mandatory : additional software part02
+
+    if grep -q /var/lib/apt/lists ~/Persistent/persistence.conf ; then
+       if [ $CLI_OUT == "1" ] ; then 
+          echo >&2 "additional-software part 02 is present on this persistent volume"
+       fi 
+    else
+       zenity --error --width=600 \
+       --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+       > /dev/null 2>&1
+       echo "additional-software is not present on this persistent Volume"
+       echo
+       echo "You have to start over again ... "
+       echo "Activate additional-software on this persistent Volume"
+       echo "and restart Tails"
+       echo
+       echo "After booting please open a terminal and type : "
+       echo "cd ~/Persistent"
+       echo "./restore.sh"
+       exit 1
+    fi
+
+    # Prior to restoring files from the backup , we check the backup-directorys and 
+    # the optional settings from the Persistent Volume. The User can choose what to do ..... 
+
+    if [ -d ~/Persistent/backup/dotfiles ] ; then
+        if grep -q dotfiles  ~/Persistent/persistence.conf ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for dotfiles and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for dotfiles and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from dotfiles. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/greeter-settings ] ; then
+       if grep -q greeter-settings ~/Persistent/persistence.conf ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for gretter-settings and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for greeter-settings and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from gretter-settings. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/cups-configuration ] ; then
+        if grep -q cups-configuration ~/Persistent/persistence.conf ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for cups and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for cups and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from cups. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/tca  ] ; then
+        if grep -q tca ~/Persistent/persistence.conf ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for tca and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for tca and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from tca. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/nm-system-connections ] ; then
+        if grep -q system-connection ~/Persistent/persistence.conf ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for network-connections and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for network-connections and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from network-connections. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/electrum  ] ; then
+        if mount | grep -q /home/amnesia/.electrum  ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for electrum and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for electrum and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from electrum. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/pidgin ] ; then
+        if mount | grep -q /home/amnesia/.purple ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for pidgin and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for pidgin and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from pidgin. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/thunderbird ] ; then
+        if mount | grep -q home/amnesia/.thunderbird ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for thunderbird and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for thunderbid and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from thunderbird. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/thunderbird ] ; then
+        if mount | grep -q home/amnesia/.thunderbird ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for thunderbird and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for thunderbid and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from thunderbird. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/gnupg ] ; then
+        if mount | grep -q /home/amnesia/.gnupg ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for gnupg and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for gnupg and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from gmupg. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
+    if [ -d ~/Persistent/backup/bookmarks ] ; then
+        if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for bookmarks and persistent option is set"
+           fi    
+        else
+           if [ $CLI_OUT == "1" ] ; then  
+              echo "we found backup files for bookmarks and persistent option is not set on this voulume"
+           fi
+           zenity --question --width 600 \
+           --text "\n\n         This extracted backup contains files from bookmarks. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           case $? in
+           0)
+             exit 1 
+           ;; 
+           1)
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "backup not stoped here ... we go further "
+             fi
+           ;;
+           esac                 
+        fi
+    fi
+
     browser='/home/amnesia/Persistent/backup/Tor*Browser/'
     pfiles="/home/amnesia/Persistent/backup/personal-files/"
 
@@ -139,9 +515,11 @@ if [ $# -eq 1 ] ; then
     if [ "$cpfiles" == "" ] ; then
        if [ $CLI_OUT == "1" ] ; then 
           echo "directory "$pfiles" was empty so nothing restored"
+          mkdir -p ~/Persistent/personal-files/tails-repair-disk > /dev/null 2>&1
        fi
     else
        cp -r ~/Persistent/backup/personal-files/* ~/Persistent/personal-files/
+       mkdir -p ~/Persistent/personal-files/tails-repair-disk > /dev/null 2>&1
        if [ $CLI_OUT == "1" ] ; then
           echo "Backup files ~/Persistent/personal-files restored"
        fi 
@@ -149,8 +527,8 @@ if [ $# -eq 1 ] ; then
 
     # The above part was easy ... the restored files are independet from the version
     # of the running Tails-OS
-    # Even the configuration files are not critical, as long we are using the same
-    # Version of Tails.
+    # Even most of the configuration files are not critical, as long we are using the same
+    # Version of Tails to restore.
 
     backup_version=$(cat ~/Persistent/backup/tails-backup-version)
     current_version=$(tails-version | head -n1 | awk {'print $1'})
@@ -162,435 +540,28 @@ if [ $# -eq 1 ] ; then
 
     if [ "$backup_version" == "$current_version" ] ; then
 
-        # If the backup contains bookmarks from Tor-Browser : we restore them back
+       restore_bookmarks 
+       restore_gnupg  
+       restore_thunderbird
+       restore_pidgin  
+       restore_electrum 
+       restore_git  
+       restore_ssh
+       restore_network_connections
+       restore_tca
+       restore_cups
+       restore_greeter_screen
+       restore_software
+       restore_dotfiles     
+       restore_finish 
 
-        if [ -d ~/Persistent/backup/bookmarks ] ; then
-        if mount | grep -q /home/amnesia/.mozilla/firefox/bookmarks ; then
-           cp ~/Persistent/backup/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks
-           if [ $CLI_OUT == "1" ] ; then 
-              echo "Backup files bookmarks restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then
-              echo "Bookmarks not restored .... option is not active on this persistent volume"
-           fi
-        fi
-        fi
-
-        # If the backup contains gnupg : we restore them back
-
-        if [ -d ~/Persistent/backup/gnupg ] ; then
-        if mount | grep -q /home/amnesia/.gnupg ; then
-           cp -r ~/Persistent/backup/gnupg/* ~/.gnupg/
-           if [ $CLI_OUT == "1" ] ; then
-              echo "Backup files gnupg restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then
-              echo "gnupg not restored .... option is not active on this persistent volume"
-           fi  
-        fi
-        fi
-
-        # If the backup contains thunderbird (Email) we restore them back
-
-        if [ -d ~/Persistent/backup/thunderbird ] ; then
-        if mount | grep -q home/amnesia/.thunderbird ; then
-           cp -r ~/Persistent/backup/thunderbird/*  ~/.thunderbird
-           if [ $CLI_OUT == "1" ] ; then
-              echo "Backup files thunderbird restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then
-              echo "thunderbird not restored .... option is not active on this persistent volume"
-           fi   
-        fi
-        fi
-
-
-        # If the backup contains pidgin (Messanger) : we restore them back
-
-        if [ -d ~/Persistent/backup/pidgin ] ; then
-        if mount | grep -q /home/amnesia/.purple ; then
-           cp -r ~/Persistent/backup/pidgin/* /home/amnesia/.purple
-           if [ $CLI_OUT == "1" ] ; then
-              echo "Backup files pidgin restored"
-           fi
-        else   
-           echo "pidgin not restored .... option is not active on this persistent volume"
-        fi
-        fi
-
-        # If the backup contains electrum bitcoin wallet : we restore them back
-
-        if [ -d ~/Persistent/backup/electrum  ] ; then
-        if mount | grep -q /home/amnesia/.electrum  ; then
-           cp -r ~/Persistent/backup/electrum/*  /home/amnesia/.electrum
-           if [ $CLI_OUT == "1" ] ; then
-              echo "Backup files electrum restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then 
-              echo "electrum not restored .... option is not active on this persistent volume"
-           fi
-        fi
-        fi
-
-        # I don't know the exactly reason ... we copy back config from backup git
-        # and we are able to make a git push without any password
-
-        cp /home/amnesia/Persistent/backup/git/config ~/Persistent/swtor-addon-to-tails/.git
-
-        # Even if we are in restore mode ... we need a administration password
-
-        test_password_greeting
-        if [ $? -eq 0 ] ; then
-           if [ $CLI_OUT == "1" ] ; then
-              echo "passwowrd is set" 
-           fi
-
-           sleep 1
-        else
-           echo "Error !!!! No Password set on the Greeting-Screen"
-           echo
-           echo "You have to start over again ... "
-           echo "cd ~/Persistent/scripts"
-           echo "./setup.sh restore-mode"
-           echo
-           exit 1
-        fi
-
-        test_admin_password
-        if [ $? -eq 0 ] ; then
-           if [ $CLI_OUT == "1" ] ; then
-              echo "provided passwowrd is valid" 
-           fi
-           sleep 1
-        else
-           echo "password wrong or empty"
-           echo
-           echo "You have to start over again ... "
-           echo "cd ~/Persistent/scripts"
-           echo "./setup.sh restore-mode"
-           echo
-           exit 1
-        fi
-
-        # We need to know , what options are active inside of the persistent volume
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
-
-
-        # Test mandatory option : ssh
-
-        if grep -q openssh-client ~/Persistent/persistence.conf ; then
-           if [ $CLI_OUT == "1" ] ; then
-              echo >&2 "ssh settings are present on this persistent volume"
-           fi
-           cd ~/Persistent/backup/openssh-client
-           cp id_rsa ~/.ssh
-           cp id_rsa.pub ~/.ssh
-           cp known_hosts ~/.ssh
-           chmod 600 ~/.ssh/id_rsa
-           chmod 644 ~/.ssh/*.pub
-           ssh-add > /dev/null 2>&1
-           if [ $CLI_OUT == "1" ] ; then
-              echo "Backup files ~/.ssh restored"
-           fi
-        else
-           echo "ssh-settings is not present on this persistent Volume"
-           echo
-           echo "You have to start over again ... "
-           echo "Activate ssh-settings on this persistent Volume"
-           echo "and restart Tails"
-           echo
-           echo "After booting : "
-           echo "cd ~/Persistent/scripts"
-           echo "./setup.sh restore-mode"
-           exit 1
-        fi
-
-        # Mandatory : additional software part01
-
-        if grep -q /var/cache/apt/archives  ~/Persistent/persistence.conf ; then
-           if [ $CLI_OUT == "1" ] ; then 
-              echo >&2 "additional-software part 01 is present on this persistent volume"
-           fi  
-        else
-           echo "additional-software is not present on this persistent Volume"
-           echo
-           echo "You have to start over again ... "
-           echo "Activate additional-software on this persistent Volume"
-           echo "and restart Tails"
-           echo
-           echo "After booting : "
-           echo "cd ~/Persistent/scripts"
-           echo "./setup.sh restore-mode"
-           exit 1
-        fi
-
-        # Mandatory : additional software part02
-
-        if grep -q /var/lib/apt/lists ~/Persistent/persistence.conf ; then
-           if [ $CLI_OUT == "1" ] ; then 
-              echo >&2 "additional-software part 02 is present on this persistent volume"
-           fi 
-        else
-           echo "additional-software is not present on this persistent Volume"
-           echo
-           echo "You have to start over again ... "
-           echo "Activate additional-software on this persistent Volume"
-           echo "and restart Tails"
-           echo
-           echo "After booting : "
-           echo "cd ~/Persistent/scripts"
-           echo "./setup.sh restore-mode"
-           echo
-           exit 1
-        fi
-
-
-        # If the backup contains network-connections : we restore them back
-
-        if [ -d ~/Persistent/backup/nm-system-connections ] ; then
-        if grep -q system-connection ~/Persistent/persistence.conf ; then
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/nm-system-connections /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-
-           # Very important  here after the copy :
-           # We need to change the owner and group to root:root for all the files or
-           # the owner and group is amnesia:amnesia and this would not work on the next boot
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S  chown -R root:root /live/persistence/TailsData_unlocked/nm-system-connections > /dev/null 2>&1
-           
-           if [ $CLI_OUT == "1" ] ; then   
-              echo "Backup files system-connection restored"
-           fi 
-        else
-           if [ $CLI_OUT == "1" ] ; then  
-              echo "system-connection not restored .... option is not active on this persistent volume"
-           fi  
-        fi
-        fi
-
-        # If the backup contains tca (TOR-Nodes configuration) : we restore them back
-
-        if [ -d ~/Persistent/backup/tca  ] ; then
-        if grep -q tca ~/Persistent/persistence.conf ; then
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/tca /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-
-           # Very important  here after the copy :
-           # We need to change the owner and group to root:root for all the files or
-           # the owner and group is amnesia:amnesia
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S chown -R root:root /live/persistence/TailsData_unlocked/tca  > /dev/null 2>&1
-
-           if [ $CLI_OUT == "1" ] ; then 
-              echo "Backup files tca restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then  
-              echo "tca not restored .... option is not active on this persistent volume"
-           fi
-        fi
-        fi
-
-        # If the backup contains cups (Printing) : we restore them back
-
-        if [ -d ~/Persistent/backup/cups-configuration ] ; then
-        if grep -q cups-configuration ~/Persistent/persistence.conf ; then
-
-           # The owner and groups of the cups configuration
-           #
-           # root root 6402 Dec  6 15:03 cupsd.conf
-           # root root 2923 Nov 28  2020 cups-files.conf
-           # root root 4096 Nov 28  2020 interfaces
-           # root lp   4096 Nov 28  2020 ppd
-           # root root  240 Dec  6 15:03 raw.convs
-           # root root  211 Dec  6 15:03 raw.types
-           # root root  142 Nov 28  2020 snmp.conf
-           # root lp   4096 Nov 28  2020 ssl
-           # root lp    694 Jan  8 12:08 subscriptions.conf
-           # root lp    392 Jan  8 12:04 subscriptions.conf.O
-
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/cups-configuration /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-
-
-           # Very important  here after the copy :
-           # We need to change the owner and group to root:root for all the files or
-           # the owner and group is amnesia:amnesia
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S chown -R root:root /live/persistence/TailsData_unlocked/cups-configuration > /dev/null 2>&1
-
-
-           # special owner and group for ppd
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ppd > /dev/null 2>&1
-
-           # special owner and group for ssl
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ssl > /dev/null 2>&1
-
-
-           # special owner and group for subscriptions.conf
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf > /dev/null 2>&1
-
-           # Is this really needet ? We see
-           # special owner and group for subscriptions.conf.0
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf.0 > /dev/null 2>&1
-           if [ $CLI_OUT == "1" ] ; then 
-              echo "Backup files cups restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then 
-              echo "cups not restored .... option is not active on this persistent volume"
-           fi
-        fi
-        fi
-
-
-        # If the backup contains greeter-settings : we restore them back
-
-        if [ -d ~/Persistent/backup/greeter-settings ] ; then
-        if grep -q greeter-settings ~/Persistent/persistence.conf ; then
-
-           # The owner and groups of the greeter-settings
-           #
-           # Debian-gdm Debian-gdm   37 Jan  7 21:48 tails.formats
-           # Debian-gdm Debian-gdm   75 Jan  8 12:08 tails.keyboard
-           # Debian-gdm Debian-gdm   41 Jan  7 21:48 tails.language
-           # Debian-gdm Debian-gdm   28 Jan  7 21:48 tails.macspoof
-           # Debian-gdm Debian-gdm   19 Jan  7 21:48 tails.network
-           # Debian-gdm Debian-gdm  160 Jan  7 21:48 tails.password
-           # Debian-gdm Debian-gdm   35 Jan  7 21:48 tails.unsafe-browser
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S rsync -aqzh /home/amnesia/Persistent/backup/greeter-settings /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-
-           # Very important  here after the copy :
-           # We need to change the owner and group to Debian-gdm:Debian-gdm for all the files or
-           # the owner and group is amnesia:amnesia
-
-           cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-           sudo -S chown -R Debian-gdm:Debian-gdm /live/persistence/TailsData_unlocked/greeter-settings > /dev/null 2>&1
-            
-           if [ $CLI_OUT == "1" ] ; then      
-              echo "Backup files greeter-settings restored"
-           fi
-        else
-           if [ $CLI_OUT == "1" ] ; then 
-              echo "greeter-settings not restored .... option is not active on this persistent volume"
-           fi 
-        fi
-        fi
-
-        # We copy back the configuration for the additional-Software that is stored here
-        #
-        # tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
-        #
-
-        if [ $CLI_OUT == "1" ] ; then 
-           echo "Execute command apt-get update. Please wait !!!! "
-           echo "Please do not interrupt here .... This commands need a lot of time !!!"
-        fi 
-
-        # This could use a very long time 
-
-        show_wait_dialog && sleep 2
-       
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf > /dev/null 2>&1
-        
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get update > /dev/null 2>&1 
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get install -y chromium > /dev/null 2>&1 
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1 
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get install -y html2text > /dev/null 2>&1 
-
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get install -y sshpass > /dev/null 2>&1
- 
-        cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-        sudo -S apt-get install -y yad > /dev/null 2>&1
-          
- 
-
-        # We have a open dialog to close
-
-        end_wait_dialog && sleep 1
-
-        if [ $CLI_OUT == "1" ] ; then 
-           echo "Backup files additional-software restored and software installed"
-        fi
-
-        # Do we have dotfiles inside the backup  ?
-
-        if [ -d ~/Persistent/backup/dotfiles ] ; then
-        if grep -q dotfiles  ~/Persistent/persistence.conf ; then
-
-           # We don't restore back the files from dotfiles by now
-
-           cd ~/Persistent/scripts
-
-           # Was the system during Backup in the state freezed ?
-           # If this is the case ... we are freezing this Tails as well again 
-
-           echo 1 > ~/Persistent/swtorcfg/freezing
-
-           if [ -f ~/Persistent/backup/swtorcfg/freezed.cgf ]  ; then
-              ./cli_tweak.sh > /dev/null 2>&1
-              ./cli_freezing.sh > /dev/null 2>&1
-              if [ $CLI_OUT == "1" ] ; then
-                 echo state : now this Tails is [freezed]
-              fi
-           else
-              if [ $CLI_OUT == "1" ] ; then
-                 echo state : not-freezed here because backup was not freezed
-              fi  
-           fi
-
-        else
-           echo 1 > ~/Persistent/swtorcfg/no-freezing
-           if [ $CLI_OUT == "1" ] ; then
-              echo "dotfiles not restored .... option is not active on this persistent volume"
-           fi 
-        fi
-        fi
-        echo 0 > ~/Persistent/swtor-addon-to-tails/setup
     else
         if [ $CLI_OUT == "1" ] ; then   
            echo The backup was made with a older version of Tails ..
         fi 
        
         # Because the backup was made with a older version of Tails ..
-        # We have to ask on very restore .... 
+        # We have to ask on very restore-point  
  
 
     fi

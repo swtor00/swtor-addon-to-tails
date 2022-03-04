@@ -29,6 +29,12 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
   cp -r ~/.config/nautilus /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
   cp -r ~/.config/gnome-session /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
   cp -r ~/Desktop /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
+ 
+  # If someone is using a other language than english, the folder Pictures needs to be created 
+
+  if [ ! -f ~/Pictures ] ; then
+      mkdir ~/Pictures   
+  fi 
   cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
 
   # Do markup the version of Tails we used to freezing ... we store it right here

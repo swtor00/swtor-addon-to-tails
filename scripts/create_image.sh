@@ -25,6 +25,7 @@ if [ "$TERMINAL_VERBOSE" == "" ];then
    exit 1
 fi
 
+
 cd ~/Persistent
 
 if [ -d backup ] ; then
@@ -32,6 +33,10 @@ if [ -d backup ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "backup folder deleted"
    fi
+fi
+
+if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
+   mkdir -p ~/Persistent/personal-files/tails-repair-disk
 fi
 
 cd ~/Persistent/swtor-addon-to-tails/scripts
@@ -355,6 +360,7 @@ case $? in
              WARNING_SSH="0"
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
+             rm -rf $final_backup_directory > /dev/null 2>&1    
           else
              zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
              cd ~/Persistent  
