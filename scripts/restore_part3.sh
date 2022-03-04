@@ -251,9 +251,11 @@ if [ ! -f ~/Persistent/stage11 ] ; then
 
    if [ $? -eq 0 ] ; then
       sleep 1
-      killall zenity  > /dev/null 2>&1
+
+      killall -s SIGINT (zenity) > /dev/null 2>&1
+      # killall zenity  > /dev/null 2>&1
       sleep 1   
-      sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n")  > /dev/null 2>&1
+      sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finished ]           \n")  > /dev/null 2>&1
       echo 1 > ~/Persistent/stage11       
    else
 
@@ -265,9 +267,11 @@ if [ ! -f ~/Persistent/stage11 ] ; then
        
        if [ $? -eq 0 ] ; then     killall zenity
           sleep 1
-          killall zenity  > /dev/null 2>&1
+
+          killall -s SIGINT (zenity) > /dev/null 2>&1 
+          # killall zenity  > /dev/null 2>&1
           sleep 1  
-          sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finisehd ]           \n") > \
+          sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finished ]           \n") > \
           /dev/null 2>&1
           echo 1 > ~/Persistent/stage11  
        else
@@ -275,8 +279,9 @@ if [ ! -f ~/Persistent/stage11 ] ; then
              echo "download add-on from github.com : failure"
           fi
 
-          sleep 1 
-          killall zenity  > /dev/null 2>&1
+          sleep 1
+          killall -s SIGINT (zenity) > /dev/null 2>&1 
+          # killall zenity  > /dev/null 2>&1
           sleep 1
 
           # It is not possible to download .. even after 1200 secounds ... we do quit here ...

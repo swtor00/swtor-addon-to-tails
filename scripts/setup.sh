@@ -136,6 +136,11 @@ if [ $# -eq 1 ] ; then
           echo "provided password is valid" 
        fi
        sleep 0.5
+
+       rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
+       rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
+       rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
+
     else
         echo "Password was wrong or empty"
         echo "Please make a rebooot and set a password"
