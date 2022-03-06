@@ -25,7 +25,6 @@ if [ "$TERMINAL_VERBOSE" == "" ];then
    exit 1
 fi
 
-
 cd ~/Persistent
 
 if [ -d backup ] ; then
@@ -39,13 +38,83 @@ if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
    mkdir -p ~/Persistent/personal-files/tails-repair-disk
 fi
 
+
+# searching for a backup host
+
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+--text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
+
+if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
+
+   # We found a backup host definition, but we have to check this entry ... otherwise this
+   # entry can not be used to automatic transfer the encrypted backup to a remote host
+   # If the entry is not valid ... the option to transfer will not be shown in the transfer-menu.
+
+   BACKUP_HOST="1"
+   line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
+   echo $line >  ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup
+
+   if grep -q "fullssh" ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo found fullssh.sh
+      fi
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo ... no fullssh.sh
+      fi
+      zenity --info --width=600 --text="\n\n    This backup host definition is not valid without fullssh.sh !    \n\n" > /dev/null 2>&1
+
+      rm ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup > /dev/null 2>&1
+      BACKUP_HOST="0"
+   fi
+
+   if grep -q "ssh-id" ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo found ssh-id
+      fi
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo ... no ssh-id
+      fi
+      zenity --info --width=600 --text="\n\n    This backup host definition is not valid without ssh-id !    \n\n" > /dev/null 2>&1
+      rm ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup > /dev/null 2>&1
+      BACKUP_HOST="0"
+   fi
+
+   if [ $BACKUP_HOST == "1" ] ; then
+      sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+      --text="\n\n      Found a valid backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
+      rm ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup > /dev/null 2>&1
+      BACKUP_HOST="1"
+   else
+      BACKUP_HOST="0"
+   fi
+fi
+
+
+# Ask for the administration password and store it in the tmp directory
+
+test_admin_password
+if [ $? -eq 0 ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo "password was correct and stored ! "
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "password was 3 times wrong"
+       echo >&2 "create_image.sh exiting with error-code 1"
+    fi
+    exit 1
+fi
+
+
+
 cd ~/Persistent/swtor-addon-to-tails/scripts
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n           Starting backup of the persistent data.Please wait !          \n\n" > /dev/null 2>&1)
 
 show_wait_dialog && sleep 1
-
 
 # backup all important files for the user amnesia
 
@@ -59,7 +128,6 @@ else
        echo "backup made from bookmarks"
     fi
 fi
-
 
 if [ -z "$(ls -A /live/persistence/TailsData_unlocked/dotfiles )" ]; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -141,7 +209,7 @@ if [ "$BACKUP_FIXED_PROFILE" == "1" ] ; then
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "no data backup configured for fixed profile"
-      echo "current configuration was set to BACKUP-FIXED-PROFILE:NO" 
+      echo "current configuration was set to BACKUP-FIXED-PROFILE:NO"
    fi
 fi
 
@@ -172,7 +240,6 @@ if [ "$BACKUP_FIXED_PROFILE" == "0" ] ; then
 fi
 
 # We don't copy the repair-disk folder into the backup folder 
-
 rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
 
 tails-version | head -n1 | awk {'print $1'} > /home/amnesia/Persistent/backup/tails-backup-version
@@ -182,32 +249,8 @@ tails-version | head -n1 | awk {'print $1'} > /home/amnesia/Persistent/backup/ta
 mkdir /home/amnesia/Persistent/backup/git
 cp ~/Persistent/swtor-addon-to-tails/.git/config /home/amnesia/Persistent/backup/git
 
-
-sleep 2
-end_wait_dialog
-
-# Ask for the administration password and store it in the tmp directory
-
-test_admin_password
-if [ $? -eq 0 ] ; then
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "password was correct and stored ! "
-    fi
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "password was 3 times wrong"
-       echo >&2 "create_image.sh exiting with error-code 1"
-    fi
-    exit 1
-fi
-
-
-show_wait_dialog
-sleep 1
-
-
 cd ~/Persistent/swtor-addon-to-tails/tmp
-sleep 2
+sleep 1
 
 # The following backup is only made if the configuration file swtor.cfg contains BACKUP-APT-LIST:YES
 # If your bandwith is very low and maybe limited, it may make sense to backup this files.
@@ -349,7 +392,7 @@ case $? in
     0)
 
        # We need a passphrase to encrypt .... gpg does terminate after one min. without any activity from the keyboard
-       # Therefore a zenity dialog. 
+       # Therefore we use a zenity dialog. 
 
        swtor_ask_passphrase
        if [ $? -eq 0 ] ; then
@@ -450,22 +493,6 @@ if [ $WARNING_SSH == "1" ] ; then
    exit 0
 fi
 
-# searching for a backup host
-
-sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
-
-
-
-if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
-   BACKUP_HOST="1"
-   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-   --text="\n\n      Found a backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
-else
-   BACKUP_HOST="0"
-fi
-
-
 
 swtor_connected
 if [ $? -eq 0 ] ; then    
@@ -477,45 +504,8 @@ else
 fi 
 
 
-# we can go away here ...
-
-line=$(grep backup ~/Persistent/swtorcfg/swtorssh.cfg)
-echo $line > check_parameters_backup
-
-# Ok.We found a backup host .... the backup is encrypted ... let's copy the files.
-# But only if the correct type of backup-servers are configured.
-# mode connection : fulssh
-# mode password   : ssid
-# otherwise go away with a  error-code 1
-
-if grep -q "fullssh" ./check_parameters_backup ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo found fullssh.sh
-   fi
-else
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo ... no fullssh.sh
-   fi
-   zenity --error --width=600 --text="\n\n    This backup host definition is not valid without fullssh.sh !    \n\n" > /dev/null 2>&1
-   rm check_parameters_backup > /dev/null 2>&1
-   exit 1
-fi
-
-if grep -q "ssh-id" ./check_parameters_backup ; then
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo found ssh-id
-   fi
-else
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo ... no ssh-id
-   fi
-   zenity --error --width=600 --text="\n\n    This backup host definition is not valid without ssh-id !    \n\n" > /dev/null 2>&1
-   rm check_parameters_backup > /dev/null 2>&1
-   exit 1
-fi
-
-rm check_parameters_backup > /dev/null 2>&1
-
+# We construct the ssh command-line
+ 
 port="ssh -p "
 port+=$(echo $line | awk '{print $6}' )
 single_port=$(echo $line | awk '{print $6}' )

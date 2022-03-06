@@ -404,6 +404,11 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
 
 else
     cat password | sudo -S apt autoremove --yes  > /dev/null 2>&1
+
+    # We have a open dialog to close
+   
+    end_wait_dialog && sleep 0.5
+
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "configuration says  BROWSER-SOCKS5:NO"
        echo "firewall wasn't changed because this configuraution"

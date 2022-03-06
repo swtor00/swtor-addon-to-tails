@@ -244,8 +244,6 @@ fi
 
 # Check for a existing administration password on startup of Tails ?
 
-end_wait_dialog && sleep 1.5
-
 test_password_greeting
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -271,6 +269,8 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step10 : password was correct and stored ! "
     fi
+
+    show_wait_dialog && sleep 1
 
     # It is better to parse the persistent.conf on every startup here
     # than inside setup.sh. It is faster and cleaner.
@@ -459,7 +459,7 @@ if [ $? -eq 0 ] ; then
 
 
    fi
-   show_wait_dialog && sleep 2
+
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "password was 3 times wrong"
@@ -491,7 +491,6 @@ fi
 
 # change the firewall to accept a socks5 server on port 9999
 
-end_wait_dialog && sleep 0.5
 change_tails_firewall
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then

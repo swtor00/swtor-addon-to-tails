@@ -2,7 +2,7 @@
 
 
 zenity --question --width=600 \
---text="\n\n   Prior to restore a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n\n If none of the above programms is open,please continue the restor by pressing 'Yes'.\n Otherwise press 'No' to cancel the restore.  \n\n"
+--text="\n\n   Prior to restore a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n\n If none of the above programms is open,please continue the restore by pressing 'Yes'.\n Otherwise press 'No' to cancel the restore.  \n\n"
 case $? in
          0) if [ $CLI_OUT == "1" ] ; then
                echo restore started

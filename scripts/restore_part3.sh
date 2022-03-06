@@ -23,13 +23,13 @@ if [ ! -f ~/Persistent/stage2 ] ; then
       if [ $CLI_OUT == "1" ] ; then
          echo "warning : calculated checksum 01 and the stored checksumm do not match !!!!!!!"
          echo "this tails backup is not valid !!!!"
-      fi 
+      fi
       zenity --error --width=600 \
       --text="\n\n             Checksumm 01 is not correct. This Backup is not valid !       \n\n"\
       > /dev/null 2>&1
       exit 1
    fi
-else 
+else
    if [ $CLI_OUT == "1" ] ; then
        echo "check for stage2 passed : done"
    fi
@@ -47,7 +47,7 @@ if [ ! -f ~/Persistent/stage3 ] ; then
 
    if [ $CLI_OUT == "1" ] ; then
       echo "extracting backup file "$file2 ": please wait !"
-   fi 
+   fi
 
    tar xzf $file2 > /dev/null 2>&1
 
@@ -56,7 +56,7 @@ if [ ! -f ~/Persistent/stage3 ] ; then
          echo "extracting backup file "$file2" : done"
       fi
       rm $file2 > /dev/null 2>&1
-      echo 1 > ~/Persistent/stage3  
+      echo 1 > ~/Persistent/stage3
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "extracting backup file " $file2 " : failure !"
@@ -83,8 +83,8 @@ if [ ! -f ~/Persistent/stage4 ] ; then
       if [ $CLI_OUT == "1" ] ; then
          echo "moving "$mfile1" to ~/Persistent/ done"
       fi
-      echo 1 > ~/Persistent/stage4 
-   else 
+      echo 1 > ~/Persistent/stage4
+   else
       if [ $CLI_OUT == "1" ] ; then
          echo "moving "$mfile1" to ~/Persistent error"
       fi
@@ -106,7 +106,7 @@ if [ ! -f ~/Persistent/stage5 ] ; then
       if [ $CLI_OUT == "1" ] ; then
          echo "moving "$mfile2" to ~/Persistent/ done"
       fi
-      echo 1 > ~/Persistent/stage5  
+      echo 1 > ~/Persistent/stage5
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "moving "$mfile1" to ~/Persistent error"
@@ -147,7 +147,7 @@ else
    if [ $CLI_OUT == "1" ] ; then
        echo "check for stage6 passed : done"
    fi
-fi 
+fi
 
 
 if [ ! -f ~/Persistent/stage7 ] ; then
@@ -156,12 +156,12 @@ if [ ! -f ~/Persistent/stage7 ] ; then
          echo checksumm 02 is correct
       fi
       sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Checksumms 01 and 02 are correct ]           \n")  > /dev/null 2>&1
-      echo 1 > ~/Persistent/stage7  
+      echo 1 > ~/Persistent/stage7
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "warning : calculated checksum 02 and the stored checksumm do not match !!!!!!!"
          echo "this tails backup is not valid !!!!"
-      fi 
+      fi
       zenity --error --width=600 \
       --text="\n\n             Checksumm 02 is not correct. This Backup is not valid !       \n\n"\
       > /dev/null 2>&1
@@ -187,7 +187,7 @@ if [ ! -f ~/Persistent/stage8 ] ; then
       if [ $CLI_OUT == "1" ] ; then
          echo "extracting backup file " $file2 " : done"
       fi
-      echo 1 > ~/Persistent/stage8  
+      echo 1 > ~/Persistent/stage8
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "extracting backup file " $file2 " : failure !"
@@ -225,7 +225,7 @@ else
 fi
 
 
-if [ ! -f ~/Persistent/stage10 ] ; then  
+if [ ! -f ~/Persistent/stage10 ] ; then
    rm -rf ./home > /dev/null 2>&1
    rm -f $file1 > /dev/null 2>&1
    rm -f $file2 > /dev/null 2>&1
@@ -236,7 +236,7 @@ else
    fi
 fi
 
-   
+
 if [ ! -f ~/Persistent/stage11 ] ; then
 
    # We have to get the add-on itself
@@ -252,11 +252,10 @@ if [ ! -f ~/Persistent/stage11 ] ; then
    if [ $? -eq 0 ] ; then
       sleep 1
 
-      killall -s SIGINT (zenity) > /dev/null 2>&1
-      # killall zenity  > /dev/null 2>&1
-      sleep 1   
+      killall -s SIGINT zenity
+      sleep 1
       sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finished ]           \n")  > /dev/null 2>&1
-      echo 1 > ~/Persistent/stage11       
+      echo 1 > ~/Persistent/stage11
    else
 
        if [ $CLI_OUT == "1" ] ; then
@@ -264,24 +263,22 @@ if [ ! -f ~/Persistent/stage11 ] ; then
        fi
 
        git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
-       
+
        if [ $? -eq 0 ] ; then     killall zenity
           sleep 1
 
-          killall -s SIGINT (zenity) > /dev/null 2>&1 
-          # killall zenity  > /dev/null 2>&1
-          sleep 1  
+          killall -s SIGINT zenity
+          sleep 1
           sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finished ]           \n") > \
           /dev/null 2>&1
-          echo 1 > ~/Persistent/stage11  
+          echo 1 > ~/Persistent/stage11
        else
           if [ $CLI_OUT == "1" ] ; then
              echo "download add-on from github.com : failure"
           fi
 
           sleep 1
-          killall -s SIGINT (zenity) > /dev/null 2>&1 
-          # killall zenity  > /dev/null 2>&1
+          killall -s SIGINT zenity
           sleep 1
 
           # It is not possible to download .. even after 1200 secounds ... we do quit here ...
@@ -289,7 +286,7 @@ if [ ! -f ~/Persistent/stage11 ] ; then
           zenity --error --width=600 \
           --text="\n\n         Error on downloading for the addon from github !       \n\n" > /dev/null 2>&1
           exit 1
-       fi   
+       fi
    fi
 else
    if [ $CLI_OUT == "1" ] ; then
@@ -300,21 +297,21 @@ fi
 
 if [ ! -f ~/Persistent/stage12 ] ; then
 
-   # We move to the next level 
+   # We move to the next level
 
    if [ $CLI_OUT == "1" ] ; then
       echo delete all restore-files from directory ~/Persistent
-   fi 
+   fi
 
    rm -rf ~/Persistent/*.tar.gz > /dev/null 2>&1
    rm -rf ~/Persistent/*.md5 > /dev/null 2>&1
 
-   echo 1 > ~/Persistent/stage12  
+   echo 1 > ~/Persistent/stage12
 else
    if [ $CLI_OUT == "1" ] ; then
       echo "check for stage12 passed : done"
    fi
-fi 
+fi
 
 
 if [ ! -f ~/Persistent/stage13 ] ; then
@@ -330,7 +327,7 @@ if [ ! -f ~/Persistent/stage13 ] ; then
    ./cli_directorys.sh > /dev/null 2>&1
 
    if [ $CLI_OUT == "1" ] ; then
-      echo "Creating directorys : done "  
+      echo "Creating directorys : done "
    fi
 
    echo 1 > ~/Persistent/stage13
@@ -369,22 +366,22 @@ if [ $? -eq 0 ] ; then
    rm -f ~/Persistent/stage* > /dev/null 2>&1
 
    cd ~/Persistent/swtor-addon-to-tails/tmp
-  
+
    rm password > /dev/null 2>&1
    rm w-end > /dev/null 2>&1
 
-   # We are ready here to start again 
-   # we delete also this file ... the last remaining part of restore.sh 
-   
+   # We are ready here to start again
+   # we delete also this file ... the last remaining part of restore.sh
+
    rm ~/Persistent/restore.sh > /dev/null 2>&1
 
    sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is fnished. PLeasse reboot Tails ]           \n")  > /dev/null 2>&1
-   
+
    exit 0
 else
 
-   # We are not ready yet.Restore mode had a failure 
-  
+   # We are not ready yet.Restore mode had a failure
+
    exit 1
 
 fi
