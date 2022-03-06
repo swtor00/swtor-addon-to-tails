@@ -697,11 +697,19 @@ Date		Release		Author		Description
                                                     is slow and depending on your current internet speed. 
                                                     
                                                     On a very low speed usb disk , the script doesn't behave like 
-                                                    it would do on USB 3. Some littel fixes to meet this.
+                                                    it would do on USB 3. Some small fixes to meet this.
 
                                                     - If someone is using a other language than english ... 
                                                       freezing will not work because he hasn't a folder 
                                                       Pictures ... He may have Bilder, if he using German.
+                                                      (fixed)
+
+                                                    - The unencrypted backup is now ready for release 0.80
+ 
+                                                      amnesia@amnesia:~/Persistent$ chmod +x restore.sh
+                                                      amnesia@amnesia:~/Persistent$ ./restore.sh
+                                                      amnesia@amnesia:~/Persistent$ 
+ 
 
  
 

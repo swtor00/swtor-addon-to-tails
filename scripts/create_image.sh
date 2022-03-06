@@ -239,7 +239,7 @@ if [ "$BACKUP_FIXED_PROFILE" == "0" ] ; then
    rm -rf /home/amnesia/Persistent/backup/personal-files/3 > /dev/null 2>&1
 fi
 
-# We don't copy the repair-disk folder into the backup folder 
+# We don't copy the repair-disk folder into the backup folder
 rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
 
 tails-version | head -n1 | awk {'print $1'} > /home/amnesia/Persistent/backup/tails-backup-version
@@ -258,7 +258,7 @@ sleep 1
 # The standard  configuration for swtor.cfg is BACKUP-APT-LIST:NO
 
 if [ "$BACKUP_APT_LIST" == "1" ] ; then
-    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \  
+    cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
     sudo -S rsync -avzh /live/persistence/TailsData_unlocked/apt /home/amnesia/Persistent/backup > /dev/null 2>&1
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "backup made from apt-lists: BACKUP-APT-LIST:YES"
@@ -270,7 +270,6 @@ else
 fi
 
 
-
 # CUPS Configuration / this option is optional for the add-on
 
 if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_cups-settings.config ] ; then
@@ -280,7 +279,6 @@ if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_cups-settings.config ] ; th
       echo >&2 "backup made from cups-configuration"
    fi
 fi
-
 
 # Network connections / this option is optional for the add-on
 
@@ -313,7 +311,6 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup made from additional software configuration"
 fi
 
-
 # Configuration of the Persistent Volume itself
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password \
@@ -333,16 +330,6 @@ if [ -f ~/Persistent/swtor-addon-to-tails/swtorcfg/p_greeter.config ] ; then
       echo >&2 "backup made from greeter-settings"
    fi
 fi
-
-
-end_wait_dialog && sleep 2
-
-# The backup is done here ....
-
-sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n           Backup was created inside of the Persistent Volume !          \n\n" > /dev/null 2>&1)
-
-show_wait_dialog sleep 2
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo >&2 "backup completed"
@@ -364,7 +351,7 @@ cat ~/Persistent/swtor-addon-to-tails/tmp/password \
 cat ~/Persistent/swtor-addon-to-tails/tmp/password \
 | sudo -S chown amnesia:amnesia "/home/amnesia/Persistent/$filename_tar" > /dev/null 2>&1
 
-# We delete now the temporary backup directory from the Persistent Volume 
+# We delete now the temporary backup directory from the Persistent Volume
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | sudo -S rm -rf ~/Persistent/backup > /dev/null 2>&1
 
@@ -384,8 +371,336 @@ md5sum $filename_tar |  awk  {'print $1'}  > md5check
 
 # We have to close the wait-dialog
 
-sleep 2
+sleep 1
 end_wait_dialog
+sleep 0.5
+
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n           Backup was created inside of the Persistent Volume !          \n\n" > /dev/null 2>&1)
+
+
+
+
+
+
+backup_done=0
+menu=1
+while [ $menu -eq 1 ]; do
+
+selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
+         "1"  "[01]  Copy backup to ~/Persistent/personnal-files/tails-repair-disk" \
+         "2"  "[02]  Encrypt backup and copy it to remote ssh-host                                            " \
+         "3"  "[03]  Encrypt backup and copy it to ~/Persistent/personnal-files/tails-repair-disk" \
+         "4"  "[04]  Cancel backup" \
+        --hide-column=1 \
+        --print-column=1)
+
+if [ "$selection" == "" ] ; then
+    rm -rf $final_tar > /dev/null 2>&1
+    rm -rf $final_backup_directory > /dev/null 2>&1
+    menu=0
+    break
+fi
+
+if [ "$selection" == "1" ] ; then
+
+   show_wait_dialog && sleep 1
+
+   # We don't encrpyt the backup
+
+   cd ~/Persistent
+
+   final_backup_file="persistent-$(date '+%Y-%m-%d-%H-%M').tar.gz"
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo final_directory : $final_backup_directory
+      echo final name      : $final_backup_file
+   fi
+
+   tar czf $final_backup_file $final_backup_directory > /dev/null 2>&1
+   md5sum $final_backup_file | awk {'print $1'} > $final_backup_file.md5
+
+   rm -rf $final_backup_directory > /dev/null 2>&1
+
+   # We delete all files inside tails-repair-disk
+
+   rm -rf ~/Persistent/personal-files/tails-repair-disk/* > /dev/null 2>&1
+
+   # we move the backup file and the md5 checksum to ~/Persistent/personal-files/tails-repair-disk
+
+   mv $final_backup_file.md5 ~/Persistent/personal-files/tails-repair-disk
+   mv $final_backup_file ~/Persistent/personal-files/tails-repair-disk
+
+   cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
+   cd ~/Persistent/personal-files/tails-repair-disk
+   cp ~/Persistent/scripts/restore_p21.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
+
+   echo "file1="$final_backup_file.md5 >> restore_part2.sh
+   echo "file2="$final_backup_file >> restore_part2.sh
+
+   cat restore_part2.sh >> restore.sh
+   cat ~/Persistent/scripts/restore_part3.sh >> restore.sh
+
+   # The restore-script is now complete 
+
+   rm restore_part2.sh
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo "backup is now finished and stored : $final_backup_file"
+   fi
+
+   sleep 2
+   end_wait_dialog
+
+   menu=0
+   backup_done=1
+fi
+
+if [ $selection == "2" ] ; then
+   if [ $BACKUP_HOST == "0" ] ; then
+      zenity --info --width=600 --title="" \
+      --text="\n\n   This function only works with a valid backup-host ! \n\n  " > /dev/null 2>&1
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "backup will be encrypted"
+      fi
+
+      swtor_ask_passphrase
+      rc=$(echo $?)
+
+      if [ $rc == "0" ] ; then
+          cd ~/Persistent
+          rm -rf $filename_tar > /dev/null 2>&1
+          tar czf $filename_tar $final_backup_directory > /dev/null 2>&1
+          gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar > /dev/null 2>&1
+          rc=$(echo $?)
+          if [ $rc == "0" ] ; then
+             rm /dev/shm/password1 > /dev/null 2>&1
+             rm /dev/shm/password2 > /dev/null 2>&1
+             rm -rf $final_backup_directory > /dev/null 2>&1
+          else
+             zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
+             cd ~/Persistent
+             rm -rf crypted_tails_image.tar.gz.gpg
+             rm -rf $final_backup_directory > /dev/null 2>&1
+             rm -rf $filename_tar > /dev/null 2>&1 
+             rm -rf $final_tar > /dev/null 2>&1
+
+             rm /dev/shm/password1 > /dev/null 2>&1
+             rm /dev/shm/password2 > /dev/null 2>&1
+             menu=0
+             break
+          fi
+      else
+          zenity --error --width=600 --text="\n\n     Backup canceled by user in the password-screen !      \n\n" > /dev/null 2>&1
+          cd ~/Persistent
+          rm -rf $final_backup_directory > /dev/null 2>&1
+          rm -rf $filename_tar > /dev/null 2>&1
+          rm -rf $final_tar > /dev/null 2>&1
+
+          rm /dev/shm/password1 > /dev/null 2>&1
+          rm /dev/shm/password2 > /dev/null 2>&1
+          menu=0
+          break
+      fi
+
+      cd ~/Persistent
+
+      final_backup_file="persistent-$(date '+%Y-%m-%d-%H-%M').tar.gz"
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo final_directory : $final_backup_directory
+         echo final name      : $final_backup_file
+      fi
+
+      tar czf $final_backup_file $final_backup_directory > /dev/null 2>&1
+      md5sum $final_backup_file | awk {'print $1'} > $final_backup_file.md5
+
+
+      rm -rf $final_backup_directory > /dev/null 2>&1
+
+      swtor_connected
+      if [ $? -eq 0 ] ; then    
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo >&2 "connection check executed"
+         fi
+      else 
+         cd /home/amnesia/Persistent
+         rm  /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
+         rm -rf $final_backup_file.md5 > /dev/null 2>&1
+         rm -rd $final_backup_file > /dev/null 2>&1
+         rm -rf $final_backup_directory > /dev/null 2>&1
+         rm -rf $filename_tar > /dev/null 2>&1
+         rm -rf $final_tar > /dev/null 2>&1
+         menu=0
+         break          
+      fi
+
+      # We construct the ssh command-line
+
+      port="ssh -p "
+      port+=$(echo $line | awk '{print $6}' )
+      single_port=$(echo $line | awk '{print $6}' )
+      ssh_hs=$(echo $line | awk '{print $9}' )
+      ssh_host=$(echo $line | awk '{print $9}' )
+      ssh_host+=":~/"
+
+      sleep 15 | tee   \
+      >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\n    The transfer of the backup to the remote host is in progress. Please wait !     \n\n" > /dev/null 2>&1)
+
+     if [ $TERMINAL_VERBOSE == "1" ] ; then
+        echo "transfer backup $final_backup_file file with rsync over ssh is in progress is in progess ..."
+     fi
+
+     show_wait_dialog && sleep 2
+
+     cd ~/Persistent
+
+     # copy md5 checksum
+
+     rsync -avHPe '"$port"' /home/amnesia/Persistent/$final_backup_file.md5 -e ssh $ssh_host > /dev/null 2>&1
+
+     if [ $? -eq 0 ] ; then
+        if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo md5-transfered
+        fi
+     else
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo "error on copy md5 to the remote host"
+       fi
+       end_wait_dialog && sleep 2
+       zenity --error --width=600 --text="\n\n     The transfer of the md5-file to the remote host was not possible !      \n\n" > /dev/null 2>&1
+       menu=0
+       break 
+     fi
+   
+     sleep 1
+
+     # copy backup-file
+
+     rsync -avHPe '$port' /home/amnesia/Persistent/$final_backup_file -e ssh $ssh_host > /dev/null 2>&1
+
+     if [ $? -eq 0 ] ; then
+        if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo backup-transfered
+        fi
+
+        end_wait_dialog && sleep 2
+
+        # After the transfer to the remote host , we restrict the access a bit to this file
+        # by running chmod 0600 on the remote host over SSH.
+        # This little trick with "bash -s" amd SSH allows us to generate the sript localy and
+        # be executed after the connection over SSH was made.
+        # This single phrase from Dennis M. Ritchie may say it all.
+        #  „UNIX is very simple, it just needs a genius to understand its simplicity.“
+
+        echo "#/bin/bash" > tmp.sh
+        echo  "chmod 0600 ~/$final_backup_file.md5 && chmod 0600 ~/$final_backup_file && exit" >> tmp.sh
+        chmod +x tmp.sh > /dev/null 2>&1
+        ssh -42C -p $single_port $ssh_hs 'bash -s' < tmp.sh > /dev/null 2>&1
+        rm tmp.sh > /dev/null 2>&1
+
+        sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+        --text="\n\n      Backup was transfered successfull to the remote system with rsync     \n\n" > /dev/null 2>&1)
+     else
+        if [ $TERMINAL_VERBOSE == "1" ] ; then
+           echo "error on copy to the remote host"
+        fi
+        end_wait_dialog && sleep 2
+        zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
+        menu=0
+        break   
+     fi
+
+     cd /home/amnesia/Persistent
+
+     rm  /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
+
+     rm -rf $final_backup_file.md5 > /dev/null 2>&1
+     rm -rd $final_backup_file > /dev/null 2>&1
+     rm -rf $final_backup_directory > /dev/null 2>&1
+     rm -rf $filename_tar > /dev/null 2>&1
+     rm -rf $final_tar > /dev/null 2>&1
+
+     if [ $TERMINAL_VERBOSE == "1" ] ; then
+           echo "backup files deleted"
+     fi
+
+     if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
+         mkdir ~/Persistent/personal-files/tails-repair-disk
+     else
+         rm -rf ~/Persistent/personal-files/tails-repair-disk/* > /dev/null 2>&1
+     fi
+
+     # We copy the ssh-key files, without them a transfer is not possible
+
+     cd ~/Persistent/personal-files/tails-repair-disk
+     cp ~/.ssh/* ~/Persistent/personal-files/tails-repair-disk
+
+     cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
+     cp ~/Persistent/scripts/restore_p22.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
+
+     echo " " >> restore_part2.sh
+     echo "file1="$final_backup_file.md5 >> restore_part2.sh
+     echo "file2="$final_backup_file >> restore_part2.sh
+     echo >> restore_part2.sh
+     echo "echo Transfer files from remote host" >> restore_part2.sh
+     echo "scp -P" $single_port $ssh_host$final_backup_file.md5 ". > /dev/null 2>&1" >> restore_part2.sh
+     echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
+     echo "   echo file "$final_backup_file".md5 downloaded" >> restore_part2.sh
+     echo "else" >> restore_part2.sh
+     echo "   echo file "$final_backup_file".md5 not downloaded" >> restore_part2.sh
+     echo "   exit 1" >> restore_part2.sh
+     echo "fi"  >> restore_part2.sh
+     echo " " >> restore_part2.sh
+     echo "scp -P" $single_port $ssh_host$final_backup_file ". > /dev/null 2>&1" >> restore_part2.sh
+     echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
+     echo "   echo file "$final_backup_file" downloaded" >> restore_part2.sh
+     echo "else" >> restore_part2.sh
+     echo "   echo file "$final_backup_file" not downloaded" >> restore_part2.sh
+     echo "   exit 1" >> restore_part2.sh
+     echo "fi"  >> restore_part2.sh
+     echo "echo Transfer files from remote host are done" >> restore_part2.sh
+     echo " " >> restore_part2.sh
+
+     # The last part of the script is added 
+
+     cat ~/Persistent/scripts/restore_part4.sh >> restore_part2.sh
+
+     cat restore_part2.sh >> restore.sh
+     rm restore_part2.sh
+
+     menu=0
+     backup_done=1
+   fi
+fi
+
+
+if [ $selection == "3" ] ; then
+   zenity --info --width=600 --title="" \
+   --text="\n\n   This function is not ready now.\n\n  " > /dev/null 2>&1
+fi
+
+
+if [ $selection == "4" ] ; then
+   rm -rf $final_tar > /dev/null 2>&1
+   rm -rf $final_backup_directory > /dev/null 2>&1
+   menu=0
+fi
+
+done
+
+
+if [ $backup_done == "1" ]  ; then
+    zenity --info --width=600 --title="" \
+    --text="\n\n   Please do not forget to copy the repair-files to a other external storage.\n\n   Wihtout this files in this directory you can not restore the persistent volume !  \n\n" > /dev/null 2>&1 
+else
+     if [ $TERMINAL_VERBOSE == "1" ] ; then
+           echo "backup was canceled"
+     fi
+fi
+exit 0
+
 
 zenity --question --width 600 --text "\n\n         Should the created backup to be encrypted with gpg ?    \n\n\n         If you say 'Yes' here and don't get the right password to decrypt it, nobody\n         can help you to get your data back from your encrypted backup ! \n\n"
 case $? in
@@ -403,10 +718,10 @@ case $? in
              WARNING_SSH="0"
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
-             rm -rf $final_backup_directory > /dev/null 2>&1    
+             rm -rf $final_backup_directory > /dev/null 2>&1
           else
              zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
-             cd ~/Persistent  
+             cd ~/Persistent 
              rm -rf $final_backup_directory > /dev/null 2>&1
              rm -rf $filename_tar > /dev/null 2>&1 
              rm /dev/shm/password1 > /dev/null 2>&1
