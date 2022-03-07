@@ -451,7 +451,7 @@ if [ $selection == "2" ] ; then
       --text="\n\n   This function only works with a valid backup-host ! \n\n  " > /dev/null 2>&1
    else
 
-      # We need a passphrase to encrypt :  gpg does terminate after one minute without any activity from 
+      # We need a passphrase to encrypt :  gpg does terminate after one minute without any activity from
       # the keyboard, therefore we use a a zenity dialog.
 
       swtor_ask_passphrase
@@ -463,9 +463,11 @@ if [ $selection == "2" ] ; then
              rm $final_backup_file.md5 > /dev/null 2>&1
              rm $filename_tar > /dev/null 2>&1
              md5sum crypted_tails_image.tar.gz.gpg | awk {'print $1'} >  crypted_tails_image.tar.gz.gpg.md5
-
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
+             sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+             --text="\n\n      Backup is now encrpyted with gpg ! You have to store this password anywhere where it is save.     \n\n" > /dev/null 2>&1)
+            
           else
              zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
              rm -rf $final_backup_directory > /dev/null 2>&1
@@ -566,7 +568,7 @@ if [ $selection == "2" ] ; then
        echo "file2="crypted_tails_image.tar.gz.gpg >> restore_part2.sh
        echo >> restore_part2.sh
        echo "echo Transfer files from remote host" >> restore_part2.sh
-       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 ". > /dev/null 2>&1" >> restore_part2.sh
+       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 ." >> restore_part2.sh
        echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
        echo "   echo file crypted_tails_image.tar.gz.gpg.md5 downloaded" >> restore_part2.sh
        echo "else" >> restore_part2.sh
@@ -574,7 +576,7 @@ if [ $selection == "2" ] ; then
        echo "   exit 1" >> restore_part2.sh
        echo "fi"  >> restore_part2.sh
        echo " " >> restore_part2.sh
-       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg ". > /dev/null 2>&1" >> restore_part2.sh
+       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg ." >> restore_part2.sh
        echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
        echo "   echo file crypted_tails_image.tar.gz.gpg downloaded" >> restore_part2.sh
        echo "else" >> restore_part2.sh
