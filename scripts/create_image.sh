@@ -40,7 +40,7 @@ fi
 # searching for a backup host
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Checking for a backup host SSH inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
+--text="\n\n      Checking for a backup host inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
 if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
 
@@ -390,7 +390,7 @@ menu=1
 while [ $menu -eq 1 ]; do
 
 selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
-         "1"  "[01]  Copy unencrypted backup to ~/Persistent/personnal-files/tails-repair-disk" \
+         "1"  "[01]  Copy cleatext backup to ~/Persistent/personnal-files/tails-repair-disk" \
          "2"  "[02]  Encrypt backup and copy it to a remote ssh-host                                            " \
          "3"  "[03]  Encrypt backup and copy it to ~/Persistent/personnal-files/tails-repair-disk" \
          "4"  "[04]  Cancel backup" \
@@ -406,6 +406,8 @@ fi
 
 if [ "$selection" == "1" ] ; then
 
+   cd ~/Persistent
+
    # We don't encrpyt the backup
 
    show_wait_dialog && sleep 1
@@ -416,8 +418,7 @@ if [ "$selection" == "1" ] ; then
 
    # we move the backup file and the md5 checksum to ~/Persistent/personal-files/tails-repair-disk
 
-   mv $final_backup_file.md5 ~/Persistent/personal-files/tails-repair-disk
-   mv $final_backup_file ~/Persistent/personal-files/tails-repair-disk
+   mv ~/Persistent/persistent* ~/Persistent/personal-files/tails-repair-disk
 
    cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
    cd ~/Persistent/personal-files/tails-repair-disk
