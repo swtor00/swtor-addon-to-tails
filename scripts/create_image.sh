@@ -566,7 +566,7 @@ if [ $selection == "2" ] ; then
        echo "file2="crypted_tails_image.tar.gz.gpg >> restore_part2.sh
        echo >> restore_part2.sh
        echo "echo Transfer files from remote host" >> restore_part2.sh
-       echo "scp -P" $single_port $ssh_hostcrypted_tails_image.tar.gz.gpg.md5 ". > /dev/null 2>&1" >> restore_part2.sh
+       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 ". > /dev/null 2>&1" >> restore_part2.sh
        echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
        echo "   echo file crypted_tails_image.tar.gz.gpg.md5 downloaded" >> restore_part2.sh
        echo "else" >> restore_part2.sh
@@ -574,7 +574,7 @@ if [ $selection == "2" ] ; then
        echo "   exit 1" >> restore_part2.sh
        echo "fi"  >> restore_part2.sh
        echo " " >> restore_part2.sh
-       echo "scp -P" $single_port $ssh_hostcrypted_tails_image.tar.gz.gpg ". > /dev/null 2>&1" >> restore_part2.sh
+       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg ". > /dev/null 2>&1" >> restore_part2.sh
        echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
        echo "   echo file crypted_tails_image.tar.gz.gpg downloaded" >> restore_part2.sh
        echo "else" >> restore_part2.sh
