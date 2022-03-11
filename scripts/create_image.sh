@@ -380,7 +380,7 @@ end_wait_dialog
 sleep 0.5
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n           Backup was created inside of the Persistent Volume !          \n\n" > /dev/null 2>&1)
+--text="\n\n           Backup was created inside of the persistent volume !          \n\n" > /dev/null 2>&1)
 
 
 cd ~/Persistent
@@ -390,10 +390,10 @@ menu=1
 while [ $menu -eq 1 ]; do
 
 selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
-         "1"  "[01]  Copy cleatext backup to ~/Persistent/personnal-files/tails-repair-disk" \
-         "2"  "[02]  Encrypt backup and copy it to a remote ssh-host                                            " \
-         "3"  "[03]  Encrypt backup and copy it to ~/Persistent/personnal-files/tails-repair-disk" \
-         "4"  "[04]  Cancel backup" \
+         "1"  "[01]  Copy cleartext unencrypted backup to ~/Persistent/personnal-files/tails-repair-disk" \
+         "2"  "[02]  Encrypt the backup and copy it to a remote ssh-host                                            " \
+         "3"  "[03]  Encrypt the backup and copy it to ~/Persistent/personnal-files/tails-repair-disk" \
+         "4"  "[04]  Cancel the current backup" \
         --hide-column=1 \
         --print-column=1)
 
@@ -467,7 +467,7 @@ if [ $selection == "2" ] ; then
              rm /dev/shm/password2 > /dev/null 2>&1
              sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
              --text="\n\n      Backup is now encrpyted with gpg ! You have to store this password anywhere where it is save.     \n\n" > /dev/null 2>&1)
-            
+
           else
              zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
              rm -rf $final_backup_directory > /dev/null 2>&1
@@ -563,28 +563,74 @@ if [ $selection == "2" ] ; then
        cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
        cp ~/Persistent/scripts/restore_p22.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
 
-       echo " " >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
        echo "file1="crypted_tails_image.tar.gz.gpg.md5 >> restore_part2.sh
        echo "file2="crypted_tails_image.tar.gz.gpg >> restore_part2.sh
-       echo >> restore_part2.sh
-       echo "echo Transfer files from remote host" >> restore_part2.sh
-       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 ." >> restore_part2.sh
-       echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
-       echo "   echo file crypted_tails_image.tar.gz.gpg.md5 downloaded" >> restore_part2.sh
-       echo "else" >> restore_part2.sh
-       echo "   echo file crypted_tails_image.tar.gz.gpg.md5 not downloaded" >> restore_part2.sh
-       echo "   exit 1" >> restore_part2.sh
-       echo "fi"  >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+       echo "if [ ! -f ~/Persistent/stage1b ] ; then" >> restore_part2.sh
+       echo "   if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "      echo Transfer files from remote host " >> restore_part2.sh
+       echo "   fi"  >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+       echo "  sleep 1200 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n       [ Downloading the backup from the remote host. Please wait ! ]           \\n\") > /dev/null 2>&1" >> restore_part2.sh  
+       echo "                                 " >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+       echo "  scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 . > /dev/null 2>&1" >> restore_part2.sh
+       echo "                                 "  >> restore_part2.sh
+       echo "  if [ \$? -eq 0 ] ; then" >> restore_part2.sh
+       echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "        echo file crypted_tails_image.tar.gz.gpg.md5 downloaded" >> restore_part2.sh
+       echo "     fi" >> restore_part2.sh
+       echo "  else" >> restore_part2.sh
+       echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "        echo file crypted_tails_image.tar.gz.gpg.md5 not downloaded" >> restore_part2.sh
+       echo "     fi" >> restore_part2.sh 
+       echo "     sleep 1" >> restore_part2.sh
+       echo "     killall -s SIGINT zenity " >> restore_part2.sh
+       echo "     sleep 1" >> restore_part2.sh
+       echo "     sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n         [ Download failed ! ]         \\n\")  > /dev/null 2>&1" >> restore_part2.sh 
+       echo "     exit 1" >> restore_part2.sh
+       echo "  fi"  >> restore_part2.sh
        echo " " >> restore_part2.sh
-       echo "scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg ." >> restore_part2.sh
-       echo "if [ $? -eq 0 ] ; then" >> restore_part2.sh
-       echo "   echo file crypted_tails_image.tar.gz.gpg downloaded" >> restore_part2.sh
-       echo "else" >> restore_part2.sh
-       echo "   echo file crypted_tails_image.tar.gz.gpg not downloaded" >> restore_part2.sh
-       echo "   exit 1" >> restore_part2.sh
-       echo "fi"  >> restore_part2.sh
-       echo "echo Transfer files from remote host are done" >> restore_part2.sh
        echo " " >> restore_part2.sh
+       echo "  scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg . > /dev/null 2>&1" >> restore_part2.sh
+       echo "  if [ \$? -eq 0 ] ; then" >> restore_part2.sh
+       echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "        echo file crypted_tails_image.tar.gz.gpg downloaded" >> restore_part2.sh
+       echo "     fi" >> restore_part2.sh
+       echo "  else" >> restore_part2.sh
+       echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "        echo file crypted_tails_image.tar.gz.gpg not downloaded" >> restore_part2.sh
+       echo "     fi" >> restore_part2.sh
+       echo "     sleep 1" >> restore_part2.sh
+       echo "     killall -s SIGINT zenity " >> restore_part2.sh
+       echo "     sleep 1" >> restore_part2.sh
+       echo "     sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n         [ Download failed ! ]         \\n\")  > /dev/null 2>&1" >> restore_part2.sh 
+       echo "     exit 1" >> restore_part2.sh
+       echo "  fi" >> restore_part2.sh
+       echo " " >> restore_part2.sh
+       echo " " >> restore_part2.sh
+       echo "  if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "     echo Transfer 2 files from remote host are now finished" >> restore_part2.sh
+       echo "  fi" >> restore_part2.sh
+       echo "  " >> restore_part2.sh
+       echo "  sleep 1" >> restore_part2.sh
+       echo "  killall -s SIGINT zenity " >> restore_part2.sh
+       echo "  sleep 1" >> restore_part2.sh
+       echo " " >> restore_part2.sh
+       echo "  sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n       [ Download is finished ]       \\n\")  > /dev/null 2>&1"   >> restore_part2.sh     
+       echo "  echo 1 > ~/Persistent/stage1b" >> restore_part2.sh
+       echo "else " >> restore_part2.sh
+       echo "  if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
+       echo "     echo check for stage1b passed : done" >> restore_part2.sh
+       echo "  fi" >> restore_part2.sh
+       echo "fi" >> restore_part2.sh
+       echo "  " >> restore_part2.sh
+       echo "  " >> restore_part2.sh
+       echo "  " >> restore_part2.sh
+
 
        # The last part of the script is added
 

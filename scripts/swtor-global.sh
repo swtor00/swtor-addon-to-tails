@@ -396,7 +396,7 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
    fi
 
    # We have a open dialog to close
-   
+
    end_wait_dialog && sleep 0.5
 
    sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
@@ -406,7 +406,7 @@ else
     cat password | sudo -S apt autoremove --yes  > /dev/null 2>&1
 
     # We have a open dialog to close
-   
+
     end_wait_dialog && sleep 0.5
 
     if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -901,6 +901,7 @@ if [ $? -eq 0 ] ; then
     menu=0
     zenity --question --width=600 \
     --text="\n\nWould you like to encrypt the backup with the following passphrase : \n\n$(cat /dev/shm/password2)\n\nPlease be very carefull where to store this passphrase and don't try\nto make a photo with your Smartphone and store it in a cloud !\n\n\nIf you answer is "Yes" this passphrase will be used to encrypt.\nIf you answer "No" this backup will be canceled !!! " > /dev/null 2>&1
+
     case $? in
     0) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo "encryption with passphrase"
