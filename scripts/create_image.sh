@@ -390,9 +390,9 @@ menu=1
 while [ $menu -eq 1 ]; do
 
 selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
-         "1"  "[01]  Copy cleartext unencrypted backup to ~/Persistent/personnal-files/tails-repair-disk" \
-         "2"  "[02]  Encrypt the backup and copy it to a remote ssh-host                                            " \
-         "3"  "[03]  Encrypt the backup and copy it to ~/Persistent/personnal-files/tails-repair-disk" \
+         "1"  "[01]  Copy unencrypted backup to the default location "\
+         "2"  "[02]  Encrypt the backup and copy it to a remote ssh-host" \
+         "3"  "[03]  Encrypt the backup and copy it to the default location" \
          "4"  "[04]  Cancel the current backup" \
         --hide-column=1 \
         --print-column=1)
