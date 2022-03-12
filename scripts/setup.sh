@@ -539,15 +539,15 @@ if [ $# -eq 1 ] ; then
     # Even most of the configuration files are not critical, as long we are using the same
     # Version of Tails to restore.
 
-    backup_version=$(cat ~/Persistent/backup/tails-backup-version)
-    current_version=$(tails-version | head -n1 | awk {'print $1'})
+    backup_version=$(cat ~/Persistent/backup/tails-backup-version | sed 's/[.]*//g')
+    current_version=$(tails-version | head -n1 | awk {'print $1'} | sed 's/[.]*//g')
 
     if [ $CLI_OUT == "1" ] ; then
        echo the backup-was made with version :$backup_version
        echo the current tails is :$current_version
     fi
 
-    if [ "$backup_version" == "$current_version" ] ; then
+    if [ $backup_version == $current_version ] ; then
 
        restore_bookmarks 
        restore_gnupg  
@@ -565,20 +565,104 @@ if [ $# -eq 1 ] ; then
        restore_finish 
 
     else
-        if [ $CLI_OUT == "1" ] ; then   
-           echo The backup was made with a older version of Tails ..
-        fi 
-       
-        # Because the backup was made with a older version of Tails ..
-        # We have to ask on very restore-point with the exception 
-        # of the following entrys ... 
+
+        # By now, we have 2 possible scenarios ...
+
+        # 1. The backup was made with a newer Tails and the current Tails is older ... 
+        # Stop restoring and recommand to make a upgrade to a higher version
+
+        # 2. The backup was made with a older system and the current Tails is newer 
+        # Asking on every restore-point ....  
  
-        restore_bookmarks  
-        restore_ssh 
-        restore_git 
-        restore_software
+
+        if [ $backup_version -gt $current_version ] ; then   
+           if [ $CLI_OUT == "1" ] ; then   
+              echo The backup version is greater than the current one
+           fi
+
+           end_wait_dialog && sleep 1.5
+  
+           echo    
+           echo "We have a conflict here : " 
+           echo "Backup was made with Tails : "$(cat ~/Persistent/backup/tails-backup-version)
+           echo "Current Tails in use is    : "$(tails-version | head -n1 | awk {'print $1'})
+           echo "Restore is not possible !!! " 
+           echo "For restoring the backup-data,the Tails must be equal or higher !!!"   
+
+           zenity --error --width=600 \
+           --text="\n\n         The backup you made, used a newer Tails version than the current one ! \n\n" > /dev/null 2>&1
+           exit 1
+        fi 
+
          
-        end_wait_dialog && sleep 1.5  
+        if [ $current_version -gt $backup_version ] ; then 
+           if [ $CLI_OUT == "1" ] ; then   
+              echo The current version is greater than the backup-system 
+           fi  
+
+           # Because the backup was made with a older version of Tails ..
+           # We have to ask on very restore-point with the exception 
+           # of the following entrys ...  
+ 
+           restore_bookmarks
+           restore_gnupg   
+           restore_ssh 
+           restore_network_connections 
+           restore_git
+           restore_tca
+           restore_cups 
+           restore_software
+         
+           end_wait_dialog && sleep 1.5
+ 
+           # The following options may have problems, in the moment you restore a older version over a new version
+           # restore_thunderbird
+           # restore_pidgin  
+           # restore_electrum
+
+           zenity --question --width=600 \
+           --text="\n\n   Should the backup-data from thunderbird be restored ?   \n\n" > /dev/null 2>&1
+           case $? in
+                 0)
+                   restore_thunderbird  
+                 ;;
+                 1) if [ $CLI_OUT == "1" ] ; then  
+                       echo "not restoring thunderbird"
+                    fi         
+                 ;;
+           esac
+
+           zenity --question --width=600 \
+           --text="\n\n   Should the backup-data from pidgin be restored ?   \n\n" > /dev/null 2>&1
+           case $? in
+                 0)
+                   restore_pidgin 
+                 ;;
+                 1) if [ $CLI_OUT == "1" ] ; then  
+                       echo "not restoring pidgin"
+                    fi         
+                 ;;
+           esac
+
+           zenity --question --width=600 \
+           --text="\n\n   Should the backup-data from electrum be restored ?   \n\n" > /dev/null 2>&1
+           case $? in
+                 0)
+                   restore_electrum 
+                 ;;
+                 1) if [ $CLI_OUT == "1" ] ; then  
+                       echo "not restoring electrum"
+                    fi         
+                 ;;
+           esac
+
+
+           # The following 2 options are not restored 
+           # restore_dotfile 
+           # restore_greeter_screen
+
+           restore_finish 
+        fi
 
     fi
     
