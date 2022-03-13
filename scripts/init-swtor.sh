@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.25                                  #
+# OS      : Tails 4.28                                  #
 # TASKS   : The mother script of all swtor scripts      #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.80                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-01-2020                                  #
+# DATE    : 13-03-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #

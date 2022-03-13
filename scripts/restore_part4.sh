@@ -435,7 +435,7 @@ if [ $? -eq 0 ] ; then
 
    rm ~/Persistent/restore.sh > /dev/null 2>&1
 
-   sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is fnished. PLeasse reboot Tails ]           \n")  > /dev/null 2>&1
+   sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is fnished. Please reboot Tails ]           \n")  > /dev/null 2>&1
 
    exit 0
 else

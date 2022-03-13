@@ -6,12 +6,12 @@
 # EMAIL   : swtor00@protonmail.com                      #
 # OS      : Tails 4.28 or higher                        #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.80                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 19-11-2021                                  #
+# DATE    : 13-03-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -645,8 +645,73 @@ if [ $selection == "2" ] ; then
 fi
 
 if [ $selection == "3" ] ; then
-   zenity --info --width=600 --title="" \
-   --text="\n\n   This function is not ready now.\n\n  " > /dev/null 2>&1
+
+      # We need a passphrase to encrypt :  gpg does terminate after one minute without any activity from
+      # the keyboard, therefore we use a a zenity dialog.
+
+      swtor_ask_passphrase
+      if [ $? -eq 0 ] ; then
+          tar czf $filename_tar $final_backup_file $final_backup_file.md5
+          gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar > /dev/null 2>&1
+          if [ $? -eq 0 ] ; then
+             rm $final_backup_file > /dev/null 2>&1
+             rm $final_backup_file.md5 > /dev/null 2>&1
+             rm $filename_tar > /dev/null 2>&1
+             md5sum crypted_tails_image.tar.gz.gpg | awk {'print $1'} >  crypted_tails_image.tar.gz.gpg.md5
+             rm /dev/shm/password1 > /dev/null 2>&1
+             rm /dev/shm/password2 > /dev/null 2>&1
+             sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+             --text="\n\n      Backup is now encrpyted with gpg ! You have to store this password anywhere where it is save.     \n\n" > /dev/null 2>&1)
+
+          else
+             zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
+             rm -rf $final_backup_directory > /dev/null 2>&1
+             rm -rf $filename_tar > /dev/null 2>&1 
+             rm /dev/shm/password1 > /dev/null 2>&1
+             rm /dev/shm/password2 > /dev/null 2>&1
+             exit 1
+          fi
+       else
+          zenity --error --width=600 --text="\n\n     Backup canceled by user in the password-screen !      \n\n" > /dev/null 2>&1
+          rm -rf $final_backup_directory > /dev/null 2>&1
+          rm /dev/shm/password1 > /dev/null 2>&1
+          rm /dev/shm/password2 > /dev/null 2>&1
+          exit 1
+       fi
+
+       # Now we have to make a clean tails-repair-disk for this backup
+
+       if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
+          mkdir ~/Persistent/personal-files/tails-repair-disk
+       else
+          rm -rf ~/Persistent/personal-files/tails-repair-disk/* > /dev/null 2>&1
+       fi
+
+
+       # We copy the backup files
+
+       cd ~/Persistent/personal-files/tails-repair-disk
+       mv ~/Persistent/crypted_tails_image.tar.gz.gpg  . > /dev/null 2>&1
+       mv ~/Persistent/crypted_tails_image.tar.gz.gpg.md5 . > /dev/null 2>&1
+ 
+       cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
+       cp ~/Persistent/scripts/restore_p21.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
+
+       echo "                                 " >> restore_part2.sh
+       echo "file1="crypted_tails_image.tar.gz.gpg.md5 >> restore_part2.sh
+       echo "file2="crypted_tails_image.tar.gz.gpg >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+       echo "                                 " >> restore_part2.sh
+
+       # The last part of the script is added
+
+       cat ~/Persistent/scripts/restore_part4.sh >> restore_part2.sh
+
+       cat restore_part2.sh >> restore.sh
+       rm restore_part2.sh
+
+       menu=0
+       backup_done=1
 fi
 
 

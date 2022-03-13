@@ -11,7 +11,7 @@ case $? in
          1) if [ $CLI_OUT == "1" ] ; then
                echo restore not started
             fi
-            exit 1 
+            exit 1
          ;;
 esac
 

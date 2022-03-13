@@ -135,16 +135,9 @@ But every user has to make this decission for himself.
 - The backup integrated into the addon works as a offline-backup. 
 - The backup itself is protected against manipulations with a md5 checksum.
 - You can copy the files to any location as long this location 
-  is secure.
- 
-As long the backup is encrypted with a very strong password
-and saved over ssh to a other country, you need only a little paper
-with the ssh-credentials to store back the bassword.If you need
-the ssh-keys to login for the backup host, you have to copy
-all the files from ~/Persistent/personal-files/tails-repair-disk 
-to a seperate stick and hide this stick.You may create a secound stick 
-with Tails and copy the backup of Tails 1 to persistent volume of Tails 2.
-   
+  is secure. You may use a secound Tails with persistent volume 
+  to copy the backup to this other system. 
+
 
 Why is a administation password needet on every startup ? 
 --------------------------------------------------------
@@ -199,7 +192,20 @@ Are you involved in any way by "Anomymous" ?
 --------------------------------------------
 
 No I'm not a member of Anoymous in any kind but I like 
-theyr behavior for a free and unccensored internet.   
+theyr behavior AND fight for a free and unccensored internet.
+
+We are Anonymous! 
+We are Legion ! 
+We do not forgive ! 
+We do not forget ! 
+Expect Us !   
+
+I have sometimes the message "Internet not ready ... " on startup ?
+-------------------------------------------------------------------
+
+Increase the the Value inside swtor.cfg
+from TIMEOUT-TB:10 to TIMEOUT-TB:15 
+
 
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
