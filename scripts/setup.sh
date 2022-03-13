@@ -600,6 +600,12 @@ if [ $# -eq 1 ] ; then
               echo The current version is greater than the backup-system 
            fi  
 
+           echo    
+           echo "We have a little conflict here : " 
+           echo "Backup was made with Tails : "$(cat ~/Persistent/backup/tails-backup-version)
+           echo "Current Tails in use is    : "$(tails-version | head -n1 | awk {'print $1'})
+           echo "Restore is possible but dotfiles and greeter-screen is not restored !!"               
+            
            # Because the backup was made with a older version of Tails ..
            # We have to ask on very restore-point with the exception 
            # of the following entrys ...  
@@ -661,7 +667,8 @@ if [ $# -eq 1 ] ; then
            # restore_dotfile 
            # restore_greeter_screen
 
-           restore_finish 
+           restore_finish
+           exit 0  
         fi
 
     fi
