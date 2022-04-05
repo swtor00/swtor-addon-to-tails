@@ -166,7 +166,7 @@ What should I do ?
 --------------------------------------------------------
 There a 2 ways possible to freez again. 
 
-1. Open a terminal in the script folder and execute in 
+1. Open a terminal in the script folder and execute exactly in 
    this order 
    ./cli_tweak.sh 
    ./cli_freezing.sh 

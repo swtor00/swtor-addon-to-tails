@@ -122,7 +122,7 @@ Date		Release		Author		Description
                                                 - Added yad to the section of installed software.  
 
 
-24/10/2021	0.60		swtor00		- Tails-update to Debian 11 (Bullseye) needs some minor changes
+24/10/2021	0.60		swtor00		- Tails-update to Debian needs some minor changes
                                                   of the scripts.
                                                 - The URL github.com do not longer working with old 
                                                   logins like username and password.
@@ -714,6 +714,14 @@ Date		Release		Author		Description
                                                       and Twitter onion V3 addresses into Bookmarks. 
 
                                                       All I have to say is : "Fuck off Putin ... Burn in Hell !!"
+
+
+24/03/2022	0.80		swtor00		    - New Version 0.80 with over 260 commits
+04/04/2002      0.81            swtor00             - Adding log-file for backup with rsync
+
+
+
+
                                                         
                                                          
  

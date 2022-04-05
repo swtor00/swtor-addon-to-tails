@@ -134,9 +134,9 @@ if [ $arg1 != "fullssh.sh" ] ; then
 fi
 
 if [ $arg3 != "Compress" ] ; then
-   chain="-vv -E /home/amensia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -"
+   chain="-vv -E ~/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -"
 else
-   chain="-vv -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -C"
+   chain="-vv -E ~/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -C"
 fi
 
 if [ $arg4 == "4" ] ; then

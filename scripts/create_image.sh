@@ -500,9 +500,11 @@ if [ $selection == "2" ] ; then
        show_wait_dialog && sleep 2
 
        # copy backup-file
-
-       rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg.md5 -e ssh $ssh_host > /dev/null 2>&1
-       rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg -e ssh $ssh_host > /dev/null 2>&1
+        
+       echo "starting backup" > ~/Persistent/swtorcfg/log/backup.log
+       rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg.md5 -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
+       echo "crypted_tails_image.tar.gz.gpg.md5 transfered to remote host" >> ~/Persistent/swtorcfg/log/backup.log
+       rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
 
        if [ $? -eq 0 ] ; then
           if [ $TERMINAL_VERBOSE == "1" ] ; then
