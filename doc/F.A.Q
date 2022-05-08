@@ -158,13 +158,13 @@ Persistence Volume,you have to close.
 - TOR Browser 
 - Electrum Bitcoin Wallet 
 - Thunderbird
-- Pidgin 
-
+- Pidgin
+- Cleopatra  
 
 After upgrading Tails, the system is not longer freezed.
 What should I do ?
 --------------------------------------------------------
-There a 2 ways possible to freez again. 
+There a 2 ways possible to freez it again. 
 
 1. Open a terminal in the script folder and execute exactly in 
    this order 
