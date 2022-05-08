@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.28 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 #                                                       #
-# VERSION : 0.80                                        #
+# VERSION : 0.81	                                #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 13-03-2022                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -38,7 +38,6 @@ rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
 # This here is very important ! If we can connect to remote host
 # without any problem, we don't need longer the log-files.
 # But in case  we have some trouble ... we need them !
-
 
 if [ ! -f /home/amnesia/Persistent/scripts/state/error ] ; then
      rm -rf /home/amnesia/Persistent/swtorcfg/log/*.* > /dev/null 2>&1

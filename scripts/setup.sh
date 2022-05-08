@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.28 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 #                                                       #
 #                                                       #
-# VERSION : 0.80                                        #
+# VERSION : 0.81                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 13-03-2022                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -106,8 +106,8 @@ fi
 # if this script was started in restore-mode from a backup ..... we do copy back here
 ####################################################################################################################
 if [ $# -eq 1 ] ; then
-    
-    if [ $CLI_OUT == "1" ] ; then 
+
+    if [ $CLI_OUT == "1" ] ; then
        echo restore-mode from backup is active
     fi
 

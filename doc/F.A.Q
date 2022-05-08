@@ -130,7 +130,7 @@ But every user has to make this decission for himself.
   to a other USB Stick
 - The backup is fast and works perfect but you could copy 
   the persistent Volume of Tails 4.25 to a empty persistent 
-  of Tails 4.23 as a example,that could lead to a problem.
+  of Tails 4.23 as a example,that could lead to a internal problem.
 
 - The backup integrated into the addon works as a offline-backup. 
 - The backup itself is protected against manipulations with a md5 checksum.
@@ -205,6 +205,16 @@ I have sometimes the message "Internet not ready ... " on startup ?
 
 Increase the the Value inside swtor.cfg
 from TIMEOUT-TB:10 to TIMEOUT-TB:15 
+
+
+I upgraded from Tail 4.29 to Tails 5.0 and now the addon isn't working anymore ?
+---------------------------------------------------------------------------------
+Yes. I know about this issue. You have to upgrade to the vesion 5.0 $
+Open a terminal in the script folder and execute
+
+./cli_update.sh 
+
+After version 0.81 is installed, it works again.
 
 
 My specific question isn't found here. What should I do ? 

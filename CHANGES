@@ -717,7 +717,8 @@ Date		Release		Author		Description
 
 
 24/03/2022	0.80		swtor00		    - New Version 0.80 with over 260 commits
-04/04/2002      0.81            swtor00             - Adding log-file for backup with rsync
+08/05/2002      0.81            swtor00             - Adding log-file for backup with rsync
+                                                    - Script now works only with Tails 5.0 or higher  
 
 
 
