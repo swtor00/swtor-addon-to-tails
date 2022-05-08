@@ -1,0 +1,111 @@
+
+
+Please make the following to upgrade Tails 4.29 to Tails 5.0 including the addon itself
+
+
+1.) Start Tails 4.29 with the addon 
+
+
+2.) Open a terminal and execute the follown lines of code 
+
+cd ~/Persistent/scripts
+./cli-unfreezing.sh 
+
+
+3.) Open the Persistent Setup and deactivate "GnuPG"
+
+4.) Shutdown Tails 4.29 and make a restart of the same Tails
+
+
+5.) If your system was in state "freezed" it is now unfreezed. 
+6.) The option "GnuPG" is gone ..... inside Persistent 
+
+
+
+7.) You need a secound stick to install a fresh Tails 5.0 
+
+(PS: You can't upgrade Tail 4.29 to Tails 5.0 ) 
+
+8.) Install Tails 5.0 on the second USB according the documentaztion :
+
+
+7.) Start Tails 5.0 
+
+8.) After booting insert your Tails 4.29 stick 
+
+
+9.) Start from the new Tails 5.0 the "Tails-Installer"
+
+
+10.) Choose upgrade for your old stick 
+
+11.) Wait until the upgrade is finsished 
+
+12.) Shutdown Tails 5.0 and remove the stick 
+
+
+13.) Boot your upgraded "Tails 5.0" stick
+
+
+14.) Reactivate the option "GnuPG" inside the Persistent Setup 
+
+
+15.) open a terminal 
+
+     cd ~/Persistent/scripts
+     ./cli_update.sh 
+     sudo /bin/bash apt-get update 
+     
+     (give the admin-password) and let execute the command 
+
+
+     Now it is time to reboot !!!!
+
+
+16.) Open a Terminal after the second booting  
+
+     ./cli_tweak.sh
+     ./cli_freezing.sh 
+
+
+By now ... We have a working Tails 5.0 with the addon.
+
+- Fixed settings
+- Fixed Wallpaper 
+
+
+Best greetings 
+swtor00
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 

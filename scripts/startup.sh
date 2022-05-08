@@ -489,7 +489,7 @@ else
 fi
 
 
-# change the firewall to accept a socks5 server on port 9999
+# change the firewall to accept a socks5 server on port 127.0.0.1:9999
 
 change_tails_firewall
 if [ $? -eq 0 ] ; then
