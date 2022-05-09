@@ -9,7 +9,11 @@ mini ULTRA compressed steps to make the add-on working quick ...
 
 the following things should be done prio to install this addon
 
-- get Tails and install it to a USB drive
+- get Tails 5.0 or higher and install it to a USB drive
+
+  With Version 0.81 this script is not longer running with older releases
+  from Tails.
+
 - create a persistent volume with at least ssh-client/additional-software/personal-data 
 - restart Tails with the opened persistent volume and a administration password set
 - make a shell script executable over the GUI of Tails or you have to open a terminal
