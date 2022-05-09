@@ -1,5 +1,6 @@
 
 
+
 if [ ! -f ~/Persistent/stage2 ] ; then
 
    # we calculate the md5 01 of the backup-file

@@ -1,7 +1,6 @@
 
 
 
-
 if [ ! -f ~/Persistent/stage1c ] ; then
 
    # we calculate the md5 01 of the backup-file from the remote host

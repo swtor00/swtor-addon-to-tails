@@ -16,6 +16,7 @@ case $? in
 esac
 
 
+
 # We need to test, that we are able to download
 # the addon over internet
 
