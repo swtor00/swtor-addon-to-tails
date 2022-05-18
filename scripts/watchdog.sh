@@ -30,11 +30,13 @@ else
     fi
 fi
 
+rm ~/Persistent/swtor-addon-to-tails/tmp/pid_loop > /dev/null 2>&1
 
 menu=1
 while [ $menu -gt 0 ]; do
+
       if [ -f /home/amnesia/Persistent/scripts/state/offline ]  ; then
-         sleep 1
+         sleep 2
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo watchdog state : offline
          fi
@@ -42,17 +44,25 @@ while [ $menu -gt 0 ]; do
 
       if [ -f /home/amnesia/Persistent/scripts/state/online ]  ; then
 
-         sleep 0.5
+         sleep 0.7
 
          ssh_pid=$(cat ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid)
-
          running=$(ps axu | awk {'print $2'} | grep $(echo $ssh_pid))
 
+
+         sleep 0.4
+         echo $(date) running pid $running  controlled pid $ssh_pid >> ~/Persistent/swtor-addon-to-tails/tmp/pid_loop
+              
+              
          if [ "$running" == "$ssh_pid" ] ; then
             if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo watchdog state : online  pid ssh $ssh_pid is running
             fi
          else
+         
+             # zenity --info --width=600 --title="Connection is may lost ?" \
+             # --text="\n\n   [  Still connected ?  ]   \n\n   "             
+             
 
              # Our SSH conection to the remote System was terminated unexpected !!
 
@@ -95,8 +105,17 @@ while [ $menu -gt 0 ]; do
              # This is depending on the configuration file
 
              if [ $AUTOCLOSE_BROWSER="1" ] ; then
+             
+                if [ $TERMINAL_VERBOSE == "1" ] ; then
+                   echo autoclose is activated !
+                fi   
+             
                 kill -9 $(ps axu | grep chromium | grep settings | awk {'print $2'}) > /dev/null  2>&1
                 kill -9 $(ps axu | grep chromium | grep personal-files | awk {'print $2'}) > /dev/null 2>&1
+             else
+                if [ $TERMINAL_VERBOSE == "1" ] ; then
+                   echo autoclose is not activated !
+                fi                    
              fi
 
          fi
