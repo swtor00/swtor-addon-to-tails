@@ -501,7 +501,7 @@ Date		Release		Author		Description
 
                                                     Bootstrapping .....
 
-                                                    Boot Tails 4.25 and make a bacckup 
+                                                    Boot Tails 4.25 and make a backup 
                                                     copy ~/Persistent/personal-files/tails-repair-disk to a usb 
                                                     Starting empty Tails 4.25 and copy back files to persistent 
                                                     chmod +x 
@@ -719,7 +719,12 @@ Date		Release		Author		Description
 24/03/2022	0.80		swtor00		    - New Version 0.80 with over 260 commits
 08/05/2002      0.81            swtor00             - Adding log-file for backup with rsync
                                                     - Script now works only with Tails 5.0 or higher  
-
+BUILD 20220518					    - Improved watchdog.sh script 
+                                                    - Improved connection-screen 
+                                                    - Warning about open Cleopatra added to backup                                                      
+                                                    - Warning about open KeePassXC added to backup
+                                                    - Testing all permissions for backup Tails 5.0 
+ 
 
 
 

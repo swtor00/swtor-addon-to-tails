@@ -699,7 +699,19 @@ return 0
 swtor_ssh_success(){
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
-zenity --info  --width=600 --title="Information" --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connection, please press the 'OK' button on this window ! \n\n"
+
+menu=1
+while [ $menu -eq 1 ]; do
+      zenity --question --ok-label="Close SSH-Connection" --cancel-label="SSH-Staus" --width=600 --title="SSH Connection" \
+      --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connection, please press the 'Close SSH-Connection' button on this window ! \n\n"      
+      case $? in
+           0) # echo close
+              menu=0
+           ;;
+           1) # echo status
+           ;;
+      esac
+done
 return 0
 }
 
@@ -850,12 +862,12 @@ if [ $? -eq 0 ] ; then
 else
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo >&2 "TOR is not ready"
-      echo >&2 "check_tor_network() exiting with error-code 1"
+      echo "TOR is not ready"
+      echo "check_tor_network exiting with error-code 1"
    fi
 
    zenity --error --width=600 \
-   --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n"\
+   --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n" \
     > /dev/null 2>&1
    return 1
 fi
