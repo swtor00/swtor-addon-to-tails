@@ -702,7 +702,7 @@ echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
 
 menu=1
 while [ $menu -eq 1 ]; do
-      zenity --question --ok-label="Close SSH-Connection" --cancel-label="SSH-Staus" --width=600 --title="SSH Connection" \
+      zenity --question --ok-label="Close SSH-Connection" --cancel-label="SSH-Status" --width=600 --title="SSH Connection" \
       --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connection, please press the 'Close SSH-Connection' button on this window ! \n\n"      
       case $? in
            0) # echo close
