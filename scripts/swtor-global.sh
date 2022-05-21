@@ -699,16 +699,24 @@ return 0
 swtor_ssh_success(){
 
 echo 1 > ~/Persistent/swtor-addon-to-tails/tmp/ssh_state
-
+start=$SECONDS
+ssh_pid=$(cat ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid)
 menu=1
 while [ $menu -eq 1 ]; do
       zenity --question --ok-label="Close SSH-Connection" --cancel-label="SSH-Status" --width=600 --title="SSH Connection" \
-      --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connection, please press the 'Close SSH-Connection' button on this window ! \n\n"      
+      --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connect>
       case $? in
            0) # echo close
               menu=0
            ;;
            1) # echo status
+              duration=$(( SECONDS - start ))
+              TIME_USE=$(printf '%dh:%dm:%ds\n' $((duration/3600)) $((duration%3600/60)) $((duration%60)))
+              l1=$(echo "Connect-Time : " $TIME_USE)
+              l2=$(echo "PID SSH      : " $ssh_pid)
+              l3=$(cat ~/Persistent/swtorcfg/fullssh.arg | awk '{print $12}')
+              sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="SSH-Status" \
+              --text="\n\n      Connect Time : $(echo $TIME_USE)             \n      PID SSH :$(echo $ssh_pid)          \n      Country :$(echo $l3)       \n>
            ;;
       esac
 done

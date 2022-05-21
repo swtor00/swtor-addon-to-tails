@@ -724,7 +724,8 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                     - Warning about open Cleopatra added to backup                                                      
                                                     - Warning about open KeePassXC added to backup
                                                     - Testing all permissions for backup Tails 5.0 
- 
+                                                    - Added SSH-Status to the connection-screen
+
 
 
 
