@@ -704,7 +704,7 @@ ssh_pid=$(cat ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid)
 menu=1
 while [ $menu -eq 1 ]; do
       zenity --question --ok-label="Close SSH-Connection" --cancel-label="SSH-Status" --width=600 --title="SSH Connection" \
-      --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connect>
+      --text="\n\nThe selected SSH connection is now active.\nYou can now start a predefined browser-profile from the main-menu.\n\nTo close this SSH connection, please press the 'Close SSH-Connection' button on this window ! \n\n"
       case $? in
            0) # echo close
               menu=0
@@ -716,7 +716,7 @@ while [ $menu -eq 1 ]; do
               l2=$(echo "PID SSH      : " $ssh_pid)
               l3=$(cat ~/Persistent/swtorcfg/fullssh.arg | awk '{print $12}')
               sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="SSH-Status" \
-              --text="\n\n      Connect Time : $(echo $TIME_USE)             \n      PID SSH :$(echo $ssh_pid)          \n      Country :$(echo $l3)       \n>
+              --text="\n\n      Connect Time : $(echo $TIME_USE)             \n      PID SSH :$(echo $ssh_pid)          \n      Country :$(echo $l3)       \n     \n\n" > /dev/null 2>&1)
            ;;
       esac
 done
