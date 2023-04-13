@@ -684,8 +684,7 @@ Date		Release		Author		Description
                                                   - Unencrypted tar.gz restore testing.     
                                                                  
 
- 
-                                                          
+ 13/04/2022	0.60		swtor00		- Changed binary /usr/bin/python to /usr/bin/python3y                                                          
 
                                                         
 
