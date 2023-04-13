@@ -27,3 +27,4 @@ os.system("/bin/bash /home/amnesia/Persistent/swtor-addon-to-tails/scripts/pwait
 exit()
 
 
+
