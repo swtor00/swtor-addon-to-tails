@@ -1,18 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #########################################################
-# SCRIPT  : ssh_selecto.sh                              #
+# SCRIPT  : ssh_selector.sh                             #
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.25 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 # TASKS   : Selecting ssh-server to use                 #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.81                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 30-11-2021                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #

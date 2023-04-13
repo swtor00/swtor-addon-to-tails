@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.25 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.81                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 31-12-2021                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -103,7 +103,7 @@ else
 fi
 
 
-# If there was error in the last connection, we kill the file
+# If there was a error in the last connection, we kill the file
 
 rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
 

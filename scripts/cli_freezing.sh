@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.25 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.81                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 09-11-2021                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -29,6 +29,12 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
   cp -r ~/.config/nautilus /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
   cp -r ~/.config/gnome-session /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
   cp -r ~/Desktop /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
+
+  # If someone is using a other language than english, the folder Pictures needs to be created
+
+  if [ ! -f ~/Pictures ] ; then
+      mkdir ~/Pictures > /dev/null 2>&1
+  fi
   cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
 
   # Do markup the version of Tails we used to freezing ... we store it right here

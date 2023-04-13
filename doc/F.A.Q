@@ -103,10 +103,10 @@ My addon is not spying on anything from you.
 For what reason do we need a Repair-Stick after after the Backup was made ? 
 ----------------------------------------------------------------------------
 
-If your SSH-provider do not allow password logins .... only stored keys to login. 
-Without the right keys to store back to ~/.ssh you wouldn't have a chance to get 
-copy back the backup you made. Also a empty known_hosts from a new tails maybe 
-also a problem for some users.In any case that you backup to a remote host, 
+If your SSH-provider do not allow password logins and  a ssh-login only with keys
+is possible. Without the right keys to store back to ~/.ssh you wouldn't have any
+chance to get copy back the backup you made. Also a empty known_hosts file from a
+new tails maybe also a problem for some users.In any case that you backup to a remote host, 
 please do copy the files from  ~/Persistent/personal-files/tails-repair-disk 
 to a seperate stick and place this stick on a very secure place.   
 
@@ -121,7 +121,7 @@ nobody can read the data left on device.
 Is the backup of Persistence (since Tails 4.25) better than your backup ? 
 -------------------------------------------------------------------------
 
-I guess No because I don't need a secound stick with the equal size to copy.
+I guess No because I don't need a secound stick with the same equal size to copy.
 I only backup all files from the Persistent volume. The transfer to a foreign
 host is also not included in the Tails backup solution.
 But every user has to make this decission for himself.
@@ -130,21 +130,14 @@ But every user has to make this decission for himself.
   to a other USB Stick
 - The backup is fast and works perfect but you could copy 
   the persistent Volume of Tails 4.25 to a empty persistent 
-  of Tails 4.23 as a example,that could lead to a problem.
+  of Tails 4.23 as a example,that could lead to a internal problem.
 
 - The backup integrated into the addon works as a offline-backup. 
 - The backup itself is protected against manipulations with a md5 checksum.
 - You can copy the files to any location as long this location 
-  is secure.
- 
-As long the backup is encrypted with a very strong password
-and saved over ssh to a other country, you need only a little paper
-with ssh-credentials to store back the bassword.If you need
-the ssh-keys to login for the backup host, you have to copy
-all the files from ~/Persistent/personal-files/tails-repair-disk 
-to seperate stick and hide this stick.You may create a secound stick 
-with Tails and copy the backup of Tails 1 to persistent of Tails 2.
-   
+  is secure. You may use a secound Tails with persistent volume 
+  to copy the backup to this other system. 
+
 
 Why is a administation password needet on every startup ? 
 --------------------------------------------------------
@@ -165,18 +158,19 @@ Persistence Volume,you have to close.
 - TOR Browser 
 - Electrum Bitcoin Wallet 
 - Thunderbird
-- Pidgin 
-
+- Pidgin
+- Cleopatra  
 
 After upgrading Tails, the system is not longer freezed.
 What should I do ?
 --------------------------------------------------------
-There a 2 ways possible to freez again. 
+There a 2 ways possible to freez it again. 
 
-1. Open a Terminal in the script folder and execute in 
+1. Open a terminal in the script folder and execute exactly in 
    this order 
    ./cli_tweak.sh 
    ./cli_freezing.sh 
+
 
 2.) Open a Terminal in the script folder and execute.
 
@@ -184,7 +178,44 @@ There a 2 ways possible to freez again.
 
     Open menu "Utilitys & Help" -> Freezing the current state 
 
+
+I can't start swtor-menu.sh because lockfile allready exists ?
+-----------------------------------------------------------------
+Open a terminal in the script folder and execute
   
+./cli_delete_lockfile.sh  
+
+And the lockfile error-message is gone.  
+
+
+Are you involved in any way by "Anomymous" ? 
+--------------------------------------------
+
+No I'm not a member of Anoymous in any kind but I like 
+theyr behavior AND fight for a free and unccensored internet.
+
+We are Anonymous! 
+We are Legion ! 
+We do not forgive ! 
+We do not forget ! 
+Expect Us !   
+
+I have sometimes the message "Internet not ready ... " on startup ?
+-------------------------------------------------------------------
+
+Increase the the Value inside swtor.cfg
+from TIMEOUT-TB:10 to TIMEOUT-TB:15 
+
+
+I upgraded from Tail 4.29 to Tails 5.0 and now the addon isn't working anymore ?
+---------------------------------------------------------------------------------
+Yes. I know about this issue. You have to upgrade to the vesion 5.0 $
+Open a terminal in the script folder and execute
+
+./cli_update.sh 
+
+After version 0.81 is installed, it works again.
+
 
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------

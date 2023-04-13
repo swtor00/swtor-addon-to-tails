@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.25 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.81                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 31-12-2021                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -117,7 +117,7 @@ fi
 
 if [ $selection == "3" ] ; then
     zenity --question --width=600 \
-    --text="\n\n   Prior to make a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n\n If none of the above programms is open,please continue the backub by pressing 'Yes'.\n Otherwise press 'No' to cancel the backup.  \n\n"
+    --text="\n\n   Prior to make a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n   * Kleopatra    \n   * KeePassXC   \n\n If none of the above programms is open,please continue the backub by pressing 'Yes'.\n Otherwise press 'No' to cancel the backup.  \n\n"
     case $? in
          0) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo backup started

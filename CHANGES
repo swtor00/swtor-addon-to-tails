@@ -122,7 +122,7 @@ Date		Release		Author		Description
                                                 - Added yad to the section of installed software.  
 
 
-24/10/2021	0.60		swtor00		- Tails-update to Debian 11 (Bullseye) needs some minor changes
+24/10/2021	0.60		swtor00		- Tails-update to Debian needs some minor changes
                                                   of the scripts.
                                                 - The URL github.com do not longer working with old 
                                                   logins like username and password.
@@ -501,7 +501,7 @@ Date		Release		Author		Description
 
                                                     Bootstrapping .....
 
-                                                    Boot Tails 4.25 and make a bacckup 
+                                                    Boot Tails 4.25 and make a backup 
                                                     copy ~/Persistent/personal-files/tails-repair-disk to a usb 
                                                     Starting empty Tails 4.25 and copy back files to persistent 
                                                     chmod +x 
@@ -677,11 +677,63 @@ Date		Release		Author		Description
                                                   - If the password is entered 3 times wrong with create_image.sh,
                                                     the backup folder ~/Persistent/backup still exists. (Fixed)
                                                     
-                                                  - If you are echo a password to a file, it should contain
-                                                    the -n option. Otherwise a newline character is added. 
-                                                    Ups .. mea culpa 
+                                                  - If you are stupid enough to echo a password to a file, it 
+                                                    should contain the -n option. Otherwise a newline character is added. 
+                                                    Ups .. mea culpa,my fault :-(
 
-                                                  - Unencrypted tar.gz restore testing.     
+                                                  - Unencrypted tar.gz restore testing.
+ 
+                                                  - The file setup has now a entry with 0.
+                                                    On every startup the value inside setup will 
+                                                    be incremented by one. If the value is zero,
+                                                    the first startup of the script takes very long
+                                                    to complete. This is the simple reason. 
+
+                                                    - We did not install all the completed software packages 
+                                                      one by one. We only copy the file that describes what
+                                                      additional software should be installed to the right place. 
+                                                 
+                                                    With this in mind ... we can show a window that this first start 
+                                                    is slow and depending on your current internet speed. 
+                                                    
+                                                    On a very low speed usb disk , the script doesn't behave like 
+                                                    it would do on USB 3. Some small fixes to meet this.
+
+                                                    - If someone is using a other language than english ... 
+                                                      freezing will not work because he hasn't a folder 
+                                                      Pictures ... He may have Bilder, if he using German.
+                                                      (fixed)
+
+                                                    - The unencrypted backup is now ready for release 0.80
+ 
+                                                      amnesia@amnesia:~/Persistent$ chmod +x restore.sh
+                                                      amnesia@amnesia:~/Persistent$ ./restore.sh
+                                                      amnesia@amnesia:~/Persistent$ 
+ 
+                                                    - For our russina friends I have integrated facebook 
+                                                      and Twitter onion V3 addresses into Bookmarks. 
+
+                                                      All I have to say is : "Fuck off Putin ... Burn in Hell !!"
+
+
+24/03/2022	0.80		swtor00		    - New Version 0.80 with over 260 commits
+08/05/2002      0.81            swtor00             - Adding log-file for backup with rsync
+                                                    - Script now works only with Tails 5.0 or higher  
+BUILD 20220518					    - Improved watchdog.sh script 
+                                                    - Improved connection-screen 
+                                                    - Warning about open Cleopatra added to backup                                                      
+                                                    - Warning about open KeePassXC added to backup
+                                                    - Testing all permissions for backup Tails 5.0 
+                                                    - Added SSH-Status to the connection-screen
+
+
+
+
+                                                        
+                                                         
+ 
+
+
                                                                  
 
  13/04/2022	0.60		swtor00		- Changed binary /usr/bin/python to /usr/bin/python3y                                                          

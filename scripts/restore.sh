@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 4.25 or higher                        #
+# OS      : Tails 5.0 or higher                         #
 #                                                       #
-# VERSION : 0.60                                        #
+# VERSION : 0.81                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 03-01-2022                                  #
+# DATE    : 08-05-2022                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -20,10 +20,4 @@
 
 export CLI_OUT="0"
 
-function killCMD() {
-  pid=$(ps axu | grep zenity | grep progress | awk {'print $2'})
-  set +m && kill $pid > /dev/null 2>&1 &
-}
-
-export -f killCMD
 
