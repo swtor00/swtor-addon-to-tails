@@ -143,7 +143,7 @@ fi
 
 if [ $arg1 != "fullssh.sh" ] ; then
    swtor_wrong_script
-   exit 1 
+   exit 1
 fi
 
 if [ $arg3 != "Compress" ] ; then
@@ -185,7 +185,7 @@ fi
 
 if [ $arg8 == "clock" ]
    then
-   chain+=" -X "
+   chain+=" -Y "
 fi
 
 chain+=" "

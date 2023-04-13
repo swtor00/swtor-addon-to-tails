@@ -173,7 +173,7 @@ fi
 
 if [ $arg8 == "clock" ]
    then
-   chain+=" -X "
+   chain+=" -Y "
 fi
 
 
