@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 5.11 or higher                        #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.82                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 148-04-2023                                 #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -22,4 +22,3 @@ import os
 import sys
 
 os.system("/bin/bash /home/amnesia/Persistent/scripts/fullssh.sh")
-

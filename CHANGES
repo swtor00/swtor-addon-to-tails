@@ -730,8 +730,11 @@ BUILD 20220518					    - Improved watchdog.sh script
 
 
                                                        
-13/04/2023	0.60		swtor00		- Changed binary /usr/bin/python to /usr/bin/python3y
-                                                - ssh -X replaced with ssh -Y                                                          
+13/04/2023	0.82		swtor00		- Changed binary /usr/bin/python to /usr/bin/python3
+                                                - ssh -X replaced with ssh -Y
+                                                 
+                                                The above two settings prevented the running of the Addon
+                                                with the current Tails 5.11                                                          
                                              
                                                 
                                                         
