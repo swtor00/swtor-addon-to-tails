@@ -738,6 +738,26 @@ BUILD 20220518					    - Improved watchdog.sh script
                                              
                                                 
                                                         
+11/09/24	0.83		swtor00		New Release 6.X of Tails based on Debian 12 is here. 
+                                             
+                                                - There are no longer any icons on the Desktop
+                                                  Because this handling, the script has to be started from 
+                                                  persistent !!
+                                                - The unsafe Browser is again in the state enabled 
+                                                  (It was disabled on Release 4.X) 
+                                                  The fix was easy -> Startup-Options -> disable 
+                                                - Most of the scripts from Tails 5.X seems to work
+                                                  and a lot of gsettings do not longer work !
+                                                - Very strange error on version 6.7 and installed software 
+                                                - Installed net-tools.
+                                                - Allmost all is working ..... Only the the big open terminal 
+                                                  over the new Gnome.Desktop isn't nice to look 
+
+12/09/24	0.83				- Fixed Bookmarks                                                 
+                                                
+                                                
+                                                
+
 
  
 

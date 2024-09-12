@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.6 or higher                         #
 #                                                       #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 11-09-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -25,6 +25,9 @@ if [ "$TERMINAL_VERBOSE" == "" ];then
    exit 1
 fi
 
+
+# Starting with Tails 6.X this entry is useless 
+
 #########################################################
 # run all executables over the gui of Tails             #
 #########################################################
@@ -32,8 +35,9 @@ fi
 # [org/gnome/nautilus/preferences]                      #
 # executable-text-activation='launch'                   #
 #########################################################
-gsettings set org.gnome.nautilus.preferences executable-text-activation 'launch'
+# gsettings set org.gnome.nautilus.preferences executable-text-activation 'launch'
 
+# Starting with Tails 6.X this entry is useless
 
 #########################################################
 # show hidden files with Nautilus (beginning with a .)  #
@@ -42,7 +46,7 @@ gsettings set org.gnome.nautilus.preferences executable-text-activation 'launch'
 # [org/gtk/settings/file-chooser]                       #
 # show-hidden=true                                      #
 #########################################################
-gsettings set org.gtk.Settings.FileChooser show-hidden true
+# gsettings set org.gtk.Settings.FileChooser show-hidden true
 
 #########################################################
 # some changes to the terminal for better reading       #
@@ -77,7 +81,7 @@ case $? in
 esac
 
 ######################################################################################
-# change solid background from Tails to a image that reflects we are freezed         #
+# change solid background from Tails to a image that show us, we are freezed         #
 ######################################################################################
 # dconf entry                                                                        #
 # [org/gnome/desktop/background]                                                     #
@@ -104,17 +108,18 @@ case $? in
            ;;
 esac
 
-# Create symbolic link on desktop
+# Create symbolic link on persistent
+# After Tails 6.x there are no longer any icons on the Desktop
 
 if [ $GUI_LINKS == "1" ] ; then
-    if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
-       ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
+    if [ ! -L ~/Persistent/START.sh ] ; then
+       ln -s ~/Persistent/scripts/swtor-menu.sh ~/Persistent/START.sh
        if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo symlink on desktop created
+          echo symlink created
        fi
     else
        if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo symlink on desktop allready exist
+          echo symlink allready exist
        fi
     fi
 fi

@@ -1,6 +1,6 @@
 Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
-No. We only use SSH to communicate with ohers Servers.  
+No. We only use SSH to communicate with others Servers.  
 Only SSH is used to create a local SOCK5 Server on Tails.
 There is no VPN involved. Some idiots from redit/tails forum
 may should read this file to know the difference between a real 
@@ -38,13 +38,13 @@ I would like to backup my persistent Data to a foreign host over SSH. What do I 
 - A login with password for backup is not supported.
 - You can still make unencrypted Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
-- You can still encrypt the backukup and use your on tool to encrypt.
+- You can still encrypt the backup and use your on own way to encrypt.
 
 Please be warned by me. There are Countrys on this world,that can demand
 by law to force every passwword for a found encrypted stick or HD. 
 In England and the USA it is common law to demand all password or keys.
 
-So ... Copy the backup to a other country. Far a way froum your own country.
+So ... Copy the backup to a other country. Far a way from your own country.
 
 He, with 20GB space you could store plenty of Tails-Images ?
 
@@ -84,7 +84,7 @@ I would like to use my own Desktop-Wallpaper as a Background in freezed-mode.Is 
 --------------------------------------------------------------------------------------------- 
 
 Replace the predefined file 'swtor-desktop-freezed.jpeg' inside the doc directory with your own
-Desktop-Wallpaper.Of couse you should do this , prior to freezing the system.
+Desktop-Wallpaper.Of course you should do this , prior to freezing the system.
 
 
 
@@ -209,7 +209,7 @@ from TIMEOUT-TB:10 to TIMEOUT-TB:15
 
 I upgraded from Tail 4.29 to Tails 5.0 and now the addon isn't working anymore ?
 ---------------------------------------------------------------------------------
-Yes. I know about this issue. You have to upgrade to the vesion 5.0 $
+Yes. I know about this issue. You have to upgrade to the vesion 5.0 
 Open a terminal in the script folder and execute
 
 ./cli_update.sh 
