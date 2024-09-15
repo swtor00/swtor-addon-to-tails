@@ -105,7 +105,7 @@ Date		Release		Author		Description
                                                 - New Desktop wallpaper   
 						- SSH Server window was not serialized. (fixed)  
 
-05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fiEld from 
+05/01/2020	0.51		swtor00		- Compare the current tails with the new tails-fiedld from 
                                                   the configuration file. Show a warning if the value 
                                                   don't match.
                                                 - Multiple little errors fixed. 
@@ -758,7 +758,10 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                   (Stupid wankers !!!)
                                                 
 
-
+15/09/24	0.83				- It seems that the new Debian 12 and Gnome always start a shell-script
+                                                  maximized on the screen of Tails 6.x. 
+                                                - Now the installation of software works in release 6.7 
+                                                
  
 
   
