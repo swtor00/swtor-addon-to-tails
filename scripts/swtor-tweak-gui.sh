@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.6 or higher                         #
+# OS      : Tails 6.7 or higher                         #
 #                                                       #
 #                                                       #
 # VERSION : 0.83                                        #
@@ -25,7 +25,19 @@ if [ "$TERMINAL_VERBOSE" == "" ];then
    exit 1
 fi
 
+gsettings set org.gnome.desktop.session idle-delay 0
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
+# There is now video-conference software that works on tails ....
+
+gsettings set org.gnome.desktop.privacy disable-camera true
+gsettings set org.gnome.desktop.privacy disable-microphone true
+
+
+gsettings set org.gnome.system.location enabled false
+gsettings set org.gnome.desktop.privacy remember-recent-files false
+ 
 # Starting with Tails 6.X this entry is useless 
 
 #########################################################
