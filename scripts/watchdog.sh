@@ -52,27 +52,26 @@ while [ $menu -gt 0 ]; do
 
          sleep 0.4
          echo $(date) running pid $running  controlled pid $ssh_pid >> ~/Persistent/swtor-addon-to-tails/tmp/pid_loop
-              
-              
+
          if [ "$running" == "$ssh_pid" ] ; then
             if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo watchdog state : online  pid ssh $ssh_pid is running
             fi
          else
 
-             # prior to kill the complete SSH connection, we would like to be sure, 
-             # that the socks5 proxy isn't running longer 
-             # If curl returns a value 0 -> socks5 running 
-             # If curl returns a value !=0 -> socks5 is not running -> We kill the connection                          
-                      
+             # prior to kill the complete SSH connection, we would like to be sure,
+             # that the socks5 proxy isn't running longer
+             # If curl returns a value 0 -> socks5 running
+             # If curl returns a value !=0 -> socks5 is not running -> We kill the connection
+
              curl --socks5 127.0.0.1:9999 -m 2 https://www.google.com > /dev/null 
-             
+
              if [ $? -eq 0 ] ; then
                 if [ $TERMINAL_VERBOSE == "1" ] ; then
                    echo watchdog state is wrong : online pid ssh $ssh_pid is still running
                 fi
-             else 
-             
+             else
+
                  # Our SSH conection to the remote System was terminated unexpected !!
 
                  if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -108,26 +107,26 @@ while [ $menu -gt 0 ]; do
                  rm ~/Persistent/swtor-addon-to-tails/tmp/close__request > /dev/null  2>&1
 
                  xhost - > /dev/null  2>&1
-                 
-                 rm ~/Persistent/swtor-addon-to-tails/tmp/pid_loop > /dev/null 2>&1 
+
+                 rm ~/Persistent/swtor-addon-to-tails/tmp/pid_loop > /dev/null 2>&1
 
                  # And here comes the question ... to kill or not to kill
                  # This is depending on the configuration file
 
                  if [ $AUTOCLOSE_BROWSER="1" ] ; then
-              
+
                     if [ $TERMINAL_VERBOSE == "1" ] ; then
                        echo autoclose is activated !
-                    fi   
-             
+                    fi
+
                     kill -9 $(ps axu | grep chromium | grep settings | awk {'print $2'}) > /dev/null  2>&1
                     kill -9 $(ps axu | grep chromium | grep personal-files | awk {'print $2'}) > /dev/null 2>&1
                  else
                     if [ $TERMINAL_VERBOSE == "1" ] ; then
                        echo autoclose is not activated !
-                    fi                    
+                    fi
                  fi
-             fi       
+             fi
          fi
 
 
@@ -147,8 +146,8 @@ while [ $menu -gt 0 ]; do
             rm ~/Persistent/swtor-addon-to-tails/tmp/close__request
 
             xhost - > /dev/null  2>&1
-             
-            rm ~/Persistent/swtor-addon-to-tails/tmp/pid_loop > /dev/null 2>&1 
+
+            rm ~/Persistent/swtor-addon-to-tails/tmp/pid_loop > /dev/null 2>&1
          fi
       fi
       ((menu++))
