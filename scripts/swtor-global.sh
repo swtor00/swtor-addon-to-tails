@@ -391,7 +391,7 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
 
    # We do install the deb file for the menu right here
 
-   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb
+   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
 
    # We have 3 menu entrys more .... after this little trick with the deb file
 
@@ -437,22 +437,6 @@ return 0
 
 
 test_for_yad() {
-
-end_wait_dialog && sleep 0.5
-# test for installed yad from persistent volume
-
-# if grep -q "status installed yad" /var/log/dpkg.log ; then
-#   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-#   --text="\n\n  yad software is installed !   \n\n" > /dev/null 2>&1)
-#   return 0
-#else
-#    if [ $TERMINAL_VERBOSE == "1" ] ; then
-#       echo >&2 "yad is not installed .... "
-#    fi
-#    zenity --error --width=400 --text "\n\n yad software is not installed ! \n\n"
-#    return 1
-#fi
-
 }
 
 
@@ -569,7 +553,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
            fi
 
          rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
-         rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
+         # rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
          rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
 
          rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
