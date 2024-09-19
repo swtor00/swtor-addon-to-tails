@@ -388,9 +388,14 @@ cd ${global_tmp}
 if [ $BROWSER_SOCKS5 == "1" ] ; then
 
    cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT  > /dev/null 2>&1
+   
+   # We do install the deb file for the menu right here
+  
+   cat password | dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
+   
+   # cleanup 
+   
    cat password | sudo -S apt autoremove --yes  > /dev/null 2>&1
-
-
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "changing iptables firewall to accept socks5 connections over port 9999"
