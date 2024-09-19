@@ -37,7 +37,12 @@ gsettings set org.gnome.desktop.privacy disable-microphone true
 
 gsettings set org.gnome.system.location enabled false
 gsettings set org.gnome.desktop.privacy remember-recent-files false
- 
+
+
+gsettings set org.gnome.desktop.background show-desktop-icons true
+gsettings set org.gnome.nautilus.preferences show-hidden-files true
+
+
 # Starting with Tails 6.X this entry is useless 
 
 #########################################################

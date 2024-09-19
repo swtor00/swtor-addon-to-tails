@@ -196,7 +196,7 @@ Date		Release		Author		Description
                                                 - I have rewritten most of the code of all shell-scripts. 
                                                   By now I have over 100 commits made. 
 
-                                                - After a  weekend full of shell-scripting I'am allmost finished.
+                                                - After a  weekend full of shell-scripting I am almost finished.
 
                                                 - If you type the password wrong or empty ... you have other 2 times
                                                   to correct it.After 3 x times wrong or empty, the script aborts. 
@@ -227,7 +227,7 @@ Date		Release		Author		Description
                                                   BYPASS-SOFTWARE-CHECK:YES
                                                   CHECK-EMPTY-SSH:NO  
                                                   
-                                                  alows us a faster initialisation.If you change the 
+                                                  Alows us a faster initialisation.If you change the 
                                                   values to
                                                   
                                                   BYPASS-SOFTWARE-CHECK:NO
@@ -267,7 +267,7 @@ Date		Release		Author		Description
                                                   This is fixed by now. 
      
                                                 - If you don't have created a fixed profile inside personal-files 
-                                                  it is not longer possible to call the fixed profile form the 
+                                                  it is not longer possible to call the fixed profile from the 
                                                   main menu. The corresponding menu entry 02 will show nothing.
  
                                                 - I found a real ugly bug inside the update-modul of the addon.
@@ -759,18 +759,33 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                   with git
                                                   
 15/09/24	0.83				- It seems that the new Debian 12 and Gnome always start a shell-script
-                                                  maximized on the screen of Tails 6.x. 
+                                                  maximized on the screen of Tails 6.x.This is not nice ... it is ugly ! 
                                                 - Now the installation of software works in release 6.7 
                                                 - command "tails-version" is deprecated.
                                                 
+17/09/24	0.83				- To be honest I like the new Tails 6.7 but with all this new software came 
+                                                  new problems. It is not longer possible to place a shell-script on the 
+                                                  Desktop and to execute it .... 
+						- A secure OS running with activated micro and webcam ? 
+						
+                                                 gsettings set org.gnome.desktop.privacy disable-camera true
+						 gsettings set org.gnome.desktop.privacy disable-microphone true
+                                                 
+                                                 And with this statements are both devices disabled 
+                                                 
+                                                 
+                                                 
+                                                 
+19/09/24	0.83				I found this 2 websites hat also enhance Tails
+
+						https://github.com/Tetrax-10/tails-tweaks
+						https://github.com/TheGeorgeAlexander/torless-tails-terminal
+						
+						
+						Still haven't found a nice way to start the the addon.
+						
+
                                                 
- 
-
-  
-                                                    
-                                               
-
-     
 
 
  

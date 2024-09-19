@@ -1,26 +1,38 @@
 #/bin/bash
 #########################################################
+#########################################################
 # SCRIPT  : cli_tweak.sh                                #
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.7 or higher                         #
 #                                                       #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
-#                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 19-09-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-gsettings set org.gnome.nautilus.preferences executable-text-activation 'launch'
-gsettings set org.gtk.Settings.FileChooser show-hidden true
+gsettings set org.gnome.desktop.session idle-delay 0
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
+
+# There is now video-conference software that works on tails ....
+
+gsettings set org.gnome.desktop.privacy disable-camera true
+gsettings set org.gnome.desktop.privacy disable-microphone true
+
+gsettings set org.gnome.system.location enabled false
+gsettings set org.gnome.desktop.privacy remember-recent-files false
+
+gsettings set org.gnome.desktop.background show-desktop-icons true
+gsettings set org.gnome.nautilus.preferences show-hidden-files true
 
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
@@ -44,9 +56,9 @@ dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pi
 
 # Create symbolic link on desktop
 
-if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
-   ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
-fi
+#if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
+#   ln -s ~/Persistent/scripts/swtor-menu.sh ~/.config/autostart
+#fi
 
 sleep 1
 
