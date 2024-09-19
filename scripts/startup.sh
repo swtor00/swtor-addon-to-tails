@@ -135,34 +135,34 @@ if [ "$BYPASS" == "0" ] ; then
 
 # test for installed yad from persistent volume
 
-sleep 2
-end_wait_dialog
+# sleep 2
+# end_wait_dialog
 
-test_for_yad
-if [ $? -eq 0 ] ; then
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "step04 : yad is installed  ! "
-    fi
-    show_wait_dialog && sleep 0.5
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "yad is not installed !"
-       echo >&2 "startup.sh exiting with error-code 1"
-    fi
-    exit 1
-fi
+# test_for_yad
+# if [ $? -eq 0 ] ; then
+#    if [ $TERMINAL_VERBOSE == "1" ] ; then
+#       echo "step04 : yad is installed  ! "
+#    fi
+#    show_wait_dialog && sleep 0.5
+#else
+#    if [ $TERMINAL_VERBOSE == "1" ] ; then
+#       echo >&2 "yad is not installed !"
+#       echo >&2 "startup.sh exiting with error-code 1"
+#    fi
+#    exit 1
+# fi
 
 
 # test for installed sshpass from persistent volume
 
-end_wait_dialog && sleep 0.5
+end_wait_dialog && sleep 1
 
 test_for_sshpass
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step05 : sshpass is installed  ! "
     fi
-    show_wait_dialog sleep 0.5
+    show_wait_dialog sleep 1
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "sshpass is not installed !"
@@ -174,14 +174,14 @@ fi
 
 # test for installed html2text from persistent volume
 
-end_wait_dialog && sleep 0.5
+end_wait_dialog && sleep 1
 
 test_for_html2text
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step06 : html2text is installed  ! "
     fi
-    show_wait_dialog && sleep 0,5
+    show_wait_dialog && sleep 1
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "html2text is not installed !"
@@ -201,7 +201,7 @@ if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step07 : chromium is installed  ! "
     fi
-    show_wait_dialog && sleep 0.5
+    show_wait_dialog && sleep 1
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "chromium is not installed !"
@@ -213,14 +213,14 @@ fi
 
 # test for installed chromium-sandbox from persistent volume
 
-end_wait_dialog && sleep 0.5
+end_wait_dialog && sleep 1
 
 test_for_chromium-sandbox
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step08 : chromium-sandbox is installed  ! "
     fi
-    show_wait_dialog && sleep 0,5
+    show_wait_dialog && sleep 1
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "chromium-sandbox is not installed !"
@@ -262,7 +262,7 @@ fi
 
 # Ask for the administration password and store it in the tmp directory
 
-end_wait_dialog & sleep 0.5
+end_wait_dialog & sleep 1
 
 test_admin_password
 if [ $? -eq 0 ] ; then
@@ -472,14 +472,14 @@ fi
 
 # test for a frezzed system and comparing the state of a freezed system  with the current Tails
 
-end_wait_dialog && sleep 0.5
+end_wait_dialog && sleep 1
 
 test_for_freezed
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "step11 : system not freezed or if freezed and the two system do match together ! "
     fi
-    show_wait_dialog && sleep 0.5
+    show_wait_dialog && sleep 1
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "freezed system missmatch !"
@@ -510,7 +510,7 @@ fi
 # The last thing to do is to check for udates or not. This depends on the configuration file
 # swtor.cfg.The default value is CHECK-UPDATE:NO
 
-end_wait_dialog && sleep 0.5
+end_wait_dialog && sleep 1
 swtor_update
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then

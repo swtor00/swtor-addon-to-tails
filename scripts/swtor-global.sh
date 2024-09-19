@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.7 or higher                         #
 #                                                       #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 19-09-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -390,6 +390,8 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
    cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT  > /dev/null 2>&1
    cat password | sudo -S apt autoremove --yes  > /dev/null 2>&1
 
+
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo "changing iptables firewall to accept socks5 connections over port 9999"
       echo "autoremove old unused packages"
@@ -432,19 +434,19 @@ test_for_yad() {
 end_wait_dialog && sleep 0.5
 # test for installed yad from persistent volume
 
-if grep -q "status installed yad" /var/log/dpkg.log ; then
-   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-   --text="\n\n  yad software is installed !   \n\n" > /dev/null 2>&1)
-   return 0
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "yad is not installed .... "
-    fi
-    zenity --error --width=400 --text "\n\n yad software is not installed ! \n\n"
-    return 1
-fi
-}
+# if grep -q "status installed yad" /var/log/dpkg.log ; then
+#   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
+#   --text="\n\n  yad software is installed !   \n\n" > /dev/null 2>&1)
+#   return 0
+#else
+#    if [ $TERMINAL_VERBOSE == "1" ] ; then
+#       echo >&2 "yad is not installed .... "
+#    fi
+#    zenity --error --width=400 --text "\n\n yad software is not installed ! \n\n"
+#    return 1
+#fi
 
+}
 
 
 test_for_sshpass() {
@@ -1225,57 +1227,54 @@ if [ -d ~/Persistent/backup/greeter-settings ] ; then
 
       cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
       sudo -S chown -R Debian-gdm:Debian-gdm /live/persistence/TailsData_unlocked/greeter-settings > /dev/null 2>&1
-            
-      if [ $CLI_OUT == "1" ] ; then      
+
+      if [ $CLI_OUT == "1" ] ; then
          echo "Backup files greeter-settings restored"
       fi
    else
-      if [ $CLI_OUT == "1" ] ; then 
+      if [ $CLI_OUT == "1" ] ; then
          echo "greeter-settings not restored .... option is not active on this persistent volume"
-      fi 
+      fi
    fi
 fi
 }
- 
+
 
 
 restore_software() {
 
 # We copy back the configuration for the additional-Software that is stored here
-#
 # tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
-#
+
 
 if [ $CLI_OUT == "1" ] ; then 
    echo "Execute command apt-get update. Please wait !!!! "
    echo "Please do not interrupt here .... This commands need a lot of time !!!"
-fi 
-       
+fi
+
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S cp ~/Persistent/backup/live-additional-software.conf /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S chown tails-persistence-setup:tails-persistence-setup /live/persistence/TailsData_unlocked/live-additional-software.conf > /dev/null 2>&1
-        
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-sudo -S apt-get update > /dev/null 2>&1 
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-sudo -S apt-get install -y chromium > /dev/null 2>&1 
+sudo -S apt-get update > /dev/null 2>&1
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1 
+sudo -S apt-get install -y chromium > /dev/null 2>&1
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-sudo -S apt-get install -y html2text > /dev/null 2>&1 
+sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S apt-get install -y html2text > /dev/null 2>&1
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S apt-get install -y sshpass > /dev/null 2>&1
- 
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-sudo -S apt-get install -y yad > /dev/null 2>&1 
 
-if [ $CLI_OUT == "1" ] ; then 
+
+if [ $CLI_OUT == "1" ] ; then
    echo "Backup files additional-software restored and software installed"
 fi
 }
@@ -1291,7 +1290,7 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
       cd ~/Persistent/scripts
 
       # Was the system during Backup in the state freezed ?
-      # If this is the case ... we are freezing this Tails as well again 
+      # If this is the case ... we are freezing this Tails as well again
 
       echo 1 > ~/Persistent/swtorcfg/freezing
 
@@ -1304,13 +1303,13 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
       else
         if [ $CLI_OUT == "1" ] ; then
            echo state : not-freezed here because backup was not freezed
-        fi  
+        fi
       fi
    else
       echo 1 > ~/Persistent/swtorcfg/no-freezing
       if [ $CLI_OUT == "1" ] ; then
          echo "dotfiles not restored .... option is not active on this persistent volume"
-      fi 
+      fi
    fi
 fi
 }
@@ -1366,5 +1365,5 @@ export -f restore_greeter_screen
 export -f restore_software
 export -f restore_dotfiles
 export -f restore_finish
- 
+
 
