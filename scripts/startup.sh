@@ -155,7 +155,7 @@ if [ "$BYPASS" == "0" ] ; then
 
 # test for installed sshpass from persistent volume
 
-end_wait_dialog && sleep 1
+# end_wait_dialog && sleep 1
 
 test_for_sshpass
 if [ $? -eq 0 ] ; then
@@ -335,7 +335,7 @@ if [ $? -eq 0 ] ; then
     fi
 
     # Do we have greeter-settings active ?
-    # This option is not mandatory
+    # This option is not mandatory ... but very usefull
 
    if grep -q greeter-settings ~/Persistent/swtorcfg/persistence.conf ; then
       if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -433,6 +433,8 @@ if [ $? -eq 0 ] ; then
 
    # Do we have dotfiles active ?
    # This option is not mandatory but highly recommandet
+   # and if you would like to autostart the addon it is
+   # not nice to have -> it is mandatory !!!!
 
    if grep -q dotfiles ~/Persistent/swtorcfg/persistence.conf ; then
       if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -455,8 +457,6 @@ if [ $? -eq 0 ] ; then
       # This volume may was once actived with dotfiles and in the state freezed  ....
       # but by now it is not longer  possible ... missing dotfiles option
       # We have to clean up the mess.
-
-
 
    fi
 
