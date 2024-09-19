@@ -784,7 +784,12 @@ BUILD 20220518					    - Improved watchdog.sh script
 						
 						Still haven't found a nice way to start the the addon.
 						
-
+						Integrated 1 small deb file to integrate 3 entrys for the addon 
+						into to the menu system of Tails 
+						
+						swtor-init 
+						swtor-setup 
+						swtor-menu
                                                 
 
 
