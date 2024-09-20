@@ -437,6 +437,7 @@ return 0
 
 
 test_for_yad() {
+   echo empty
 }
 
 
