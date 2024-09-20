@@ -105,5 +105,5 @@ Comment[zh_TW]=swtor-init
 Exec=/home/amnesia/Persistent/swtor-addon-to-tails/scripts/swtor-init.sh 
 Icon=utilities-terminal
 Terminal=true
-Categories=Utilities;Tails;
+Categories=Addon;
 StartupNotify=true
