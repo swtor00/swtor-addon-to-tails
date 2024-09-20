@@ -793,7 +793,9 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
 
 
- 
+20/09/24					I created 2 deb files to choose from. 
+                                                open Terminal -> debug script -> tails-menu-00.deb 
+                                                no Terminal -> tails-menu-01.deb  
                                                          
 
 
