@@ -391,8 +391,12 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
 
    # We do install the deb file for the menu right here
 
-   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
-
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-00.deb > /dev/null 2>&1
+   else
+      cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
+   fi
+   
    # We have 3 menu entrys more .... after this little trick with the deb file
 
    # cleanup
