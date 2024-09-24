@@ -4,18 +4,18 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.7 or higher                         #
 # TASKS   : run a ssh command with multiple options     #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
 #           given over sshpass.                         #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 25-09-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -147,7 +147,7 @@ if [ $arg1 != "fullssh.sh" ] ; then
 fi
 
 if [ $arg3 != "Compress" ] ; then
-   touch ~/Persistent/swtorcfg/log/ssh-command.log 
+   touch ~/Persistent/swtorcfg/log/ssh-command.log
    chain="-v -E /home/amnesia/Persistent/swtorcfg/log/ssh-command.log -o ServerAliveInterval=10 -"
 else
    touch ~/Persistent/swtorcfg/log/ssh-command.log
