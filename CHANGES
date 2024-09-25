@@ -806,14 +806,20 @@ BUILD 20220518					    - Improved watchdog.sh script
 						there should be only one entry
 						grep: 25306: No such file or directory
 
-  						Confirmed. This was a real ugly bug inside the code.
-  						It only showed up with fullssh-interactive.sh and a asked 
-  						password.
-  						Because I never used this password login over the last 
-  						multiples years, this bug was hiding perfectly !!
-  						
-  						
-  						
+						Confirmed. This was a real ugly bug inside the code.
+						It only showed up with fullssh-interactive.sh and a asked 
+						password.
+						Because I never used this password login over the last 
+						multiples years, this bug was hided perfect !!
+						
+						Testing other connections with password as well ..
+						
+						Of course I found the same bug a second time.
+						Fixed now.
+						
+												
+						
+						
 
 
                                                    

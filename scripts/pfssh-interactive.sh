@@ -4,18 +4,18 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.7 or higher                         #
 # TASKS   : run a ssh command with multiple options     #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
 #           given over sshpass.                         #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 24-09-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -208,8 +208,16 @@ if [ -z "$ssh_pid" ] ; then
       # we loook on the process table after the time out for ssh expires ...
 
       sleep $TIMEOUT_SSH
+      
+      # Fuck off !
+      # This was a hard to find bug inside the code !!!!
+      # right
+      # ssh_pid=$(ps axu | grep ServerAliveInterval | grep -v xxxxxxx | head -1 |awk '{print $2}')
+      # wrong
+      # ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
 
-      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep sshpass  |awk '{print $2}')
+      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep -v xxxxxxx | head -1 |awk '{print $2}')
+      
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 
