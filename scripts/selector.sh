@@ -4,15 +4,15 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.7 or higher                         #
 # TASKS   : select ssh-server to use                    #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 24-05-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -93,13 +93,13 @@ if [ "$selection" == "" ] ; then
 fi
 
 swtor_connected
-if [ $? -eq 0 ] ; then    
+if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "connection check executed"
    fi
-else 
+else
     exit 1
-fi 
+fi
 
 # Right now, we have to decide what kind of connection we would like to use
 
@@ -108,6 +108,7 @@ arg1=$(echo $tmp | awk '{print $1}')
 arg2=$(echo $tmp | awk '{print $2}')
 arg3=$(echo $tmp | awk '{print $3}')
 arg4=$(echo $tmp | awk '{print $4}')
+
 
 if [ $arg1 == "fullssh.sh" ] ; then
    if [ $arg3 == "ssh-id" ] ; then
@@ -121,22 +122,27 @@ if [ $arg1 == "fullssh.sh" ] ; then
    else
        password=$(zenity --entry --text="Please type the password for the selected SSH-Server" --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
+
        chmod 600 /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
        if [ "$password" == "" ] ; then
            zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
            exit 1
        else
            if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo ... we have a password to submit 
+               echo ... we have a password to submit
            fi
        fi
 
        grep fullssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/fullssh.arg
 
        # We start the little python-code to execute
-
+ 
        touch ~/Persistent/swtorcfg/log/ssh-command.log
+
        ./2.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
+
+       # Only to search for a error
+       # ./2.sh > ~/Persistent/swtorcfg/log/ssh-log.log
 
    fi
 fi

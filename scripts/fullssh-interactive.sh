@@ -22,7 +22,6 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
 else
@@ -90,7 +89,6 @@ export XCLOCK_SIZE=$(grep XCLOCK-SIZE ~/Persistent/swtor-addon-to-tails/swtorcfg
 
 export  DEBUGW="0"
 
-
 source ~/Persistent/scripts/swtor-global.sh
 global_init
 if [ $? -eq 0 ] ; then
@@ -109,8 +107,7 @@ fi
 
 rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
 
-
-# Test needet parameters for this script
+# Test parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    then
@@ -126,16 +123,20 @@ if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    arg9=$(cat /home/amnesia/Persistent/swtorcfg/fullssh.arg | awk '{print $9}')
 
 else
+    echo /home/amnesia/Persistent/swtorcfg/fullssh.arg not exit 
+    echo error
     swtor_missing_arg
     exit 1
 fi
+
 
 if [ -f /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg ] ; then
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo We found a password-file that should contain the password to the host
    fi
-  swtor_missing_arg password=$(cat ~/Persistent/swtorcfg/ssh-interactive.arg)
+  swtor_password=$(cat ~/Persistent/swtorcfg/ssh-interactive.arg)
+
 else
     swtor_missing_password
     exit 1
@@ -208,16 +209,29 @@ if [ -z "$ssh_pid" ] ; then
       fi
 
       # We start the ssh-process and send it directly into the background
-
-      sshpass -p $password ssh $chain &
+ 
+      sshpass -p $swtor_password ssh $chain &
 
       show_wait_dialog && sleep 4
 
-      # we loook on the process table after the time out for ssh expires ...
+      # we look on the process table after the time out for ssh expires ...
 
       sleep $TIMEOUT_SSH
 
-      ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
+      # Fuck off !
+      # This was a hard to find bug inside the code !!!!
+      # right
+      # ssh_pid=$(ps axu | grep ServerAliveInterval | grep -v xxxxxxx | head -1 |awk '{print $2}')
+      # wrong
+      # ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
+
+      ssh_pid=$(ps axu | grep ServerAliveInterval | grep -v xxxxxxx | head -1 |awk '{print $2}')
+
+      echo -------------------------
+      echo we watch the following PID
+      echo $ssh_pid
+      echo -------------------------
+
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 

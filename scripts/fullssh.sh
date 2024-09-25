@@ -53,7 +53,7 @@ fi
 if grep -q "TERMINAL-VERBOSE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
      export TERMINAL_VERBOSE="1"
 else
-     export TERMINAL_VERBOSE="1"
+     export TERMINAL_VERBOSE="0"
 fi
 
 if grep -q "BROWSER-SOCKS5:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
