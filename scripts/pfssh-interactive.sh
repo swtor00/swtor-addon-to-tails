@@ -226,6 +226,10 @@ if [ -z "$ssh_pid" ] ; then
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 
+      echo -------------------------
+      echo we watch the following PID
+      echo $ssh_pid
+      echo -------------------------
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid

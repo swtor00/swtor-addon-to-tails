@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.11 or higher                        #
+# OS      : Tails 6.7 or higher                         #
 #                                                       #
-# VERSION : 0.82                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 04-14-2022                                  #
+# DATE    : 26-09-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -85,7 +85,6 @@ export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg
 export XCLOCK_SIZE=$(grep XCLOCK-SIZE ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 
 export  DEBUGW="0"
-
 
 
 source ~/Persistent/scripts/swtor-global.sh
@@ -241,6 +240,11 @@ if [ -z "$ssh_pid" ] ; then
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh |awk '{print $2}')
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
+
+      echo -------------------------
+      echo we watch the following PID
+      echo $ssh_pid
+      echo -------------------------
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
