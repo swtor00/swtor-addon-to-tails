@@ -64,7 +64,7 @@ while [ $menu -gt 0 ]; do
              # If curl returns a value 0 -> socks5 running
              # If curl returns a value !=0 -> socks5 is not running -> We kill the connection
 
-             curl --socks5 127.0.0.1:9999 -m 2 https://www.google.com > /dev/null 
+             curl --socks5 127.0.0.1:9999 -m 8 https://www.google.com  > /dev/null 2>&1
 
              if [ $? -eq 0 ] ; then
                 if [ $TERMINAL_VERBOSE == "1" ] ; then

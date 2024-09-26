@@ -108,7 +108,7 @@ fi
 rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
 
 
-# Test needet parameters for this script
+# Test parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/fullssh.arg ]
    then
@@ -182,7 +182,7 @@ chain+=$arg9
 
 if [ $arg8 == "clock" ]
    then
-   xhost +
+   xhost + > /dev/null
    chain+=" xclock -geometry "$XCLOCK_SIZE"x"$XCLOCK_SIZE"+85+5 &&  pkill ssh"
 fi
 
@@ -195,6 +195,11 @@ if [ -z "$ssh_pid" ] ; then
          echo starting ssh command
          echo $chain
       fi
+
+      echo used command here
+      echo ------------------------------------------
+      echo ssh $chain
+      echo ------------------------------------------
 
       # We start the ssh-process and send it directly into the background
 
@@ -210,6 +215,10 @@ if [ -z "$ssh_pid" ] ; then
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 
+      echo -------------------------
+      echo we watch the following PID
+      echo $ssh_pid
+      echo -------------------------
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid

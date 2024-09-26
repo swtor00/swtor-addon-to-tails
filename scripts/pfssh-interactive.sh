@@ -199,6 +199,11 @@ if [ -z "$ssh_pid" ] ; then
          echo $chain
       fi
 
+      echo used command here
+      echo ------------------------------------------
+      echo sshpass -p $password ssh $chain
+      echo ------------------------------------------
+
       # We start the ssh-process and send it directly into the background
 
       sshpass -p $password ssh $chain  &
@@ -208,7 +213,7 @@ if [ -z "$ssh_pid" ] ; then
       # we loook on the process table after the time out for ssh expires ...
 
       sleep $TIMEOUT_SSH
-      
+
       # Fuck off !
       # This was a hard to find bug inside the code !!!!
       # right
@@ -217,13 +222,15 @@ if [ -z "$ssh_pid" ] ; then
       # ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep -v xxxxxxx | head -1 |awk '{print $2}')
-      
+
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
+
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
       fi
+
 
       if [ -z "$ssh_pid" ] ; then
          if [ $TERMINAL_VERBOSE == "1" ] ; then

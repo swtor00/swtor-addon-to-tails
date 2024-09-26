@@ -208,8 +208,13 @@ if [ -z "$ssh_pid" ] ; then
          echo $chain
       fi
 
+      echo used command here
+      echo ------------------------------------------
+      echo sshpass -p $swtor_password ssh $chain
+      echo ------------------------------------------
+
       # We start the ssh-process and send it directly into the background
- 
+
       sshpass -p $swtor_password ssh $chain &
 
       show_wait_dialog && sleep 4

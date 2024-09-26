@@ -817,11 +817,22 @@ BUILD 20220518					    - Improved watchdog.sh script
 						Of course I found the same bug a second time.
 						Fixed now.
 						
-												
 						
+						Increased the timeout value of the Watchdog-Script.
+						And I forgot to redirect the error-channel 2 as well.
+				
+						curl --socks5 127.0.0.1:9999 -m 8 https://www.googe.com  > /dev/null 2>&1						
 						
+26/09/24					Very trange ssh-error 
+						client_loop: send disconnect: Broken pipe						
 
-
+						-vvv -o ServerAliveInterval=10 -C42N -p22 -D 9999
+						
+						This is the default connection string since multiple years.
+						
+						Sometime you are searching for a error inside the code ... 
+						and you found btw a other bug.
+						
                                                    
 
 
