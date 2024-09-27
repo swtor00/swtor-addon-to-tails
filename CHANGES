@@ -817,7 +817,6 @@ BUILD 20220518					    - Improved watchdog.sh script
 						Of course I found the same bug a second time.
 						Fixed now.
 						
-						
 						Increased the timeout value of the Watchdog-Script.
 						And I forgot to redirect the error-channel 2 as well.
 				
@@ -831,8 +830,10 @@ BUILD 20220518					    - Improved watchdog.sh script
 						This is the default connection string since multiple years.
 						
 						Sometime you are searching for a error inside the code ... 
-						and you found btw a other bug.
+						and you found a other bug.
 						
+27/09/24					The error message for deactivated administrator has changed.
+
                                                    
 
 

@@ -103,8 +103,8 @@ fi
 # Creating the lockdirectory ....
 
 lockdir=~/Persistent/scripts/init.lock
-if mkdir "$lockdir" > /dev/null 2>&1 then
-
+if mkdir "$lockdir" > /dev/null 2>&1
+   then
        # the directory did not exist, but was created successfully
 
        if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -122,6 +122,47 @@ else
        zenity --error --width=600 --text="Lockdirectory for initialisation can not be created !"
        exit 1
 fi
+
+
+# If we don't have a password on startup .... we do exit right now
+
+echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
+if grep -q "Sorry" test_admin ; then
+   rm test_admin > /dev/null 2>&1
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+fi
+
+auto_init=1
+connect=0
+while [ $auto_init -gt 0 ]; do
+      sleep 1
+
+      curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
+
+      if [ $? -eq 0 ] ; then
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo tor is ready !
+         fi
+         connect=1
+         auto_init=0
+      else
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo tor is not ready !
+         fi
+         echo $auto_init
+         ((auto_init++))
+      fi
+      echo $auto_init > /dev/null   2>&1
+
+      # We await for about 5 min.to a valid connection ....
+      # After this time, we close the script !!!!
+
+      if [ $auto_init -eq 300 ]; then
+         auto_init=0
+         connect=0
+      fi
+done
 
 
 
