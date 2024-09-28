@@ -168,7 +168,6 @@ while [ $auto_init -gt 0 ]; do
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo tor is not ready !
          fi
-         echo $auto_init
          ((auto_init++))
       fi
 
@@ -185,15 +184,16 @@ while [ $auto_init -gt 0 ]; do
       fi
 done
 
-if [ $connect == "0" ] ; then
+if [ $connect == "1" ] ; then
 
    # We kill the connection Window ......
 
-   ps_to_kill=$(ps axu | grep amnesia | grep "dist-packages/tca/application.py" | awk {'print $2'})
-   kill -9 $ps_to_kill 
+   ps_to_kill=$(ps axu | grep amnesia | grep "/usr/bin/python3 /usr/lib/python3/dist-packages/tca/application.py" | awk {'print $2'})
+   kill -9 $ps_to_kill 2>&1 >/dev/null
 
-   echo connection window kiled !!!
-
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo connection window kiled !!!
+   fi
 
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
