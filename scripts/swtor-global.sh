@@ -189,7 +189,7 @@ cd ${global_tmp}
 
 echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
 
-if grep -q "Sorry" test_admin ; then
+if grep -q "user amnesia is not allowed" test_admin ; then
 
      rm test_admin > /dev/null 2>&1
 

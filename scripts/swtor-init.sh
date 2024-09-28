@@ -124,18 +124,36 @@ else
 fi
 
 
+
 # If we don't have a password on startup .... we do exit right now
 
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo Password test
+fi
+
 echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
-if grep -q "Sorry" test_admin ; then
+
+if grep -q "provided" test_admin ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo password asked
+   fi
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo no password set
+   fi
    rm test_admin > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
    exit 1
 fi
 
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo test for password is done
+fi
+
 auto_init=1
 connect=0
 while [ $auto_init -gt 0 ]; do
+
       sleep 1
 
       curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
@@ -153,7 +171,10 @@ while [ $auto_init -gt 0 ]; do
          echo $auto_init
          ((auto_init++))
       fi
-      echo $auto_init > /dev/null   2>&1
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo $auto_init
+      fi
 
       # We await for about 5 min.to a valid connection ....
       # After this time, we close the script !!!!
@@ -164,6 +185,21 @@ while [ $auto_init -gt 0 ]; do
       fi
 done
 
+if [ $connect == "0" ] ; then
+
+   # We kill the connection Window ......
+
+   ps_to_kill=$(ps axu | grep amnesia | grep "dist-packages/tca/application.py" | awk {'print $2'})
+   kill -9 $ps_to_kill 
+
+   echo connection window kiled !!!
+
+
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo timeout readched and no connection was made !
+   fi
+fi
 
 
 # remove lockdir ...
