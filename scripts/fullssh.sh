@@ -156,14 +156,31 @@ else
     chain+="2 "
 fi
 
-
 chain+="-p"
 chain+=$arg6
 
 # LocalPort
 
-chain+=" -D "
-chain+=$arg7
+
+# We have to decide what we would like to to 
+# with the ssh connection
+# local socks5 sever means ssh command 
+# -D 9999
+# the other configuration is 
+# port redirection 
+# that change the ssh-command to
+# -L 
+
+chrlen=${#arg7}
+if [ $chrlen -gt 6 ]; then
+   chain+=" -L "
+   chain+=$arg7
+else 
+   chain+=" -D "
+   chain+=$arg7
+fi
+
+
 
 if [ $arg8 == "noshell" ]
    then
