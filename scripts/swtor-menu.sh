@@ -131,65 +131,21 @@ fi
 # If you delete the file swtor_init with the command rm ~/swtor_init the complete
 # process will start over again.
 
+cd /home/amnesia/scripts/swtor-init.sh
 
-if [ $TERMINAL_VERBOSE == "1" ] ; then
-   echo starting initial-process of the addon
-fi
+# Only on exeuction of swtor-init.sh  with 0 failures ... ~/swtor_init exist
 
-sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
- --text="\n\n                           Initialisation has started !                           \n\n" > /dev/null 2>&1)
-
-
-# After the initaliation we can use all the functions from swtor-global.sh
-
-show_wait_dialog && sleep 1.5
-
-if [ "$DEBUGW" == "1" ] ; then
-   pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
-   echo wait_dialog 01 with PID $pid_to_kill created
-fi
 
 if [ ! -f ~/swtor_init ] ; then
-
-   # This script is run once of startup
-
-   ~/Persistent/scripts/init-swtor.sh
-   if [ ! -f ~/swtor_init ] ; then
-
-         if [ "$DEBUGW" == "1" ] ; then
-            pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
-            echo wait_dialog from init-swtor_init with PID $pid_to_kill will be killed
-         fi
-
-         end_wait_dialog && sleep 0.5
-         sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
           --text="\n\n    Error during the initialisation of the addon !  \n\n " > /dev/null 2>&1)
-
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo >&2 "initial-process swtor-init.sh has terminated with error-code 1"
-            echo >&2 "swtor-menu.sh exiting with error-code 1"
-         fi
-         rmdir $lockdir > /dev/null 2>&1
          swtor_cleanup
          exit 1
-   fi
-
 else
 
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo initial-process has ben executed successfully
     fi
-
-    if [ "$DEBUGW" == "1" ] ; then
-       pid_to_kill=$(ps axu | grep zenity | grep wait | awk {'print $2'})
-       echo wait_dialog 01 with PID $pid_to_kill will be killed
-    fi
-
-    end_wait_dialog && sleep 1.5
-    killall zenity > /dev/null 2>&1
-
-    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-    --text="\n\n                          Initialisation is now complete                          \n\n" > /dev/null 2>&1)
 
 fi
 
@@ -198,20 +154,6 @@ fi
 cd ~/Persistent/scripts/
 ./watchdog.sh & > /dev/null 2>&1
 sleep 0.3
-
-sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n                          Watchdog script is started                          \n\n" > /dev/null 2>&1)
-
-# show version of script prior to show menu
-
-if [ $TERMINAL_VERBOSE == "1" ] ; then
-   echo show info about addon
-fi
-
-./swtor-about & 2>&1 > /dev/null
-sleep 3
-pkill swtor-about
-killall zenity > /dev/null 2>&1
 
 # Build main menu
 
@@ -337,7 +279,7 @@ pkill watchdog.sh
 
 # Increment startup value inside ~/Persistent/swtor-addon-to-tails/setup by one 
 
-oldnum=$(cat ~/Persistent/swtor-addon-to-tails/setup)  
+oldnum=$(cat ~/Persistent/swtor-addon-to-tails/setup) 
 newnum=`expr $oldnum + 1`
 echo $newnum > ~/Persistent/swtor-addon-to-tails/setup
 
