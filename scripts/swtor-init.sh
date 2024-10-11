@@ -104,6 +104,12 @@ if [ ! -f ~/swtor_init ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "swtor-init.sh has never run !"
     fi
+    if [ -z "$1" ] ; then 
+       # we are placed inside the autostart folder 
+       wait_until_connection="1" 
+    else 
+       wait_until_connection="0" 
+    fi 
 else
    exit 1
 fi
@@ -174,10 +180,18 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo test for password is done
 fi
 
+
+
+
+# Only execute this part if we are started over autostart folder
+
+if [ $wait_until_connection == "1" ] ; then 
+
+echo wait for connection : $wait_until_connection
 auto_init=1
 connect=0
 while [ $auto_init -gt 0 ]; do
-
+      echo ....\n 
       sleep 1
 
       curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
@@ -213,7 +227,11 @@ if [ $connect == "1" ] ; then
    # We kill the connection Window ...... if it is on the main-screen
 
    ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
-
+   
+   echo -----------------
+   echo +$ps_to_kill+ 
+   echo -----------------
+   
    if test -z "$ps_to_kill"; then
       echo "nothing to kill .... "
    else
@@ -230,6 +248,9 @@ else
    rmdir $lockdir 2>&1 >/dev/null
    exit 1
 fi
+
+fi
+
 
 menu=1
 while [ $menu -gt 0 ]; do
@@ -255,10 +276,12 @@ while [ $menu -gt 0 ]; do
              fi
              menu=0
              correct=1
-             echo --------------
-             echo mark 1 $(date)
-             echo password is correct
-             echo --------------
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo --------------
+                echo mark 1 $(date)
+                echo password is correct
+                echo --------------
+             fi    
              break
          else
              if [ "$menu" == "3" ] ; then
@@ -482,10 +505,12 @@ else
 
 fi
 
-echo --------------
-echo mark 2 $(date)
-echo all settings are scanned ...
-echo --------------
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo --------------  
+   echo mark 2 $(date)
+   echo all settings are scanned ...
+   echo --------------
+ fi
 
 cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
 cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT  > /dev/null 2>&1
@@ -498,10 +523,12 @@ else
    cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
 fi
 
-echo --------------
-echo mark 3 $(date)
-echo firewall changed and menu installed
-echo --------------
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo --------------
+   echo mark 3 $(date)
+   echo firewall changed and menu installed
+   echo --------------
+fi
 
 
 if [ $CHECK_UPDATE == "1" ] ; then
@@ -527,38 +554,40 @@ if [ $CHECK_UPDATE == "1" ] ; then
           echo "no updates found to install "
           echo "both version are equal  ... "
       fi
-      echo --------------
-      echo mark 4 $(date)
-      echo checking for updates is active no update found to install !
-      echo --------------
-   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo --------------
+         echo mark 4 $(date)
+         echo checking for updates is active no update found to install !
+         echo --------------
+      fi
+else
       if [ $TERMINAL_VERBOSE == "1" ] ; then
           echo "we found a difference ... "
       fi
       cd ~/Persistent/swtor-addon-to-tails/scripts
-      echo --------------
-      echo mark 4 $(date)
-      echo checking for updates is active and we found a update
-      echo --------------
-      # ./update.sh
+      
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo --------------
+         echo mark 4 $(date)
+         echo checking for updates is active and we found a update
+         echo --------------
+      fi   
+      ./update.sh
       rmdir $lockdir 2>&1 >/dev/null
       exit 1
    fi
-
 else
-   echo --------------
-   echo mark 4 $(date)
-   echo checking for updates is inactive
-   echo --------------
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo --------------
+      echo mark 4 $(date)
+      echo checking for updates is inactive
+      echo --------------
+   fi   
 fi
 
 if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    cat /etc/os-release > ~/Persistent/swtor-addon-to-tails/tmp/current-system
    if diff -q ~/Persistent/swtorcfg/freezed.cgf ~/Persistent/swtor-addon-to-tails/tmp/current-system ; then
-      echo --------------
-      echo mark 5 $(date)
-      echo OS is freezed and the same release as it was freezed
-      echo --------------
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."
       fi
@@ -587,16 +616,16 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
        esac
     fi
 else
-    echo --------------
-    echo mark 5 $(date)
-    echo system is not freezed
-    echo --------------
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo --------------
+       echo mark 5 $(date)
+       echo system is not freezed
+       echo --------------
+    fi    
 fi
-
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n                       Initialisation is complete                          \n\n" > /dev/null 2>&1)
-
 
 # remove lockdir ...
 

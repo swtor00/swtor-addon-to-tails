@@ -20,9 +20,7 @@
 
 if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
-   # rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
    rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
-
    rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
 else
    echo "unfreezing is not possible. This system is not freezed"
@@ -30,7 +28,6 @@ else
    # but wait .. there is one option we should think about
    # the user has removed dotfiles option and the system is in state freezed
 
-   # rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
    rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
    rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
 

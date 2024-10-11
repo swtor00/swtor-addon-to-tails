@@ -131,10 +131,10 @@ fi
 # If you delete the file swtor_init with the command rm ~/swtor_init the complete
 # process will start over again.
 
-cd /home/amnesia/scripts/swtor-init.sh
+cd ~/Persistent/scripts 
+./swtor-init.sh yes
 
 # Only on exeuction of swtor-init.sh  with 0 failures ... ~/swtor_init exist
-
 
 if [ ! -f ~/swtor_init ] ; then
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
