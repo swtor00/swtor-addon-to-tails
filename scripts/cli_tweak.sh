@@ -24,6 +24,7 @@ gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
 # There is now video-conference software that works on tails ....
+# And why is this setting enabled ?????
 
 gsettings set org.gnome.desktop.privacy disable-camera true
 gsettings set org.gnome.desktop.privacy disable-microphone true
@@ -54,13 +55,13 @@ fi
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
 
-# Create symbolic link on desktop
+cd ~/.config > /dev/null 2>&1
+mkdir autostart > /dev/null 2>&1
+cd autostart
+cp /usr/share/applications/swtor-init.desktop .
+ 
 
-#if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
-#   ln -s ~/Persistent/scripts/swtor-menu.sh ~/.config/autostart
-#fi
 
-sleep 1
 
 
 

@@ -100,6 +100,15 @@ else
     exit 1
 fi
 
+if [ ! -f ~/swtor_init ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "swtor-init.sh has never run !"
+    fi
+else
+   exit 1
+fi
+
+
 # Creating the lockdirectory ....
 
 lockdir=~/Persistent/scripts/init.lock
@@ -539,7 +548,7 @@ if [ $CHECK_UPDATE == "1" ] ; then
 else
    echo --------------
    echo mark 4 $(date)
-   echo checking for updates is inactive 
+   echo checking for updates is inactive
    echo --------------
 fi
 
@@ -548,7 +557,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    if diff -q ~/Persistent/swtorcfg/freezed.cgf ~/Persistent/swtor-addon-to-tails/tmp/current-system ; then
       echo --------------
       echo mark 5 $(date)
-      echo OS is freezed and the same release as it was freezed  
+      echo OS is freezed and the same release as it was freezed
       echo --------------
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."
@@ -580,20 +589,20 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 else
     echo --------------
     echo mark 5 $(date)
-    echo system is not freezed 
+    echo system is not freezed
     echo --------------
 fi
 
 
-
-
-
-
+sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n                       Initialisation is complete                          \n\n" > /dev/null 2>&1)
 
 
 # remove lockdir ...
 
 rmdir $lockdir 2>&1 >/dev/null
 
-exit 0
 
+echo 1 > ~/swtor_init
+
+exit 0

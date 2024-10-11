@@ -193,7 +193,6 @@ else
 
 fi
 
-
 # We are ready to start the watchdog script in the background
 
 cd ~/Persistent/scripts/
