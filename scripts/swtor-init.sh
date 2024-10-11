@@ -124,8 +124,23 @@ else
 fi
 
 
+if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
+   sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
+    --text="\n\n                Please execute the command \"setup-swtor.sh\" first !                  \n\n" > /dev/null 2>&1)
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo "step01 : setup-swtor has ben executed once ....  "
+    fi
+fi
 
-# If we don't have a password on startup .... we do exit right now
+
+
+
+
+
+# If we don't have a password on startup .... we show a error and do exit the script  
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo Password test
@@ -143,6 +158,10 @@ else
    fi
    rm test_admin > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
+   zenity --error --width=600 \
+     --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
+    > /dev/null 2>&1
+   echo "no password set on startup of Tails" 
    exit 1
 fi
 
@@ -186,20 +205,352 @@ done
 
 if [ $connect == "1" ] ; then
 
-   # We kill the connection Window ......
+   # We kill the connection Window ...... if it is on the main-screen
 
-   ps_to_kill=$(ps axu | grep amnesia | grep "/usr/bin/python3 /usr/lib/python3/dist-packages/tca/application.py" | awk {'print $2'})
-   kill -9 $ps_to_kill 2>&1 >/dev/null
-
+   ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
+   
+   if test -z "$ps_to_kill"; then
+      echo "nothing to kill .... "
+   else
+      kill -9 $ps_to_kill 2>&1 >/dev/null
+   fi
+   
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo connection window kiled !!!
    fi
-
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo timeout readched and no connection was made !
+      echo timeout reached and no connection was made !
    fi
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
 fi
+
+menu=1
+while [ $menu -gt 0 ]; do
+      password=$(zenity --entry --text="Please type the Tails administration-password !" --title=Password --hide-text)
+      echo $password > /home/amnesia/Persistent/swtor-addon-to-tails/tmp/password
+      if [ "$password" == "" ] ; then
+         if [ "$menu" == "3" ] ; then
+             menu=0
+             zenity --error --width=400 --text "\n\nThe password was not correct for 3 times ! \n\n"
+             break
+         else
+             zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo >&2 "password was empty !"
+             fi
+         fi
+      else
+          cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
+         /home/amnesia/Persistent/swtor-addon-to-tails/scripts/testroot.sh >/dev/null 2>&1
+          if [ -s password_correct ] ; then
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                  echo >&2 "the provided administration password was correct"
+             fi
+             menu=0
+             correct=1
+             echo --------------
+             echo mark 1 $(date)
+             echo password is correct
+             echo --------------
+             break
+         else
+             if [ "$menu" == "3" ] ; then
+                  menu=0
+                  zenity --error --width=400 --text "\n\nYou have to restart again. The password was 3 times wrong ! \n\n"
+                  break
+              else
+                  if [ $TERMINAL_VERBOSE == "1" ] ; then
+                     echo >&2 "password was not correct"
+                  fi
+                  zenity --error --width=400 --text "\n\nThe password was not correct ! \n\n"
+             fi
+         fi
+
+       fi
+      ((menu++))
+done
+
+if [ "$correct" == "" ] ; then
+   rm password > /dev/null 2>&1
+   rm password_correct > /dev/null 2>&1
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+else
+   rm password_correct > /dev/null 2>&1
+fi
+
+# We have a valid password .... we do continue ....
+# It is better to parse the persistent.conf on every startup here
+# than inside setup.sh. It is faster and cleaner.
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent/swtorcfg > /dev/null 2>&1
+
+cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+sudo -S chmod 666 /home/amnesia/Persistent/swtorcfg/persistence.conf > /dev/null 2>&1
+
+# If any of the mandatory options for Persistent have changed from on to off ..
+# We have a error and stop further execution of the script
+
+# Mandatory : openssh-client
+
+if grep -q openssh-client ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo >&2 "ssh settings are present on this persistent volume"
+   fi
+else
+   zenity --error --width=600 \
+   --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+   > /dev/null 2>&1
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+fi
+
+
+# Mandatory : additional software part01
+
+if grep -q /var/cache/apt/archives  ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "additional-software is  present on this persistent volume"
+   fi
+else
+   zenity --error --width=600 \
+   --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+   > /dev/null 2>&1
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+fi
+
+# Mandatory : additional software part02
+
+if grep -q /var/lib/apt/lists ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "additional-software is  present on this persistent volume"
+   fi
+else
+   zenity --error --width=600 \
+   --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+   > /dev/null 2>&1
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+fi
+
+# Do we have network-connections active ?
+# This option is not mandatory
+
+if grep -q system-connection ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo >&2 "network settings are present on this persistent volume"
+   fi
+    echo 1 > ~/Persistent/swtorcfg/p_system-connection.config
+ else
+    rm  ~/Persistent/swtorcfg/p_system-connection.config > /dev/null 2>&1
+fi
+
+
+# Do we have greeter-settings active ?
+# This option is not mandatory ... but very usefull
+
+if grep -q greeter-settings ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "greeter-settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_greeter.config
+else
+   rm ~/Persistent/swtorcfg/p_greeter.config > /dev/null 2>&1
+fi
+
+# Do we have Bookmarks active ?
+# This option is not mandatory
+
+if grep -q bookmarks ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "bookmarks are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_bookmarks.config
+else
+   rm ~/Persistent/swtorcfg/p_bookmarks.config > /dev/null 2>&1
+fi
+
+# Do we have cups active ?
+# This option is not mandatory
+
+if grep -q cups-configuration ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "cups settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_cups-settings.config
+else
+   rm ~/Persistent/swtorcfg/p_cups-settings.config > /dev/null 2>&1
+fi
+
+# Do we have thunderbird active ?
+# This option is not mandatory
+
+if grep -q thunderbird ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "thunderbird settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_thunderbird.config
+else
+   rm  ~/Persistent/swtorcfg/p_thunderbird.config > /dev/null 2>&1
+fi
+
+# Do we have gnupg active ?
+# This option is not mandatory
+
+if grep -q gnupg ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "gnupg settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_gnupg.config
+else
+   rm ~/Persistent/swtorcfg/p_gnupg.config  > /dev/null 2>&1
+fi
+
+# Do we have electrum active ?
+# This option is not mandatory
+
+if grep -q electrum ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "electrum settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_electrum.config
+else
+   rm ~/Persistent/swtorcfg/p_electrum.config > /dev/null 2>&1
+fi
+
+# Do we have pidgin active ?
+# This option is not mandatory
+
+if grep -q pidgin ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "pidgin settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_pidgin.config
+else
+   rm ~/Persistent/swtorcfg/p_pidgin.config > /dev/null 2>&1
+fi
+
+
+# Do we have tca active ?
+# This option is not mandatory
+
+if grep -q tca ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "tca settings are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/p_tca.config
+else
+   rm ~/Persistent/swtorcfg/p_tca.config > /dev/null 2>&1
+fi
+
+
+# Do we have dotfiles active ?
+# This option is not mandatory but highly recommandet
+# and if you would like to autostart the addon it is
+# not nice to have -> it is mandatory !!!!
+
+if grep -q dotfiles ~/Persistent/swtorcfg/persistence.conf ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo >&2 "dotfiles are present on this persistent volume"
+   fi
+   echo 1 > ~/Persistent/swtorcfg/freezing
+   echo 1 > ~/Persistent/swtorcfg/p_dotfiles.config
+
+   # The user may have jumped from non dotfiles to activated dotfiles
+
+   rm  ~/Persistent/swtorcfg/no-freezing > /dev/null 2>&1
+
+else
+
+   rm ~/Persistent/swtorcfg/freezing > /dev/null 2>&1
+   rm ~/Persistent/swtorcfg/p_dotfiles.config > /dev/null 2>&1
+
+   echo 1 > ~/Persistent/swtorcfg/no-freezing
+
+   # This volume may was once actived with dotfiles and in the state freezed  ....
+   # but by now it is not longer  possible ... missing dotfiles option
+   # We have to clean up the mess.
+
+fi
+
+echo --------------
+echo mark 2 $(date)
+echo all settings are scanned ...
+echo --------------
+
+cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
+cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT  > /dev/null 2>&1
+
+# We do install the deb file for the Tailsmenu right here
+
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-00.deb > /dev/null 2>&1
+else
+   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
+fi
+
+echo --------------
+echo mark 3 $(date)
+echo firewall changed and menu installed
+echo --------------
+
+
+if [ $CHECK_UPDATE == "1" ] ; then
+   if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
+      zenity --error --width=400 --text "\n\n    Houston, we have a problem !  \n    The .git directory was removed ! \n\n"
+      rmdir $lockdir 2>&1 >/dev/nul
+      exit 1  
+   fi
+   
+   cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
+   wget -O REMOTE-VERSION https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/swtorcfg/swtor.cfg > /dev/null 2>&1
+
+   REMOTE=$(grep "SWTOR-VERSION" REMOTE-VERSION | sed 's/[A-Z:-]//g')
+   LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
+   
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo REMOTE-VERSION [$REMOTE]
+       echo LOCAL-VERSION [$LOCAL]
+   fi
+
+   if [ "$REMOTE" == "$LOCAL" ] ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo "no updates found to install "
+          echo "both version are equal  ... "
+      fi
+      echo --------------
+      echo mark 4 $(date)
+      echo checking for updates is active no update found to install !  
+      echo --------------
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo "we found a difference ... "
+      fi
+      cd ~/Persistent/swtor-addon-to-tails/scripts
+      
+      echo --------------
+      echo mark 4 $(date)
+      echo checking for updates is active and we found a update  
+      echo --------------
+      
+      # ./update.sh
+    
+      rmdir $lockdir 2>&1 >/dev/null
+      exit 1
+   fi
+
+else
+   echo --------------
+   echo mark 4 $(date)
+   echo checking for updates is inactive 
+   echo --------------
+fi
+
+
 
 
 # remove lockdir ...

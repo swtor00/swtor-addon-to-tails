@@ -294,6 +294,8 @@ while [ $menu -gt 0 ]; do
       # We have 3 shoots to give the correct password or we have to restart the script ...
 
       password=$(zenity --entry --text="Please type the curent Tails administration-password ?" --title=Password --hide-text)
+      pwd
+      echo $password
       echo $password > password
 
       if [ "$password" == "" ] ; then

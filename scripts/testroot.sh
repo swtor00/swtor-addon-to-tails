@@ -16,9 +16,10 @@
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
-#########################################################
+#########################################################  
+cd ~/Persistent/swtor-addon-to-tails/tmp
 
-cd ${global_tmp}
+echo current directory : $(pwd)
 
 cat password | sudo -S echo "1_234" > password_correct
-
+exit 
