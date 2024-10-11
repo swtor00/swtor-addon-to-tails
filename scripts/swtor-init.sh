@@ -135,12 +135,7 @@ else
     fi
 fi
 
-
-
-
-
-
-# If we don't have a password on startup .... we show a error and do exit the script  
+# If we don't have a password on startup .... we show a error and do exit the script
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo Password test
@@ -152,6 +147,7 @@ if grep -q "provided" test_admin ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo password asked
    fi
+   rm test_admin 2>&1
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo no password set
@@ -208,13 +204,13 @@ if [ $connect == "1" ] ; then
    # We kill the connection Window ...... if it is on the main-screen
 
    ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
-   
+
    if test -z "$ps_to_kill"; then
       echo "nothing to kill .... "
    else
       kill -9 $ps_to_kill 2>&1 >/dev/null
    fi
-   
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo connection window kiled !!!
    fi
@@ -503,15 +499,15 @@ if [ $CHECK_UPDATE == "1" ] ; then
    if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
       zenity --error --width=400 --text "\n\n    Houston, we have a problem !  \n    The .git directory was removed ! \n\n"
       rmdir $lockdir 2>&1 >/dev/nul
-      exit 1  
+      exit 1
    fi
-   
+
    cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
    wget -O REMOTE-VERSION https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/swtorcfg/swtor.cfg > /dev/null 2>&1
 
    REMOTE=$(grep "SWTOR-VERSION" REMOTE-VERSION | sed 's/[A-Z:-]//g')
    LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
-   
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo REMOTE-VERSION [$REMOTE]
        echo LOCAL-VERSION [$LOCAL]
@@ -524,21 +520,18 @@ if [ $CHECK_UPDATE == "1" ] ; then
       fi
       echo --------------
       echo mark 4 $(date)
-      echo checking for updates is active no update found to install !  
+      echo checking for updates is active no update found to install !
       echo --------------
    else
       if [ $TERMINAL_VERBOSE == "1" ] ; then
           echo "we found a difference ... "
       fi
       cd ~/Persistent/swtor-addon-to-tails/scripts
-      
       echo --------------
       echo mark 4 $(date)
-      echo checking for updates is active and we found a update  
+      echo checking for updates is active and we found a update
       echo --------------
-      
       # ./update.sh
-    
       rmdir $lockdir 2>&1 >/dev/null
       exit 1
    fi
@@ -549,6 +542,51 @@ else
    echo checking for updates is inactive 
    echo --------------
 fi
+
+if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
+   cat /etc/os-release > ~/Persistent/swtor-addon-to-tails/tmp/current-system
+   if diff -q ~/Persistent/swtorcfg/freezed.cgf ~/Persistent/swtor-addon-to-tails/tmp/current-system ; then
+      echo --------------
+      echo mark 5 $(date)
+      echo OS is freezed and the same release as it was freezed  
+      echo --------------
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo >&2 "this addon was freezed with the same version of tails that is currently used .."
+      fi
+   else
+       zenity --question --width=600 \
+       --text="\n\nWe found a real problem with the current configuration.\nThis system was freezed with a older version of Tails.\nWould you like to unfreeze here and make a reboot ?\n\nIf your answer is Yes please do close all your applications prior to press Yes" > /dev/null 2>&1
+
+       case $? in
+         0)
+
+         rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
+         rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
+
+         rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
+
+         rmdir ~/Persistent/scripts/menu.lock 2>&1 >/dev/null
+         cd ~/Persistent/swtor-addon-to-tails/tmp
+         cat password | sudo -S shutdown -r now
+
+         ;;
+
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo "no reboot choosen ..."
+            fi
+         ;;
+       esac
+    fi
+else
+    echo --------------
+    echo mark 5 $(date)
+    echo system is not freezed 
+    echo --------------
+fi
+
+
+
+
 
 
 
