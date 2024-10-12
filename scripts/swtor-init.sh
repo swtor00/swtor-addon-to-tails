@@ -194,7 +194,9 @@ if [ $wait_until_connection == "1" ] ; then
 auto_init=1
 connect=0
 while [ $auto_init -gt 0 ]; do
-
+   
+   
+      ps axu >  ~/Persistent/dotfiles/"$(date +"%Y_%m_%d_%I_%M_%p").log"
       sleep 1
 
       curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
