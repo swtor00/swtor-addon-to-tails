@@ -19,19 +19,22 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+
+# set Dark Mode
+
+# gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
 gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
 # There is now video-conference software that works on tails ....
-# And why is this setting enabled ?????
+# And why in hell is this setting is enabled en Tails ?????
 
 gsettings set org.gnome.desktop.privacy disable-camera true
 gsettings set org.gnome.desktop.privacy disable-microphone true
 
-gsettings set org.gnome.system.location enabled false
 gsettings set org.gnome.desktop.privacy remember-recent-files false
-
 gsettings set org.gnome.desktop.background show-desktop-icons true
 gsettings set org.gnome.nautilus.preferences show-hidden-files true
 
@@ -54,16 +57,8 @@ fi
 
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
-
 cd ~/.config > /dev/null 2>&1
 mkdir autostart > /dev/null 2>&1
 cd autostart
 cp /usr/share/applications/swtor-init.desktop .
- 
-
-
-
-
-
-
 

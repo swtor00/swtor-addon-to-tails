@@ -106,10 +106,10 @@ if [ ! -f ~/swtor_init ] ; then
     fi
     if [ -z "$1" ] ; then 
        # we are placed inside the autostart folder 
-       wait_until_connection="1" 
-    else 
-       wait_until_connection="0" 
-    fi 
+       wait_until_connection="1"
+    else
+       wait_until_connection="0"
+    fi
 else
    exit 1
 fi
@@ -185,13 +185,16 @@ fi
 
 # Only execute this part if we are started over autostart folder
 
-if [ $wait_until_connection == "1" ] ; then 
+if [ $wait_until_connection == "1" ] ; then
 
-echo wait for connection : $wait_until_connection
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo wait for connection : $wait_until_connection
+    fi
+
 auto_init=1
 connect=0
 while [ $auto_init -gt 0 ]; do
-      echo ....\n 
+
       sleep 1
 
       curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
@@ -227,11 +230,13 @@ if [ $connect == "1" ] ; then
    # We kill the connection Window ...... if it is on the main-screen
 
    ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
-   
-   echo -----------------
-   echo +$ps_to_kill+ 
-   echo -----------------
-   
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo -----------------
+      echo +$ps_to_kill+
+      echo -----------------
+   fi
+
    if test -z "$ps_to_kill"; then
       echo "nothing to kill .... "
    else
@@ -248,7 +253,9 @@ else
    rmdir $lockdir 2>&1 >/dev/null
    exit 1
 fi
-
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo wait for connection : $wait_until_connection
+   fi
 fi
 
 
@@ -281,7 +288,7 @@ while [ $menu -gt 0 ]; do
                 echo mark 1 $(date)
                 echo password is correct
                 echo --------------
-             fi    
+             fi
              break
          else
              if [ "$menu" == "3" ] ; then
@@ -565,13 +572,12 @@ else
           echo "we found a difference ... "
       fi
       cd ~/Persistent/swtor-addon-to-tails/scripts
-      
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo --------------
          echo mark 4 $(date)
          echo checking for updates is active and we found a update
          echo --------------
-      fi   
+      fi
       ./update.sh
       rmdir $lockdir 2>&1 >/dev/null
       exit 1
@@ -582,7 +588,7 @@ else
       echo mark 4 $(date)
       echo checking for updates is inactive
       echo --------------
-   fi   
+   fi
 fi
 
 if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
@@ -621,7 +627,7 @@ else
        echo mark 5 $(date)
        echo system is not freezed
        echo --------------
-    fi    
+    fi
 fi
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
