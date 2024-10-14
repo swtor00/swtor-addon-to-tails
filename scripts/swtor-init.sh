@@ -104,8 +104,12 @@ if [ ! -f ~/swtor_init ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo >&2 "swtor-init.sh has never run !"
     fi
-    if [ -z "$1" ] ; then 
-       # we are placed inside the autostart folder 
+
+
+    if (( $# == 0 )); then
+
+       # we are placed inside the autostart folder
+
        wait_until_connection="1"
     else
        wait_until_connection="0"
@@ -172,7 +176,7 @@ else
    zenity --error --width=600 \
      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
     > /dev/null 2>&1
-   echo "no password set on startup of Tails" 
+   echo "no password set on startup of Tails"
    exit 1
 fi
 
@@ -181,85 +185,66 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 
-
-
-# Only execute this part if we are started over autostart folder
+# Only execute this part if we are started over the autostart folder
 
 if [ $wait_until_connection == "1" ] ; then
 
+ 
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo wait for connection : $wait_until_connection
     fi
 
-auto_init=1
-connect=0
-while [ $auto_init -gt 0 ]; do
-   
-   
-      ps axu >  ~/Persistent/dotfiles/"$(date +"%Y_%m_%d_%I_%M_%p").log"
-      sleep 1
+    auto_init=1
+    connect=0
+    while [ $auto_init -gt 0 ]; do
+           sleep 1
+           curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
 
-      curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
+           if [ $? -eq 0 ] ; then
+              if [ $TERMINAL_VERBOSE == "1" ] ; then
+                 echo tor is ready !
+              fi
+              connect=1
+              auto_init=0
+              break
+           else
+              if [ $TERMINAL_VERBOSE == "1" ] ; then
+                 echo tor is not ready !
+              fi
+              ((auto_init++))
+            fi
 
-      if [ $? -eq 0 ] ; then
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo tor is ready !
-         fi
-         connect=1
-         auto_init=0
-      else
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo tor is not ready !
-         fi
-         ((auto_init++))
-      fi
+            if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo $auto_init
+            fi
 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo $auto_init
-      fi
+            # We wait for about 5 min.to a valid connection ....
+            # After this time, we close the script !!!!
 
-      # We await for about 5 min.to a valid connection ....
-      # After this time, we close the script !!!!
+            if [ $auto_init -eq 300 ]; then
+               auto_init=0
+               connect=0
+               break
+            fi
+            done
 
-      if [ $auto_init -eq 300 ]; then
-         auto_init=0
-         connect=0
-      fi
-done
-
-if [ $connect == "1" ] ; then
-
-   # We kill the connection Window ...... if it is on the main-screen
-
-   ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
-
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo -----------------
-      echo +$ps_to_kill+
-      echo -----------------
-   fi
-
-   if test -z "$ps_to_kill"; then
-      echo "nothing to kill .... "
-   else
-      kill -9 $ps_to_kill 2>&1 >/dev/null
-   fi
-
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo connection window kiled !!!
-   fi
-else
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo timeout reached and no connection was made !
-   fi
-   rmdir $lockdir 2>&1 >/dev/null
-   exit 1
+    if [ $connect == "1" ] ; then
+        if [ $wait_until_connection == "1" ] ; then
+           # We kill the connection Window ...... if it is on the main-screen
+           ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
+           if test -z "$ps_to_kill"; then
+              echo "nothing to kill .... "
+           else
+              kill -9 $ps_to_kill 2>&1 >/dev/null
+           fi
+        else
+           echo we are not in autostart mode
+        fi
+    else
+        rmdir $lockdir 2>&1 >/dev/null
+        exit 1
+    fi
 fi
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo wait for connection : $wait_until_connection
-   fi
-fi
-
 
 menu=1
 while [ $menu -gt 0 ]; do
@@ -317,6 +302,9 @@ if [ "$correct" == "" ] ; then
 else
    rm password_correct > /dev/null 2>&1
 fi
+
+sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+--text="\n\n                    Please wait !                          \n\n" > /dev/null 2>&1)
 
 # We have a valid password .... we do continue ....
 # It is better to parse the persistent.conf on every startup here
@@ -515,7 +503,7 @@ else
 fi
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
-   echo --------------  
+   echo --------------
    echo mark 2 $(date)
    echo all settings are scanned ...
    echo --------------
@@ -524,7 +512,39 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
 cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT  > /dev/null 2>&1
 
-# We do install the deb file for the Tailsmenu right here
+# We do install the deb file for the menu right here ... but only if the dpkg-lock
+# is not active ... we may produce a uggly race-condition with dpkg -i
+# we look into to ps tree that no asp-install processs is runnig
+
+pid_asp=$(ps axu | grep -v grep | grep asp-install)
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo $pid_asp
+fi
+
+if test -z "$pid_asp"; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo no asp-install process found !
+    fi
+else
+   auto_init=1
+   while [ $auto_init -gt 0 ]; do
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo wait termination of asp-install  ,,,,
+         fi
+         sleep 1
+         pid_asp=$(ps axu | grep -v grep | grep asp-install)
+         echo _$pid_asp
+         if test -z "$pid_asp"; then
+            auto_init=0
+            if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo asp-install is finished
+            fi
+            break
+         fi
+         ((auto_init++))
+   done
+fi
+
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-00.deb > /dev/null 2>&1

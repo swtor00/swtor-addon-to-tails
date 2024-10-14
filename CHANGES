@@ -841,13 +841,12 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
 11/10/24					Testing autostart and freezing
 
-12/10/24					There is a ugly race condition between 
-                                                thread that installs addiitional Software
-                                                my script that also install software 
-                                                
-                                                
-                                                
-
+12/10/24					There is a ugly race condition between the 
+                                                thread that installs additional Software and
+                                                my script that also installs software. Both of 
+                                                them could be run on same time on startup .... 
+                 
+13/10/24  					Find a way to disable this race-condition, 
 
                                               
 
