@@ -4,9 +4,9 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.81 or higher                        #
 #                                                       #
-# VERSION : 0.82	                                #
+# VERSION : 0.83	                                #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
@@ -33,7 +33,6 @@ if [ -f /home/amnesia/Persistent/swtor-addon-to-tails/tmp/password ] ; then
 fi
 
 rm -rf /home/amnesia/Persistent/swtorcfg/*.arg > /dev/null 2>&1
-
 
 # This here is very important ! If we can connect to remote host
 # without any problem, we don't need longer the log-files.
