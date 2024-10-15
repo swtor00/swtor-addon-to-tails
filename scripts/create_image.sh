@@ -4,9 +4,9 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.81 or higher                         #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
@@ -92,19 +92,63 @@ fi
 
 # Ask for the administration password and store it in the tmp directory
 
-test_admin_password
-if [ $? -eq 0 ] ; then
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo "password was correct and stored ! "
-    fi
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "password was 3 times wrong"
-       echo >&2 "create_image.sh exiting with error-code 1"
-    fi
-    exit 1
-fi
 
+menu=1
+while [ $menu -gt 0 ]; do
+      password=$(zenity --entry --text="Please type the Tails administration-password !" --title=Password --hide-text)
+      echo $password > /home/amnesia/Persistent/swtor-addon-to-tails/tmp/password
+      if [ "$password" == "" ] ; then
+         if [ "$menu" == "3" ] ; then
+             menu=0
+             zenity --error --width=400 --text "\n\nThe password was not correct for 3 times ! \n\n"
+             break
+         else
+             zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo >&2 "password was empty !"
+             fi
+         fi
+      else
+          cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
+         /home/amnesia/Persistent/swtor-addon-to-tails/scripts/testroot.sh >/dev/null 2>&1
+          if [ -s password_correct ] ; then
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                  echo >&2 "the provided administration password was correct"
+             fi
+             menu=0
+             correct=1
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo --------------
+                echo mark 1 $(date)
+                echo password is correct
+                echo --------------
+             fi
+             break
+         else
+             if [ "$menu" == "3" ] ; then
+                  menu=0
+                  zenity --error --width=400 --text "\n\nYou have to restart again. The password was 3 times wrong ! \n\n"
+                  break
+              else
+                  if [ $TERMINAL_VERBOSE == "1" ] ; then
+                     echo >&2 "password was not correct"
+                  fi
+                  zenity --error --width=400 --text "\n\nThe password was not correct ! \n\n"
+             fi
+         fi
+
+       fi
+      ((menu++))
+done
+
+if [ "$correct" == "" ] ; then
+   rm password > /dev/null 2>&1
+   rm password_correct > /dev/null 2>&1
+   rmdir $lockdir 2>&1 >/dev/null
+   exit 1
+else
+   rm password_correct > /dev/null 2>&1
+fi
 
 
 cd ~/Persistent/swtor-addon-to-tails/scripts
@@ -238,9 +282,10 @@ if [ "$BACKUP_FIXED_PROFILE" == "0" ] ; then
 fi
 
 # We don't copy the repair-disk folder into the backup folder
+
 rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
 
-tails-version | head -n1 | awk {'print $1'} > /home/amnesia/Persistent/backup/tails-backup-version
+cat /etc/os-release | grep VERSION > /home/amnesia/Persistent/backup/tails-backup-version
 
 # If you are a like me a developer  .... you need this file also for git push
 
@@ -332,8 +377,8 @@ fi
   # from root to amnesia, so we can copy it anywhere we would like to have it
 
    time_stamp=$(date '+%Y-%m-%d-%H-%M')
-   filename="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp"
-   filename_tar="$(tails-version | head -n1 | awk {'print $1'})-$time_stamp.tar.gz"
+   filename="$(cat /etc/os-release | grep VERSION)-$time_stamp"
+   filename_tar="$(cat /etc/os-release | grep VERSION)-$time_stamp.tar.gz"
    final_backup_directory="/home/amnesia/Persistent/$(echo $filename)"
 
    cat ~/Persistent/swtor-addon-to-tails/tmp/password \
