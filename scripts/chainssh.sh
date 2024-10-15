@@ -11,7 +11,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 26-09-2024                                  #
+# DATE    : 15-10-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
