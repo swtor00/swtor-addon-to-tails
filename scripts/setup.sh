@@ -4,10 +4,10 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.81 or higher                        #
 #                                                       #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
@@ -113,45 +113,88 @@ if [ $# -eq 1 ] ; then
 
     # Even if we are in restore mode ... we need a administration password
     # or the installation of software is not working.
+    # If we don't have a password on startup .... we show a error and do exit the script
 
-    test_password_greeting
-    if [ $? -eq 0 ] ; then
+    if [ $CLI_OUT == "1" ] ; then
+       echo Password test
+    fi
+    
+    echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
+
+    if grep -q "provided" test_admin ; then
        if [ $CLI_OUT == "1" ] ; then
-          echo "passwowrd is set" 
+          echo password asked
        fi
-       sleep 0.5
+       rm test_admin 2>&1
     else
-       echo "Error !!!! No Password set on the Greeting-Screen"
-       echo "Please make a rebooot and set a password"
-       echo
-       echo "After booting please open a terminal and type : "
-       echo "cd ~/Persistent"
-       echo "./restore.sh"
+      if [ $CLI_OUT == "1" ] ; then
+         echo no password set
+      fi
+      rm test_admin > /dev/null 2>&1
+      zenity --error --width=600 \
+      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
+       > /dev/null 2>&1
+      echo "no password set on startup of Tails"
+      exit 1
+    fi
+    
+    if [ $ClI_OUT == "1" ] ; then
+       echo test for password is done
+    fi
+   
+    menu=1
+    while [ $menu -gt 0 ]; do
+         password=$(zenity --entry --text="Please type the Tails administration-password !" --title=Password --hide-text)
+         echo $password > /home/amnesia/Persistent/swtor-addon-to-tails/tmp/password
+         if [ "$password" == "" ] ; then
+            if [ "$menu" == "3" ] ; then
+               menu=0
+               zenity --error --width=400 --text "\n\nThe password was not correct for 3 times ! \n\n"
+               break
+            else
+               zenity --error --width=400 --text "\n\nThe password was empty ! \n\n"
+               if [ $CLI_OUT == "1" ] ; then
+                  echo >&2 "password was empty !"
+               fi
+            fi
+         else
+            cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
+            /home/amnesia/Persistent/swtor-addon-to-tails/scripts/testroot.sh >/dev/null 2>&1
+            if [ -s password_correct ] ; then
+               if [ $CLI_OUT == "1" ] ; then
+                  echo >&2 "the provided administration password was correct"
+               fi
+               menu=0
+               correct=1
+               if [ $CLI_OUT == "1" ] ; then
+                  echo password is correct
+               fi
+             break
+         else
+             if [ "$menu" == "3" ] ; then
+                menu=0
+                zenity --error --width=400 --text "\n\nYou have to restart again. The password was 3 times wrong ! \n\n"
+                break
+             else
+                if [ $CLI_OUT == "1" ] ; then
+                   echo >&2 "password was not correct"
+                fi
+                zenity --error --width=400 --text "\n\nThe password was not correct ! \n\n"
+             fi
+         fi
+       fi
+      ((menu++))
+    done    
+
+    if [ "$correct" == "" ] ; then
+       rm password > /dev/null 2>&1
+       rm password_correct > /dev/null 2>&1
        exit 1
-    fi
-
-    test_admin_password
-    if [ $? -eq 0 ] ; then
-       if [ $CLI_OUT == "1" ] ; then
-          echo "provided password is valid" 
-       fi
-       sleep 0.5
-
-       rm -rf /live/persistence/TailsData_unlocked/dotfiles/Desktop > /dev/null 2>&1
-       rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
-       rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
-
     else
-        echo "Password was wrong or empty"
-        echo "Please make a rebooot and set a password"
-        echo
-        echo "After booting please open a terminal and type : "
-        echo "cd ~/Persistent"
-        echo "./restore.sh"
-        exit 1
+       rm password_correct > /dev/null 2>&1
     fi
-
-    # We need to know exactly, what options are active inside of the persistent volume by now 
+    
+    # We need to know what options are active inside of the persistent volume by now 
 
     cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
     sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
@@ -161,91 +204,68 @@ if [ $# -eq 1 ] ; then
 
     # Test mandatory option : ssh
 
-    if grep -q openssh-client ~/Persistent/persistence.conf ; then
-       if [ $CLI_OUT == "1" ] ; then
-          echo >&2 "ssh settings are present on this persistent volume"
-       fi
-    else
-        zenity --error --width=600 \
-        --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
-        > /dev/null 2>&1
-       echo "ssh-settings is not present on this persistent Volume"
-       echo
-       echo "You have to start over again ... "
-       echo "Activate ssh-settings on this persistent Volume"
-       echo "and restart Tails"
-       echo
-       echo "After booting please open a terminal and type : "
-       echo "cd ~/Persistent"
-       echo "./restore.sh"
-       exit 1
-    fi
+   if grep -q openssh-client ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $CLI_OUT == "1" ] ; then
+         echo >&2 "ssh settings are present on this persistent volume"
+      fi
+   else
+      zenity --error --width=600 \
+      --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+      > /dev/null 2>&1
+      exit 1   
+   fi
 
-    # Mandatory : additional software part01
+   # Mandatory : additional software part01
+   
+   if grep -q /var/cache/apt/archives  ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $CLI_OUT == "1" ] ; then
+        echo >&2 "additional-software is  present on this persistent volume"
+      fi
+   else
+      zenity --error --width=600 \
+      --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+      > /dev/null 2>&1
+      exit 1
+   fi
+   
+   # Mandatory : additional software part02
 
-    if grep -q /var/cache/apt/archives  ~/Persistent/persistence.conf ; then
-       if [ $CLI_OUT == "1" ] ; then 
-          echo >&2 "additional-software part 01 is present on this persistent volume"
-       fi  
-    else
-       zenity --error --width=600 \
-       --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
-       > /dev/null 2>&1
-       echo "additional-software is not present on this persistent Volume"
-       echo
-       echo "You have to start over again ... "
-       echo "Activate additional-software on this persistent Volume"
-       echo "and restart Tails"
-       echo
-       echo "After booting please open a terminal and type : "
-       echo "cd ~/Persistent"
-       echo "./restore.sh"
-       exit 1
-    fi
+   if grep -q /var/lib/apt/lists ~/Persistent/swtorcfg/persistence.conf ; then
+      if [ $CLI_OUT == "1" ] ; then
+         echo >&2 "additional-software is  present on this persistent volume"
+      fi
+   else
+      zenity --error --width=600 \
+      --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
+      > /dev/null 2>&1
+      exit 1
+   fi
 
-    # Mandatory : additional software part02
+   # Prior to restoring files from the backup , we check the backup-files and 
+   # the optional settings from the Persistent Volume. The User can choose what to do ..... 
 
-    if grep -q /var/lib/apt/lists ~/Persistent/persistence.conf ; then
-       if [ $CLI_OUT == "1" ] ; then 
-          echo >&2 "additional-software part 02 is present on this persistent volume"
-       fi 
-    else
-       zenity --error --width=600 \
-       --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
-       > /dev/null 2>&1
-       echo "additional-software is not present on this persistent Volume"
-       echo
-       echo "You have to start over again ... "
-       echo "Activate additional-software on this persistent Volume"
-       echo "and restart Tails"
-       echo
-       echo "After booting please open a terminal and type : "
-       echo "cd ~/Persistent"
-       echo "./restore.sh"
-       exit 1
-    fi
-
-    # Prior to restoring files from the backup , we check the backup-directorys and 
-    # the optional settings from the Persistent Volume. The User can choose what to do ..... 
-
-    if [ -d ~/Persistent/backup/dotfiles ] ; then
+   if [ -d ~/Persistent/backup/dotfiles ] ; then
         if grep -q dotfiles  ~/Persistent/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
-              echo "we found backup files for dotfiles and persistent option is set"
+              echo "we found backup files for Dotfiles and persistent option is set"
            fi    
         else
            if [ $CLI_OUT == "1" ] ; then  
-              echo "we found backup files for dotfiles and persistent option is not set on this voulume"
+              echo "we found backup files with activated Dotfiles option and this persistent option is not set on this volume"
            fi
            zenity --question --width 600 \
-           --text "\n\n         This extracted backup contains files from dotfiles. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           --text "\n\n         The extracted backup contains files from a volume with a activated Dotfiles option. \n\
+                   \n         This option is not activated on this currently used volume !                             \n \
+                   \n\nIf you say 'Yes' to the following question, the restore will stop here and you can set the above \
+                   \noption and restart Tails.\n \         
+                   \nIf you say 'No' the backup will not restore the backup files from the Dotfiles location ! \n\n"
            case $? in
            0)
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
-                echo "backup not stoped here ... we go further "
+             if [ $CLI_OUT == "1" ] ; then
+                echo "backup is not canceled  here ... we go further"
              fi
            ;;
            esac                 
@@ -255,21 +275,25 @@ if [ $# -eq 1 ] ; then
     if [ -d ~/Persistent/backup/greeter-settings ] ; then
        if grep -q greeter-settings ~/Persistent/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
-              echo "we found backup files for gretter-settings and persistent option is set"
+              echo "we found backup files for "Welcome-Screen" and this persistent option is set"
            fi    
         else
            if [ $CLI_OUT == "1" ] ; then  
-              echo "we found backup files for greeter-settings and persistent option is not set on this voulume"
+              echo "we found backup files for "Welcome-Screen"  and this persistent option is not set on this volume"
            fi
            zenity --question --width 600 \
-           --text "\n\n         This extracted backup contains files from gretter-settings. \n\n         If you say 'Yes' the restore stops here and you can set the above option and restart Tails.\n\n         If you say 'No' the backup will not restore the backup files from the above option\n         and will not be interupted ! \n\n"
+           --text "\n\n         The extracted backup contains files from a volume with a activated Welcome Screen option. \n\
+                   \n         This option is not activated on this currently used volume !                             \n \
+                   \n\nIf you say 'Yes' to the following question, the restore will stop here and you can set the above \
+                   \noption and restart Tails.\n \         
+                   \nIf you say 'No' the backup will not restore the backup files from the Welocme Sceeen location ! \n\n"
            case $? in
            0)
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
-                echo "backup not stoped here ... we go further "
+             if [ $CLI_OUT == "1" ] ; then
+                echo "backup is not canceled here ... we go further "
              fi
            ;;
            esac                 
