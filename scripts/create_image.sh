@@ -285,7 +285,8 @@ fi
 
 rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
 
-cat /etc/os-release | grep VERSION > /home/amnesia/Persistent/backup/tails-backup-version
+
+cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > /home/amnesia/Persistent/backup/tails-backup-version
 
 # If you are a like me a developer  .... you need this file also for git push
 
@@ -377,8 +378,8 @@ fi
   # from root to amnesia, so we can copy it anywhere we would like to have it
 
    time_stamp=$(date '+%Y-%m-%d-%H-%M')
-   filename="$(cat /etc/os-release | grep VERSION)-$time_stamp"
-   filename_tar="$(cat /etc/os-release | grep VERSION)-$time_stamp.tar.gz"
+   filename="$(cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g")-$time_stamp"
+   filename_tar="$(cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g")-$time_stamp.tar.gz"
    final_backup_directory="/home/amnesia/Persistent/$(echo $filename)"
 
    cat ~/Persistent/swtor-addon-to-tails/tmp/password \

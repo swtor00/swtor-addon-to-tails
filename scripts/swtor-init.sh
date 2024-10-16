@@ -614,7 +614,8 @@ else
 fi
 
 if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
-   cat /etc/os-release > ~/Persistent/swtor-addon-to-tails/tmp/current-system
+
+   cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtor-addon-to-tails/tmp/current-system
    if diff -q ~/Persistent/swtorcfg/freezed.cgf ~/Persistent/swtor-addon-to-tails/tmp/current-system ; then
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."

@@ -21,16 +21,18 @@
 if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then  
 
   mkdir /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
-  
+
   cp -r ~/.config  /live/persistence/TailsData_unlocked/dotfiles/  > /dev/null 2>&1
+
   if [ ! -f ~/Pictures ] ; then
       mkdir ~/Pictures > /dev/null 2>&1
   fi
   cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
 
   # Do markup the version of Tails we used to freezing ... we store it right here
+  # the command tails-version is obsolete in Tails 6.X
 
-   cat /etc/os-release > ~/Persistent/swtorcfg/freezed.cgf
+   cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
 
 else
    echo "freezing is not possible. This system is allready freezed"
