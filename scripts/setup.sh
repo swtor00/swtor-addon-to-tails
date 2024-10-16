@@ -131,6 +131,7 @@ if [ $# -eq 1 ] ; then
          echo no password set
       fi
       rm test_admin > /dev/null 2>&1
+      
       zenity --error --width=600 \
       --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
        > /dev/null 2>&1
@@ -139,7 +140,7 @@ if [ $# -eq 1 ] ; then
     fi
     
     if [ $ClI_OUT == "1" ] ; then
-       echo test for password is done
+       echo test for password is passed
     fi
    
     menu=1
