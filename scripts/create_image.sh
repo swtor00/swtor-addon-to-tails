@@ -622,7 +622,7 @@ if [ $selection == "2" ] ; then
        echo "   fi"  >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
-       echo "  sleep 1200 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n       [ Downloading the backup from the remote host. Please wait ! ]           \\n\") > /dev/null 2>&1" >> restore_part2.sh  
+       echo "  sleep 3600 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n       [ Downloading the backup from the remote host. Please wait ! ]           \\n\") > /dev/null 2>&1 &" >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "  scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 . > /dev/null 2>&1" >> restore_part2.sh
@@ -636,7 +636,7 @@ if [ $selection == "2" ] ; then
        echo "        echo file crypted_tails_image.tar.gz.gpg.md5 not downloaded" >> restore_part2.sh
        echo "     fi" >> restore_part2.sh 
        echo "     sleep 1" >> restore_part2.sh
-       echo "     killall -s SIGINT zenity " >> restore_part2.sh
+       echo "     killall -s SIGINT zenity > /dev/null 2>&1" >> restore_part2.sh
        echo "     sleep 1" >> restore_part2.sh
        echo "     sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n         [ Download failed ! ]         \\n\")  > /dev/null 2>&1" >> restore_part2.sh 
        echo "     exit 1" >> restore_part2.sh
@@ -653,7 +653,7 @@ if [ $selection == "2" ] ; then
        echo "        echo file crypted_tails_image.tar.gz.gpg not downloaded" >> restore_part2.sh
        echo "     fi" >> restore_part2.sh
        echo "     sleep 1" >> restore_part2.sh
-       echo "     killall -s SIGINT zenity " >> restore_part2.sh
+       echo "     killall -s SIGINT zenity > /dev/null 2>&1" >> restore_part2.sh
        echo "     sleep 1" >> restore_part2.sh
        echo "     sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n         [ Download failed ! ]         \\n\")  > /dev/null 2>&1" >> restore_part2.sh 
        echo "     exit 1" >> restore_part2.sh

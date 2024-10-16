@@ -246,14 +246,13 @@ if [ ! -f ~/Persistent/stage11 ] ; then
       echo "download add-on from github.com : Please wait !"
    fi
 
-   sleep 1200 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the Addon.Please wait ]           \n") & > /dev/null 2>&1
+   sleep 3600 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the Addon.Please wait ]           \n") & > /dev/null 2>&1
 
    git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
 
    if [ $? -eq 0 ] ; then
       sleep 1
-
-      killall -s SIGINT zenity
+      killall -s SIGINT zenity > /dev/null 2>&1
       sleep 1
       sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finished ]           \n")  > /dev/null 2>&1
       echo 1 > ~/Persistent/stage11
@@ -268,7 +267,7 @@ if [ ! -f ~/Persistent/stage11 ] ; then
        if [ $? -eq 0 ] ; then     killall zenity
           sleep 1
 
-          killall -s SIGINT zenity
+          killall -s SIGINT zenity > /dev/null 2>&1
           sleep 1
           sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Download is finished ]           \n") > \
           /dev/null 2>&1

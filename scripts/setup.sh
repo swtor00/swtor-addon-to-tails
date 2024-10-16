@@ -609,7 +609,7 @@ if [ $# -eq 1 ] ; then
            echo    
            echo "We have a conflict here : " 
            echo "Backup was made with Tails : "$(cat ~/Persistent/backup/tails-backup-version)
-           echo "Current Tails in use is    : "$(tails-version | head -n1 | awk {'print $1'})
+           echo "Current Tails in use is    : "$(cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g")
            echo "Restore is not possible !!! " 
            echo "For restoring the backup-data,the Tails must be equal or higher !!!"   
 
@@ -620,27 +620,27 @@ if [ $# -eq 1 ] ; then
 
          
         if [ $current_version -gt $backup_version ] ; then 
-           if [ $CLI_OUT == "1" ] ; then   
+           if [ $CLI_OUT == "1" ] ; then
               echo The current version is greater than the backup-system 
-           fi  
+           fi
 
-           echo    
+           echo
            echo "We have a little conflict here : " 
            echo "Backup was made with Tails : "$(cat ~/Persistent/backup/tails-backup-version)
-           echo "Current Tails in use is    : "$(tails-version | head -n1 | awk {'print $1'})
+           echo "Current Tails in use is    : "$(cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g")
            echo "Restore is possible but dotfiles and greeter-screen is not restored !!"               
-            
+
            # Because the backup was made with a older version of Tails ..
            # We have to ask on very restore-point with the exception 
-           # of the following entrys ...  
- 
+           # of the following entrys ...
+
            restore_bookmarks
-           restore_gnupg   
-           restore_ssh 
-           restore_network_connections 
+           restore_gnupg
+           restore_ssh
+           restore_network_connections
            restore_git
            restore_tca
-           restore_cups 
+           restore_cups
            restore_software
          
            end_wait_dialog && sleep 1.5

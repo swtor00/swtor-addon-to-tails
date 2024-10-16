@@ -390,7 +390,7 @@ Date		Release		Author		Description
                                                   Tools Menu.Because one simple reason. 
 
                                                   As long you are not using the TOR-Browser 
-                                                  an try to import the Bookmarks it is working 
+                                                  and try to import the Bookmarks it is working 
                                                   as expected. 
 
                                                   But the file that contains the bookmarks is
@@ -753,17 +753,17 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 - Allmost all is working ..... Only the the big open terminal 
                                                   over the new Gnome.Desktop isn't nice to look 
 
-12/09/24	0.83				- Fixed Bookmarks                                                 
+12/09/24	0.83		swtor00		- Fixed Bookmarks                                                 
                                                 - My ssh keys for github have been removed ... I had to replace it                                                    
                                                   (Stupid wankers !!!). Therefore I wasn't able to push the changes 
                                                   with git
                                                   
-15/09/24	0.83				- It seems that the new Debian 12 and Gnome always start a shell-script
+15/09/24	0.83		swtor00		- It seems that the new Debian 12 and Gnome always start a shell-script
                                                   maximized on the screen of Tails 6.x.This is not nice ... it is ugly ! 
                                                 - Now the installation of software works in release 6.7 
                                                 - command "tails-version" is deprecated.
                                                 
-17/09/24	0.83				- To be honest I like the new Tails 6.7 but with all this new software came 
+17/09/24	0.83		swtor00		- To be honest I like the new Tails 6.7 but with all this new software came 
                                                   new problems. It is not longer possible to place a shell-script on the 
                                                   Desktop and to execute it .... 
 						- A secure OS running with activated micro and webcam ? 
@@ -772,11 +772,8 @@ BUILD 20220518					    - Improved watchdog.sh script
 						 gsettings set org.gnome.desktop.privacy disable-microphone true
                                                  
                                                  And with this statements are both devices disabled 
-                                                 
-                                                 
-                                                 
-                                                 
-19/09/24	0.83				I found this 2 websites hat also enhance Tails
+                                                                                                  
+19/09/24	0.83		swtor00		I found this 2 websites hat also enhance Tails
 
 						https://github.com/Tetrax-10/tails-tweaks
 						https://github.com/TheGeorgeAlexander/torless-tails-terminal
@@ -793,11 +790,11 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
 
 
-20/09/24					I created 2 deb files to choose from. 
+20/09/24	0.83		swtor00		I created 2 deb files to choose from. 
                                                 open Terminal -> debug script -> tails-menu-00.deb 
                                                 no Terminal -> tails-menu-01.deb  
                                                          
-24/09/24					It seems that there is a error inside fullssh-interactive.sh with 
+24/09/24	0.83		swtor00		It seems that there is a error inside fullssh-interactive.sh with 
                                                 using Passwords.
                                                                             
 						copy and paste error here ...
@@ -822,7 +819,7 @@ BUILD 20220518					    - Improved watchdog.sh script
 				
 						curl --socks5 127.0.0.1:9999 -m 8 https://www.googe.com  > /dev/null 2>&1						
 						
-26/09/24					Very trange ssh-error 
+26/09/24	0.83		swtor00		Very trange ssh-error 
 						client_loop: send disconnect: Broken pipe						
 
 						-vvv -o ServerAliveInterval=10 -C42N -p22 -D 9999
@@ -832,24 +829,32 @@ BUILD 20220518					    - Improved watchdog.sh script
 						Sometime you are searching for a error inside the code ... 
 						and you found a other bug.
 						
-27/09/24					The error message for deactivated administrator has changed.
+27/09/24	0.83		swtor00		The error message for deactivated administrator has changed.
 
-08/10/24					Added the redirect feature : 
+08/10/24	0.83		swtor00		Added the redirect feature : this is better solution 
+                                                than a jump server ..... 
 
-10/10/24 					Testing the redirect feature 
+10/10/24	0.83		swtor00		Testing the redirect feature 
                                                 A few bookmarks added 
                                                 
-11/10/24					Testing autostart and freezing
+11/10/24	0.83		swtor00		Testing autostart and freezing
 
-12/10/24					There is a ugly race condition between the 
+12/10/24	0.83		swtor00		There is a ugly race condition between the 
                                                 thread that installs additional Software and
                                                 my script that also installs software. Both of 
                                                 them could be run on same time on startup .... 
+                                                and could produce a ugly error  
                  
-13/10/24  					Find a way to disable this race-condition, 
+13/10/24	0.83		swtor00		Find a way to disable this race-condition, 
 
+16/10/24	0.83		swtor00		Replaced old command tails-version with 
+                                                cat /etc/os-release 
+                                                The autostart code is now safe without any 
+                                                any race condicion. 
+                                                Found 2 ugly bugs inside the restore.script
+                                                Backup and sending this file to remote host works....
+                                                Restore works as well.   
                                               
-
     
                                                        
                                                                                                  
