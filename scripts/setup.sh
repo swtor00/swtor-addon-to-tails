@@ -139,7 +139,7 @@ if [ $# -eq 1 ] ; then
       exit 1
     fi
     
-    if [ $ClI_OUT == "1" ] ; then
+    if [ $CLI_OUT == "1" ] ; then
        echo test for password is passed
     fi
    
@@ -198,10 +198,10 @@ if [ $# -eq 1 ] ; then
     # We need to know what options are active inside of the persistent volume by now 
 
     cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-    sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
+    sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persisten/swtorcfg > /dev/null 2>&1
 
     cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-    sudo -S chmod 666 /home/amnesia/Persistent/persistence.conf > /dev/null 2>&1
+    sudo -S chmod 666 /home/amnesia/Persistent//swtorcfg > /dev/null 2>&1
 
     # Test mandatory option : ssh
 
@@ -246,7 +246,7 @@ if [ $# -eq 1 ] ; then
    # the optional settings from the Persistent Volume. The User can choose what to do ..... 
 
    if [ -d ~/Persistent/backup/dotfiles ] ; then
-        if grep -q dotfiles  ~/Persistent/persistence.conf ; then
+        if grep -q dotfiles  ~/Persistent/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for Dotfiles and persistent option is set"
            fi    
@@ -274,7 +274,7 @@ if [ $# -eq 1 ] ; then
     fi
 
     if [ -d ~/Persistent/backup/greeter-settings ] ; then
-       if grep -q greeter-settings ~/Persistent/persistence.conf ; then
+       if grep -q greeter-settings ~/Persistent/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for "Welcome-Screen" and this persistent option is set"
            fi    
@@ -302,7 +302,7 @@ if [ $# -eq 1 ] ; then
     fi
 
     if [ -d ~/Persistent/backup/cups-configuration ] ; then
-        if grep -q cups-configuration ~/Persistent/persistence.conf ; then
+        if grep -q cups-configuration ~/Persistent/swtorcfg/ersistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for cups and persistent option is set"
            fi    
@@ -326,7 +326,7 @@ if [ $# -eq 1 ] ; then
     fi
 
     if [ -d ~/Persistent/backup/tca  ] ; then
-        if grep -q tca ~/Persistent/persistence.conf ; then
+        if grep -q tca ~/Persistent/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for tca and persistent option is set"
            fi    
@@ -341,7 +341,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OU == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -350,7 +350,7 @@ if [ $# -eq 1 ] ; then
     fi
 
     if [ -d ~/Persistent/backup/nm-system-connections ] ; then
-        if grep -q system-connection ~/Persistent/persistence.conf ; then
+        if grep -q system-connection ~/Persistent/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for network-connections and persistent option is set"
            fi    
@@ -365,7 +365,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OU == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -389,7 +389,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OUT == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -413,7 +413,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OUT == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -437,7 +437,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OUT == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -461,7 +461,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OUT == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -485,7 +485,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OUT == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -509,7 +509,7 @@ if [ $# -eq 1 ] ; then
              exit 1 
            ;; 
            1)
-             if [ $TERMINAL_VERBOSE == "1" ] ; then
+             if [ $CLI_OUT == "1" ] ; then
                 echo "backup not stoped here ... we go further "
              fi
            ;;
@@ -557,9 +557,9 @@ if [ $# -eq 1 ] ; then
        if [ $CLI_OUT == "1" ] ; then
           echo "Backup files ~/Persistent/personal-files restored"
        fi
-    fi
+    
 
-    # The above part was easy ... the restored files are independet from the version
+    # The above part was easy ... the restored files are independent from the version
     # of the running Tails-OS
     # Even most of the configuration files are not critical, as long we are using the same
     # Version of Tails to restore.
@@ -704,11 +704,6 @@ fi
 ####################################################################################################################
 
 
-
-
-
-# After the initaliation we can use all the functions from swtor-global.sh
-
 show_wait_dialog && sleep 2
 
 if [ "$DEBUGW" == "1" ] ; then
@@ -745,12 +740,13 @@ else
 fi
 
 
-# After the setup is completly executed the file "setup" will be created inside ~/Persistent/swtor-addon-to-tails
+# After the setup is complete, the file "setup" will be created inside ~/Persistent/swtor-addon-to-tails
 # If this file exist , the setup will not executed. If you would like to start-over with ./swtor-setup.sh
 # I would recommand the following order.
-# 1. If the System is current freezed ... unfreez it and make a reboot of Tails.
-# 2. Delete the file "setup" inside the directory ~/Persistent/swtor-addon-to-tails
-# 3. execute the command ./swtor-setup.sh and the hole setup process can be started again.
+# 1. If the System is current in state freezed ... 
+# 2. Open a shell inside the script-directory and type ./cli_unfreezing.sh  
+# 3. Delete the file "setup" inside the directory ~/Persistent/swtor-addon-to-tails
+# 4. execute the command ./swtor-setup.sh and the hole setup process can be started again.
 
 
 if [ -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
