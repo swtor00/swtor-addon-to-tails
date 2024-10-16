@@ -3,7 +3,7 @@ Is this addon a little helper to use a VPN within Tails ?
 No. We only use SSH to communicate with others Servers.  
 Only SSH is used to create a local SOCK5 Server on Tails.
 There is no VPN involved. Some idiots from redit/tails forum
-may should read this file to know the difference between a real 
+may should read this file to know the big difference between a real 
 VPN and a local socks5 proxy. 
 
 Do you provide a free SSH account with this Add-on ? 
@@ -34,8 +34,8 @@ I would like to backup my persistent Data to a foreign host over SSH. What do I 
 -------------------------------------------------------------------------------------------------
 
 - A full featured mode SSH account (fullssh.sh) and a password less login. 
-- rsync on the remote SSH-host
-- A login with password for backup is not supported.
+- rsync on the remote SSH-host. You may have to install rsync first 
+- A login with password for backup is not supported yet.
 - You can still make unencrypted Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
 - You can still encrypt the backup and use your on own way to encrypt.
@@ -46,7 +46,7 @@ In England and the USA it is common law to demand all password or keys.
 
 So ... Copy the backup to a other country. Far a way from your own country.
 
-He, with 20GB space you could store plenty of Tails-Images ?
+He, with 20GB space in German you could store plenty of Tails-Images ?
 
 But be sure, you can restore back the files.
 
@@ -58,7 +58,7 @@ What fullshell provider do you recommand as the author of this addon ?
 My favorite is clear : https://www.freeshell.de
 
 In Germany all data-connections are stored for about 10 Weeks. 
-Write a postcard to Germany and you have full featured Shell acount with 
+Write a postcard to Germany and you have a full featured Shell acount with 
 20GB of HD space. This one is the best of all free shell-providers.
 
 Little Note : If you are living in Germany, it may would be wise to 
@@ -121,16 +121,12 @@ nobody can read the data left on device.
 Is the backup of Persistence (since Tails 4.25) better than your backup ? 
 -------------------------------------------------------------------------
 
-I guess No because I don't need a secound stick with the same equal size to copy.
-I only backup all files from the Persistent volume. The transfer to a foreign
-host is also not included in the Tails backup solution.
-But every user has to make this decission for himself.
+Note : The current backup of Tails including the persistent volume has never been 
+       easyer than with Tails 6.x or higher .... 
 
-- The backup integrated into Tails is a online-backup
-  to a other USB Stick
-- The backup is fast and works perfect but you could copy 
-  the persistent Volume of Tails 4.25 to a empty persistent 
-  of Tails 4.23 as a example,that could lead to a internal problem.
+To be honest, the current Tails backup (6.8.1) is very easy to make and you 
+just need a secound USB drive. But there a maybe still a few reasons, to make 
+a backup of yor persistent volume over ssh.
 
 - The backup integrated into the addon works as a offline-backup. 
 - The backup itself is protected against manipulations with a md5 checksum.
@@ -199,6 +195,12 @@ We are Legion !
 We do not forgive ! 
 We do not forget ! 
 Expect Us !   
+
+Are you involved in any way by "Tails" ?
+--------------------------------------------
+
+No I'm just a user of Tails.
+
 
 I have sometimes the message "Internet not ready ... " on startup ?
 -------------------------------------------------------------------
