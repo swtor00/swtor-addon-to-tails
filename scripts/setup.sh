@@ -279,14 +279,14 @@ if [ $# -eq 1 ] ; then
            fi    
         else
            if [ $CLI_OUT == "1" ] ; then  
-              echo "we found backup files for "Welcome-Screen"  and this persistent option is not set on this volume"
+              echo "we found backup files for the Welcome-Screen and this persistent option is not set on this volume"
            fi
            zenity --question --width 600 \
            --text "\n\n         The extracted backup contains files from a volume with a activated Welcome Screen option. \n\
                    \n         This option is not activated on this currently used volume !                             \n \
                    \n\nIf you say 'Yes' to the following question, the restore will stop here and you can set the above \
                    \noption and restart Tails.\n \         
-                   \nIf you say 'No' the backup will not restore the backup files from the Welocme Sceeen location ! \n\n"
+                   \nIf you say 'No' the backup will not restore the backup files from the Welcome Sceeen location ! \n\n"
            case $? in
            0)
              exit 1 
@@ -517,9 +517,9 @@ if [ $# -eq 1 ] ; then
     fi
 
     # From here to the end of the script ... we show the wait dialog 
-  
+
     show_wait_dialog & sleep 1
-    
+
     browser='/home/amnesia/Persistent/backup/Tor*Browser/'
     pfiles="/home/amnesia/Persistent/backup/personal-files/"
 
@@ -530,19 +530,19 @@ if [ $# -eq 1 ] ; then
     if [ $CLI_OUT == "1" ] ; then  
        echo $cbrowser
        echo $cpfiles
-    fi 
+    fi
 
     cd ~/Persistent/scripts
 
     if [ "$cbrowser" == "" ] ; then
        if [ $CLI_OUT == "1" ] ; then        
           echo "directory "$browser" was empty so nothing restored"
-       fi   
+       fi
     else
        cp -r ~/Persistent/backup/Tor\ Browser/* ~/Persistent/Tor\ Browser/
        if [ $CLI_OUT == "1" ] ; then 
           echo "Backup files ~/Persistent/TOR Browser restored"
-       fi 
+       fi
     fi
 
     if [ "$cpfiles" == "" ] ; then
@@ -555,7 +555,7 @@ if [ $# -eq 1 ] ; then
        mkdir -p ~/Persistent/personal-files/tails-repair-disk > /dev/null 2>&1
        if [ $CLI_OUT == "1" ] ; then
           echo "Backup files ~/Persistent/personal-files restored"
-       fi 
+       fi
     fi
 
     # The above part was easy ... the restored files are independet from the version
@@ -563,8 +563,8 @@ if [ $# -eq 1 ] ; then
     # Even most of the configuration files are not critical, as long we are using the same
     # Version of Tails to restore.
 
-    backup_version=$(cat ~/Persistent/backup/tails-backup-version | sed 's/[.]*//g')
-    current_version=$(tails-version | head -n1 | awk {'print $1'} | sed 's/[.]*//g')
+    backup_version=$(cat ~/Persistent/backup/tails-backup-version)
+    current_version=$(cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g")
 
     if [ $CLI_OUT == "1" ] ; then
        echo the backup-was made with version :$backup_version
@@ -573,35 +573,35 @@ if [ $# -eq 1 ] ; then
 
     if [ $backup_version == $current_version ] ; then
 
-       restore_bookmarks 
-       restore_gnupg  
+       restore_bookmarks
+       restore_gnupg
        restore_thunderbird
-       restore_pidgin  
-       restore_electrum 
-       restore_git  
+       restore_pidgin
+       restore_electrum
+       restore_git
        restore_ssh
        restore_network_connections
        restore_tca
        restore_cups
        restore_greeter_screen
        restore_software
-       restore_dotfiles     
-       restore_finish 
+       restore_dotfiles
+       restore_finish
 
     else
 
         # By now, we have 2 possible scenarios ...
 
         # 1. The backup was made with a newer Tails and the current Tails is older ... 
-        # Stop restoring and recommand to make a upgrade to a higher version
+        # Stop restoring and recommend to make a upgrade to a higher version
 
         # 2. The backup was made with a older system and the current Tails is newer 
         # Asking on every restore-point ....  
- 
+
 
         if [ $backup_version -gt $current_version ] ; then   
            if [ $CLI_OUT == "1" ] ; then   
-              echo The backup version is greater than the current one
+              echo The backup version is newer than the current one
            fi
 
            end_wait_dialog && sleep 1.5
@@ -774,6 +774,7 @@ else
 fi
 
 
+
 # Check the TOR-Connection over Internet
 
 check_tor_network
@@ -899,15 +900,11 @@ else
 fi
 
 
-# Ok ... we have all the things needet to start over with setup
-#
-# * We have at least, the needet options for the persistent volume
-# * We have a correct administration password for Tails
-# * We can move forward and make some changes to this persist volume.
-#
+# Ok ... we have all the mandatory options set 
+
 
 zenity --info --width=600 --title="" \
---text="Welcome to the swtor addon for Tails.\nThis ist the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 5 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
+--text="Welcome to the swtor addon for Tails.\nThis is the first time you startup this tool on this persistent volume of Tails.\n\n* We create a few symbolic links inside of the persistent volume\n* We create a folder personal-files\n* We install 4 additional debian software-packages\n* We import bookmarks depending of the configuration of swtor.cfg\n\n\nPlease press OK to continue." > /dev/null 2>&1
 
 show_wait_dialog && sleep 2
 
@@ -980,11 +977,8 @@ else
 fi
 
 
-# With all the above infos,we have enough information to testing
-# if this persistent volume has dotfiles activated or not.
-# We aren't able to freeze the seetings without the option of dotfiles.
+# We aren't able to freeze the settings without the option of Dotfiles activated.
 # And yes it is only a advice ... activate it if ever possible.
-
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persistent > /dev/null 2>&1
@@ -1161,7 +1155,7 @@ fi
 end_wait_dialog
 
 zenity --question --width=600 \
---text="Configure the additional software for the addon ?\nOnly answer to 'No' if the additional debian software packages are allready installed."  > /dev/null 2>&1
+--text="Configure the additional software for the addon ?\nOnly answer to 'No' if the 4 additional debian software packages are allready installed."  > /dev/null 2>&1
 
 case $? in
          0)
@@ -1196,9 +1190,6 @@ case $? in
 
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
          sudo -S apt-get install -y sshpass > /dev/null 2>&1
- 
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-         sudo -S apt-get install -y yad > /dev/null 2>&1
 
          end_wait_dialog
          sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n\nInstalling software is now complete.\n\n" > /dev/null 2>&1)
@@ -1210,7 +1201,7 @@ case $? in
 esac
 
 
-# if we don't have a persistent volume with dotfiles activated ....
+# if we don't have a persistent volume with Dotfiles activated ....
 # this next step make no sense ...
 # But it is possible ... that system is allready freezed ....
 
@@ -1246,7 +1237,7 @@ if [ -f ~/Persistent/swtorcfg/freezing ] && [ ! -f ~/Persistent/swtorcfg/freezed
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo "freezing not possible in the current state of the persistent volume"
-         echo "or this system is may allready in the state frezed "
+         echo "or this system is may allready in the state freezed "
    fi
 fi
 
@@ -1271,22 +1262,6 @@ rmdir ~/Persistent/swtor-addon-to-tails/scripts/setup.lock > /dev/null 2>&1
 rm -rf ~/Persistent/settings/1  > /dev/null 2>&1
 rm -rf ~/Persistent/settings/2  > /dev/null 2>&1
 rm -f ~/Persistent/swtor-addon-to-tails/scripts/scripts > /dev/null 2>&1
-
-
-# Create symbolic link on desktop
-
-if [ $GUI_LINKS == "1" ] ; then
-    if [ ! -L ~/Desktop/swtor-menu.sh ] ; then
-       ln -s ~/Persistent/scripts/swtor-menu.sh ~/Desktop/swtor-menu.sh
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo symlink on desktop created
-       fi
-    else
-       if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo symlink on desktop allready exist
-       fi
-    fi
-fi
 
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
