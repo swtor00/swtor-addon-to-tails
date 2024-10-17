@@ -2,7 +2,7 @@ Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
 No. We only use SSH to communicate with others Servers.  
 Only SSH is used to create a local SOCK5 Server on Tails.
-There is no VPN involved. Some idiots from redit/tails forum
+There is no VPN involved. Some idiots from the redit/tails forum
 may should read this file to know the big difference between a real 
 VPN and a local socks5 proxy. 
 
@@ -16,11 +16,13 @@ I would like to test this addon only, what SSH-Provider should I choose ?
 -------------------------------------------------------------------------
 
 For a simple and cheap and easy way to create a SSH-Account I would say here ... 
+Here are coming 2 samples of URL that provide SSH-Accounts for free.
 
+https://www.xshellz.com/
 https://www.dewassh.net/server/SSH 
 
 They provide a SSH account for free (at least for 3 Days) that is made in less than one minute.
-The list of countrys to create the wished SSH account is wide. Create your own account for free and create
+The list of Countrys to create the wished SSH account is wide. Create your own account for free and create
 the file ~/Persistent/swtorssh.cfg and fill it like this little example below.
 
 pfssh.sh     passwd Compress 4 2 143 9999   noshell LIiS-dewassh.net@us.serverkit.me   xxxxx           xxxxxx  USA          3-Day-account 
@@ -30,17 +32,17 @@ And please do not try to connect to the remote host over my script, until the re
 into your own known_hosts file. Therefore open a Terminal and let this happen by connecting once.
 
 
-I would like to backup my persistent Data to a foreign host over SSH. What do I need for this  ? 
--------------------------------------------------------------------------------------------------
+I would like to backup my persistent Data from this addon to a foreign host over SSH. What do I need for this  ? 
+-----------------------------------------------------------------------------------------------------------------
 
 - A full featured mode SSH account (fullssh.sh) and a password less login. 
-- rsync on the remote SSH-host. You may have to install rsync first 
+- rsync on the remote SSH-host. You may have to install rsync first if it is not installed.
 - A login with password for backup is not supported yet.
-- You can still make unencrypted Backups of your persistent Volume with the add-on
+- You can still make a unencrypted Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
-- You can still encrypt the backup and use your on own way to encrypt.
+- You can still encrypt the backup and use your on own way to encrypt it.
 
-Please be warned by me. There are Countrys on this world,that can demand
+Please be warned by me. There are several Country on this world,that can demand
 by law to force every passwword for a found encrypted stick or HD. 
 In England and the USA it is common law to demand all password or keys.
 
@@ -50,6 +52,7 @@ He, with 20GB space in German you could store plenty of Tails-Images ?
 
 But be sure, you can restore back the files.
 
+It would be wise to test it !!!!!
 
    
 What fullshell provider do you recommand as the author of this addon ? 
@@ -57,12 +60,16 @@ What fullshell provider do you recommand as the author of this addon ?
 
 My favorite is clear : https://www.freeshell.de
 
+Note : Since September 2024 the creator of this famous Website 
+has disabled TCP forwarding over SSH for various reasons. 
+I hope this feature is enabled soon again.
+
 In Germany all data-connections are stored for about 10 Weeks. 
-Write a postcard to Germany and you have a full featured Shell acount with 
+Write a postcard to Germany and you have a full featured Shell account with 
 20GB of HD space. This one is the best of all free shell-providers.
 
 Little Note : If you are living in Germany, it may would be wise to 
-store your backup in Switzerland. 
+store your backup in a other Country than Germany. 
 
 Are there any backdoors inside the add-on ? 
 --------------------------------------------
@@ -79,13 +86,12 @@ with your own version created, on every update over git your own settings are
 overwritten. I do try to implement this feature. Just in case you aren't trusting my predefined profiles. 
  
 
-
 I would like to use my own Desktop-Wallpaper as a Background in freezed-mode.Is this possible ?
 --------------------------------------------------------------------------------------------- 
 
 Replace the predefined file 'swtor-desktop-freezed.jpeg' inside the doc directory with your own
 Desktop-Wallpaper.Of course you should do this , prior to freezing the system.
-
+And the new Desktop-Wallpaper has also to be name 'swtor-desktop-freezed.jpeg'
 
 
 Is there a other way to install the add-on instead of git ? 
@@ -97,24 +103,27 @@ Simply No.
 Could the add-on read my data ? 
 --------------------------------
 Yes,but only to create a backup of the persistent Volume.
+To be more specific .... Only files from the addon !
 My addon is not spying on anything from you.  
+
 
 
 For what reason do we need a Repair-Stick after after the Backup was made ? 
 ----------------------------------------------------------------------------
 
-If your SSH-provider do not allow password logins and  a ssh-login only with keys
-is possible. Without the right keys to store back to ~/.ssh you wouldn't have any
+If your SSH-provider do not allow password logins and a ssh-login only with keys
+to restore it is important to save the used rsa key. 
+Without the right keys to store back to ~/.ssh you wouldn't have any
 chance to get copy back the backup you made. Also a empty known_hosts file from a
 new tails maybe also a problem for some users.In any case that you backup to a remote host, 
 please do copy the files from  ~/Persistent/personal-files/tails-repair-disk 
-to a seperate stick and place this stick on a very secure place.   
+to a own stick and place this stick on a very secure place.   
 
-You may have a secound Tails with persistent Volume, you could copy the 
-files to this secound system ? 
+You may have a other Tails with a persistent Volume, you could copy the 
+files to this system ? 
 
-Backup Tails stick ONE and transfer the backup to Tailstick TWO.
-After the exchange over stick ... you do securly format that stick that 
+Backup Tails ONE and transfer the backup to Tails TWO.
+After the exchange over stick ... you can do  format that stick ONE that 
 nobody can read the data left on device.
  
 
@@ -122,24 +131,34 @@ Is the backup of Persistence (since Tails 4.25) better than your backup ?
 -------------------------------------------------------------------------
 
 Note : The current backup of Tails including the persistent volume has never been 
-       easyer than with Tails 6.x or higher .... 
+       so easy than with Tails 6.x or higher .... 
 
 To be honest, the current Tails backup (6.8.1) is very easy to make and you 
-just need a secound USB drive. But there a maybe still a few reasons, to make 
-a backup of yor persistent volume over ssh.
-
-- The backup integrated into the addon works as a offline-backup. 
+just need a other USB drive. But there a maybe still a few reasons, to make 
+a backup of your persistent volume over ssh.
+ 
 - The backup itself is protected against manipulations with a md5 checksum.
 - You can copy the files to any location as long this location 
-  is secure. You may use a secound Tails with persistent volume 
+  is secure. You may use a other Tails with persistent volume 
   to copy the backup to this other system. 
+
+But be warned : 
+The Backup will only backup all settings from activated
+Persistent options including the following folders
+
+
+- personal-files 
+- swtorcfg 
+- Tor-Browser 
+
+The remaining files from the addon are not saved !
 
 
 Why is a administation password needet on every startup ? 
 --------------------------------------------------------
 
-Wihtout a password you can not change the firewall to 
-accept a local socks5 proxy. You need also the password 
+Without a password you can not change the firewall to 
+accept a local socks5 proxy on 127.0.0.1. You need also the password 
 to install the software during setup.sh and if you would
 like to backup persistent volume.
 
@@ -147,7 +166,7 @@ like to backup persistent volume.
 Why do I have to close all programs prior to backup ? 
 -----------------------------------------------------
 
-A locked file (by a Programm) can not be transfered. 
+A locked file (by a Programm) can not be overwritten ! 
 Depending on your own personal configuration of the 
 Persistence Volume,you have to close.
  
@@ -160,7 +179,7 @@ Persistence Volume,you have to close.
 After upgrading Tails, the system is not longer freezed.
 What should I do ?
 --------------------------------------------------------
-There a 2 ways possible to freez it again. 
+There a 2 ways possible to refreez it again. 
 
 1. Open a terminal in the script folder and execute exactly in 
    this order 
@@ -188,7 +207,7 @@ Are you involved in any way by "Anomymous" ?
 --------------------------------------------
 
 No I'm not a member of Anoymous in any kind but I like 
-theyr behavior AND fight for a free and unccensored internet.
+the behavior AND fight for a free and uncensored internet.
 
 We are Anonymous! 
 We are Legion ! 
@@ -211,7 +230,7 @@ from TIMEOUT-TB:10 to TIMEOUT-TB:15
 
 I upgraded from Tail 4.29 to Tails 5.0 and now the addon isn't working anymore ?
 ---------------------------------------------------------------------------------
-Yes. I know about this issue. You have to upgrade to the vesion 5.0 
+Yes. I know about this issue. You have to upgrade to the Version 5.0 
 Open a terminal in the script folder and execute
 
 ./cli_update.sh 
