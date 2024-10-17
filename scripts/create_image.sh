@@ -11,7 +11,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 17-10-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -546,7 +546,7 @@ if [ $selection == "2" ] ; then
        show_wait_dialog && sleep 2
 
        # copy backup-file
-        
+
        echo "starting backup" > ~/Persistent/swtorcfg/log/backup.log
        rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg.md5 -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
        echo "crypted_tails_image.tar.gz.gpg.md5 transfered to remote host" >> ~/Persistent/swtorcfg/log/backup.log
