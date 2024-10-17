@@ -309,7 +309,7 @@ fi
         fi
     fi
     
-    
+
     if [ -d ~/Persistent/backup/greeter-settings ] ; then
        if grep -q greeter-settings /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
@@ -704,9 +704,9 @@ fi
            restore_tca
            restore_cups
            restore_software
-         
+
            end_wait_dialog && sleep 1.5
- 
+
            # The following options may have problems, in the moment you restore a older version over a new version
            # restore_thunderbird
            # restore_pidgin  
@@ -752,14 +752,16 @@ fi
            # restore_dotfile
            # restore_greeter_screen
 
+
+           killall -s SIGINT zenity > /dev/null 2>&1
+
            restore_finish
            exit 0
         fi
     fi
-    
-    
-    # We are finished in restore-mode 
-    
+
+    # We are finished in restore-mode
+
     rmdir $lockdir 2>&1 >/dev/null 
     exit 0
 fi
