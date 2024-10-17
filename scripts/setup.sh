@@ -230,14 +230,14 @@ fi
     # We need to know what options are active inside of the persistent volume by now 
 
     cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-    sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/Persisten/swtorcfg > /dev/null 2>&1
+    sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf  /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg > /dev/null 2>&1
 
     cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-    sudo -S chmod 666 /home/amnesia/Persistent/swtorcfg/persistence.conf > /dev/null 2>&1
+    sudo -S chmod 666 /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf > /dev/null 2>&1
 
     # Test mandatory option : ssh
 
-   if grep -q openssh-client ~/Persistent/swtorcfg/persistence.conf ; then
+   if grep -q openssh-client /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
       if [ $CLI_OUT == "1" ] ; then
          echo >&2 "ssh settings are present on this persistent volume"
       fi
@@ -251,7 +251,7 @@ fi
 
    # Mandatory : additional software part01
 
-   if grep -q /var/cache/apt/archives  ~/Persistent/swtorcfg/persistence.conf ; then
+   if grep -q /var/cache/apt/archives /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
       if [ $CLI_OUT == "1" ] ; then
         echo >&2 "additional-software is  present on this persistent volume"
       fi
@@ -265,7 +265,7 @@ fi
 
    # Mandatory : additional software part02
 
-   if grep -q /var/lib/apt/lists ~/Persistent/swtorcfg/persistence.conf ; then
+   if grep -q /var/lib/apt/lists /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
       if [ $CLI_OUT == "1" ] ; then
          echo >&2 "additional-software is  present on this persistent volume"
       fi
@@ -281,7 +281,7 @@ fi
    # the optional settings from the Persistent Volume. The User can choose what to do ..
 
    if [ -d ~/Persistent/backup/dotfiles ] ; then
-        if grep -q dotfiles  ~/Persistent/swtorcfg/persistence.conf ; then
+        if grep -q dotfiles  /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for Dotfiles and persistent option is set"
            fi    
@@ -311,7 +311,7 @@ fi
     
     
     if [ -d ~/Persistent/backup/greeter-settings ] ; then
-       if grep -q greeter-settings ~/Persistent/swtorcfg/persistence.conf ; then
+       if grep -q greeter-settings /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for "Welcome-Screen" and this persistent option is set"
            fi    
@@ -340,7 +340,7 @@ fi
     fi
     
     if [ -d ~/Persistent/backup/cups-configuration ] ; then
-        if grep -q cups-configuration ~/Persistent/swtorcfg/persistence.conf ; then
+        if grep -q cups-configuration /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for cups and persistent option is set"
            fi    
@@ -370,7 +370,7 @@ fi
 
 
     if [ -d ~/Persistent/backup/tca  ] ; then
-        if grep -q tca ~/Persistent/swtorcfg/persistence.conf ; then
+        if grep -q tca /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
            if [ $CLI_OUT == "1" ] ; then  
               echo "we found backup files for tca and persistent option is set"
            fi    
