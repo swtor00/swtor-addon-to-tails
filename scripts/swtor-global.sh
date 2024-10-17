@@ -1082,7 +1082,7 @@ restore_network_connections() {
 # If the backup contains network-connections : we restore them back
 
 if [ -d ~/Persistent/backup/nm-system-connections ] ; then
-   if grep -q system-connection ~/Persistent/persistence.conf ; then
+   if grep -q system-connection ~/Persistent/swtorcfg/persistence.conf ; then
       cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
       sudo -S rsync -aqzh /home/amnesia/Persistent/backup/nm-system-connections /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
 
@@ -1111,7 +1111,7 @@ restore_tca() {
 # If the backup contains tca (TOR-Nodes configuration) : we restore them back
 
 if [ -d ~/Persistent/backup/tca  ] ; then
-   if grep -q tca ~/Persistent/persistence.conf ; then
+   if grep -q tca ~/Persistent/swtorcfg/persistence.conf ; then
 
       cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
       sudo -S rsync -aqzh /home/amnesia/Persistent/backup/tca /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
@@ -1140,7 +1140,7 @@ restore_cups() {
 # If the backup contains cups (Printing) : we restore them back
 
 if [ -d ~/Persistent/backup/cups-configuration ] ; then
-   if grep -q cups-configuration ~/Persistent/persistence.conf ; then
+   if grep -q cups-configuration ~/Persistent/swtorcfg/persistence.conf ; then
 
       # The owner and groups of the cups configuration
       #
@@ -1204,7 +1204,7 @@ restore_greeter_screen() {
 # If the backup contains greeter-settings : we restore them back
 
 if [ -d ~/Persistent/backup/greeter-settings ] ; then
-   if grep -q greeter-settings ~/Persistent/persistence.conf ; then
+   if grep -q greeter-settings ~/Persistent/swtorcfg/persistence.conf ; then
 
       # The owner and groups of the greeter-settings
       #
@@ -1284,7 +1284,7 @@ restore_dotfiles() {
 # Do we have dotfiles inside the backup  ?
 
 if [ -d ~/Persistent/backup/dotfiles ] ; then
-   if grep -q dotfiles  ~/Persistent/persistence.conf ; then
+   if grep -q dotfiles ~/Persistent/swtorcfg/persistence.conf ; then
       cd ~/Persistent/scripts
 
       # Was the system during Backup in the state freezed ?
