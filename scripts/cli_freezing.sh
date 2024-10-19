@@ -18,16 +18,37 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then  
+if [ ! -f ~/swtor_init ] ; then
+    echo addon is not initialized !
+    echo start swtor-menu.sh first
+fi
 
-  mkdir /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
 
-  cp -r ~/.config  /live/persistence/TailsData_unlocked/dotfiles/  > /dev/null 2>&1
+if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
-  if [ ! -f ~/Pictures ] ; then
+   if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+  
+      # Create autostart folder and place desktop file inside
+      # But only with GUI-LINK:YES
+
+      cd ~/.config > /dev/null 2>&1
+      mkdir autostart > /dev/null 2>&1
+      cd autostart
+      cp /usr/share/applications/swtor-init.desktop .
+   
+   else 
+     echo autostart not possible with this configuration !   
+   fi
+
+
+   mkdir /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
+
+   cp -r ~/.config  /live/persistence/TailsData_unlocked/dotfiles/  > /dev/null 2>&1
+
+   if [ ! -f ~/Pictures ] ; then
       mkdir ~/Pictures > /dev/null 2>&1
-  fi
-  cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
+   fi
+   cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
 
   # Do markup the version of Tails we used to freezing ... we store it right here
   # the command tails-version is obsolete in Tails 6.X

@@ -19,24 +19,19 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-
 # set Dark Mode
-
 # gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
 gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
-# There is now video-conference software that works on tails ....
-# And why in hell is this setting is enabled en Tails ?????
+# There is no video-conference software that works on tails ....
+# And why in hell is this setting enabled by default ???
 
 gsettings set org.gnome.desktop.privacy disable-camera true
 gsettings set org.gnome.desktop.privacy disable-microphone true
-
-gsettings set org.gnome.desktop.privacy remember-recent-files false
-gsettings set org.gnome.desktop.background show-desktop-icons true
-gsettings set org.gnome.nautilus.preferences show-hidden-files true
+gsettings set org.gtk.gtk4.Settings.FileChooser show-hidden true
 
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
@@ -47,9 +42,8 @@ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6
 if [ ! -d ~/Pictures/Wallpapers ] ; then
    mkdir ~/Pictures/Wallpapers > /dev/null 2>&1
    cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/Pictures/Wallpapers > /dev/null 2>&1
+   cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/.config/background > /dev/null 2>&1
 fi
-
-# If someone is using a other language than english, the folder Pictures needs to be created
 
 if [ ! -f ~/Pictures ] ; then
    mkdir ~/Pictures > /dev/null 2>&1
@@ -57,8 +51,8 @@ fi
 
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
-cd ~/.config > /dev/null 2>&1
-mkdir autostart > /dev/null 2>&1
-cd autostart
-cp /usr/share/applications/swtor-init.desktop .
+
+
+
+
 

@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.7 or higher                         #
+# OS      : Tails 6.81 or higher                         #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
@@ -545,11 +545,15 @@ else
    done
 fi
 
+# We only install the debian files with active GUI_LINKS
+# If this option is not set the addon can only started over Terminal !
 
-if [ $TERMINAL_VERBOSE == "1" ] ; then
-   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-00.deb > /dev/null 2>&1
-else
-   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
+if [ $GUI_LINKS == "1" ] ; then
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-00.deb > /dev/null 2>&1
+   else
+      cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
+   fi   
 fi
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then

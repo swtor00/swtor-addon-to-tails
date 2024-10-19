@@ -843,7 +843,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 thread that installs additional Software and
                                                 my script that also installs software. Both of 
                                                 them could be run on same time on startup .... 
-                                                and could produce a ugly error  
+                                                and could produce a ugly error.  
                  
 13/10/24	0.83		swtor00		Find a way to disable this race-condition, 
 
@@ -856,7 +856,10 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 Restore works as well.   
                                               
     
-                                                       
+19/10/24	0.83		swtor00         The installation of autostart and the 3 menus 
+                                                are now pending of GUI-LINK (configuration)
+                                                
+
                                                                                                  
                               
                                                    
