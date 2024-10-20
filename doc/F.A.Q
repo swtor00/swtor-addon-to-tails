@@ -21,7 +21,7 @@ Here are coming 2 samples of URL that provide SSH-Accounts for free.
 https://www.xshellz.com/
 https://www.dewassh.net/server/SSH 
 
-They provide a SSH account for free (at least for 3 Days) that is made in less than one minute.
+They provide a SSH account for free (at least for 3 up to 10 Days) that is made in less than one minute.
 The list of Countrys to create the wished SSH account is wide. Create your own account for free and create
 the file ~/Persistent/swtorssh.cfg and fill it like this little example below.
 
@@ -43,7 +43,7 @@ I would like to backup my persistent Data from this addon to a foreign host over
 - You can still encrypt the backup and use your on own way to encrypt it.
 
 Please be warned by me. There are several Country on this world,that can demand
-by law to force every passwword for a found encrypted stick or HD. 
+by law to force every password for a found encrypted stick or HD. 
 In England and the USA it is common law to demand all password or keys.
 
 So ... Copy the backup to a other country. Far a way from your own country.
@@ -62,7 +62,8 @@ My favorite is clear : https://www.freeshell.de
 
 Note : Since September 2024 the creator of this famous Website 
 has disabled TCP forwarding over SSH for various reasons. 
-I hope this feature is enabled soon again.
+I hope this feature is enabled soon again.Some stupid 
+hackers used his server to attacking others system ....
 
 In Germany all data-connections are stored for about 10 Weeks. 
 Write a postcard to Germany and you have a full featured Shell account with 
@@ -111,8 +112,8 @@ My addon is not spying on anything from you.
 For what reason do we need a Repair-Stick after after the Backup was made ? 
 ----------------------------------------------------------------------------
 
-If your SSH-provider do not allow password logins and a ssh-login only with keys
-to restore it is important to save the used rsa key. 
+If your SSH-provider do not allow password logins and a ssh-login is only possible with keys,
+it is important to save the used rsa key. 
 Without the right keys to store back to ~/.ssh you wouldn't have any
 chance to get copy back the backup you made. Also a empty known_hosts file from a
 new tails maybe also a problem for some users.In any case that you backup to a remote host, 
@@ -146,12 +147,13 @@ But be warned :
 The Backup will only backup all settings from activated
 Persistent options including the following folders
 
-
 - personal-files 
 - swtorcfg 
 - Tor-Browser 
 
 The remaining files from the addon are not saved !
+Alle files from the addon itself are not inisde the backup.
+This files will be fresh installed from github.
 
 
 Why is a administation password needet on every startup ? 
@@ -185,14 +187,18 @@ There a 2 ways possible to refreez it again.
    this order 
    ./cli_tweak.sh 
    ./cli_freezing.sh 
+   
+Warning : The shell script cli_tweak.sh is only a template 
+that can be customized if you wish it. 
+Of course can you set all your personal settings by Hand and 
+freez it again !
 
 
 2.) Open a Terminal in the script folder and execute.
 
-    ./swtor-mennu.sh 
+    ./swtor-menu.sh 
 
     Open menu "Utilitys & Help" -> Freezing the current state 
-
 
 I can't start swtor-menu.sh because lockfile allready exists ?
 -----------------------------------------------------------------
@@ -218,7 +224,7 @@ Expect Us !
 Are you involved in any way by "Tails" ?
 --------------------------------------------
 
-No I'm just a user of Tails.
+No I'm just a user of Tails. I am using Tails since over 2014.
 
 
 I have sometimes the message "Internet not ready ... " on startup ?
@@ -237,19 +243,19 @@ Open a terminal in the script folder and execute
 
 After version 0.81 is installed, it works again.
 
-
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
 
 Write me a email to swtor00@protonmail.com 
 
 Today .. On 31/12/21 I have received my first first feature 
-request from user I don't know in person. It was easy to inplement 
+request from user I don't know in person. It was ver easy to inplement 
 and the user hjhj65 don't need to change size of 
 the renote Xclock after every update. Thanks hjhj65 
  
 
 
+ 
  
  
 
