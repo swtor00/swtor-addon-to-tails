@@ -19,13 +19,6 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# set Dark Mode
-# gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-
-# gsettings set org.gnome.desktop.session idle-delay 0
-# gsettings set org.gnome.desktop.screensaver lock-enabled false
-# gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
-
 # There is no video-conference software that works on tails ....
 # And why in hell is this setting enabled by default ???
 
@@ -54,9 +47,9 @@ dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6
 if [ ! -d ~/Pictures/Wallpapers ] ; then
    mkdir ~/Pictures/Wallpapers > /dev/null 2>&1
    cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/Pictures/Wallpapers > /dev/null 2>&1
-   
-   # We need this later for the activation of Dark-Mode 
-   
+
+   # We need this file later for the activation of Dark-Mode
+
    cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/.config/background > /dev/null 2>&1
 fi
 
@@ -67,12 +60,12 @@ fi
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
 
-#
+
 # It was very tricky to activate Dark-Mode with Tails
 # By  now all is ready with execption of the Dark-Mode
 # If we freeze ... we should have a dark Tails
 # At least it works if I activate the dark mode and change the background by hand
-#
+# And the following line of Code also work perfect ....
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 dconf write  /org/gnome/desktop/background/picture-uri-dark "'file:///home/amnesia/.config/background'"
