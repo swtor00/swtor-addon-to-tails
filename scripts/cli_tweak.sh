@@ -22,9 +22,9 @@
 # set Dark Mode
 # gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-gsettings set org.gnome.desktop.session idle-delay 0
-gsettings set org.gnome.desktop.screensaver lock-enabled false
-gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
+# gsettings set org.gnome.desktop.session idle-delay 0
+# gsettings set org.gnome.desktop.screensaver lock-enabled false
+# gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
 # There is no video-conference software that works on tails ....
 # And why in hell is this setting enabled by default ???
@@ -35,6 +35,14 @@ gsettings set org.gnome.desktop.privacy disable-microphone true
 # I would like to see all files
 
 gsettings set org.gtk.gtk4.Settings.FileChooser show-hidden true
+
+# I don't like the Hot-Corners .... disable it
+
+gsettings set org.gnome.desktop.interface enable-hot-corners false
+
+# I don't like History ... at least inside my Tails ....
+
+gsettings set org.gnome.desktop.privacy remember-recent-files false
 
 
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
