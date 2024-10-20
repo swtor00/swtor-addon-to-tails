@@ -196,9 +196,9 @@ Date		Release		Author		Description
                                                 - I have rewritten most of the code of all shell-scripts. 
                                                   By now I have over 100 commits made. 
 
-                                                - After a  weekend full of shell-scripting I am almost finished.
+                                                - After a weekend full of shell-scripting I am almost finished.
 
-                                                - If you type the password wrong or empty ... you have other 2 times
+                                                - If you type the password wrong or empty ... you have other 2 chances 
                                                   to correct it.After 3 x times wrong or empty, the script aborts. 
                                              
                                                 - The ssh login used is not longer shown inside the sss-servermenu.But instead
@@ -744,7 +744,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                   Because this handling, the script has to be started from 
                                                   persistent !!
                                                 - The unsafe Browser is again in the state enabled 
-                                                  (It was disabled on Release 4.X) 
+                                                  (It was disabled on Release 4.X and 5.X) 
                                                   The fix was easy -> Startup-Options -> disable 
                                                 - Most of the scripts from Tails 5.X seems to work
                                                   and a lot of gsettings do not longer work !
@@ -766,7 +766,7 @@ BUILD 20220518					    - Improved watchdog.sh script
 17/09/24	0.83		swtor00		- To be honest I like the new Tails 6.7 but with all this new software came 
                                                   new problems. It is not longer possible to place a shell-script on the 
                                                   Desktop and to execute it .... 
-						- A secure OS running with activated micro and webcam ? 
+						- A secure OS running with activated micro and webcam ?  
 						
                                                  gsettings set org.gnome.desktop.privacy disable-camera true
 						 gsettings set org.gnome.desktop.privacy disable-microphone true
@@ -807,7 +807,8 @@ BUILD 20220518					    - Improved watchdog.sh script
 						It only showed up with fullssh-interactive.sh and a asked 
 						password.
 						Because I never used this password login over the last 
-						multiples years, this bug was hided perfect !!
+						multiples years, this bug was perfect hidden in the code for 
+                                                years  !!
 						
 						Testing other connections with password as well ..
 						
@@ -858,9 +859,12 @@ BUILD 20220518					    - Improved watchdog.sh script
     
 19/10/24	0.83		swtor00         The installation of autostart and the 3 menus 
                                                 are now pending of GUI-LINK (configuration)
-                                                
+                                                Default Yalue is yes .. So a debian file 
+                                                is installed to modify the Tails-Menu.                                                  
 
-                                                                                                 
+20/10/24	0.83            swtor00		To be really silent gpg needs the option -q 
+                                                otherweise we have output on Terminal.
+                                           
                               
                                                    
                                                    

@@ -52,10 +52,9 @@ if [ ! -f ~/Persistent/stage1d ] ; then
 
          if [ $? -eq 0 ] ; then
             echo -n $decryption_password > /dev/shm/password1
-            # gpg --batch --passphrase-file /dev/shm/password1 --decrypt $file2 > output tails_image.tar.gz
-            gpg --batch --passphrase-file /dev/shm/password1 --decrypt $file2  --output tails_image.tar.gz > /dev/null 2>&1
+            gpg -q --batch --passphrase-file /dev/shm/password1 --decrypt $file2 > output tails_image.tar.gz
             if [ $? -eq 0 ] ; then
-               if [ $CLI_OUT == "1" ] ; then 
+               if [ $CLI_OUT == "1" ] ; then
                   echo "Decryption of file ["$file2"] : done"
                fi
                cd ~/Persistent
