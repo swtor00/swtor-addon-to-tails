@@ -194,7 +194,7 @@ if [ $selection == "10" ] ; then
 fi
 
 if [ $selection == "9" ] ; then
-   gedit ~/Persistent/swtor-addon-to-tails/CHANGES
+   gnome-text-editor ~/Persistent/swtor-addon-to-tails/CHANGES
 fi
 
 if [ $selection == "11" ] ; then
