@@ -66,10 +66,13 @@ fi
 
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
-y
-# It was tricky to activate Dark-Mode with Tails 
+
+#
+# It was very tricky to activate Dark-Mode with Tails
 # By  now all is ready with execption of the Dark-Mode
-# If we freeze ... we have a dark Tails 
+# If we freeze ... we should have a dark Tails
+# At least it works if I activate the dark mode and change the background by hand
+#
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 dconf write  /org/gnome/desktop/background/picture-uri-dark "'file:///home/amnesia/.config/background'"
