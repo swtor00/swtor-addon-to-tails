@@ -21,6 +21,7 @@
 if [ ! -f ~/swtor_init ] ; then
     echo addon is not initialized !
     echo start swtor-menu.sh first
+    exit 1
 fi
 
 
