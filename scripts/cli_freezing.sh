@@ -26,20 +26,12 @@ fi
 
 if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
-   if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-  
-      # Create autostart folder and place desktop file inside
-      # But only with GUI-LINK:YES
+   # Create autostart folder and place desktop file inside
 
-      cd ~/.config > /dev/null 2>&1
-      mkdir autostart > /dev/null 2>&1
-      cd autostart
-      cp /usr/share/applications/swtor-init.desktop .
-   
-   else 
-     echo autostart not possible with this configuration !   
-   fi
-
+   cd ~/.config > /dev/null 2>&1
+   mkdir autostart > /dev/null 2>&1
+   cd autostart
+   cp /usr/share/applications/swtor-init.desktop .
 
    mkdir /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
 

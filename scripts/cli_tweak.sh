@@ -5,7 +5,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.7 or higher                         #
+# OS      : Tails 6.81 or higher                        #
 #                                                       #
 #                                                       #
 # VERSION : 0.83                                        #
@@ -31,7 +31,11 @@ gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 
 gsettings set org.gnome.desktop.privacy disable-camera true
 gsettings set org.gnome.desktop.privacy disable-microphone true
+
+# I would like to see all files
+
 gsettings set org.gtk.gtk4.Settings.FileChooser show-hidden true
+
 
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"

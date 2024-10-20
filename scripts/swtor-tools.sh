@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 5.0 or higher                         #
+# OS      : Tails 6.81 or higher                        #
 #                                                       #
-# VERSION : 0.81                                        #
+# VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 20-10-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -87,15 +87,24 @@ fi
 if [ "$selection" == "1" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
       if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
-         ./cli_tweak.sh
+      
+         # To make it possible to implement his own settings ...
+         # cli_tweak.sh  will not longer executed ...
+         # ./cli_tweak.sh
+         #  
+         
          ./cli_freezing.sh
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n                          System has ben freezed !                       \n\n" > /dev/null 2>&1)
       else
-         echo freezing not possible -> allready freezed
+         if [ $TERMINAL_VERBOSE == "1" ] ; then        
+            echo freezing not possible -> allready freezed
+         fi   
       fi
    else
-       echo freezing not possible missing dotfile
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo freezing not possible missing dotfile option 
+       fi   
    fi
 fi
 
@@ -107,10 +116,14 @@ if [ $selection == "2" ] ; then
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
           --text="\n\n                            System has ben unfreezed !                         \n\n" > /dev/null 2>&1)
       else
-          echo unfreezing not possible -> system not freezed
+          if [ $TERMINAL_VERBOSE == "1" ] ; then
+             echo unfreezing not possible -> system not freezed
+          fi    
       fi
    else
-      echo unfreezing not possible missing dotfile
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo unfreezing not possible missing dotfile
+      fi   
    fi
 fi
 
@@ -165,7 +178,7 @@ fi
 
 
 if [ $selection == "7" ] ; then
-    evince /home/amnesia/Persistent/doc/swtor0-60.pdf > /dev/null 2>&1
+    evince /home/amnesia/Persistent/doc/swtor-0.83.pdf > /dev/null 2>&1
 fi
 
 if [ $selection == "8" ] ; then
