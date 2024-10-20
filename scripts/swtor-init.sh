@@ -531,9 +531,11 @@ else
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo wait termination of asp-install  ,,,,
          fi
-         sleep 1
+         sleep 1         
          pid_asp=$(ps axu | grep -v grep | grep asp-install)
-         echo _$pid_asp
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
+            echo _$pid_asp
+         fi
          if test -z "$pid_asp"; then
             auto_init=0
             if [ $TERMINAL_VERBOSE == "1" ] ; then
