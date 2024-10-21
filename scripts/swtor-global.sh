@@ -1293,20 +1293,19 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
       echo 1 > ~/Persistent/swtorcfg/freezing
 
       if [ -f ~/Persistent/backup/swtorcfg/freezed.cgf ]  ; then
+
          # The old way .-(
          # ./cli_tweak.sh > /dev/null 2>&1
          # ./cli_freezing.sh > /dev/null 2>&1
-         
-         
+
+
          # The new way :-)
          # For a succesfull restore we have to do ... 
          # copy all files from dotfiles back to home amnesia 
-         
 
          # call script freezing to copy all changes back to DOTFILE
-          
-          
-          
+
+
          if [ $CLI_OUT == "1" ] ; then
             echo state : now this Tails is [freezed] like wished from the backup
          fi
