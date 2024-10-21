@@ -51,7 +51,6 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    echo ---------------------------------------
    echo please make a Rebbot of Tails ASAP !!!!
    echo ---------------------------------------
-   
 else
    echo "freezing is not possible. This system is allready freezed"
    echo "according to the ~/Persistent/swtorcfg/freezed.cfg"
