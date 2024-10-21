@@ -33,6 +33,8 @@ if [ -d backup ] ; then
    fi
 fi
 
+# Checking for repair-disk folder
+
 if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
    mkdir -p ~/Persistent/personal-files/tails-repair-disk
 fi
@@ -91,7 +93,6 @@ fi
 
 
 # Ask for the administration password and store it in the tmp directory
-
 
 menu=1
 while [ $menu -gt 0 ]; do
@@ -292,13 +293,13 @@ cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > /home/amnesia/Persiste
 
 mkdir /home/amnesia/Persistent/backup/git
 cp ~/Persistent/swtor-addon-to-tails/.git/config /home/amnesia/Persistent/backup/git
-
 cd ~/Persistent/swtor-addon-to-tails/tmp
+
 sleep 1
 
 # The following backup is only made if the configuration file swtor.cfg contains BACKUP-APT-LIST:YES
-# If your bandwith is very low and maybe limited, it may make sense to backup this files.
-# Please be warned,that the backup-size will grow by 400 MB or even more if you activate this option.
+# If your bandwith is very low and maybe limited, it may make no sense to backup this files.
+# Please be warned,that the backup-size will grow by 500 MB or even more if you activate this option.
 # The standard  configuration for swtor.cfg is BACKUP-APT-LIST:NO
 
 if [ "$BACKUP_APT_LIST" == "1" ] ; then
@@ -476,7 +477,7 @@ if [ "$selection" == "1" ] ; then
    cat restore_part2.sh >> restore.sh
    cat ~/Persistent/scripts/restore_part3.sh >> restore.sh
 
-   # The restore-script is now complete 
+   # The restore-script is now complete
 
    rm restore_part2.sh
 
@@ -503,12 +504,31 @@ if [ $selection == "2" ] ; then
       swtor_ask_passphrase
       if [ $? -eq 0 ] ; then
           tar czf $filename_tar $final_backup_file $final_backup_file.md5
-          gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar > /dev/null 2>&1
+
+          # The final name is unique ... so we can store multiple backups
+          # on the remote Server.
+
+          final_destination_name1="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg"
+          final_destination_name2="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg.md5"
+
+          if [ $TERMINAL_VERBOSE == "1" ] ; then
+             echo --------------------------------------
+             echo "copy-name 1:"$final_destination_name1
+             echo "copy-name 2:"$final_destination_name2
+             echo --------------------------------------
+          fi
+
+          gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o $final_destination_name1 $filename_tar > /dev/null 2>&1
           if [ $? -eq 0 ] ; then
              rm $final_backup_file > /dev/null 2>&1
              rm $final_backup_file.md5 > /dev/null 2>&1
              rm $filename_tar > /dev/null 2>&1
-             md5sum crypted_tails_image.tar.gz.gpg | awk {'print $1'} >  crypted_tails_image.tar.gz.gpg.md5
+             md5sum $final_destination_name1 | awk {'print $1'} >  $final_destination_name2
+
+             if [ $TERMINAL_VERBOSE == "1" ] ; then
+                echo "passed encryption "$(date '+%Y-%m-%d-%H-%M')
+             fi
+
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
              sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
@@ -530,9 +550,14 @@ if [ $selection == "2" ] ; then
           exit 1
        fi
 
+
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo "preparing upload ....."
+       fi
+
        port="ssh -p "
-       port+=$(echo $line | awk '{print $6}' )
-       single_port=$(echo $line | awk '{print $6}' )
+       port+=$(echo $line | awk '{print $6}')
+       single_port=$(echo $line | awk '{print $6}')
        ssh_hs=$(echo $line | awk '{print $9}' )
        ssh_host=$(echo $line | awk '{print $9}' )
        ssh_host+=":~/"
@@ -540,7 +565,7 @@ if [ $selection == "2" ] ; then
        sleep 15 | tee >(zenity --progress --pulsate --no-cancel --auto-close --text="\n\n    The transfer of the backup to the remote host is in progress. Please wait !     \n\n" > /dev/null 2>&1)
 
        if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo "transfer backup $final_backup_file file with rsync over ssh is in progress is in progess ..."
+          echo "transfer backup "$final_backup_file" file with rsync over ssh is in progress is in progess ..."
        fi
 
        show_wait_dialog && sleep 2
@@ -548,9 +573,9 @@ if [ $selection == "2" ] ; then
        # copy backup-file
 
        echo "starting backup" > ~/Persistent/swtorcfg/log/backup.log
-       rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg.md5 -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
+       rsync -avHPe '$port' /home/amnesia/Persistent/$final_destination_name2  -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
        echo "crypted_tails_image.tar.gz.gpg.md5 transfered to remote host" >> ~/Persistent/swtorcfg/log/backup.log
-       rsync -avHPe '$port' /home/amnesia/Persistent/crypted_tails_image.tar.gz.gpg -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
+       rsync -avHPe '$port' /home/amnesia/Persistent/$final_destination_name1 -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
 
        if [ $? -eq 0 ] ; then
           if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -567,7 +592,7 @@ if [ $selection == "2" ] ; then
           # „UNIX is very simple, it just needs a genius to understand its simplicity.“
 
           echo "#/bin/bash" > tmp.sh
-          echo  "chmod 0600 ~/crypted_tails_image.tar.gz.gpg.md5 &&  chmod 0600 ~/crypted_tails_image.tar.gz.gpg && exit" >> tmp.sh
+          echo  "chmod 0600 ~/"$final_destination_name2" &&  chmod 0600 ~/"$final_destination_name1" && exit" >> tmp.sh
 
           chmod +x tmp.sh > /dev/null 2>&1
           ssh -42C -p $single_port $ssh_hs 'bash -s' < tmp.sh > /dev/null 2>&1
@@ -580,16 +605,16 @@ if [ $selection == "2" ] ; then
           fi
           end_wait_dialog && sleep 2
           zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
-
-          rm ~/Persistent/crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
+final_destination_name1
+          rm ~/Persistent/ > /dev/null 2>&1
           rm ~/Persistent/crypted_tails_image.tar.gz.gpg.md5 > /dev/null 2>&1
           exit 1
        fi
 
        # Delete all local files
 
-       rm ~/Persistent/crypted_tails_image.tar.gz.gpg > /dev/null 2>&1
-       rm ~/Persistent/crypted_tails_image.tar.gz.gpg.md5 > /dev/null 2>&1
+       rm ~/Persistent/$final_destination_name1 > /dev/null 2>&1
+       rm ~/Persistent/$final_destination_name2 > /dev/null 2>&1
 
 
        # Now we have to make a clean tails-repair-disk for this backup
@@ -612,8 +637,8 @@ if [ $selection == "2" ] ; then
        cp ~/Persistent/scripts/restore_p22.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
 
        echo "                                 " >> restore_part2.sh
-       echo "file1="crypted_tails_image.tar.gz.gpg.md5 >> restore_part2.sh
-       echo "file2="crypted_tails_image.tar.gz.gpg >> restore_part2.sh
+       echo "file1="$final_destination_name2 >> restore_part2.sh
+       echo "file2="$final_destination_name1 >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "if [ ! -f ~/Persistent/stage1b ] ; then" >> restore_part2.sh
@@ -625,7 +650,20 @@ if [ $selection == "2" ] ; then
        echo "  sleep 3600 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n       [ Downloading the backup from the remote host. Please wait ! ]           \\n\") > /dev/null 2>&1 &" >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
-       echo "  scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg.md5 . > /dev/null 2>&1" >> restore_part2.sh
+
+       if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo -----------------------------------------------
+          echo The following arguments will be written to the restore.sh
+          echo to get the remote files
+          echo
+          echo PORT	:$single_port:
+          echo HOST	:$ssh_host:
+          echo NAME-MD5	:$final_destination_name2:
+          echo NAME     :$final_destination_name1:
+          echo ------------------------------------------------
+       fi
+
+       echo "  scp -P" $single_port $ssh_host$final_destination_name2" . > /dev/null 2>&1" >> restore_part2.sh
        echo "                                 "  >> restore_part2.sh
        echo "  if [ \$? -eq 0 ] ; then" >> restore_part2.sh
        echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
@@ -635,7 +673,7 @@ if [ $selection == "2" ] ; then
        echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
        echo "        echo file crypted_tails_image.tar.gz.gpg.md5 not downloaded" >> restore_part2.sh
        echo "     fi" >> restore_part2.sh 
-       echo "     sleep 1" >> restore_part2.sh
+       echo "     sleep 1" >> restore_part2.sh 
        echo "     killall -s SIGINT zenity > /dev/null 2>&1" >> restore_part2.sh
        echo "     sleep 1" >> restore_part2.sh
        echo "     sleep 5 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text=\"\\n         [ Download failed ! ]         \\n\")  > /dev/null 2>&1" >> restore_part2.sh 
@@ -643,7 +681,7 @@ if [ $selection == "2" ] ; then
        echo "  fi"  >> restore_part2.sh
        echo " " >> restore_part2.sh
        echo " " >> restore_part2.sh
-       echo "  scp -P" $single_port $ssh_host"crypted_tails_image.tar.gz.gpg . > /dev/null 2>&1" >> restore_part2.sh
+       echo "  scp -P" $single_port $ssh_host$final_destination_name2" . > /dev/null 2>&1" >> restore_part2.sh
        echo "  if [ \$? -eq 0 ] ; then" >> restore_part2.sh
        echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
        echo "        echo file crypted_tails_image.tar.gz.gpg downloaded" >> restore_part2.sh
@@ -741,13 +779,13 @@ if [ $selection == "3" ] ; then
        cd ~/Persistent/personal-files/tails-repair-disk
        mv ~/Persistent/crypted_tails_image.tar.gz.gpg  . > /dev/null 2>&1
        mv ~/Persistent/crypted_tails_image.tar.gz.gpg.md5 . > /dev/null 2>&1
- 
+
        cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
        cp ~/Persistent/scripts/restore_p21.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
 
        echo "                                 " >> restore_part2.sh
-       echo "file1="crypted_tails_image.tar.gz.gpg.md5 >> restore_part2.sh
-       echo "file2="crypted_tails_image.tar.gz.gpg >> restore_part2.sh
+       echo "file1="$final_destination_name2    >> restore_part2.sh
+       echo "file2="$final_destination_name1    >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
        echo "                                 " >> restore_part2.sh
 
