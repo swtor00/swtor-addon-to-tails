@@ -25,7 +25,7 @@
 gsettings set org.gnome.desktop.privacy disable-camera true
 gsettings set org.gnome.desktop.privacy disable-microphone true
 
-# I would like to see all files
+# I would like to see all files including the hidden ones ...
 
 gsettings set org.gtk.gtk4.Settings.FileChooser show-hidden true
 
@@ -37,6 +37,7 @@ gsettings set org.gnome.desktop.interface enable-hot-corners false
 
 gsettings set org.gnome.desktop.privacy remember-recent-files false
 
+# The default terminal color is bullshit to work on the commandline 
 
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"
@@ -48,7 +49,7 @@ if [ ! -d ~/Pictures/Wallpapers ] ; then
    mkdir ~/Pictures/Wallpapers > /dev/null 2>&1
    cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/Pictures/Wallpapers > /dev/null 2>&1
 
-   # We need this file later for the activation of Dark-Mode
+   # We need this file later for the activation of Dark-Mode 
 
    cp ~/Persistent/doc/swtor-desktop-freezed.jpeg ~/.config/background > /dev/null 2>&1
 fi
@@ -58,8 +59,6 @@ if [ ! -f ~/Pictures ] ; then
 fi
 
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
-
-
 
 # It was very tricky to activate Dark-Mode with Tails
 # By  now all is ready with execption of the Dark-Mode

@@ -859,21 +859,25 @@ BUILD 20220518					    - Improved watchdog.sh script
     
 19/10/24	0.83		swtor00         The installation of autostart and the 3 menus 
                                                 are now pending of GUI-LINK (configuration)
-                                                Default Yalue is yes .. So a debian file 
-                                                is installed to modify the Tails-Menu.                                                  
+                                                Default Value is yes .. So a debian file 
+                                                is installed to modify the Tails-Menu.  
+                                                If you change it to NO -> all  
 
-20/10/24	0.83            swtor00		To be really silent gpg needs the option -q 
-                                                otherweise we have unwished output on Terminal.
+20/10/24	0.83            swtor00		To have a really silent gpg needs the option -q 
+                                                otherwise we have unwished output on Terminal.
                                                 
                                                 Dark-mode of Tails with script cli_tweak.sh is 
-                                                running perfect. To be honest, it was a pain to 
+                                                running perfect now. To be honest, it was a pain to 
                                                 to make the right order of commands.
 
                                                    
 21/10/24        0.83		swtor00		Added chapter 09 to the documentation
                                                 With the old create_image.sh it was only 
                                                 possible to have 1 Backup on the Backup
-                                                Server. (fixed)
+                                                Server. (fixed). Because the image name 
+                                                contains a timestamp ....
+                                                
+                                                 
  	                              
                                                    
                                                    

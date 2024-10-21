@@ -616,7 +616,6 @@ final_destination_name1
        rm ~/Persistent/$final_destination_name1 > /dev/null 2>&1
        rm ~/Persistent/$final_destination_name2 > /dev/null 2>&1
 
-
        # Now we have to make a clean tails-repair-disk for this backup
 
        if [ ! -d ~/Persistent/personal-files/tails-repair-disk ] ; then
@@ -738,12 +737,16 @@ if [ $selection == "3" ] ; then
       swtor_ask_passphrase
       if [ $? -eq 0 ] ; then
           tar czf $filename_tar $final_backup_file $final_backup_file.md5
-          gpg --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o crypted_tails_image.tar.gz.gpg $filename_tar > /dev/null 2>&1
+          
+          final_destination_name1="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg"
+          final_destination_name2="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg.md5"
+          
+          gpg -q --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o $final_destination_name1 $filename_tar > /dev/null 2>&1
           if [ $? -eq 0 ] ; then
              rm $final_backup_file > /dev/null 2>&1
              rm $final_backup_file.md5 > /dev/null 2>&1
              rm $filename_tar > /dev/null 2>&1
-             md5sum crypted_tails_image.tar.gz.gpg | awk {'print $1'} >  crypted_tails_image.tar.gz.gpg.md5
+             md5sum $final_destination_name1 | awk {'print $1'} > $final_destination_name2
              rm /dev/shm/password1 > /dev/null 2>&1
              rm /dev/shm/password2 > /dev/null 2>&1
              sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
@@ -774,11 +777,11 @@ if [ $selection == "3" ] ; then
        fi
 
 
-       # We copy the backup files
+       # We move  the backup files
 
        cd ~/Persistent/personal-files/tails-repair-disk
-       mv ~/Persistent/crypted_tails_image.tar.gz.gpg  . > /dev/null 2>&1
-       mv ~/Persistent/crypted_tails_image.tar.gz.gpg.md5 . > /dev/null 2>&1
+       mv ~/Persistent/$final_destination_name1 . > /dev/null 2>&1
+       mv ~/Persistent/$final_destination_name2 . > /dev/null 2>&1
 
        cp ~/Persistent/scripts/restore.sh ~/Persistent/personal-files/tails-repair-disk
        cp ~/Persistent/scripts/restore_p21.sh ~/Persistent/personal-files/tails-repair-disk/restore_part2.sh
@@ -812,7 +815,7 @@ done
 
 if [ $backup_done == "1" ]  ; then
     zenity --info --width=600 --title="" \
-    --text="\n\n   Please do not forget to copy the repair-files to a other external storage.\n\n   Wihtout this files in this directory you can not restore the persistent volume !  \n\n" > /dev/null 2>&1 
+    --text="\n\n   Please do not forget to copy the repair-files to a other external storage.\n\n   Without this files in this directory you can not restore the persistent volume !  \n\n" > /dev/null 2>&1 
 else
      if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo "backup was canceled"

@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.7 or higher                         #
+# OS      : Tails 6.81 or higher                        #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
@@ -61,8 +61,8 @@ while [ $menu -gt 0 ]; do
 
              # prior to kill the complete SSH connection, we would like to be sure,
              # that the socks5 proxy isn't running longer
-             # If curl returns a value 0 -> socks5 running
-             # If curl returns a value !=0 -> socks5 is not running -> We kill the connection
+             # If curl returns a value 0 -> socks5 proxy is running
+             # If curl returns a value !=0 -> socks5 proxy is not running -> We kill the connection
 
              curl --socks5 127.0.0.1:9999 -m 8 https://www.google.com  > /dev/null 2>&1
 
