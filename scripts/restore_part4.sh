@@ -52,7 +52,7 @@ if [ ! -f ~/Persistent/stage1d ] ; then
 
          if [ $? -eq 0 ] ; then
             echo -n $decryption_password > /dev/shm/password1
-            gpg -q --batch --passphrase-file /dev/shm/password1 --decrypt $file2 > output tails_image.tar.gz
+            gpg -q --batch --passphrase-file /dev/shm/password1 --decrypt $file2 > tails_image.tar.gz
             if [ $? -eq 0 ] ; then
                if [ $CLI_OUT == "1" ] ; then
                   echo "Decryption of file ["$file2"] : done"
@@ -428,12 +428,16 @@ if [ $? -eq 0 ] ; then
    rm password > /dev/null 2>&1
    rm w-end > /dev/null 2>&1
 
-   # We are ready here to start again
+   # We are ready here to start again      
    # we delete also this file ... the last remaining part of restore.sh
 
    rm ~/Persistent/restore.sh > /dev/null 2>&1
 
-   sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is fnished. Please reboot Tails ]           \n")  > /dev/null 2>&1
+   killall -s SIGINT zenity > /dev/null 2>&1
+   
+   sleep 3
+   
+   sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is now fnished. Please reboot Tails ]           \n")  > /dev/null 2>&1
 
    exit 0
 else

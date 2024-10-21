@@ -680,7 +680,7 @@ final_destination_name1
        echo "  fi"  >> restore_part2.sh
        echo " " >> restore_part2.sh
        echo " " >> restore_part2.sh
-       echo "  scp -P" $single_port $ssh_host$final_destination_name2" . > /dev/null 2>&1" >> restore_part2.sh
+       echo "  scp -P" $single_port $ssh_host$final_destination_name1" . > /dev/null 2>&1" >> restore_part2.sh
        echo "  if [ \$? -eq 0 ] ; then" >> restore_part2.sh
        echo "     if [ $"CLI_OUT" == \"1\" ] ; then" >> restore_part2.sh
        echo "        echo file crypted_tails_image.tar.gz.gpg downloaded" >> restore_part2.sh
