@@ -47,7 +47,11 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
   # the command tails-version is obsolete in Tails 6.X
 
    cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
-
+         
+   echo ---------------------------------------
+   echo please make a Rebbot of Tails ASAP !!!!
+   echo ---------------------------------------
+   
 else
    echo "freezing is not possible. This system is allready freezed"
    echo "according to the ~/Persistent/swtorcfg/freezed.cfg"
