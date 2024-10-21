@@ -1303,11 +1303,16 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
          # For a succesfull restore we have to do ... 
          # copy all files from dotfiles back to home amnesia 
 
+
+         #cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
+         #sudo -S rsync -aqzh /home/amnesia/Persistent/backup/greeter-settings /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
+y
          # call script freezing to copy all changes back to DOTFILE
 
-
+         # ./cli_freezing.sh 
+         
          if [ $CLI_OUT == "1" ] ; then
-            echo state : now this Tails is [freezed] like wished from the backup
+            echo state : now this Tails is freezed like the backup
          fi
       else
         if [ $CLI_OUT == "1" ] ; then
