@@ -29,12 +29,12 @@ ON dewassh Host a valid entry would like this :
 
 pfssh.sh     passwd Compress 4 2 143 9999   noshell LIiS-dewassh.net@us.serverkit.me   xxxxx           xxxxxx  USA          3-Day-account 
 
-If you create a 10 day account with https://www.xshellz.com/ your entry would look this: 
+If you create a 10 day account with https://www.xshellz.com/ your entry could look this: 
 
 fullssh.sh   passwd Compress 4 2 22  9999   noshell blabla@shell.xshellz.com	       xxxxx           xxxxxx  Canada 	    xshell-com
+fullssh.sh   ssh-id Compress 4 2 22  9999   noshell blabla@shell.xshellz.com	       xxxxx           xxxxxx  Canada 	    xshell-com
 
-
-This are only 2 examples. You have to fill it with you own data fron dewassh.net.(The username / server and port)
+This are only 3 examples. You have to fill it with you own data from the URL.
 And please do not try to connect to the remote host over my script, until the remote host has been added 
 into your own known_hosts file. Therefore open a Terminal and let this happen by connecting once.
 

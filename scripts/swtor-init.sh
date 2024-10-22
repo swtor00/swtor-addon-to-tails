@@ -659,6 +659,31 @@ else
     fi
 fi
 
+
+if [ $CHECK_SSH= == "1" ] ; then
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo --------------
+       echo mark 6 $(date)
+       echo systemdirectory ~/.ssh is checked 
+       echo --------------
+    fi
+    if [ "$(ls -A ~/.ssh | wc -l)" -eq 0 ] ; then
+      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+      --text="\n\n                       SSH directory is empty                           \n\n" > /dev/null 2>&1)
+      sleep 3
+    fi
+else
+    if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo --------------
+       echo mark 6 $(date)
+       echo systemdirectory ~/.ssh is not checked 
+       echo --------------
+    fi
+fi
+
+
+
+
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n                       Initialisation is complete                          \n\n" > /dev/null 2>&1)
 
