@@ -1285,7 +1285,6 @@ restore_dotfiles() {
 
 if [ -d ~/Persistent/backup/dotfiles ] ; then
    if grep -q dotfiles ~/Persistent/swtorcfg/persistence.conf ; then
-      cd ~/Persistent/scripts
 
       # Was the system during Backup in the state freezed ?
       # If this is the case ... we are freezing this Tails as well again
@@ -1303,12 +1302,16 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
          # For a succesfull restore we have to do ... 
          # copy all files from dotfiles back to home amnesia 
 
-
+         mkdir ~/Persistent/do
+         cd ~/Persistent/do 
+         cp -r ~/Persistent/backup/dotfiles .
+         
          #cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
          #sudo -S rsync -aqzh /home/amnesia/Persistent/backup/greeter-settings /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-y
+
          # call script freezing to copy all changes back to DOTFILE
 
+         # cd ~/Persistent/scripts
          # ./cli_freezing.sh 
          
          if [ $CLI_OUT == "1" ] ; then
