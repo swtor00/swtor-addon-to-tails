@@ -875,10 +875,12 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 With the old create_image.sh it was only 
                                                 possible to have 1 Backup on the Backup
                                                 Server. (fixed). Because the image name 
-                                                contains a timestamp ....
+                                                now contains a timestamp ....
+                                                it is possible to have more than 1 backup
                                                 
                                                  
- 	                              
+22/10/24	0.83		swtor00		All git clone commands are now visisble ...
+	                              
                                                    
                                                    
 

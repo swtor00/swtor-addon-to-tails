@@ -1293,31 +1293,46 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
 
       if [ -f ~/Persistent/backup/swtorcfg/freezed.cgf ]  ; then
 
-         # The old way .-(
-         # ./cli_tweak.sh > /dev/null 2>&1
-         # ./cli_freezing.sh > /dev/null 2>&1
-
-
          # The new way :-)
          # For a succesfull restore we have to do ... 
-         # copy all files from dotfiles back to home amnesia 
+         # copy all files from dotfiles back to home amnesia
+         # ~/.config
+         # ~/Pictures
 
-         mkdir ~/Persistent/do
-         cd ~/Persistent/do 
-         cp -r ~/Persistent/backup/dotfiles .
-         
-         #cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-         #sudo -S rsync -aqzh /home/amnesia/Persistent/backup/greeter-settings /live/persistence/TailsData_unlocked/ > /dev/null 2>&1
-
-         # call script freezing to copy all changes back to DOTFILE
-
-         # cd ~/Persistent/scripts
-         # ./cli_freezing.sh 
-         
          if [ $CLI_OUT == "1" ] ; then
-            echo state : now this Tails is freezed like the backup
+            echo state : delete current configuration !
+         fi
+
+         cd ~/.config
+         rm -rf * > /dev/null 2>&1
+         rm -rf ~/Pictures
+
+         if [ $CLI_OUT == "1" ] ; then
+            echo state : copy saved files back to home amnesia
+         fi
+
+         cp -r ~/Persistent/backup/dotfiles/.config ~/ > /dev/null 2>&1
+         cp -r ~/Persistent/backup/dotfiles/Pictures  ~/ > /dev/null 2>&1
+
+
+         if [ $CLI_OUT == "1" ] ; then
+            echo state : copy files back to dot-files
+         fi
+
+         cp -r ~/.config  /live/persistence/TailsData_unlocked/dotfiles/  > /dev/null 2>&1
+         cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
+
+         # Do markup the version of Tails we used to freezing ... we store it right here
+         # the command tails-version is obsolete in Tails 6.X
+
+         cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
+
+
+         if [ $CLI_OUT == "1" ] ; then
+            echo state : now this Tails is freezed like the backup system 
          fi
       else
+
         if [ $CLI_OUT == "1" ] ; then
            echo state : not-freezed here because backup was not freezed
         fi

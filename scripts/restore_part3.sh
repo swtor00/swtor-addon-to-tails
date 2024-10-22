@@ -61,7 +61,7 @@ if [ ! -f ~/Persistent/stage3 ] ; then
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "extracting backup file " $file2 " : failure !"
-      fi 
+      fi
       zenity --error --width=600 \
       --text="\n\n            Error on extracting tar file : '$file2' !       \n\n"\
       > /dev/null 2>&1
@@ -248,7 +248,7 @@ if [ ! -f ~/Persistent/stage11 ] ; then
 
    sleep 3600 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Downloading the Addon.Please wait ]           \n") & > /dev/null 2>&1
 
-   git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
+   git clone https://github.com/swtor00/swtor-addon-to-tails
 
    if [ $? -eq 0 ] ; then
       sleep 1
@@ -262,7 +262,7 @@ if [ ! -f ~/Persistent/stage11 ] ; then
           echo "download add-on from github.com : failure ... We try a secound time to download"
        fi
 
-       git clone https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
+       git clone https://github.com/swtor00/swtor-addon-to-tails
 
        if [ $? -eq 0 ] ; then     killall zenity
           sleep 1
@@ -370,14 +370,20 @@ if [ $? -eq 0 ] ; then
    rm password > /dev/null 2>&1
    rm w-end > /dev/null 2>&1
 
-   # We are ready here to start again
-   # we delete also this file ... the last remaining part of restore.sh
+   killall zenity > /dev/null 2>&1
 
-   rm ~/Persistent/restore.sh > /dev/null 2>&1
+   sleep 3
 
    sleep 7 |tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" --text="\n       [ Restore is fnished. Please reboot Tails ]           \n")  > /dev/null 2>&1
 
+   # We are ready here to start again
+   # we delete also this file ... the last remaining part of restore.sh
+
+   sleep 3
+
+   rm ~/Persistent/restore.sh > /dev/null 2>&1
    exit 0
+
 else
 
    # We are not ready yet.Restore mode had a failure
