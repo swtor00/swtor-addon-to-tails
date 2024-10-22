@@ -18,7 +18,16 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+if [ -d ~/Persistent/scripts/init.lock ] ; then
+   rm ~/Persistent/scripts/init.lock > /dev/null 2>&1
+fi
 
-rm ~/Persistent/scripts/init.lock > /dev/null 2>&1
-rm ~/Persistent/scripts/setup.lock > /dev/null 2>&1
-rm ~/Persistent/scripts/menu.lock > /dev/null 2>&1
+if [ -d ~/Persistent/scripts/setup.lock ] ; then
+   rm ~/Persistent/scripts/setup.lock > /dev/null 2>&1
+fi 
+
+if [ -d ~/Persistent/scripts/menu.lock ] ; then
+   rm ~/Persistent/scripts/menu.lock > /dev/null 2>&1
+fi
+
+
