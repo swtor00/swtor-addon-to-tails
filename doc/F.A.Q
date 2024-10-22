@@ -23,11 +23,18 @@ https://www.dewassh.net/server/SSH
 
 They provide a SSH account for free (at least for 3 up to 10 Days) that is made in less than one minute.
 The list of Countrys to create the wished SSH account is wide. Create your own account for free and create
-the file ~/Persistent/swtorssh.cfg and fill it like this little example below.
+the file ~/Persistent/swtorssh.cfg and fill it like in this 2 little examples below.
+
+ON dewassh Host a valid entry would like this :
 
 pfssh.sh     passwd Compress 4 2 143 9999   noshell LIiS-dewassh.net@us.serverkit.me   xxxxx           xxxxxx  USA          3-Day-account 
 
-This is only a example. You have to fill it with you own data fron dewassh.net.(The username / server and port)
+If you create a 10 day account with https://www.xshellz.com/ your entry would look this: 
+
+fullssh.sh   passwd Compress 4 2 22  9999   noshell blabla@shell.xshellz.com	       xxxxx           xxxxxx  Canada 	    xshell-com
+
+
+This are only 2 examples. You have to fill it with you own data fron dewassh.net.(The username / server and port)
 And please do not try to connect to the remote host over my script, until the remote host has been added 
 into your own known_hosts file. Therefore open a Terminal and let this happen by connecting once.
 
@@ -106,7 +113,7 @@ Could the add-on read my data ?
 Yes,but only to create a backup of the persistent Volume.
 To be more specific .... Only files from the addon !
 My addon is not spying on anything from you.  
-
+My addon only reads the own data .... no other files !
 
 
 For what reason do we need a Repair-Stick after after the Backup was made ? 
@@ -152,8 +159,9 @@ Persistent options including the following folders
 - Tor-Browser 
 
 The remaining files from the addon are not saved !
-Alle files from the addon itself are not inisde the backup.
-This files will be fresh installed from github.
+All files from the addon itself are not inside the backup.
+This files will be fresh installed from github over
+git.
 
 
 Why is a administation password needet on every startup ? 
@@ -242,6 +250,12 @@ Open a terminal in the script folder and execute
 ./cli_update.sh 
 
 After version 0.81 is installed, it works again.
+
+
+Can the chromium browser be used without proxy ?
+-------------------------------------------------
+No ... 
+
 
 My specific question isn't found here. What should I do ? 
 ---------------------------------------------------------
