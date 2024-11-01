@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 15-09-2024                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -85,13 +85,13 @@ while [ $menu -gt 0 ]; do
 
                  shellcode_pid=$(cat ~/Persistent/swtor-addon-to-tails/tmp/script_connect)
 
-                 # We have to close the zenity window that us shows we have a valid connection
+                 # We have to close the active window
 
                  kill -9  $(ps axu | grep zenity | grep close | awk {'print $2'})
 
-                 # And as a final kill the SSH connection-script itself
+                 # And as a final step we kill the SSH connection-script itself
 
-                 kill -9 $shellcode_pid
+                 kill -9 $shellcode_pid  > /dev/null 2>&1
 
                  zenity --info --width=600 --title="Connection lost" \
                  --text="\n\n   [  The active SSH-Connection was running and have ben terminated unexpected !  ]   \n\n   "

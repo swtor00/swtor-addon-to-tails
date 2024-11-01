@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 #                                                       #
 # VERSION : 0.83                                        #
@@ -12,7 +12,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 21-10-2024                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -440,13 +440,6 @@ rm password > /dev/null 2>&1
 return 0
 }
 
-
-
-test_for_yad() {
-   echo empty
-}
-
-
 test_for_sshpass() {
 
 # test for installed sshpass from persistent volume
@@ -463,27 +456,6 @@ else
     return 1
 fi
 }
-
-
-
-test_for_html2text() {
-
-# test for installed html2text from persistent volume
-
-if grep -q "status installed html2text" /var/log/dpkg.log ; then
-   sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-   --text="\n\n  html2text software is installed !   \n\n" > /dev/null 2>&1)
-   return 0
-else
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "html2text is not installed .... "
-    fi
-    zenity --error --width=400 --text "\n\n html2text software is not installed ! \n\n"
-    return 1
-fi
-}
-
-
 
 test_for_chromium() {
 
@@ -1340,7 +1312,7 @@ if [ -d ~/Persistent/backup/dotfiles ] ; then
    else
       echo 1 > ~/Persistent/swtorcfg/no-freezing
       if [ $CLI_OUT == "1" ] ; then
-         echo "dotfiles not restored .... option is not active on this persistent volume"
+         echo "dotfiles are not restored. Persistent option is not active !"
       fi
    fi
 fi
@@ -1361,9 +1333,7 @@ export -f test_bookmarks_persistent
 export -f test_admin_password
 export -f test_empty_ssh
 export -f change_tails_firewall
-export -f test_for_yad
 export -f test_for_sshpass
-export -f test_for_html2text
 export -f test_for_chromium
 export -f test_for_chromium-sandbox
 export -f test_for_freezed

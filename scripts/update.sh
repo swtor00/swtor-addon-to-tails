@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 25-10-2024                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -25,6 +25,7 @@ if [ "$TERMINAL_VERBOSE" == "" ];then
    exit 1
 fi
 
+# Function from swtor-global.sh *
 swtor_connected
 if [ $? -eq 0 ] ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -57,7 +58,7 @@ case $? in
 
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo update should not be executed
+               echo update will not be executed
             fi
          ;;
 esac

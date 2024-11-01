@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 #                                                       #
 # VERSION : 0.83                                        #
@@ -12,7 +12,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 08-05-2022                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -920,7 +920,7 @@ fi
 
 if grep -q /var/lib/apt/lists ~/Persistent/swtorcfg/persistence.conf ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo >&2 "additional-software is  present on this persistent volume"
+      echo >&2 "additional-software is present on this persistent volume"
    fi
 else
    zenity --error --width=600 \
@@ -1071,7 +1071,7 @@ zenity --info --width=600 --title="" \
 --text="Welcome to the swtor addon for Tails.\nThis is the first time you startup this setup tool on this persistent volume of Tails.\n\n
 * We create a few symbolic links inside of the persistent volume\n
 * We create a folder personal-files\n
-* We install 4 additional debian software-packages\n
+* We install 3 additional debian software-packages\n
 \n\nPlease press OK to continue." > /dev/null 2>&1
 
 
@@ -1097,7 +1097,7 @@ fi
 
 
 zenity --question --width=600 \
---text="Configure the additional software for the addon ?\nOnly answer to 'No' if the 4 additional debian software packages are allready installed."  > /dev/null 2>&1
+--text="Configure the additional software for the addon ?\nOnly answer to 'No' if the 3 additional debian software packages are allready installed."  > /dev/null 2>&1
 
 case $? in
          0)
@@ -1126,9 +1126,6 @@ case $? in
 
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
          sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1 
-
-         cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-         sudo -S apt-get install -y html2text > /dev/null 2>&1 
 
          cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
          sudo -S apt-get install -y sshpass > /dev/null 2>&1

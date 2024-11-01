@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 20-10-2024                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -87,15 +87,10 @@ fi
 if [ "$selection" == "1" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
       if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
-      
-         # To make it possible to implement his own settings ...
-         # cli_tweak.sh  will not longer executed ...
-         # ./cli_tweak.sh
-         #  
-         
+         ./cli_tweak.sh 
          ./cli_freezing.sh
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-         --text="\n\n                          System has ben freezed !                       \n\n" > /dev/null 2>&1)
+         --text="\n\n                          System is now freezed !                \n\n" > /dev/null 2>&1)
       else
          if [ $TERMINAL_VERBOSE == "1" ] ; then        
             echo freezing not possible -> allready freezed
@@ -114,7 +109,7 @@ if [ $selection == "2" ] ; then
       if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          ./cli_unfreezing.sh
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-          --text="\n\n                            System has ben unfreezed !                         \n\n" > /dev/null 2>&1)
+          --text="\n\n                            System is now unfreezed !                       \n\n" > /dev/null 2>&1)
       else
           if [ $TERMINAL_VERBOSE == "1" ] ; then
              echo unfreezing not possible -> system not freezed
@@ -172,7 +167,7 @@ if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
     esac
 else
     sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-     --text="\n\n   Import not possible because the bookmark-option not activated for persistent !     \n\n" > /dev/null 2>&1)
+     --text="\n\n   Import is not possible because the bookmark-option is not activated for persistent !     \n\n" > /dev/null 2>&1)
 fi
 fi
 
