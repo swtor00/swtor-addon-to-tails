@@ -1,48 +1,8 @@
 
+
 Please have a closer look at ~/Persistent/swtor-addon-to-tails/doc 
 
 Inside of this directory, you find all the information to install 
 and configure this addon for tails.
-
-mini ULTRA compressed steps to make the add-on working quick ... 
-
-
-the following things should be done prior to install this addon
-
-- get Tails 6.7 or higher and install it to a USB drive
-
-  With Version 0.83 this script is not longer running with older releases
-  from Tails.
-
-- create a persistent volume with at least ssh-client/additional-software/personal-data 
-- restart Tails with the opened persistent volume and a administration password set
-- make a shell script executable over the GUI of Tails or you have to open a terminal
-  for every command.
-
-
-0.)  open a terminal inside of the persisten volume.
-1.)  git clone https://github.com/swtor00/swtor-addon-to-tails
-2.)  Edit the configuration file ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg
-     and change the default settings if you wish.  
-3.)  create a ssh login / create a puplic and private set of ssh keys 
-4.)  testing the ssh-connection inside a terminal  
-5.)  create ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg with the 
-     tested ssh-values from step 04. 
-6:)  exexcute the shell script ~/Persistent/swtor-addon-to-tails/scripts/swtor-setup.sh
-     This script has to be executed only once on a persistent volume. 
-7.)  execute the shell script ~/Persistent/swtor-addon-to-tails/scripts/swtor-menu.sh 
-
-
- 
-
-
-  
-
-
-
-
-
-
-
 
 
