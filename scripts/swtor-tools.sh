@@ -88,6 +88,11 @@ if [ "$selection" == "1" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
       if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          ./cli_tweak.sh 
+         
+         # We need to wait 
+         
+         sleep 7
+         
          ./cli_freezing.sh
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n                          System is now freezed !                \n\n" > /dev/null 2>&1)

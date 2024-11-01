@@ -881,12 +881,14 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 on the remote server.
                                                  
 22/10/24	0.83		swtor00		All git clone commands inside the restore.sh 
-                                                are now now shown  ...
+                                                script are now shown  ...
                                                 Added chapter 10 to the documentation.	 
                                                 
 01/11/24	0.83		swtor00		New Release of Tails 6.9                                                                                        
                                                 html2text and yad are now obsolete !
-						All releases do now ignore                                          
+                                        	You can safely remove them of your additional 
+                                        	software list
+						All future 	releases do now ignore                                          
                                                 the configuraton of 
                                                    
                                                 IMPORT-BOOKMARKS:NO
@@ -894,7 +896,9 @@ BUILD 20220518					    - Improved watchdog.sh script
 
                                                 Please do not remove this settings !!!
                                                  
-                                 
+                                 		It seems that between ./cli_tweak.sh and
+                                 		./cli_freezing.sh we need some time ....
+                                 		
                                                     
                                                    
 
