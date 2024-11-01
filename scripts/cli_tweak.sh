@@ -5,14 +5,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
-# DATE    : 19-09-2024                                  #
+# DATE    : 11-01-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -37,7 +37,7 @@ gsettings set org.gnome.desktop.interface enable-hot-corners false
 
 gsettings set org.gnome.desktop.privacy remember-recent-files false
 
-# The default terminal color is bullshit to work on the commandline 
+# The default terminal color is bullshit to work with on the commandline 
 
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-color "'rgb(0,43,54)'"
 dconf write /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors "false"

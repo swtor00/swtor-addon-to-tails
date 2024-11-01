@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.89 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 # TASKS   : select ssh-server to use                    #
 #                                                       #
 # VERSION : 0.83                                        #

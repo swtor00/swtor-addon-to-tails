@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.83 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 15-10-2023                                  #
+# DATE    : 01-11-2023                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #

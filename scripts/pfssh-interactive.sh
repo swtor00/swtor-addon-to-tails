@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 # TASKS   : run a ssh command with multiple options     #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
@@ -15,7 +15,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 21-10-2024                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -111,7 +111,7 @@ rm /home/amnesia/Persistent/scripts/state/error > /dev/null 2>&1
 
 
 
-# Test needet parameters for this script
+# Test parameters for this script
 
 if [ -f /home/amnesia/Persistent/swtorcfg/pfssh.arg ]
    then
@@ -132,7 +132,6 @@ else
 fi
 
 if [ -f /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg ] ; then
-
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo We found a password-file that should contain the password to the host
    fi
@@ -172,10 +171,25 @@ fi
 chain+="-p"
 chain+=$arg6
 
-# LocalPort
 
-chain+=" -D "
-chain+=$arg7
+# LocalPort
+# We have to decide here -> what we would like to to 
+# with the ssh connection
+# local socks5 sever on the remote means ssh command 
+# -D 9999
+# the other configuration is 
+# port redirection 
+# that change the ssh-command to
+# -L 
+
+chrlen=${#arg7}
+if [ $chrlen -gt 6 ]; then
+   chain+=" -L "
+   chain+=$arg7
+else 
+   chain+=" -D "
+   chain+=$arg7
+fi
 
 if [ $arg8 == "noshell" ] ; then
     chain+=" -N"
@@ -196,13 +210,11 @@ if [ -z "$ssh_pid" ] ; then
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then  
          echo starting ssh command
-         echo $chain
+         echo used command here
+         echo ------------------------------------------
+         echo sshpass -p $password ssh $chain
+         echo ------------------------------------------
       fi
-
-      echo used command here
-      echo ------------------------------------------
-      echo sshpass -p $password ssh $chain
-      echo ------------------------------------------
 
       # We start the ssh-process and send it directly into the background
 
@@ -215,10 +227,11 @@ if [ -z "$ssh_pid" ] ; then
       sleep $TIMEOUT_SSH
 
       # Fuck off !
-      # This was a hard to find bug inside the code !!!!
-      # right
+      # Oktober 24 -> This was a hard to find bug inside the code !!!!
+      # 
+      # right code 
       # ssh_pid=$(ps axu | grep ServerAliveInterval | grep -v xxxxxxx | head -1 |awk '{print $2}')
-      # wrong
+      # wrong code
       # ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  |awk '{print $2}')
 
       ssh_pid=$(ps axu | grep ServerAliveInterval  | grep -v xxxxxxx | head -1 |awk '{print $2}')
@@ -226,15 +239,9 @@ if [ -z "$ssh_pid" ] ; then
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/watchdog_pid
       echo $$        > ~/Persistent/swtor-addon-to-tails/tmp/script_connect
 
-      echo -------------------------
-      echo we watch the following PID
-      echo $ssh_pid
-      echo -------------------------
-
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo PID of encrypted ssh channel is $ssh_pid
       fi
-
 
       if [ -z "$ssh_pid" ] ; then
          if [ $TERMINAL_VERBOSE == "1" ] ; then

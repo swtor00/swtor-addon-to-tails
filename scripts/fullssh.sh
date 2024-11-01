@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.81 or higher                        #
+# OS      : Tails 6.9 or higher                         #
 # TASKS   : run a ssh command with multipe options      #
 #                                                       #
 # VERSION : 0.83                                        #
@@ -12,7 +12,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 21-10-2024                                  #
+# DATE    : 01-11-2024                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -160,11 +160,9 @@ chain+="-p"
 chain+=$arg6
 
 # LocalPort
-
-
-# We have to decide what we would like to to 
+# We have to decide here -> what we would like to to 
 # with the ssh connection
-# local socks5 sever means ssh command 
+# local socks5 sever on the remote means ssh command 
 # -D 9999
 # the other configuration is 
 # port redirection 
@@ -179,7 +177,6 @@ else
    chain+=" -D "
    chain+=$arg7
 fi
-
 
 
 if [ $arg8 == "noshell" ]
