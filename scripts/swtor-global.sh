@@ -1238,9 +1238,6 @@ cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S apt-get install -y chromium-sandbox > /dev/null 2>&1
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
-sudo -S apt-get install -y html2text > /dev/null 2>&1
-
-cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S apt-get install -y sshpass > /dev/null 2>&1
 
 
