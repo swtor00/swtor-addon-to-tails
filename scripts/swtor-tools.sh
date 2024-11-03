@@ -161,9 +161,14 @@ if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
     case $? in
          0) zenity --info --width=600 --title="" \
             --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
+            
+            # Delete the current used Bookmarks 
+            
             rm ~/.mozilla/firefox/bookmarks/places.sqlite > /dev/null 2>&1
-            rm /live/persistence/TailsData_unlocked/bookmarks/places.sqlite > /dev/null 2>&1
-            rsync -aqzh ~/Persistent/swtor-addon-to-tails/bookmarks /live/persistence/TailsData_unlocked
+            
+            # Replace it with provided Bookmarks 
+            
+            cp  ~/Persistent/swtor-addon-to-tails/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks/  > /dev/null 2>&1            
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo no import

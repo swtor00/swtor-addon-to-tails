@@ -899,7 +899,7 @@ BUILD 20220518					    - Improved watchdog.sh script
 						./cli_freezing.sh we need some time ....
                                                 (fixed)   
                                                     
-03/11/24      0.83		swtor00         - A few bookmarks deleted
+03/11/24      	0.83		swtor00         - A few bookmarks deleted
 
                                                 - One of the best shell-providers out there ...
 
@@ -907,9 +907,10 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                     
                                                   Can not be reached longer over TOR !!!!!
                                                   This is very sad ! 
-                                                  Even a simple SSH connections over TOR is completly 
-                                                  blocked .... This was working for years ....
-                                                  We hope this feature will be removed.
+                                                  Even a simple SSH connections over TOR is 
+                                                  blocked .... This configuration was working for 
+                                                  a few years ....
+                                                  I hope we can use it again in the near future !
                                                  
                                                 - On of the best Ebooks sites is back again 
                                                   (Imperial Library of Trantor) 
@@ -917,7 +918,8 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                   http://kx5thpx2olielkihfyo4jgjqfb7zx7wxr3sd4xzt26ochei4m6f7tayd.onion/
  
                                                   It was down for more than a year !!!
-
-                                                                                                     
-                                                  
+                                
+                                
+                                
+                                
                                                                                                      
