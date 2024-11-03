@@ -45,8 +45,7 @@ case $? in
            show_wait_dialog && sleep 2
 
            git reset --hard > /dev/null 2>&1
-           git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails > /dev/null 2>&1
-
+           git pull > /dev/null 2>&1
 
            end_wait_dialog && sleep 1
 

@@ -19,7 +19,7 @@
 #########################################################
 
 git reset --hard
-git pull --rebase=preserve --allow-unrelated-histories https://github.com/swtor00/swtor-addon-to-tails
+git pull
 
 
 
