@@ -899,7 +899,7 @@ BUILD 20220518					    - Improved watchdog.sh script
 						./cli_freezing.sh we need some time ....
                                                 (fixed)   
                                                     
-03/11/24      	0.83		swtor00         - A few bookmarks deleted
+03/11/24	0.83		swtor00         - A few bookmarks deleted
 
                                                 - One of the best shell-providers out there ...
 
@@ -920,6 +920,10 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                   It was down for more than a year !!!
                                 
                                 
-                                
+03/11/24       0.83		swtor00		Import Bookmarks fixed (release 14)
+                                                Error with update.sh and cli_update.sh fixed
+
+
+		                         
                                 
                                                                                                      
