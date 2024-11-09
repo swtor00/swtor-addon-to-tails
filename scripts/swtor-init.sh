@@ -95,10 +95,9 @@ if [ $? -eq 0 ] ; then
     fi
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo failure during initialisation of global-init > /dev/null 2>&1
-       echo swtor-init.sh exiting with error-code 1 > /dev/null 2>&1
+       echo "failure during initialisation of global-init"
+       echo "swtor-init.sh exiting with error-code 1" > /dev/null 2>&1
     fi
-    echo failure global-init
     exit 1
 fi
 
@@ -237,13 +236,15 @@ if [ $wait_until_connection == "1" ] ; then
            if test -z "$ps_to_kill"; then
               echo "nothing to kill .... "
            else
-              kill -9 $ps_to_kill 2>&1 >/dev/null
+              kill -9 $ps_to_kill >/dev/null 2>&1
            fi
         else
-           echo we are not in autostart mode
+           if [ $TERMINAL_VERBOSE == "1" ] ; then
+              echo we are not in autostart mode
+           fi
         fi
     else
-        rmdir $lockdir 2>&1 >/dev/null
+        rmdir $lockdir >/dev/null
         exit 1
     fi
 fi
