@@ -17,66 +17,6 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# If we don't have a valid network-connection -> we do quit here ..
-# We should detect first if we are running on a Desktop-Computer or
-# a Notebook. Some Notebooks only have a wlan0 and some of them
-# have both wlan0 and eth0
-# A typical Desktop has one eth0 interface or sometimes
-# a wlan0 as well.
-# If we are running in "Airplane-Mode" both possible interfaces
-# are in in the state DOWN
-# eth0 status DOWN
-# wlan0 status DOWN
-
-
-ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
-
-# eth0
-
-if grep -q "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list ; then
-   echo found device eth0
-   if grep -q "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list ; then
-      echo found device wlan0
-      export connect="0"
-   else
-      echo eth0 is the only interface on this computer
-      state_eth0=$(grep -q "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep -q "state UP")
-      if test -z "$state_eth0"; then
-         echo interface eth0 not connected or airplane-mode is active
-         export connect="0"
-      else
-         export connect="1"
-      fi
-   fi
-fi
-
-
-# wlan0
-
-
-if [ $connect == "0" ] ; then
-   if grep -q "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list ; then
-      echo found device wlan0
-      state_wlan0=$(grep -q "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep -q "state UP")
-      if test -z "$state_wlan0"; then
-         echo interface wlan0 not connected or airplane-mode is active
-         export connect="0"
-      else
-         export connect="1"
-      fi
-    fi
-fi
-
-
-
-if [ $connect == "0" ] ; then
-   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-    --text="\n\n        Airplane-Mode is active or no interfaces found on this computer !         \n\n" > /dev/null 2>&1)
-   exit 1
-fi
-
-
-
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
@@ -148,28 +88,25 @@ export  DEBUGW="0"
 
 source ~/Persistent/scripts/swtor-global.sh
 global_init
+
 if [ $? -eq 0 ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "global_init() done"
+       echo global_init > /dev/null 2>&1
     fi
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "failure during initialisation of global-init() !"
-       echo >&2 "swtor-init.sh exiting with error-code 1"
+       echo failure during initialisation of global-init > /dev/null 2>&1
+       echo swtor-init.sh exiting with error-code 1 > /dev/null 2>&1
     fi
+    echo failure global-init
     exit 1
 fi
 
 if [ ! -f ~/swtor_init ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo >&2 "swtor-init.sh has never run !"
+       echo "swtor-init.sh has never run !" > /dev/null 2>&1
     fi
-
-
     if (( $# == 0 )); then
-
-       # we are placed inside the autostart folder
-
        wait_until_connection="1"
     else
        wait_until_connection="0"
@@ -177,6 +114,7 @@ if [ ! -f ~/swtor_init ] ; then
 else
    exit 1
 fi
+
 
 
 # Creating the lockdirectory ....
@@ -290,7 +228,9 @@ if [ $wait_until_connection == "1" ] ; then
 
     if [ $connect == "1" ] ; then
         if [ $wait_until_connection == "1" ] ; then
+
            # We kill the connection Window ...... if it is on the main-screen
+
            ps_to_kill=$( ps axu | awk '$1 ~ /^amnesia/'|grep application.py | head -1 | awk {'print $2'})
            if test -z "$ps_to_kill"; then
               echo "nothing to kill .... "
@@ -305,6 +245,7 @@ if [ $wait_until_connection == "1" ] ; then
         exit 1
     fi
 fi
+
 
 menu=1
 while [ $menu -gt 0 ]; do
@@ -353,6 +294,7 @@ while [ $menu -gt 0 ]; do
        fi
       ((menu++))
 done
+
 
 if [ "$correct" == "" ] ; then
    rm password > /dev/null 2>&1
@@ -615,7 +557,7 @@ if [ $GUI_LINKS == "1" ] ; then
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-00.deb > /dev/null 2>&1
    else
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
-   fi   
+   fi
 fi
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -736,16 +678,15 @@ else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo --------------
        echo mark 6 $(date)
-       echo systemdirectory ~/.ssh is not checked 
+       echo systemdirectory ~/.ssh is not checked
        echo --------------
     fi
 fi
 
 
-
-
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
 --text="\n\n                       Initialisation is complete                          \n\n" > /dev/null 2>&1)
+
 
 # remove lockdir ...
 
