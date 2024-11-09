@@ -195,6 +195,7 @@ if [ $wait_until_connection == "1" ] ; then
     auto_init=1
     connect=0
     while [ $auto_init -gt 0 ]; do
+
            sleep 1
            curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
 
@@ -210,6 +211,7 @@ if [ $wait_until_connection == "1" ] ; then
                  echo tor is not ready !
               fi
               ((auto_init++))
+               connect=0
             fi
 
             if [ $TERMINAL_VERBOSE == "1" ] ; then
