@@ -942,7 +942,9 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 swtor-init.sh -> testing for eth0 or wlan0 on startup
                                                  
  
-
+10/11/24	0.83		swtor00		Testing detection of "Airplane-Mode". Done 
+                                                Finished Chapter 11 
+                                                
 		                         
                                 
                                                                                                      
