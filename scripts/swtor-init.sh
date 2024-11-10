@@ -17,6 +17,53 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+# If we don't have a valid network-connection -> we do quit here ..
+# We should detect first if we are running on a Desktop-Computer or
+# a Notebook. Some Notebooks only have a wlan0 and some of them
+# have both wlan0 and eth0
+# A typical Desktop has one eth0 interface or sometimes
+# a wlan0 as well.
+# If we are running in "Airplane-Mode" both possible interfaces
+# are in in the state DOWN or are not found !!!
+# eth0 status DOWN
+# wlan0 status DOWN
+
+ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
+
+if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
+   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null; then
+      connect="0"
+   else
+      state_eth0=$(cat  ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "eth0" | grep "state UP")
+      if test -z "$state_eth0" ; then
+         connect="0"
+      else
+         connect="1"
+      fi
+   fi
+else
+   connect="0"
+fi
+
+if [ $connect == "0" ] ; then
+   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
+      state_wlan0=$(cat ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "wlan0"  | grep "state UP")
+      if test -z "$state_wlan0" ; then
+         connect="0"
+      else
+         connect="1"
+     fi
+   fi
+fi
+
+if [ $connect == "0" ] ; then
+   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
+   --text="\n\n        Airplane-Mode is active or no interfaces found on this computer !         \n\n" > /dev/null 2>&1)
+   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
+   exit 1
+else
+   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
+fi
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
