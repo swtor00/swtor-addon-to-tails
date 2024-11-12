@@ -946,5 +946,13 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 Finished Chapter 11 
                                                 
 		                         
-                                
-                                                                                                     
+12/11/24	0.83		swtor00		May the startup-code not working properly ? 
+                                                If we cancel the backup, the generated files 
+                                                should be deleted.(fixed) 
+
+
+                 
+
+
+ 
+                                                                                                                        

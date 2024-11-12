@@ -80,6 +80,9 @@ while [ $menu -eq 1 ]; do
       fi
 
 
+
+
+
 if [ "$selection" == "" ] ; then
     menu=0
 fi
@@ -109,7 +112,7 @@ if [ "$selection" == "1" ] ; then
 fi
 
 
-if [ $selection == "2" ] ; then
+if [ "$selection" == "2" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
       if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          ./cli_unfreezing.sh
@@ -128,7 +131,7 @@ if [ $selection == "2" ] ; then
 fi
 
 
-if [ $selection == "3" ] ; then
+if [ "$selection" == "3" ] ; then
     zenity --question --width=600 \
     --text="\n\n   Prior to make a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n   * Kleopatra    \n   * KeePassXC   \n\n If none of the above programms is open,please continue the backub by pressing 'Yes'.\n Otherwise press 'No' to cancel the backup.  \n\n"
     case $? in
@@ -144,17 +147,16 @@ if [ $selection == "3" ] ; then
     esac
 fi
 
-
-if [ $selection == "4" ] ; then
+if [ "$selection" == "4" ] ; then
   ./update.sh
 fi
 
-if [ $selection == "6" ] ; then
+if [ "$selection" == "6" ] ; then
    evince /home/amnesia/Persistent/doc/sample-configuration.pdf > /dev/null 2>&1
 fi
 
 
-if [ $selection == "5" ] ; then
+if [ "$selection" == "5" ] ; then
 if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
 
     zenity --question --width=600 --text="All your current Bookmarks for the TOR-Browser will be overwritten ! \n\n" > /dev/null 2>&1
@@ -182,29 +184,30 @@ fi
 fi
 
 
-if [ $selection == "7" ] ; then
+if [ "$selection" == "7" ] ; then
     evince /home/amnesia/Persistent/doc/swtor-0.83.pdf > /dev/null 2>&1
 fi
 
-if [ $selection == "8" ] ; then
+if [ "$selection" == "8" ] ; then
     ./cleanup.sh
     cd ~/Persistent/settings
     tar xzf tmp.tar.gz
 fi
 
-if [ $selection == "10" ] ; then
+if [ "$selection" == "10" ] ; then
    ./swtor-about & 2>&1 > /dev/null
    sleep 3
    pkill swtor-about
 fi
 
-if [ $selection == "9" ] ; then
+if [ "$selection" == "9" ] ; then
    gnome-text-editor ~/Persistent/swtor-addon-to-tails/CHANGES
 fi
 
-if [ $selection == "11" ] ; then
+if [ "$selection" == "11" ] ; then
    menu=0
 fi
+
 
 done
 

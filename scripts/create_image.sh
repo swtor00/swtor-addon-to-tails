@@ -298,9 +298,9 @@ cd ~/Persistent/swtor-addon-to-tails/tmp
 sleep 1
 
 # The following backup is only made if the configuration file swtor.cfg contains BACKUP-APT-LIST:YES
-# If your bandwith is very low and maybe limited, it may make no sense to backup this files.
+# If your bandwith is very low and maybe limited, it may make sense to backup this files.
 # Please be warned,that the backup-size will grow by 500 MB or even more if you activate this option.
-# The standard  configuration for swtor.cfg is BACKUP-APT-LIST:NO
+# The standard configuration for swtor.cfg is BACKUP-APT-LIST:NO
 
 if [ "$BACKUP_APT_LIST" == "1" ] ; then
     cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
@@ -445,10 +445,20 @@ selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-
         --print-column=1)
 
 if [ "$selection" == "" ] ; then
-    rm -f $final_backup_file > /dev/null 2>&1
-    rm -f $final_backup_file.md5 > /dev/null 2>&1
-    menu=0
-    break
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo deleting files
+   fi
+
+   rm -f $final_backup_file > /dev/null 2>&1
+   rm -f $final_backup_file.md5 > /dev/null 2>&1
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo backup-files deleted
+   fi
+
+   menu=0
+   break
 fi
 
 if [ "$selection" == "1" ] ; then
@@ -737,10 +747,10 @@ if [ $selection == "3" ] ; then
       swtor_ask_passphrase
       if [ $? -eq 0 ] ; then
           tar czf $filename_tar $final_backup_file $final_backup_file.md5
-          
+
           final_destination_name1="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg"
           final_destination_name2="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg.md5"
-          
+
           gpg -q --batch --passphrase-file /dev/shm/password2 --symmetric --cipher-algo aes256 -o $final_destination_name1 $filename_tar > /dev/null 2>&1
           if [ $? -eq 0 ] ; then
              rm $final_backup_file > /dev/null 2>&1
@@ -805,10 +815,19 @@ fi
 
 
 if [ $selection == "4" ] ; then
-    rm -f $final_backup_file > /dev/null 2>&1
-    rm -f $final_backup_file.md5 > /dev/null 2>&1
-    menu=0
-    break
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+       echo deleting files
+   fi
+
+   rm -f $final_backup_file > /dev/null 2>&1
+   rm -f $final_backup_file.md5 > /dev/null 2>&1
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo backup-files deleted
+   fi
+   menu=0
+   break
 fi
 
 done

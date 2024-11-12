@@ -131,7 +131,7 @@ fi
 # If you delete the file swtor_init with the command rm ~/swtor_init the complete
 # process will start over again.
 
-cd ~/Persistent/scripts 
+cd ~/Persistent/scripts
 ./swtor-init.sh yes
 
 # Only on exeuction of swtor-init.sh  with 0 failures ... ~/swtor_init exist
