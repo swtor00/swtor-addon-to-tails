@@ -36,8 +36,10 @@ if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; 
    else
       state_eth0=$(cat  ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "eth0" | grep "state UP")
       if test -z "$state_eth0" ; then
+         echo eth0 not connected !
          connect="0"
       else
+         echo eth0 connected !
          connect="1"
       fi
    fi
@@ -49,8 +51,10 @@ if [ $connect == "0" ] ; then
    if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
       state_wlan0=$(cat ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "wlan0"  | grep "state UP")
       if test -z "$state_wlan0" ; then
+         echo wifi not connected !
          connect="0"
       else
+         echo wifi connected !
          connect="1"
      fi
    fi
