@@ -581,8 +581,7 @@ Date		Release		Author		Description
 
 
                                                     During the test with encrypted ssh-images I saw this ...
-
-
+                                                    
                                                     cp: cannot stat '/home/amnesia/Persistent/backup/Tor Browser/*': No such file or directory
                                                     Backup files ~/Persistent/TOR Browser restored
                                                     cp: cannot stat '/home/amnesia/Persistent/backup/personal-files/*': No such file or directory
@@ -595,7 +594,6 @@ Date		Release		Author		Description
                                                     We should not copy files with * from a empty directory ....
                                                     This is fixed.
     
-
                                                     Test of the restore script with downloading from 
                                                     a remote host and decrypt the backup. Works ... 
 
@@ -951,7 +949,20 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 should be deleted.(fixed) 
 
 
-                 
+14/11/24	0.83		swtor00		The new clock1 parameter works perfect 
+                                                After the session-desktop is started we should do 
+                                                a commmand to mount the remote fs 
+                                                
+                                                sshfs -p 22 test@testserver1.com: /home/amnesia/Persistent/swtor-addon-to-tails/sshfs -o StrictHostKeyChecking=no
+                                              
+                                                Tested and it works perfect 
+                                                You can now copy files from Tails to the remote filesystem and select 
+                                                them over session to be send !
+                                                Even the mounted remote file system will be shown on "Places" like a USB device 
+                                                
+                                                
+                                                
+                                                
 
 
  
