@@ -188,10 +188,8 @@ fi
 if [ $arg8 == "clock" ]
    then
    chain+=" -Y "
+   chain+=$arg9      
 fi
-
-
-chain+=$arg9
 
 
 if [ $arg8 == "clock" ]
@@ -199,6 +197,26 @@ if [ $arg8 == "clock" ]
    xhost + > /dev/null
    chain+=" xclock -geometry "$XCLOCK_SIZE"x"$XCLOCK_SIZE"+85+5 &&  pkill ssh"
 fi
+
+# We define a new start option for the addon named clock1
+# If we can start a simple X11 clock we can start any X11 program
+# Note 13/11/24 adding clock1 to start X11 session-messanger 
+# This feature remains hidden and undocumented until all tests are fine
+# Note : All stored data for the session-messanger are stored on the 
+# remote host !!!!
+ 
+if [ $arg8 == "clock1" ]
+   then
+   chain+=" -Y "
+   chain+=$arg9
+fi
+
+if [ $arg8 == "clock1" ]
+   then
+   xhost + > /dev/null
+   chain+=" session-desktop &&  pkill ssh"
+fi
+
 
 # is allready a ssh deamon running ?
 
