@@ -134,7 +134,7 @@ fi
 cd ~/Persistent/scripts
 ./swtor-init.sh yes
 
-# Only on exeuction of swtor-init.sh  with 0 failures ... ~/swtor_init exist
+# Only on exeuction of swtor-init.sh  with exit code 0 ... ~/swtor_init exist
 
 if [ ! -f ~/swtor_init ] ; then
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \

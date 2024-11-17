@@ -96,6 +96,7 @@ while [ $menu -gt 0 ]; do
                  zenity --info --width=600 --title="Connection lost" \
                  --text="\n\n   [  The active SSH-Connection was running and have ben terminated unexpected !  ]   \n\n   "
 
+
                  sleep 0.7
 
                  rm  /home/amnesia/Persistent/scripts/state/online > /dev/null  2>&1

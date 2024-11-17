@@ -117,8 +117,12 @@ if [ $arg1 == "fullssh.sh" ] ; then
        # We start the little python-code to execute
 
       touch ~/Persistent/swtorcfg/log/ssh-command.log
-      ./1.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
 
+      # If we would like to see output -> we make it visible
+      # Otherwise we send the output to /dev/null
+      
+      ./1.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
+      
    else
        password=$(zenity --entry --text="Please type the password for the selected SSH-Server" --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
@@ -136,7 +140,7 @@ if [ $arg1 == "fullssh.sh" ] ; then
        grep fullssh.sh ~/Persistent/swtorcfg/swtorssh.cfg | grep $arg2 > ~/Persistent/swtorcfg/fullssh.arg
 
        # We start the little python-code to execute
- 
+
        touch ~/Persistent/swtorcfg/log/ssh-command.log
 
        ./2.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
