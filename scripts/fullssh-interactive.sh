@@ -212,6 +212,40 @@ if [ $arg8 == "clock" ]
    chain+=" xclock -geometry "$XCLOCK_SIZE"x"$XCLOCK_SIZE"+85+5 &&  pkill ssh"
 fi
 
+if [ $arg8 == "clock1" ]
+   then
+   chain+=" -Y "
+   chain+=$arg9
+fi
+
+if [ $arg8 == "clock1" ]
+   then
+   xhost + > /dev/null
+   chain+=" session-desktop &&  pkill ssh"
+   
+   # We need to mount the remote user-directory over sshfs
+   # or we can not send files over seesion 
+   
+   ssh_mount="sshfs -p "
+   ssh_mount+=$arg6
+   ssh_mount+=" "
+   ssh_mount+=$arg9
+   ssh_mount+=": "
+   ssh_mount+="/home/amnesia/Persistent/swtor-addon-to-tails/sshfs -o StrictHostKeyChecking=no"
+   
+   # script for mounting the remote fs  
+   
+   echo $ssh_mount > ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh  
+   chmod +x ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh  
+ 
+   # script for umount the remote fs
+   
+   echo "umount /live/persistence/TailsData_unlocked/Persistent/swtor-addon-to-tails/sshfs" > ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh  
+   chmod +x ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh 
+   
+fi
+
+
 # is allready a ssh deamon running ?
 
 ssh_pid=$(ps axu | grep ServerAliveInterval  | grep ssh  | awk '{print $2}')
@@ -273,6 +307,18 @@ if [ -z "$ssh_pid" ] ; then
          echo ssh command succesfull executed
       fi
 
+      # Do we need to mount the remote fs ?
+
+      if [ -f ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh ] ; then
+
+         cd ~/Persistent/swtor-addon-to-tails/tmp
+         ./sshfs-mount.sh
+
+         # remove this script
+
+         rm ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh
+      fi
+      
       echo 1 > /home/amnesia/Persistent/scripts/state/online
 
       if [ -f /home/amnesia/Persistent/scripts/state/offline ] ; then 
@@ -287,9 +333,25 @@ if [ -z "$ssh_pid" ] ; then
       echo $ssh_pid  > ~/Persistent/swtor-addon-to-tails/tmp/close__request
       echo $arg9     >> ~/Persistent/swtor-addon-to-tails/tmp/close__request
 
+      # In case of clock -> xhost - 
+
       if [ $arg8 == "clock" ] ; then
          xhost -
       fi
+      
+      # In the case of clock1 -> xhost -
+
+      if [ $arg8 == "clock1" ] ; then
+         xhost -
+
+         cd ~/Persistent/swtor-addon-to-tails/tmp
+         ./sshfs-umount.sh
+
+         # remove this script
+
+         rm ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh
+
+      fi         
 fi
 
 swtor_cleanup
