@@ -835,6 +835,12 @@ done
 if [ $backup_done == "1" ]  ; then
     zenity --info --width=600 --title="" \
     --text="\n\n   Please do not forget to copy the repair-files to a other external storage.\n\n   Without this files in this directory you can not restore the persistent volume !  \n\n" > /dev/null 2>&1 
+    
+    # Until now , it wasn't possible to hold multiples backups 
+    # We do add a date to the folder 
+    
+    mv ~/Persistent/personal-files/tails-repair-disk  
+    
 else
      if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo "backup was canceled"
