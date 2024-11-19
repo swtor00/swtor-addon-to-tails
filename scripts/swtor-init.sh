@@ -30,10 +30,9 @@
 
 
 # sometimes the initialiisation needs a lot of time 
-
-if [ $? -eq 0 ] ; then
-    sleep 50
-fi
+# if [ $? -eq 0 ] ; then
+#    sleep 50
+# fi
 
 show_network_state="0"
 
