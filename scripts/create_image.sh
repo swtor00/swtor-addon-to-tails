@@ -838,8 +838,9 @@ if [ $backup_done == "1" ]  ; then
     
     # Until now , it wasn't possible to hold multiples backups 
     # We do add a date to the folder 
+    # So we can hold as many backups as possible
     
-    mv ~/Persistent/personal-files/tails-repair-disk  
+    mv ~/Persistent/personal-files/tails-repair-disk  ~/Persistent/personal-files/tails-repair-disk-$(date '+%Y-%m-%d-%H-%M') > /dev/null 2>&1  
     
 else
      if [ $TERMINAL_VERBOSE == "1" ] ; then
