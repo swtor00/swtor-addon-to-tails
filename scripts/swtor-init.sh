@@ -29,10 +29,11 @@
 # wlan0 status DOWN
 
 
-# sometimes the initialiisation needs a lot of time 
-# if [ $? -eq 0 ] ; then
-#    sleep 50
-# fi
+# sometimes the initialiisation needs a lot of time
+
+if [ $? -eq 0 ] ; then
+   sleep 9
+fi
 
 show_network_state="0"
 
