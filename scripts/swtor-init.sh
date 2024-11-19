@@ -28,6 +28,13 @@
 # eth0 status DOWN
 # wlan0 status DOWN
 
+
+# sometimes the initialiisation needs a lot of time 
+
+if [ $? -eq 0 ] ; then
+    sleep 50
+fi
+
 show_network_state="0"
 
 ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
