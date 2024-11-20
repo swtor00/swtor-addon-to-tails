@@ -31,63 +31,63 @@
 
 # sometimes the initialiisation needs a lot of time
 
-if [ $? -eq 0 ] ; then
-   sleep 9
-fi
+#if [ $? -eq 0 ] ; then
+#   sleep 9
+#fi
 
 show_network_state="0"
 
-ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
+#ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
 
-if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
-   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null; then
-      connect="0"
-   else
-      state_eth0=$(cat  ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "eth0" | grep "state UP")
-      if test -z "$state_eth0" ; then
-         if [ $show_network_state == "1" ] ; then
-            echo eth0 not connected !
-         fi
-         connect="0"
-      else
-         if [ $show_network_state == "1" ] ; then
-            echo eth0 connected !
-         fi
-         connect="1"
-      fi
-   fi
-else
-   if [ $show_network_state == "1" ] ; then
-      echo eth0 not exist or in aiplane-mode !
-   fi
-   connect="0"
-fi
+#if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
+#   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null; then
+#      connect="0"
+#   else
+#      state_eth0=$(cat  ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "eth0" | grep "state UP")
+#      if test -z "$state_eth0" ; then
+#         if [ $show_network_state == "1" ] ; then
+#            echo eth0 not connected !
+#         fi
+#         connect="0"
+#      else
+#         if [ $show_network_state == "1" ] ; then
+#            echo eth0 connected !
+#        fi
+#         connect="1"
+#      fi
+#   fi
+#else
+#   if [ $show_network_state == "1" ] ; then
+#      echo eth0 not exist or in aiplane-mode !
+#   fi
+#   connect="0"
+#fi
 
-if [ $connect == "0" ] ; then
-   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
-      state_wlan0=$(cat ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "wlan0"  | grep "state UP")
-      if test -z "$state_wlan0" ; then
-         if [ $show_network_state == "1" ] ; then
-            echo wifi not connected !
-         fi
-         connect="0"
-      else
-         if [ $show_network_state == "1" ] ; then
-            echo wifi connected !
-         fi
-         connect="1"
-     fi
-   fi
-fi
+#if [ $connect == "0" ] ; then
+#   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
+#      state_wlan0=$(cat ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "wlan0"  | grep "state UP")
+#      if test -z "$state_wlan0" ; then
+#         if [ $show_network_state == "1" ] ; then
+#            echo wifi not connected !
+#         fi
+#         connect="0"
+#      else
+#         if [ $show_network_state == "1" ] ; then
+#            echo wifi connected !
+#         fi
+#         connect="1"
+#     fi
+#   fi
+#fi
 
-if [ $connect == "0" ] ; then
-   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-   --text="\n\n        Airplane-Mode is active or no interfaces found on this computer !         \n\n" > /dev/null 2>&1)
-   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
-   exit 1
-else
-   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
-fi
+#if [ $connect == "0" ] ; then
+#   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
+#   --text="\n\n        Airplane-Mode is active or no interfaces found on this computer !         \n\n" > /dev/null 2>&1)
+#   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
+#   exit 1
+#else
+#   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
+#fi
 
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
