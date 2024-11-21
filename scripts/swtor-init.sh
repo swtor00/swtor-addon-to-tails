@@ -246,8 +246,10 @@ if [ $wait_until_connection == "1" ] ; then
                 # or we are running Tails on a computer with a unsuported interface
 
                 if [ $found == "0" ] ; then
-                   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\               
+                
+                   sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
                    --text="\n\n        Airplane-Mode is active or no active interfaces found on this computer !         \n\n" > /dev/null 2>&1)
+                   
                    rmdir $lockdir >/dev/null 
                    exit 1
                 fi
