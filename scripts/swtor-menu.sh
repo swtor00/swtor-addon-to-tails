@@ -18,6 +18,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
+# wrong order 
+
+if [ -f ~/Persistent/scripts/init.lock ] ; then 
+   exit 1 
+fi
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"

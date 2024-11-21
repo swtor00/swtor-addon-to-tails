@@ -17,78 +17,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# If we don't have a valid network-connection -> we do quit here ..
-# We should detect first if we are running on a Desktop-Computer or
-# a Notebook. Some Notebooks only have a wlan0 and some of them
-# have both wlan0 and eth0
-# A typical Desktop has one eth0 interface or sometimes
-# a wlan0 as well.
-# If we are running in "Airplane-Mode" both possible interfaces
-# are in in the state DOWN or are not found !!!
-# eth0 status DOWN
-# wlan0 status DOWN
+# wrong order 
 
-
-# sometimes the initialiisation needs a lot of time
-
-#if [ $? -eq 0 ] ; then
-#   sleep 9
-#fi
-
-show_network_state="0"
-
-#ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
-
-#if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
-#   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null; then
-#      connect="0"
-#   else
-#      state_eth0=$(cat  ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "eth0" | grep "state UP")
-#      if test -z "$state_eth0" ; then
-#         if [ $show_network_state == "1" ] ; then
-#            echo eth0 not connected !
-#         fi
-#         connect="0"
-#      else
-#         if [ $show_network_state == "1" ] ; then
-#            echo eth0 connected !
-#        fi
-#         connect="1"
-#      fi
-#   fi
-#else
-#   if [ $show_network_state == "1" ] ; then
-#      echo eth0 not exist or in aiplane-mode !
-#   fi
-#   connect="0"
-#fi
-
-#if [ $connect == "0" ] ; then
-#   if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
-#      state_wlan0=$(cat ~/Persistent/swtor-addon-to-tails/tmp/network-list | grep "wlan0"  | grep "state UP")
-#      if test -z "$state_wlan0" ; then
-#         if [ $show_network_state == "1" ] ; then
-#            echo wifi not connected !
-#         fi
-#         connect="0"
-#      else
-#         if [ $show_network_state == "1" ] ; then
-#            echo wifi connected !
-#         fi
-#         connect="1"
-#     fi
-#   fi
-#fi
-
-#if [ $connect == "0" ] ; then
-#   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-#   --text="\n\n        Airplane-Mode is active or no interfaces found on this computer !         \n\n" > /dev/null 2>&1)
-#   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
-#   exit 1
-#else
-#   rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
-#fi
-
+if [ -f ~/Persistent/scripts/menu.lock ] ; then 
+   exit 1 
+fi 
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
@@ -200,7 +133,6 @@ if mkdir "$lockdir" > /dev/null 2>&1
        fi
 
 else
-
        # failed to create the directory, presumably because it already exists
 
        if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -254,8 +186,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 
-# Only execute this part if we are started over the autostart folder
-
+# Only execute this part if we are started over the folder ~/.config/autostart 
+ 
 if [ $wait_until_connection == "1" ] ; then
 
 
@@ -289,9 +221,42 @@ if [ $wait_until_connection == "1" ] ; then
                echo $auto_init
             fi
 
-            # We wait for about 5 min.to a valid connection ....
-            # After this time, we close the script !!!!
+            # Exactly one min after the login would be
+            # the perfect time to check for a active Airplane-Mode
+            # If Airplane-Mode is active we don't see 
+            # eth0 or wlan0 over the ip command 
 
+            if [ $auto_init -eq 50 ]; then
+                ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
+                   
+                # We should have at least interface eth0 or wlan0 
+               
+                found="0"
+                if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
+                   ((found++))
+                fi 
+                
+                if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
+                   ((found++))
+                fi 
+                
+                rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
+                
+                # In the case that no interfaces are found -> We are in Airplane-Mode 
+                # or we are running Tails on a computer with a unsuported interface
+
+                if [ $found == "0" ] ; then
+                   sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\               
+                   --text="\n\n        Airplane-Mode is active or no active interfaces found on this computer !         \n\n" > /dev/null 2>&1)
+                   rmdir $lockdir >/dev/null 
+                   exit 1
+                fi
+            fi 
+            
+            # We wait for about 5 min.to a valid connection ....
+            # over eth0 or wlan0 
+            # After this timeout reached, we close the script !!!!
+            
             if [ $auto_init -eq 300 ]; then
                auto_init=0
                connect=0
