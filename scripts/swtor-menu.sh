@@ -20,9 +20,31 @@
 
 # wrong order 
 
-if [ -f ~/Persistent/scripts/init.lock ] ; then 
+if [ -f ~/Persistent/scripts/init.lock ] ; then
+   echo wrong order of scripts 
    exit 1 
 fi
+
+
+# The following could happen 
+# Tails will be started normal with network enabled 
+# swtor-init.sh will be executed with rc=0 
+# 
+# Ten minutes later the user decide to 
+# switch to airplane-mode and all connections 
+# are gone 
+
+if [ -f ~/swtor_init ] ; then
+
+   # swtor-init.sh is allready executed .... 
+   
+   connect_lost=$(ip route | grep default > ~/Persistent/swtor-addon-to-tails/tmp/route) 
+   if [ "$connect_lost" == "" ] ; then
+      sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\ 
+      --text="\n\n      Airplane-Mode is active or no active connection found after initialisation !   \n\n" > /dev/null 2>&1)
+      exit 1
+   fi
+fi 
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"

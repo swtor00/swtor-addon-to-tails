@@ -243,7 +243,7 @@ if [ $wait_until_connection == "1" ] ; then
                 rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
                 
                 # In the case that no interfaces are found -> We are in Airplane-Mode 
-                # or we are running Tails on a computer with a unsuported interface
+                # or we are running Tails on a computer with a unknown interface
 
                 if [ $found == "0" ] ; then
                 
