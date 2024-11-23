@@ -201,6 +201,7 @@ fi
 if [ $arg8 == "noshell" ]
    then
     chain+=" -N "
+    chain+=$arg9 
 fi
 
 
