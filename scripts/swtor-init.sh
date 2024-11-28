@@ -17,11 +17,11 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# wrong order 
+# wrong order
 
-if [ -f ~/Persistent/scripts/menu.lock ] ; then 
-   exit 1 
-fi 
+if [ -f ~/Persistent/scripts/menu.lock ] ; then
+   exit 1
+fi
 
 if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export IMPORT_BOOKMAKRS="1"
@@ -163,7 +163,23 @@ fi
 
 echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
 
-if grep -q "provided" test_admin ; then
+
+# echo ----------------------------------------------------
+# cat test_admin
+# echo ----------------------------------------------------
+# Output with password for root
+# ----------------------------------------------------
+#[sudo] password for amnesia: Sorry, try again.
+#[sudo] password for amnesia:
+#sudo: no password was provided
+#sudo: 1 incorrect password attempt
+#----------------------------------------------------
+# Output with no password for root
+#----------------------------------------------------
+#Sorry, user amnesia is not allowed to execute '/bin/bash' as root on localhost.
+#----------------------------------------------------
+
+if grep -q "no password was provided" test_admin ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo password asked
    fi

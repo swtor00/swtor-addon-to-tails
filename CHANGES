@@ -966,12 +966,12 @@ BUILD 20220518					    - Improved watchdog.sh script
 17/11/24	0.83		swtor00		mount and umount remote filessystem with clock1 works 
 
 
-19/11/24	0.83 		swtor00		Startup-code to detect airplane-mode optimized 	
+19/11/24	0.83		swtor00		Startup-code to detect airplane-mode optimized	
                                                 Still sometimes a error on start up !!!!
                                                 tails-repair-disk will have a date after the backup
                                                 so you can hold multiple backups in your folder !
                                                 
-21/11/24 	0.83		swtor00		Detection of Airplane-mode fixed inside autostart ! 
+21/11/24	0.83		swtor00		Detection of Airplane-mode fixed inside autostart ! 
                                                 The following scenario should also be possible
                                                 1.) Start Tails with network on 
                                                 2.) Login and swtor-init.sh will be executed 
@@ -980,10 +980,13 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 swtor-menu.sh should detect this ! 
 22/11/24	0.83		swtor00		Testing "Airplane-Mode" after startup (works)
 
-23/11/24	0.83		swtor00 	moshell-code inside fullssh.sh had a typo ... (fixed)                                                
+23/11/24	0.83		swtor00		noshell-code inside fullssh.sh had a typo ... (fixed)                                                
                                                 
                                                 
-                                                
+28/11/24	0.83		swtor00		Update to Tails 6.10
+                                                Strange beheavior on password test
+
+	                                                
 
 
  
