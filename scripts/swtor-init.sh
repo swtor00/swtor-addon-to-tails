@@ -163,6 +163,7 @@ fi
 
 echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
 
+sleep 1
 
 # echo ----------------------------------------------------
 # cat test_admin
