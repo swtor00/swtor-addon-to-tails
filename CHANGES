@@ -986,6 +986,13 @@ BUILD 20220518					    - Improved watchdog.sh script
 28/11/24	0.83		swtor00		Update to Tails 6.10
                                                 Strange beheavior on password test
 
+                                                # Wit this little delay it should work 
+                                                # even on a slow USB Device   
+
+                                                echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
+						sleep 1
+                                                if grep -q "no password was provided" test_admin ; then
+
 	                                                
 
 
