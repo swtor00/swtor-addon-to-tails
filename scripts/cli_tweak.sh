@@ -5,7 +5,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.9 or higher                         #
+# OS      : Tails 6.10 or higher                        #
 #                                                       #
 #                                                       #
 # VERSION : 0.83                                        #

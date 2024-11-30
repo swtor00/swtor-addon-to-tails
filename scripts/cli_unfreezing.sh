@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.9 or higher                         #
+# OS      : Tails 6.10 or higher                        #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
@@ -24,7 +24,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
    
    echo ---------------------------------------
-   echo please make a Rebbot of Tails ASAP !!!!
+   echo please make a reboot of Tails ASAP !!!!
    echo ---------------------------------------
 else
    echo "unfreezing is not possible. This system is not freezed"
