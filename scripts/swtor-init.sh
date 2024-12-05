@@ -161,9 +161,7 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo Password test
 fi
 
-echo _123UUU__ | sudo -S /bin/bash > test_admin 2>&1
-
-sleep 1
+echo _123UUU__ | sudo -S /bin/bash > /dev/shm/test_admin 2>&1
 
 # echo ----------------------------------------------------
 # cat test_admin
@@ -180,16 +178,20 @@ sleep 1
 #Sorry, user amnesia is not allowed to execute '/bin/bash' as root on localhost.
 #----------------------------------------------------
 
-if grep -q "no password was provided" test_admin ; then
+if grep -q "no password was provided" /dev/shm/test_admin ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo password asked
    fi
-   rm test_admin 2>&1
-else
+   rm /dev/shm/test_admin 2>&1
+fi    
+
+
+if grep -q "user amnesia is allowed" /dev/shm/test_admin ; then
+
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo no password set
    fi
-   rm test_admin > /dev/null 2>&1
+   rm /dev/shm/test_admin > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
    zenity --error --width=600 \
      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \

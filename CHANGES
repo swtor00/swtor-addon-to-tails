@@ -984,7 +984,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
                                                 
 28/11/24	0.83		swtor00		Update to Tails 6.10
-                                                Strange beheavior on password test
+                                                Strange behavior on password test
 
                                                 # Wit this little delay it should work 
                                                 # even on a slow USB Device   
@@ -993,7 +993,8 @@ BUILD 20220518					    - Improved watchdog.sh script
 						sleep 1
                                                 if grep -q "no password was provided" test_admin ; then
 
-	                                                
+05/12/24	0.83				Still having this issue with the password test .... 
+
 
 
  
