@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.10 or higher                        #
+# OS      : Tails 6.11 or higher                        #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
@@ -701,6 +701,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
          rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
 
+         rmdir ~/Persistent/scripts/init.lock 2>&1 >/dev/null
          rmdir ~/Persistent/scripts/menu.lock 2>&1 >/dev/null
          cd ~/Persistent/swtor-addon-to-tails/tmp
          cat password | sudo -S shutdown -r now

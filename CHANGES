@@ -1009,7 +1009,8 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 INFO:asp-install:169:  chromium : Depends: libc++1-19 (>= 1:19.1.4) but it is not installable
                                                 INFO:asp-install:169:             Depends: libc++abi1-19 (>= 1:19.1.4) but it is not installable
                                                 INFO:asp-install:169:             Depends: libunwind-19 (>= 1:19.1.4) but it is not installable
-                                                INFO:asp-install:169:             Depends: chromium-common (= 131.0.6778.108-1~deb12u1) but 131.0.6778.85-1~deb12u1 is to be installed
+                                                INFO:asp-install:169:             Depends: chromium-common (= 131.0.6778.108-1~deb12u1) but 131.0.6778.85-1~deb12u1 is to be 		
+                                                installed
                                                 INFO:asp-install:169: E: Unable to correct problems, you have held broken packages.
                                                 WARNING:asp-install:172: apt-get exited with returncode 100
 
@@ -1021,6 +1022,11 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 I guess in a few days it will be resolved.
 
 
+
+11/11/25	0.83		swtor00		Prior to rebooting because freezed system -> we should delete 
+                                                the lockfile !
+                                                
+                                                
   
                                                   
 
