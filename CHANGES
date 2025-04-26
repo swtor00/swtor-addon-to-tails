@@ -1023,9 +1023,12 @@ BUILD 20220518					    - Improved watchdog.sh script
 
 
 
-11/11/25	0.83		swtor00		Prior to rebooting because freezed system -> we should delete 
+11/01/25	0.83		swtor00		Prior to rebooting because freezed system -> we should delete 
                                                 the lockfile !
-                                                
+                                        
+28/03/25	0.83		swtor00         error message on startup of swtor-menu.sh 
+30/03/25        0.85		swtor00		ssh proxy UK renew 
+
                                                 
   
                                                   

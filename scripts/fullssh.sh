@@ -4,8 +4,8 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.10 or higher                        #
-# TASKS   : run a ssh command with multipe options      #
+# OS      : Tails 6.14.1 or higher                      #
+# TASKS   : run a ssh command with multiple options     #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
