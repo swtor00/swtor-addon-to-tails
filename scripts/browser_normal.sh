@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.14.1 or higher                      #
+# OS      : Tails 6.14.2 or higher                      #
 #                                                       #
 # VERSION : 0.83                                        #
 # STATE   : BETA                                        #
@@ -24,6 +24,7 @@ cd /home/amnesia/Persistent/scripts
 if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
     chromium --proxy-server="socks5://127.0.0.1:9999" \
              --disable-logging \
+             --incognito \
              --user-data-dir=/home/amnesia/Persistent/settings/2 \
              --disable-translate \
              --disable-plugins-discovery \
