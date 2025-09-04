@@ -26,7 +26,9 @@ if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
              --disable-logging \
              --incognito \
              --user-data-dir=/home/amnesia/Persistent/settings/1 \
-             --disable-translate \
+             --disable-translate \             
+             --disable-webgl \
+             --disable-webgl2 \
              --disable-plugins-discovery \
              www.startpage.com > /dev/null 2>&1 &
     exit 0

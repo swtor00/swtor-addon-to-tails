@@ -1029,7 +1029,15 @@ BUILD 20220518					    - Improved watchdog.sh script
 28/03/25	0.83		swtor00         error message on startup of swtor-menu.sh 
 30/03/25        0.85		swtor00		ssh proxy UK renew 
 
-                                                
+
+
+04/09/25	0.85		swtor00		Update to Tails release 6.19
+
+						Error shown on startup .....
+						amnesia@amnesia:~/Persistent/scripts$ ./swtor-menu.sh 
+						grep: /dev/shm/test_admin: No such file or directory
+
+                                             
   
                                                   
 

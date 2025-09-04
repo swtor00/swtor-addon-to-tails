@@ -24,9 +24,10 @@ cd /home/amnesia/Persistent/scripts
 if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
     chromium --proxy-server="socks5://127.0.0.1:9999" \
              --disable-logging \
-             --incognito \
-             --user-data-dir=/home/amnesia/Persistent/settings/2 \
+             --user-data-dir=/home/amnesia/Persistent/settings/1 \
              --disable-translate \
+             --disable-webgl \
+             --disable-webgl2 \
              --disable-plugins-discovery \
              www.startpage.com > /dev/null 2>&1 &
     exit 0

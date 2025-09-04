@@ -178,16 +178,15 @@ echo _123UUU__ | sudo -S /bin/bash > /dev/shm/test_admin 2>&1
 #Sorry, user amnesia is not allowed to execute '/bin/bash' as root on localhost.
 #----------------------------------------------------
 
-if grep -q "no password was provided" /dev/shm/test_admin ; then
+if grep -q "no password was provided" /dev/shm/test_admin > /dev/null 2>&1 ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo password asked
    fi
    rm /dev/shm/test_admin 2>&1
-fi    
+fi
 
 
-if grep -q "user amnesia is allowed" /dev/shm/test_admin ; then
-
+if grep -q "user amnesia is allowed" /dev/shm/test_admin > /dev/null 2>&1 ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo no password set
    fi
@@ -205,8 +204,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 
-# Only execute this part if we are started over the folder ~/.config/autostart 
- 
+# Only execute this part if we are started over the folder ~/.config/autostart
+
 if [ $wait_until_connection == "1" ] ; then
 
 
