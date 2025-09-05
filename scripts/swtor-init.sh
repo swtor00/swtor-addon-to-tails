@@ -4,13 +4,13 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.14.1 or higher                      #
+# OS      : Tails 6.19 or higher                        #
 #                                                       #
-# VERSION : 0.83                                        #
+# VERSION : 0.85                                        #
 # STATE   : BETA                                        #
 #                                                       #
 #                                                       #
-# DATE    : 01-110-2024                                 #
+# DATE    : 05-09-2025                                 #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #

@@ -4,18 +4,18 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.14.1 or higher                      #
+# OS      : Tails 6.19 or higher                        #
 # TASKS   : run a ssh command with multiple options     #
 #           almost the same like fullssh.sh with the    #
 #           only difference that the password will be   #
 #           given over sshpass.                         #
 #                                                       #
-# VERSION : 0.83                                        #
+# VERSION : 0.85                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 01-11-2024                                  #
+# DATE    : 05-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -272,7 +272,7 @@ if [ -z "$ssh_pid" ] ; then
       sleep $TIMEOUT_SSH
 
       # Fuck off !
-      # This was a hard to find bug inside the code !!!!
+      # This was a very hard to find bug inside the code !!!!
       # right
       # ssh_pid=$(ps axu | grep ServerAliveInterval | grep -v xxxxxxx | head -1 |awk '{print $2}')
       # wrong
