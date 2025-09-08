@@ -44,7 +44,7 @@ I would like to backup my persistent Data from this addon to a foreign host over
 
 - A full featured mode SSH account (fullssh.sh) and a password less login. 
 - rsync on the remote SSH-host. You may have to install rsync first if it is not installed.
-- A login with password for backup is not supported yet.
+- A login with password for the backup is not supported yet.
 - You can still make a unencrypted Backups of your persistent Volume with the add-on
   but not transfer the backup to a other host.
 - You can still encrypt the backup and use your on own way to encrypt it.
@@ -52,6 +52,7 @@ I would like to backup my persistent Data from this addon to a foreign host over
 Please be warned by me. There are several Country on this world,that can demand
 by law to force every password for a found encrypted stick or HD. 
 In England and the USA it is common law to demand all password or keys.
+So don't store the crpyted files inside your home !!!!!!
 
 So ... Copy the backup to a other country. Far a way from your own country.
 
