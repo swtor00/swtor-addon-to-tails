@@ -6,6 +6,12 @@ There is no VPN involved. Some idiots from the redit/tails forum
 may should read this file to know the big difference between a real 
 VPN and a local socks5 proxy. 
 
+Is it possible to use this addon without a persistent Volume ? 
+--------------------------------------------------------------
+No. You need a USB device and a persitent volume to run it. 
+If you like it, you can run the medium without the persistent 
+volume. 
+
 Do you provide a free SSH account with this Add-on ? 
 ----------------------------------------------------
 No ... You have to create your own personal SSH-Accounts.
