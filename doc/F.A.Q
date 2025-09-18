@@ -1,3 +1,8 @@
+How do I upgrade from Version 6.XX to Version 7.00 ?
+---------------------------------------------------- 
+
+y
+
 Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
 No. We only use SSH to communicate with others Servers.  
