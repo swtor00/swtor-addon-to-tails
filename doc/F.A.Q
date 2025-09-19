@@ -1,7 +1,36 @@
-How do I upgrade from Version 6.XX to Version 7.00 ?
----------------------------------------------------- 
+How do I upgrade from Version 6.19 to Version 7.00 ?
+----------------------------------------------------
 
-y
+Prior to install Tails 7.0 we have to unfreeze the current system
+6.19 Open a terminal inside the script folder.
+
+./cli_unfreezing.sh
+
+First download and install Tails 7.0 on a other USB 
+disk. Then create a new empty persistent Volume.
+Please activate the same options for the persistent volume 
+like you did it with 6.X 
+Restart the new Tails 7.0 with a network-connection and 
+open a terminal : 
+
+sudo /bin/bash 
+Type the correct password
+
+apt-get update 
+apt-get install chromium 
+apt-get install chromium-sandbox
+apt-get install sshpass
+
+Please restart Tails 7.0 now.
+
+Insert the old system with 6.19 in a other free usb 
+slot and open the persistent volume. 
+
+1.) Copy all ssh-keys files to  /home/amnesia/.ssh
+2.) Copy all bookmarks files to /home/amnesia/.mozilla/firefox/bookmarks
+3.) copy all persistent files to /home/amnesia/persistent 
+
+It should work now ....
 
 Is this addon a little helper to use a VPN within Tails ?
 ----------------------------------------------------------
@@ -13,7 +42,7 @@ VPN and a local socks5 proxy.
 
 Is it possible to use this addon without a persistent Volume ? 
 --------------------------------------------------------------
-No. You need a USB device and a persitent volume to run it. 
+No. You need a USB device and a persistent volume to run it. 
 If you like it, you can run the medium without the persistent 
 volume. 
 
@@ -21,7 +50,6 @@ Do you provide a free SSH account with this Add-on ?
 ----------------------------------------------------
 No ... You have to create your own personal SSH-Accounts.
 There are plenty of options to create a free ssh-account.
-
 
 I would like to test this addon only, what SSH-Provider should I choose ?
 -------------------------------------------------------------------------
@@ -67,7 +95,7 @@ So don't store the crpyted files inside your home !!!!!!
 
 So ... Copy the backup to a other country. Far a way from your own country.
 
-He, with 20GB space in German you could store plenty of Tails-Images ?
+With 20GB of free space in German you could store plenty of Tails-Images ?
 
 But be sure, you can restore back the files.
 
@@ -94,7 +122,7 @@ store your backup in a other Country than Germany.
 Are there any backdoors inside the add-on ? 
 --------------------------------------------
 No. It is only pure shell-code (scripts) that is clear written and 
-there a no backdoors inside the scripts or the 2 provided profiles 
+there a no backdoors inside the scripts or the 3 provided profiles 
 for chromium.
 
 
@@ -199,12 +227,13 @@ Persistence Volume,you have to close.
 - Cleopatra  
 
 After upgrading Tails, the system is not longer freezed.
-What should I do ?
+What should I do now ?
 --------------------------------------------------------
 There a 2 ways possible to refreez it again. 
 
 1. Open a terminal in the script folder and execute exactly in 
-   this order 
+   this order this 2 shell-scripts.
+   
    ./cli_tweak.sh 
    ./cli_freezing.sh 
    
@@ -275,7 +304,7 @@ My specific question isn't found here. What should I do ?
 Write me a email to swtor00@protonmail.com 
 
 Today .. On 31/12/21 I have received my first first feature 
-request from user I don't know in person. It was ver easy to inplement 
+request from user I don't know in person. It was very easy to fix it 
 and the user hjhj65 don't need to change size of 
 the renote Xclock after every update. Thanks hjhj65 
  
