@@ -4,7 +4,7 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.19 or higher                        #
+# OS      : Tails 7.0 or higher                         #
 #                                                       #
 #                                                       #
 # VERSION : 0.85                                        #
@@ -12,7 +12,7 @@
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-2025                                  #
+# DATE    : 19-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -718,7 +718,7 @@ swtor_update () {
 
 if [ $CHECK_UPDATE == "1" ] ; then
 
-   # Some maybe not so clever poeple may try to delete the .git directory from
+   # Some idiots may try to delete the .git directory from
    # the addon itself and the configuration saying explicit CHECK-UPDATE:YES  ...
    # This will not work for now or in the future !!!!!!!
    # This poeple should make a configuration change to CHECK-UPDATE:NO
@@ -914,7 +914,7 @@ fi
 if [ "$menu" -ge "4" ] ; then 
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n           You had your chance to type it correct ! Backup is canceled !      \n\n" > /dev/null 2>&1)
-   return 1 
+   return 1
 else
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
    --text="\n\n           The two passphrases don't match. Please try it again !          \n\n" > /dev/null 2>&1)
@@ -1159,11 +1159,11 @@ if [ -d ~/Persistent/backup/cups-configuration ] ; then
       cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
       sudo -S  chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/subscriptions.conf.0 > /dev/null 2>&1
 
-      if [ $CLI_OUT == "1" ] ; then 
+      if [ $CLI_OUT == "1" ] ; then
          echo "Backup files cups restored"
       fi
    else
-      if [ $CLI_OUT == "1" ] ; then 
+      if [ $CLI_OUT == "1" ] ; then
          echo "cups not restored .... option is not active on this persistent volume"
       fi
    fi
@@ -1217,7 +1217,7 @@ restore_software() {
 # tails-persistence-setup tails-persistence-setup     0 Jan  7 21:46 live-additional-software.conf
 
 
-if [ $CLI_OUT == "1" ] ; then 
+if [ $CLI_OUT == "1" ] ; then
    echo "Execute command apt-get update. Please wait !!!! "
    echo "Please do not interrupt here .... This commands need a lot of time !!!"
 fi
