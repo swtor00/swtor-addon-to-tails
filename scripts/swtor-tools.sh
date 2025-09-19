@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.19 or higher                        #
+# OS      : Tails 7.0 or higher                         #
 #                                                       #
 # VERSION : 0.85                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 05-09-2025                                  #
+# DATE    : 19-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -90,24 +90,25 @@ fi
 if [ "$selection" == "1" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
       if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
-         ./cli_tweak.sh 
-         
-         # We need to wait 
-         
+
+         ./cli_tweak.sh
+
+         # We need to wait
+
          sleep 7
-         
+
          ./cli_freezing.sh
          sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
          --text="\n\n                          System is now freezed !                \n\n" > /dev/null 2>&1)
       else
-         if [ $TERMINAL_VERBOSE == "1" ] ; then        
+         if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo freezing not possible -> allready freezed
-         fi   
+         fi
       fi
    else
        if [ $TERMINAL_VERBOSE == "1" ] ; then
           echo freezing not possible missing dotfile option 
-       fi   
+       fi
    fi
 fi
 
@@ -121,12 +122,12 @@ if [ "$selection" == "2" ] ; then
       else
           if [ $TERMINAL_VERBOSE == "1" ] ; then
              echo unfreezing not possible -> system not freezed
-          fi    
+          fi
       fi
    else
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo unfreezing not possible missing dotfile
-      fi   
+      fi
    fi
 fi
 
@@ -163,14 +164,14 @@ if [ -f ~/Persistent/swtorcfg/p_bookmarks.config ] ; then
     case $? in
          0) zenity --info --width=600 --title="" \
             --text="Please close all open windows of the TOR-Browser or the import will not work.   \n\n Please press OK to continue." > /dev/null 2>&1
-            
-            # Delete the current used Bookmarks 
-            
+
+            # Delete the current used Bookmarks
+
             rm ~/.mozilla/firefox/bookmarks/places.sqlite > /dev/null 2>&1
-            
-            # Replace it with provided Bookmarks 
-            
-            cp  ~/Persistent/swtor-addon-to-tails/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks/  > /dev/null 2>&1            
+
+            # Replace it with provided Bookmarks
+
+            cp  ~/Persistent/swtor-addon-to-tails/bookmarks/places.sqlite ~/.mozilla/firefox/bookmarks/  > /dev/null 2>&1
          ;;
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo no import
