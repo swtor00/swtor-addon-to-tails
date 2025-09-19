@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.19 or higher                        #
+# OS      : Tails 7.0 or higher                         #
 #                                                       #
 # VERSION : 0.85                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # Main-Menu of of the swtor-addon-to-tails              #
 #                                                       #
-# DATE    : 05-09-2025                                  #
+# DATE    : 19-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -25,16 +25,13 @@ if [ -f ~/Persistent/scripts/init.lock ] ; then
    exit 1
 fi
 
-
 # The following could happen
-# Tails will be started normal with network enabled 
-# swtor-init.sh will be executed with rc=0 
-# Ten minutes later the user decide to 
-# switch to airplane-mode and all connections 
-# are gone
+# Tails will be started normal with network enabled
+# swtor-init.sh will be executed with rc=0
+# 10  minutes later the user decide to
+# switch to airplane-mode and all connections are gone
 
 if [ -f ~/swtor_init ] ; then
-
 
    # swtor-init.sh is allready executed ....
 
@@ -42,7 +39,7 @@ if [ -f ~/swtor_init ] ; then
 
    if [ "$connect_lost" == "" ] ; then
       sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-      --text="\n\n      Airplane-Mode is active or no active connection found after initialisation !   \n\n" > /dev/null 2>&1)
+      --text="\n\nAirplane-Mode is active or no active Internet connection found after initialisation ! \n\n" > /dev/null 2>&1)
       exit 1
    else
       echo
@@ -207,7 +204,7 @@ while [ $menu -eq 1 ]; do
             "6"  "[06]      Exit" \
             --hide-column=1 \
             --print-column=1)
-            columm2="0"  
+            columm2="0"
        else
             selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon mainmenu" --column="ID"  --column="" \
             "1"  "[01]      Select SSH-Server to connect" \
@@ -218,7 +215,7 @@ while [ $menu -eq 1 ]; do
             "6"  "[06]      Exit" \
             --hide-column=1 \
             --print-column=1)
-            columm2="1" 
+            columm2="1"
        fi
 
 if [ -z ${selection} ]; then
@@ -254,7 +251,7 @@ else
    if [ $selection == "2" ] ; then
    if [ $columm2 == "0" ] ; then
        sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-       --text="\n\n             This is not possible without a fixed profile inside ~/Persistent/personal-folder !          \n\n" > /dev/null 2>&1)
+       --text="\n\n   This is not possible without a fixed profile !     \n\n" > /dev/null 2>&1)
        sleep 1
    fi
    fi
@@ -308,9 +305,9 @@ fi
 swtor_cleanup
 pkill watchdog.sh
 
-# Increment startup value inside ~/Persistent/swtor-addon-to-tails/setup by one 
+# Increment startup value inside ~/Persistent/swtor-addon-to-tails/setup by one
 
-oldnum=$(cat ~/Persistent/swtor-addon-to-tails/setup) 
+oldnum=$(cat ~/Persistent/swtor-addon-to-tails/setup)
 newnum=`expr $oldnum + 1`
 echo $newnum > ~/Persistent/swtor-addon-to-tails/setup
 
