@@ -4,20 +4,20 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.19 or higher                        #
+# OS      : Tails 7.0 or higher                         #
 #                                                       #
 # VERSION : 0.85                                        #
 # STATE   : BETA                                        #
 #                                                       #
 #                                                       #
-# DATE    : 05-09-2025                                 #
+# DATE    : 19-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-# wrong order
+# If we found this file ..... The order is wrong !!!
 
 if [ -f ~/Persistent/scripts/menu.lock ] ; then
    exit 1
@@ -146,7 +146,7 @@ fi
 
 if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-    --text="\n\n                Please execute the command \"setup-swtor.sh\" first !                  \n\n" > /dev/null 2>&1)
+    --text="\n\n     Please execute \"setup-swtor.sh\" first !      \n\n" > /dev/null 2>&1)
    rmdir $lockdir 2>&1 >/dev/null
    exit 1
 else
@@ -168,14 +168,14 @@ echo _123UUU__ | sudo -S /bin/bash > /dev/shm/test_admin 2>&1
 # echo ----------------------------------------------------
 # Output with password for root
 # ----------------------------------------------------
-#[sudo] password for amnesia: Sorry, try again.
-#[sudo] password for amnesia:
-#sudo: no password was provided
-#sudo: 1 incorrect password attempt
+# [sudo] password for amnesia: Sorry, try again.
+# [sudo] password for amnesia:
+# sudo: no password was provided
+# sudo: 1 incorrect password attempt
 #----------------------------------------------------
 # Output with no password for root
 #----------------------------------------------------
-#Sorry, user amnesia is not allowed to execute '/bin/bash' as root on localhost.
+# Sorry, user amnesia is not allowed to execute '/bin/bash' as root on localhost.
 #----------------------------------------------------
 
 if grep -q "no password was provided" /dev/shm/test_admin > /dev/null 2>&1 ; then
@@ -264,10 +264,8 @@ if [ $wait_until_connection == "1" ] ; then
                 # or we are running Tails on a computer with a unknown interface
 
                 if [ $found == "0" ] ; then
-                
                    sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-                   --text="\n\n        Airplane-Mode is active or no active interfaces found on this computer !         \n\n" > /dev/null 2>&1)
-                   
+                   --text="\n\n        Airplane-Mode is active or no active\n        interfaces found on this computer !         \n\n" > /dev/null 2>&1)                   
                    rmdir $lockdir >/dev/null 
                    exit 1
                 fi
@@ -366,7 +364,7 @@ else
 fi
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n                    Please wait !                          \n\n" > /dev/null 2>&1)
+--text="\n\n                        [  Please wait  ]             \n\n" > /dev/null 2>&1)
 
 # We have a valid password .... we do continue ....
 # It is better to parse the persistent.conf on every startup here
@@ -536,7 +534,7 @@ fi
 
 
 # Do we have dotfiles active ?
-# This option is not mandatory but highly recommandet
+# This option is not mandatory but highly recommanded
 # and if you would like to autostart the addon it is
 # not nice to have -> it is mandatory !!!!
 
