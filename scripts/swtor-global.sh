@@ -856,13 +856,13 @@ return 0
 
 swtor_no_connection() {
 sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n             This is not possible without a active ssh connection !          \n\n" > /dev/null 2>&1)
+--text="\n\n      Please select SSH-Server first !      \n\n" > /dev/null 2>&1)
 sleep 0.5
 }
 
 swtor_close_first() {
 sleep 6 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n             Please close the current connection first !          \n\n" > /dev/null 2>&1)
+--text="\n\n             Please close the connection first !          \n\n" > /dev/null 2>&1)
 sleep 0.5
 }
 
