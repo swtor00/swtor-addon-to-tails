@@ -5,14 +5,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 6.19 or higher                        #
+# OS      : Tails 7.0 or higher                         #
 #                                                       #
 #                                                       #
 # VERSION : 0.85                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
-# DATE    : 05-09-2025                                  #
+# DATE    : 21-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -61,7 +61,7 @@ fi
 dconf write  /org/gnome/desktop/background/picture-uri "'file:///home/amnesia/Pictures/Wallpapers/swtor-desktop-freezed.jpeg'"
 
 # It was very tricky to activate Dark-Mode with Tails
-# By  now all is ready with execption of the Dark-Mode
+# By  now all is ready with the execption of the Dark-Mode
 # If we freeze ... we should have a dark Tails
 # At least it works if I activate the dark mode and change the background by hand
 # And the following line of Code also work perfect ....
