@@ -115,8 +115,9 @@ else
    end_wait_dialog && sleep 0.5
 
    zenity --error --width=600 \
-   --text="\n\n               Internet not ready or no active connection found ! \nPlease make a connection to the Internet first and try it again ! \n\n"\
-    > /dev/null 2>&1
+   --text="\n\n               Internet not ready or no active connection found ! \n               Please make a connection to the Internet first and try it again ! \n\n"\
+   > /dev/null 2>&
+
    return 1
 fi
 return 0
@@ -141,11 +142,12 @@ else
 
    zenity --error --width=600 \
    --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
-    > /dev/null 2>&1
-    if [ $TERMINAL_VERBOSE == "1" ] ; then
+   > /dev/null 2>&1
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "~/.ssh is not persistent !"
-    fi
-    return 1
+   fi
+   return 1
 fi
 rm mounted > /dev/null 2>&1
 return 0
@@ -253,9 +255,8 @@ if [ $IMPORT_BOOKMAKRS == "1" ] ; then
 
         end_wait_dialog && sleep 0.5
 
-        zenity --error --width=600 \
-        --text="\n\n         The import of bookmarks is not possible (swtor.cfg), as long the bookmarks\n         option is not set on the persistent volume.\n         You have to set this option first ! \n\n" \
-        > /dev/null 2>&1
+        zenity --error --width=600         --text="\n\  The import of bookmarks is not possible (swtor.cfg), as long the bookmarks option is
+not set on the persistent volume.\n  You have to set this option first ! \n\n"         > /dev/null 2>&1
 
         if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo >&2 "import of bookmarks not possible as long the option is not set in persistent "
