@@ -398,7 +398,7 @@ if [ $BROWSER_SOCKS5 == "1" ] ; then
    else
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
    fi
-   
+
    # We have 3 menu entrys more .... after this little trick with the deb file
 
    # cleanup
@@ -956,7 +956,7 @@ if [ -d ~/Persistent/backup/gnupg ] ; then
    else
       if [ $CLI_OUT == "1" ] ; then
          echo "gnupg not restored .... option is not active on this persistent volume"
-      fi  
+      fi
    fi
 fi
 }
