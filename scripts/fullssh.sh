@@ -160,39 +160,39 @@ chain+="-p"
 chain+=$arg6
 
 # LocalPort :
-# We have to decide here -> what we would like to to 
-# with this ssh connection 
+# We have to decide here -> what we would like to to
+# with this ssh connection
 # -D 127.0.0.1:9999
-# 
-# Create a local socks5 server and send 
-# all data to the remote server 
 #
-# the other possible configuration is 
+# Create a local socks5 server and send
+# all data to the remote server
+#
+# the other possible configuration is
 # port redirection that would change the ssh-command
 # from -D to -L
 #
-# -L 127.0.0.1:9999:172.29.255.1:8081 
-#  
-# Create a local socks5 server and 
-# redirect all traffic to a other 
-# socks5 server on the remote server 
+# -L 127.0.0.1:9999:172.29.255.1:8081
+#
+# Create a local socks5 server and
+# redirect all traffic to a other
+# socks5 server on the remote server
 # on Port 8081
 # As long you have a valid socks5 server
-# connection on the remote server 
+# connection on the remote server
 # IP 172.29.255.1:8081
-# 
-# It is not important -> how you create 
-# this second socks5 connection  
-# - with password 
-# - with keys 
-# - with sshpass 
+#
+# It is not important -> how you create
+# this second socks5 connection
+# - with password
+# - with keyy
+# - with sshpass
 
 
 chrlen=${#arg7}
 if [ $chrlen -gt 6 ]; then
    chain+=" -L "
    chain+=$arg7
-else 
+else
    chain+=" -D "
    chain+=$arg7
 fi
@@ -201,14 +201,14 @@ fi
 if [ $arg8 == "noshell" ]
    then
     chain+=" -N "
-    chain+=$arg9 
+    chain+=$arg9
 fi
 
 
 if [ $arg8 == "clock" ]
    then
    chain+=" -Y "
-   chain+=$arg9      
+   chain+=$arg9
 fi
 
 
@@ -220,13 +220,13 @@ fi
 
 # We define a new start option for the addon named clock1
 # If we can start a simple X11 clock we can start any X11 program
-# Note from 13/11/24 
-# Adding clock1 to start X11 session-messanger 
+# Note from 13/11/24
+# Adding clock1 to start X11 session-messanger
 # This feature remains hidden and undocumented until all tests are fine
-# Note : All stored data for the session-messanger are stored on the 
+# Note : All stored data for the session-messanger are stored on the
 # remote host !!!!
 # To send files to the remote server we have to use sshfs
- 
+
 if [ $arg8 == "clock1" ]
    then
    chain+=" -Y "
@@ -237,27 +237,27 @@ if [ $arg8 == "clock1" ]
    then
    xhost + > /dev/null
    chain+=" session-desktop &&  pkill ssh"
-   
+
    # We need to mount the remote user-directory over sshfs
-   # or we can not send files over seesion 
-   
+   # or we can not send files over seesion
+
    ssh_mount="sshfs -p "
    ssh_mount+=$arg6
    ssh_mount+=" "
    ssh_mount+=$arg9
    ssh_mount+=": "
    ssh_mount+="/home/amnesia/Persistent/swtor-addon-to-tails/sshfs -o StrictHostKeyChecking=no"
-   
-   # script for mounting the remote fs  
-   
-   echo $ssh_mount > ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh  
-   chmod +x ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh  
- 
+
+   # script for mounting the remote fs
+
+   echo $ssh_mount > ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh
+   chmod +x ~/Persistent/swtor-addon-to-tails/tmp/sshfs-mount.sh
+
    # script for umount the remote fs
-   
-   echo "umount /live/persistence/TailsData_unlocked/Persistent/swtor-addon-to-tails/sshfs" > ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh  
-   chmod +x ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh 
-   
+
+   echo "umount /live/persistence/TailsData_unlocked/Persistent/swtor-addon-to-tails/sshfs" > ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh
+   chmod +x ~/Persistent/swtor-addon-to-tails/tmp/sshfs-umount.sh
+
 fi
 
 
@@ -274,15 +274,15 @@ if [ -z "$ssh_pid" ] ; then
       echo used command here
       echo ------------------------------------------
       echo ssh $chain
-      echo arg1 [$arg1] 
+      echo arg1 [$arg1]
       echo arg2 [$arg2]
       echo arg3 [$arg3]
       echo arg4 [$arg4]
-      echo arg5 [$arg5] 
+      echo arg5 [$arg5]
       echo arg6 [$arg6]
       echo arg7 [$arg7]
       echo arg8 [$arg8]
-      echo arg9 [$arg9] 
+      echo arg9 [$arg9]
       echo ------------------------------------------
 
       # We start the ssh-process and send it directly into the background

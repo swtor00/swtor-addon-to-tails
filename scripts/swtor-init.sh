@@ -364,7 +364,7 @@ else
 fi
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n    [  Please wait  ]   \n\n" > /dev/null 2>&1)
+--text="\n\n                        [  Please wait  ]               \n\n" > /dev/null 2>&1)
 
 # We have a valid password .... we do continue ....
 # It is better to parse the persistent.conf on every startup here
