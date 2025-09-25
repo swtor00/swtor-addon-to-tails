@@ -1038,7 +1038,7 @@ BUILD 20220518					    - Improved watchdog.sh script
 						grep: /dev/shm/test_admin: No such file or directory
 						
 08/09/25	0.85		swtor00		Removed German Tails Book from bookmarks
-18/09/25	0.85 		swtor00		Added 2 Multimedia Links to the TOR-Browser 
+18/09/25	0.85		swtor00		Added 2 Multimedia Links to the TOR-Browser 
                                            
                                                 Thanks to a friend (PG) I found this 2 fantastic URL's:
                                                 TV Garden : https://tv.garden/
@@ -1054,7 +1054,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
                                                  
 25/09/25	0.85		swtor00		Remote X11 Xclock / Text field to short                                                 
-                                                
+                                                default size of X11 Clock changed to 200x200                              
 
                                              
   
