@@ -616,6 +616,10 @@ if [ $GUI_LINKS == "1" ] ; then
    else
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
    fi
+   
+   if [ -f ~/Persistent/swtor-addon-to-tails/deb/chrome.deb  ] ; then
+      cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
+   fi 
 fi
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then

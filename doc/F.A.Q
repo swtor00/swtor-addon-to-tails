@@ -1,3 +1,10 @@
+Is it possible to play DRM content with Chromium ? 
+--------------------------------------------------
+
+No. You have to use a fixed profile and to execute 
+the script cli_get_chrome.sh inside the script folder.  
+
+
 How do I upgrade from Version 6.19 to Version 7.00 ?
 ----------------------------------------------------
 
