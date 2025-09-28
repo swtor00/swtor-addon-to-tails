@@ -10,7 +10,7 @@
 # STATE   : BETA                                        #
 #                                                       #
 #                                                       #
-# DATE    : 19-09-2025                                  #
+# DATE    : 28-09-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -246,21 +246,21 @@ if [ $wait_until_connection == "1" ] ; then
 
             if [ $auto_init -eq 50 ]; then
                 ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
-                   
+
                 # We should have at least interface eth0 or wlan0 
-               
+
                 found="0"
                 if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
                    ((found++))
-                fi 
-                
+                fi
+
                 if grep "wlan0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
                    ((found++))
-                fi 
-                
+                fi
+
                 rm ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null 2>&1
-                
-                # In the case that no interfaces are found -> We are in Airplane-Mode 
+
+                # In the case that no interfaces are found -> We are in Airplane-Mode
                 # or we are running Tails on a computer with a unknown interface
 
                 if [ $found == "0" ] ; then
@@ -269,12 +269,12 @@ if [ $wait_until_connection == "1" ] ; then
                    rmdir $lockdir >/dev/null 
                    exit 1
                 fi
-            fi 
-            
+            fi
+
             # We wait for about 5 min.to a valid connection ....
-            # over eth0 or wlan0 
+            # over eth0 or wlan0
             # After this timeout reached, we close the script !!!!
-            
+
             if [ $auto_init -eq 300 ]; then
                auto_init=0
                connect=0
@@ -591,7 +591,7 @@ else
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo wait termination of asp-install  ,,,,
          fi
-         sleep 1         
+         sleep 1
          pid_asp=$(ps axu | grep -v grep | grep asp-install)
          if [ $TERMINAL_VERBOSE == "1" ] ; then
             echo _$pid_asp
@@ -616,11 +616,22 @@ if [ $GUI_LINKS == "1" ] ; then
    else
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
    fi
-   
+
+   # install chrome
+
    if [ -f ~/Persistent/swtor-addon-to-tails/deb/chrome.deb  ] ; then
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
-   fi 
+   fi
+
+   #  install libwidevinecdm.so into chromium installation
+
+   if [ -f ~/Persistent/swtor-addon-to-tails/deb/libwidevinecdm.so  ] ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo installation of drm library
+      fi
+   fi
 fi
+
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo --------------
