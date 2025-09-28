@@ -18,20 +18,31 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-
 cd /home/amnesia/Persistent/scripts
 
 if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
-    chromium --proxy-server="socks5://127.0.0.1:9999" \
-             --disable-logging \
-             --user-data-dir=/home/amnesia/Persistent/personal-files/3 \
-             --disable-translate \
-             --disable-webgl \
-             --disable-webgl2 \
-             --disable-plugins-discovery \
-             www.startpage.com > /dev/null 2>&1 &
+   if [ -f /opt/google/chrome/google-chrome ] ; then
+      /opt/google/chrome/google-chrome --proxy-server="socks5://127.0.0.1:9999" \
+                                       --disable-logging \
+                                       --user-data-dir=/home/amnesia/Persistent/personal-files/3 \
+                                       --disable-translate \
+                                       --disable-webgl \
+                                       --disable-webgl2 \
+                                       --disable-plugins-discovery \
+                                       www.startpage.com > /dev/null 2>&1 &
+     exit 0
+   else
+       chromium --proxy-server="socks5://127.0.0.1:9999" \
+                --disable-logging \
+                --user-data-dir=/home/amnesia/Persistent/personal-files/3 \
+                --disable-translate \
+                --disable-webgl \
+                --disable-webgl2 \
+                --disable-plugins-discovery \
+                www.startpage.com > /dev/null 2>&1 &
+    fi
     exit 0
 fi
 
-sleep 5
+sleep 4
 exit 1
