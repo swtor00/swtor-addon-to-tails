@@ -1,8 +1,8 @@
 Is it possible to play DRM content with Chromium ? 
 --------------------------------------------------
 
-No. You have to use a fixed profile and to execute 
-the script cli_get_chrome.sh inside the script folder.  
+With a standard installation with Debian it is not possible
+to play drm content with chromium.
 
 
 How do I upgrade from Version 6.19 to Version 7.00 ?
