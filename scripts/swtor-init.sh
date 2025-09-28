@@ -623,12 +623,16 @@ if [ $GUI_LINKS == "1" ] ; then
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
    fi
 
-   #  install libwidevinecdm.so into chromium installation
+   #  install chromne libwidevinecdm.so into current chromium installation
 
    if [ -f ~/Persistent/swtor-addon-to-tails/deb/libwidevinecdm.so  ] ; then
       if [ $TERMINAL_VERBOSE == "1" ] ; then
          echo installation of drm library
       fi
+      
+      cat password | sudo -S cp /home/amnesia/Persistent/swtor-addon-to-tails/deb/*.so /usr/lib/chromium/
+      cat password | sudo -S chmod 664 /usr/lib/chromium/libwidevinecdm.so
+
    fi
 fi
 
