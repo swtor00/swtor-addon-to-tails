@@ -1060,7 +1060,8 @@ T						25303
                                                 protected content.Try to fix this behavior with 
                                                 original library from gogle chrome
    
-
+                                                Even to copy the drm library from a local installed 
+                                                chrome is not enough, still have a drm failure ! 
           
   
                                                   
