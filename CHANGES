@@ -771,7 +771,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                  
                                                 And with this statements are both devices disabled 
                                                                                                   
-19/09/24	0.83		swtor00		I found this 2 websites hat also enhance Tails
+19/09/24	0.83		swtor00		I found this 2 websites that also enhance Tails
 
 						https://github.com/Tetrax-10/tails-tweaks
 						https://github.com/TheGeorgeAlexander/torless-tails-terminal
@@ -796,7 +796,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 using Passwords.
                                                                             
 						copy and paste error here ...
-						25303
+T						25303
 						25306
 						there should be only one entry
 						grep: 25306: No such file or directory
@@ -1054,9 +1054,14 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
                                                  
 25/09/25	0.85		swtor00		Remote X11 Xclock / Text field to short                                                 
-                                                default size of X11 Clock changed to 200x200                              
+                                                default size of X11 Clock changed to 180x180                               
 
-                                             
+28/09/25	0.85		swtor00		The debian browser chromium can't play drm 
+                                                protected content.Try to fix this behavior with 
+                                                original library from gogle chrome
+   
+
+          
   
                                                   
 
