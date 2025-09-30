@@ -241,13 +241,13 @@ if [ $wait_until_connection == "1" ] ; then
 
             # Exactly one min after the login would be
             # the perfect time to check for a active Airplane-Mode
-            # If Airplane-Mode is active we don't see 
-            # eth0 or wlan0 over the ip command 
+            # If Airplane-Mode is active we don't see
+            # eth0 or wlan0 over the ip command
 
             if [ $auto_init -eq 50 ]; then
                 ip address > ~/Persistent/swtor-addon-to-tails/tmp/network-list
 
-                # We should have at least interface eth0 or wlan0 
+                # We should have at least a interface called eth0 or wlan0
 
                 found="0"
                 if grep "eth0" ~/Persistent/swtor-addon-to-tails/tmp/network-list > /dev/null ; then
@@ -265,15 +265,15 @@ if [ $wait_until_connection == "1" ] ; then
 
                 if [ $found == "0" ] ; then
                    sleep 10 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-                   --text="\n\n        Airplane-Mode is active or no active\n        interfaces found on this computer !         \n\n" > /dev/null 2>&1)                   
-                   rmdir $lockdir >/dev/null 
+                   --text="\n\n        Airplane-Mode is active or no active\n        interfaces found on this computer !         \n\n" > /dev/null 2>&1)
+                   rmdir $lockdir >/dev/null
                    exit 1
                 fi
             fi
 
-            # We wait for about 5 min.to a valid connection ....
+            # We wait for about 5 min. to a valid tor-connection ....
             # over eth0 or wlan0
-            # After this timeout reached, we close the script !!!!
+            # After this timeout is reached, we close the script !!!!
 
             if [ $auto_init -eq 300 ]; then
                auto_init=0
@@ -557,7 +557,7 @@ else
    echo 1 > ~/Persistent/swtorcfg/no-freezing
 
    # This volume may was once actived with dotfiles and in the state freezed  ....
-   # but by now it is not longer  possible ... missing dotfiles option
+   # but by now it is not longer possible ... missing dotfiles option
    # We have to clean up the mess.
 
 fi
@@ -573,8 +573,8 @@ cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
 cat password | sudo -S iptables -I OUTPUT -o lo -p tcp --dport 9999 -j ACCEPT  > /dev/null 2>&1
 
 # We do install the deb file for the menu right here ... but only if the dpkg-lock
-# is not active ... we may produce a uggly race-condition with dpkg -i
-# we look into to ps tree that no asp-install processs is runnig
+# is not active ... we may produce here a nice uggly race-condition with dpkg -i
+# We look here into to ps tree that not a single  asp-install processs is runnig
 
 pid_asp=$(ps axu | grep -v grep | grep asp-install)
 if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -623,24 +623,27 @@ if [ $GUI_LINKS == "1" ] ; then
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
    fi
 
-   #  install chromne libwidevinecdm.so into current chromium installation
+   # install chromne libwidevinecdm.so into current chromium installation
+   # the directory /opt/google/chrome/WidevineCdm has to be inside
+   #
 
    if [ -f ~/Persistent/swtor-addon-to-tails/deb/libwidevinecdm.so  ] ; then
       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo installation of drm library
+         echo installation of drm library into chromium installation
       fi
-      
-      cat password | sudo -S cp /home/amnesia/Persistent/swtor-addon-to-tails/deb/*.so /usr/lib/chromium/
-      cat password | sudo -S chmod 664 /usr/lib/chromium/libwidevinecdm.so
 
+      cat password | sudo -S cp -r /opt/google/chrome/WidevineCdm /usr/lib/chromium
+      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm
    fi
 fi
+
 
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo --------------
    echo mark 3 $(date)
    echo firewall changed and menu installed
+   echo chrome-browser installed on request
    echo --------------
 fi
 
@@ -707,7 +710,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
       fi
    else
        zenity --question --width=600 \
-       --text="\n\nWe found a real problem with the current configuration.\nThis system was freezed with a older version of Tails.\nWould you like to unfreeze here and make a reboot ?\n\nIf your answer is Yes please do close all your applications prior to press Yes" > /dev/null 2>&1
+       --text="\n\nWe found a real problem with the current configuration.\nThis system was freezed with a older version of Tails.\nWould you like to unfreeze it here and make a reboot ?\n\nIf your answer is Yes please do close all your applications prior to press Yes" > /dev/null 2>&1
 
        case $? in
          0)
