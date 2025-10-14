@@ -19,5 +19,6 @@ tmp/current-system
 tmp/pid_wait
 tmp/script_connect
 tmp/watchdog_pid
+tmp/password
 
 
