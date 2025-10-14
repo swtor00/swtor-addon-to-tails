@@ -1063,15 +1063,17 @@ T						25303
                                                 Even to copy the drm library from a local installed 
                                                 chrome is not enough, still have a drm failure !
                                                 
-29/09/25	0.85 		swtor00		The deb x11-apps wasn't installed on server04
+29/09/25	0.85		swtor00		The deb x11-apps wasn't installed on server04
                                                 Still testing drm with Debian chromium and Google chrome
                                                 
                                                 https://bitmovin.com/demos/drm/
                                                 
-                                                Removed the following URL "DNMX - Anonymous Email Provider"
+                                                Removed the following URL "DNMX - Anonymous Email Provider"                                                
                                                 
-                                                
-                                                
+
+14/10/25	0.85		swtor00         Freeshell.de URL works again over ssh ! 
+                                                                                                 
+
                                                 
                                                 
                                                
