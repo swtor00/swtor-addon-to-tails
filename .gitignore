@@ -20,5 +20,6 @@ tmp/pid_wait
 tmp/script_connect
 tmp/watchdog_pid
 tmp/password
+swtorcfg/swtorssh.cfg.txt-free
 
 
