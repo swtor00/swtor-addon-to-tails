@@ -35,8 +35,10 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    cp /usr/share/applications/swtor-init.desktop .
 
    mkdir /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
-
    cp -r ~/.config  /live/persistence/TailsData_unlocked/dotfiles/  > /dev/null 2>&1
+
+   mkdir /live/persistence/TailsData_unlocked/dotfiles/.tor-browser > /dev/null 2>&1
+   cp -r ~/.tor-browser /live/persistence/TailsData_unlocked/dotfiles/  > /dev/null 2>&1
 
    if [ ! -f ~/Pictures ] ; then
       mkdir ~/Pictures > /dev/null 2>&1
@@ -47,7 +49,7 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
   # the command tails-version is obsolete in Tails 6.X
 
    cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
-         
+ 
    echo ---------------------------------------
    echo please make a Rebbot of Tails ASAP !!!!
    echo ---------------------------------------

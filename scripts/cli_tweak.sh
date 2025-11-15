@@ -70,6 +70,11 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 dconf write  /org/gnome/desktop/background/picture-uri-dark "'file:///home/amnesia/.config/background'"
 
 
+cp ~/Persistent/swtor-addon-to-tails/bookmarks/prefs.js ~/.tor-browser/profile.default/ > /dev/null 2>&1
+
+
+
+
 
 
 
