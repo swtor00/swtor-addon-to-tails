@@ -4,13 +4,13 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 7.0 or higher                         #
+# OS      : Tails 7.2 or higher                         #
 #                                                       #
-# VERSION : 0.85                                        #
+# VERSION : 0.90                                        #
 # STATE   : BETA                                        #
 #                                                       #
 #                                                       #
-# DATE    : 28-09-2025                                  #
+# DATE    : 15-11-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -142,6 +142,13 @@ else
        zenity --error --width=600 --text="Lockdirectory for initialisation can not be created !"
        exit 1
 fi
+
+
+
+
+cat ~/Persistent/swtor-addon-to-tails/bookmarks/prefs.js > ~/.tor-browser/profile.default/prefs.js
+
+
 
 
 if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ] ; then

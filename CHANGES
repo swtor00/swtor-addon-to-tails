@@ -1085,8 +1085,12 @@ BUILD 20220518					    - Improved watchdog.sh script
         
 
 15/11/25	0.85		swtor00		Firfox ESR changed to release 15.01 
-                                                It seems that the profile has changed .... 
-                                                ./.tor-browser/profile.default/prefs.js                                                            
+                                                It seems that the profile has changed ....
+                                                On startup we do ... 
+
+                                                cat prefs.js > ~/.tor-browser/profile.default/prefs.js 
+   
+                                                Ant the bookmarks are visible again !!!                                                            
 
                                                 
                                                 

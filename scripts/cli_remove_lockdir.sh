@@ -4,14 +4,14 @@
 #########################################################
 # AUTHORS : swtor00                                     #
 # EMAIL   : swtor00@protonmail.com                      #
-# OS      : Tails 7.0 higher                            #
+# OS      : Tails 7.2 higher                            #
 #                                                       #
-# VERSION : 0.85                                        #
+# VERSION : 0.90                                        #
 # STATE   : BETA                                        #
 #                                                       #
 # This shell script is part of the swtor-addon-to-tails #
 #                                                       #
-# DATE    : 21-09-2025                                  #
+# DATE    : 15-11-2025                                  #
 # LICENCE : GPL 2                                       #
 #########################################################
 # Github-Homepage :                                     #
@@ -24,7 +24,7 @@ fi
 
 if [ -d ~/Persistent/scripts/setup.lock ] ; then
    rm ~/Persistent/scripts/setup.lock > /dev/null 2>&1
-fi 
+fi
 
 if [ -d ~/Persistent/scripts/menu.lock ] ; then
    rm ~/Persistent/scripts/menu.lock > /dev/null 2>&1
