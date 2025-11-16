@@ -19,13 +19,6 @@
 # https://github.com/swtor00/swtor-addon-to-tails       #
 #########################################################
 
-
-# if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-#   export IMPORT_BOOKMAKRS="1"
-# else
-#   export IMPORT_BOOKMAKRS="0"
-# fi
-
 if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export GUI_LINKS="1"
 else
@@ -62,12 +55,6 @@ else
      export BROWSER_SOCKS5="0"
 fi
 
-# if grep -q "BYPASS-SOFTWARE-CHECK:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-#     export BYPASS="1"
-# else
-#     export BYPASS="0"
-# fi
-
 if grep -q "CHECK-EMPTY-SSH:NO" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
      export CHECK_SSH="0"
 else
@@ -79,7 +66,6 @@ if grep -q "AUTOCLOSE-BROWSER:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/sw
 else
      export AUTOCLOSE_BROWSER="0"
 fi
-
 
 export TIMEOUT_TB=$(grep TIMEOUT-TB ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
 export TIMEOUT_SSH=$(grep TIMEOUT-SSH ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')

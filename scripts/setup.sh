@@ -21,12 +21,6 @@
 
 CLI_OUT="0"
 
-# if grep -q "IMPORT-BOOKMARKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-#   export IMPORT_BOOKMAKRS="1"
-# else
-#   export IMPORT_BOOKMAKRS="0"
-# fi
-
 if grep -q "GUI-LINKS:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export GUI_LINKS="1"
 else
@@ -62,12 +56,6 @@ if grep -q "BROWSER-SOCKS5:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor
 else
      export BROWSER_SOCKS5="0"
 fi
-
-# if grep -q "BYPASS-SOFTWARE-CHECK:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-#    export BYPASS="1"
-# else
-#     export BYPASS="0"
-# fi
 
 if grep -q "CHECK-EMPTY-SSH:NO" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
      export CHECK_SSH="0"
