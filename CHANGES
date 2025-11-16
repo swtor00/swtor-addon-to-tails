@@ -1095,7 +1095,7 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
 16/11/25	0.90		swtor00		removed BYPASS-SOFTWARE-CHECK:YES from Configuration 
                                                 removed IMPORT-BOOKMARKS:NO from Configuration 
-                                                
+                                                removed CHECK-UPDATE:NO from Configuration
                                                 
 
                                                 

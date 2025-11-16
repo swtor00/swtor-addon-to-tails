@@ -25,11 +25,11 @@ else
    export GUI_LINKS="0"
 fi
 
-if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-   export CHECK_UPDATE="1"
-else
-   export CHECK_UPDATE="0"
-fi
+#if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
+#   export CHECK_UPDATE="1"
+#else
+#   export CHECK_UPDATE="0"
+#fi
 
 if grep -q "BACKUP-FIXED-PROFILE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export BACKUP_FIXED_PROFILE="1"
