@@ -131,13 +131,9 @@ else
        exit 1
 fi
 
-
-
+# This entry was added after TOR Browser 15.01
 
 cat ~/Persistent/swtor-addon-to-tails/bookmarks/prefs.js > ~/.tor-browser/profile.default/prefs.js
-
-
-
 
 if [ !  -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
    sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
@@ -514,7 +510,6 @@ else
    rm ~/Persistent/swtorcfg/p_pidgin.config > /dev/null 2>&1
 fi
 
-
 # Do we have tca active ?
 # This option is not mandatory
 
@@ -526,7 +521,6 @@ if grep -q tca ~/Persistent/swtorcfg/persistence.conf ; then
 else
    rm ~/Persistent/swtorcfg/p_tca.config > /dev/null 2>&1
 fi
-
 
 # Do we have dotfiles active ?
 # This option is not mandatory but highly recommanded
@@ -742,7 +736,7 @@ if [ $CHECK_SSH= == "1" ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo --------------
        echo mark 6 $(date)
-       echo systemdirectory ~/.ssh is checked 
+       echo systemdirectory ~/.ssh is checked
        echo --------------
     fi
     if [ "$(ls -A ~/.ssh | wc -l)" -eq 0 ] ; then
