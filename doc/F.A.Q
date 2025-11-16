@@ -2,8 +2,10 @@ Is it possible to play DRM content with Chromium ?
 --------------------------------------------------
 
 With a standard installation with Debian it is not possible
-to play drm content with chromium.
+to play drm content with chromium. Please execute 
+the following shell-script inside the script folder.
 
+$ ./cli_get_chrome.sh 
 
 How do I upgrade from Version 6.19 to Version 7.00 ?
 ----------------------------------------------------
@@ -121,7 +123,7 @@ hackers used his server to attacking others system ....
 
 In Germany all data-connections are stored for about 10 Weeks. 
 Write a postcard to Germany and you have a full featured Shell account with 
-20GB of HD space. This one is the best of all free shell-providers.
+40GB of HD space.
 
 Little Note : If you are living in Germany, it may would be wise to 
 store your backup in a other Country than Germany. 
@@ -153,7 +155,7 @@ Is there a other way to install the add-on instead of git ?
 ----------------------------------------------------------- 
 
 Simply No. 
-
+You have to use git 
 
 Could the add-on read my data ? 
 --------------------------------
