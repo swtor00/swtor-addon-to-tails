@@ -1076,7 +1076,8 @@ BUILD 20220518					    - Improved watchdog.sh script
 02/11/25	0.85            swtor00		Freeshell.de -> TCP Forwarding is again droped by 27.10.25 !!!
                                                 Some stupid idiots again used the host for FileSharing 
                                                 "DNMX - Anonymous Email Provider" again added inside bookmarks 
-                                                All 3 jump-servers are working like expected !  
+                                                All 3 fresh jump-servers are working like expected !
+                                                
                                                 germany -> uk 
                                                 germany -> switzerland 
                                                 germany -> spain 
@@ -1085,12 +1086,12 @@ BUILD 20220518					    - Improved watchdog.sh script
         
 
 15/11/25	0.85		swtor00		Firfox ESR changed to release 15.01 
-                                                It seems that the profile has changed ....
+                                                It seems that the profile has changed as well.
                                                 On startup we do ... 
 
                                                 cat prefs.js > ~/.tor-browser/profile.default/prefs.js 
    
-                                                Ant the bookmarks are visible again !!!                                                            
+                                                And the bookmarks are visible again !!!                                                            
 
                                                 
                                                 
