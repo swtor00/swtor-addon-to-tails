@@ -117,8 +117,8 @@ if [ "$selection" == "2" ] ; then
    if [ -f ~/Persistent/swtorcfg/freezing ] ; then
       if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          ./cli_unfreezing.sh
-         sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-          --text="\n\n                            System is now unfreezed !                       \n\n" > /dev/null 2>&1)
+	 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+         --text="\n\n               System is now unfreezed !         \n\n" > /dev/null 2>&1)
       else
           if [ $TERMINAL_VERBOSE == "1" ] ; then
              echo unfreezing not possible -> system not freezed
