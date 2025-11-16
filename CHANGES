@@ -1091,7 +1091,12 @@ BUILD 20220518					    - Improved watchdog.sh script
 
                                                 cat prefs.js > ~/.tor-browser/profile.default/prefs.js 
    
-                                                And the bookmarks are visible again !!!                                                            
+                                                And the bookmarks are visible again !!!   
+                                                
+16/11/25	0.90		swtor00		removed BYPASS-SOFTWARE-CHECK:YES from Configuration 
+                                                removed IMPORT-BOOKMARKS:NO from Configuration 
+                                                
+                                                
 
                                                 
                                                 
