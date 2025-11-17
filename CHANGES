@@ -1102,8 +1102,10 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 - check_tor_network()
                                                 - test_ssh_persistent()   
                                                 - test_software_persistent()
-                                                                                                
-                                                
+
+                                                The build-number swtorcfg/build for the project 
+                                                is calculated by the days from 01.01.1970 until now ...                                                 
+                                                                                                   
                                                 
                                                 
                                                 

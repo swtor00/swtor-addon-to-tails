@@ -2,7 +2,6 @@ setup
 deb/chrome.deb
 deb/chrome1.deb
 setup
-swtorcfg/show-build-number 
 swtorcfg/freezed.cgf
 swtorcfg/freezing
 swtorcfg/p_bookmarks.config
