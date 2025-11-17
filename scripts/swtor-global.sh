@@ -213,8 +213,6 @@ zenity --info --width=600  --title="Information" \
 return 0
 }
 
-
-
 swtor_clean_files() {
 
 sleep 3 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
