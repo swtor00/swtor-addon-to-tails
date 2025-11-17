@@ -574,7 +574,6 @@ if [ -d ~/Persistent/backup/cups-configuration ] ; then
       cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
       sudo -S chown -R root:lp /live/persistence/TailsData_unlocked/cups-configuration/ssl > /dev/null 2>&1
 
-
       # special owner and group for subscriptions.conf
 
       cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
@@ -749,16 +748,6 @@ echo 0 > ~/Persistent/swtor-addon-to-tails/setup
 
 
 export -f global_init
-
-
-
-
-
-
-
-
-
-
 export -f show_wait_dialog
 export -f end_wait_dialog
 export -f swtor_cleanup
@@ -769,7 +758,6 @@ export -f swtor_ssh_success
 export -f swtor_wrong_script
 export -f swtor_missing_arg
 export -f swtor_missing_password
-
 export -f swtor_clean_files
 export -f swtor_connected
 export -f swtor_close_first
