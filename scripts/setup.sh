@@ -27,12 +27,6 @@ else
    export GUI_LINKS="0"
 fi
 
-#if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-#   export CHECK_UPDATE="1"
-#else
-#   export CHECK_UPDATE="0"
-#fi
-
 if grep -q "BACKUP-FIXED-PROFILE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export BACKUP_FIXED_PROFILE="1"
 else
@@ -261,42 +255,42 @@ fi
       zenity --error --width=600 \
       --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
       > /dev/null 2>&1
-      rmdir $lockdir 2>&1 >/dev/null 
+      rmdir $lockdir 2>&1 >/dev/null
       exit 1
-   fi 
-   
+   fi
+
    # Prior to restoring files from the backup , we check the backup-files and 
    # the optional settings from the Persistent Volume. The User can choose what to do ..
 
    if [ -d ~/Persistent/backup/dotfiles ] ; then
         if grep -q dotfiles  /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then
-           if [ $CLI_OUT == "1" ] ; then  
+           if [ $CLI_OUT == "1" ] ; then
               echo "we found backup files for Dotfiles and persistent option is set"
-           fi    
+           fi
         else
-           if [ $CLI_OUT == "1" ] ; then  
+           if [ $CLI_OUT == "1" ] ; then
               echo "we found backup files with activated Dotfiles option and this persistent option is not set on this volume"
            fi
            zenity --question --width 600 \
            --text "\n\n         The extracted backup contains files from a volume with a activated Dotfiles option. \n\
                    \n         This option is not activated on this currently used volume !                             \n \
                    \n\nIf you say 'Yes' to the following question, the restore will stop here and you can set the above \
-                   \noption and restart Tails.\n \         
+                   \noption and restart Tails.\n \
                    \nIf you say 'No' the backup will not restore the backup files from the Dotfiles location ! \n\n"
            case $? in
            0)
-             rmdir $lockdir 2>&1 >/dev/null 
-             exit 1 
-           ;; 
+             rmdir $lockdir 2>&1 >/dev/null
+             exit 1
+           ;;
            1)
              if [ $CLI_OUT == "1" ] ; then
                 echo "backup will not be canceled here ... we go further"
              fi
            ;;
-           esac                 
+           esac
         fi
     fi
-    
+
 
     if [ -d ~/Persistent/backup/greeter-settings ] ; then
        if grep -q greeter-settings /home/amnesia/Persistent/swtor-addon-to-tails/swtorcfg/persistence.conf ; then

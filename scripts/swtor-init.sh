@@ -29,12 +29,6 @@ else
    export GUI_LINKS="0"
 fi
 
-# if grep -q "CHECK-UPDATE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
-#   export CHECK_UPDATE="1"
-# else
-#   export CHECK_UPDATE="0"
-# fi
-
 if grep -q "BACKUP-FIXED-PROFILE:YES" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtor.cfg ; then
    export BACKUP_FIXED_PROFILE="1"
 else
@@ -131,7 +125,7 @@ else
        exit 1
 fi
 
-# This entry was added after TOR Browser 15.01
+# This entry was added after TOR Browser 15.01 / Tails 7.2
 
 cat ~/Persistent/swtor-addon-to-tails/bookmarks/prefs.js > ~/.tor-browser/profile.default/prefs.js
 
@@ -153,21 +147,6 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
 fi
 
 echo _123UUU__ | sudo -S /bin/bash > /dev/shm/test_admin 2>&1
-
-# echo ----------------------------------------------------
-# cat test_admin
-# echo ----------------------------------------------------
-# Output with password for root
-# ----------------------------------------------------
-# [sudo] password for amnesia: Sorry, try again.
-# [sudo] password for amnesia:
-# sudo: no password was provided
-# sudo: 1 incorrect password attempt
-#----------------------------------------------------
-# Output with no password for root
-#----------------------------------------------------
-# Sorry, user amnesia is not allowed to execute '/bin/bash' as root on localhost.
-#----------------------------------------------------
 
 if grep -q "no password was provided" /dev/shm/test_admin > /dev/null 2>&1 ; then
    if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -262,11 +241,11 @@ if [ $wait_until_connection == "1" ] ; then
                 fi
             fi
 
-            # We wait for about 5 min. to a valid tor-connection ....
+            # We wait for about 10 min. to a valid tor-connection ....
             # over eth0 or wlan0
             # After this timeout is reached, we close the script !!!!
 
-            if [ $auto_init -eq 300 ]; then
+            if [ $auto_init -eq 600 ]; then
                auto_init=0
                connect=0
                break
@@ -366,6 +345,47 @@ sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/P
 
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S chmod 666 /home/amnesia/Persistent/swtorcfg/persistence.conf > /dev/null 2>&1
+
+
+# After a release update(from 7.x to 7.x) we do 2 things
+# 1. Update chrome.deb if it exists
+# 2. Update the addon over github
+
+if [ -f ~/Persistent/swtor-addon-to-tails/tails-supdate ] ; then
+   if [ -f  ~/Persistent/swtor-addon-to-tails/deb/chrome.deb ] ; then
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+         echo Update Chrome Installation file 
+      fi
+      show_wait_dialog & sleep 1
+      cd ~/Persistent/swtor-addon-to-tails/scripts
+      ./cli_get_chrome.sh  > /dev/null 2>&1
+      end_wait_dialog && sleep 1.5
+   else
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo no Chrome Installation file fouund 
+      fi
+   fi
+
+   cd ~/Persistent/swtor-addon-to-tails/tmp
+
+   file1=$(curl -s https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/refs/heads/master/swtorcfg/build | grep build | tr ':' ' ' | awk '{print $2}')
+   file2=$(cat ~/Persistent/swtorcfg/build | grep build | tr ':' ' ' | awk '{print $2}')
+
+   if [[ $file1 -gt $file2 ]]; then
+
+      if [ $TERMINAL_VERBOSE == "1" ] ; then
+          echo Addons needs to update ....
+      fi
+
+      show_wait_dialog & sleep 1
+      cd ~/Persistent/swtor-addon-to-tails/scripts
+      ./cli_update.sh > /dev/null 2>&1
+      end_wait_dialog && sleep 1.5
+   fi
+
+   rm ~/Persistent/swtor-addon-to-tails/tails-supdate > /dev/null 2>&1
+fi
+
 
 # If any of the mandatory options for Persistent have changed from on to off ..
 # We have a error and stop further execution of the script
