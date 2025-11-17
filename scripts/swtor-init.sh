@@ -377,10 +377,22 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-supdate ] ; then
           echo Addons needs to update ....
       fi
 
-      show_wait_dialog & sleep 1
-      cd ~/Persistent/swtor-addon-to-tails/scripts
-      ./cli_update.sh > /dev/null 2>&1
-      end_wait_dialog && sleep 1.5
+       zenity --question --width=600 \
+       --text="\n\nThere is a update to install for this addon.\nWould you like to install it now ?\n\n" > /dev/null 2>&1
+       
+       case $? in
+         0)
+           show_wait_dialog & sleep 1
+           cd ~/Persistent/swtor-addon-to-tails/scripts
+           ./cli_update.sh > /dev/null 2>&1
+           end_wait_dialog && sleep 1.5
+         ;;
+
+         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
+               echo "not to install choosen ..."
+            fi
+         ;;
+       esac
    fi
 
    rm ~/Persistent/swtor-addon-to-tails/tails-supdate > /dev/null 2>&1
@@ -655,60 +667,6 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo chrome-browser installed on request
    echo --------------
 fi
-
-
-#if [ $CHECK_UPDATE == "1" ] ; then
-#   if [ ! -d ~/Persistent/swtor-addon-to-tails/.git ] ; then
-#      zenity --error --width=400 --text "\n\n    Houston, we have a problem !  \n    The .git directory was removed ! \n\n"
-#      rmdir $lockdir 2>&1 >/dev/nul
-#      exit 1
-#   fi
-
-#   cd /home/amnesia/Persistent/swtor-addon-to-tails/tmp
-#   wget -O REMOTE-VERSION https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/master/swtorcfg/swtor.cfg > /dev/null 2>&1
-
-#   REMOTE=$(grep "SWTOR-VERSION" REMOTE-VERSION | sed 's/[A-Z:-]//g')
-#   LOCAL=$(grep SWTOR-VERSION ~/Persistent/swtorcfg/swtor.cfg | sed 's/[A-Z:-]//g')
-
-#   if [ $TERMINAL_VERBOSE == "1" ] ; then
-#       echo REMOTE-VERSION [$REMOTE]
-#       echo LOCAL-VERSION [$LOCAL]
-#   fi
-#
-#   if [ "$REMOTE" == "$LOCAL" ] ; then
-#      if [ $TERMINAL_VERBOSE == "1" ] ; then
-#          echo "no updates found to install "
-#          echo "both version are equal  ... "
-#      fi
-#      if [ $TERMINAL_VERBOSE == "1" ] ; then
-#         echo --------------
-#         echo mark 4 $(date)
-#         echo checking for updates is active no update found to install !
-#         echo --------------
-#      fi
-#else
-#      if [ $TERMINAL_VERBOSE == "1" ] ; then
-#          echo "we found a difference ... "
-#      fi
-#      cd ~/Persistent/swtor-addon-to-tails/scripts
-#      if [ $TERMINAL_VERBOSE == "1" ] ; then
-#         echo --------------
-#         echo mark 4 $(date)
-#         echo checking for updates is active and we found a update
-#         echo --------------
-#      fi
-#      ./update.sh
-#      rmdir $lockdir 2>&1 >/dev/null
-#      exit 1
-#   fi
-#else
-#   if [ $TERMINAL_VERBOSE == "1" ] ; then
-#      echo --------------
-#      echo mark 4 $(date)
-#      echo checking for updates is inactive
-#      echo --------------
-#   fi
-#fi
 
 if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
 
