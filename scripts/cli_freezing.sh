@@ -42,8 +42,8 @@ if [ ! -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
    fi
    cp -r ~/Pictures /live/persistence/TailsData_unlocked/dotfiles > /dev/null 2>&1
 
-  # Do markup the version of Tails we used to freezing ... we store it right here
-  # the command tails-version is obsolete in Tails 6.X
+  # Do markup the version of Tails we used to freezing or for a update 
+  # The command tails-version is obsolete in Tails 6.X and later releases
 
    cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
 

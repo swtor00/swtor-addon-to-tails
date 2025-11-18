@@ -389,7 +389,7 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-supdate ] ; then
          ;;
 
          1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo "not to install choosen ..."
+               echo "Addon not updated ..."
             fi
          ;;
        esac
@@ -676,29 +676,15 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."
       fi
    else
-       zenity --question --width=600 \
-       --text="\n\nWe found a real problem with the current configuration.\nThis system was freezed with a older version of Tails.\nWould you like to unfreeze it here and make a reboot ?\n\nIf your answer is Yes please do close all your applications prior to press Yes" > /dev/null 2>&1
+   
+       # Prior to Version 7.2 of Tails we did unfreezing the system ..... after every update 
+       
+       date >  ~/Persistent/swtor-addon-to-tails/tails-supdate 
+       
+       # Do markup the version of Tails we used to freezing or for a update 
+       # The command tails-version is obsolete in Tails 6.X and later releases
 
-       case $? in
-         0)
-
-         rm -rf /live/persistence/TailsData_unlocked/dotfiles/.config > /dev/null 2>&1
-         rm -rf /live/persistence/TailsData_unlocked/dotfiles/Pictures > /dev/null 2>&1
-
-         rm ~/Persistent/swtorcfg/freezed.cgf > /dev/null 2>&1
-
-         rmdir ~/Persistent/scripts/init.lock 2>&1 >/dev/null
-         rmdir ~/Persistent/scripts/menu.lock 2>&1 >/dev/null
-         cd ~/Persistent/swtor-addon-to-tails/tmp
-         cat password | sudo -S shutdown -r now
-
-         ;;
-
-         1) if [ $TERMINAL_VERBOSE == "1" ] ; then
-               echo "no reboot choosen ..."
-            fi
-         ;;
-       esac
+       cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
     fi
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then
