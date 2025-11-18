@@ -188,7 +188,7 @@ if [ $wait_until_connection == "1" ] ; then
     while [ $auto_init -gt 0 ]; do
 
            sleep 1
-           curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
+           curl --socks5 127.0.0.1:9050 -m 4 https://tails.net/home/index.en.html > /dev/null 2>&1
 
            if [ $? -eq 0 ] ; then
               if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -346,24 +346,39 @@ sudo -S cp /live/persistence/TailsData_unlocked/persistence.conf /home/amnesia/P
 cat ~/Persistent/swtor-addon-to-tails/tmp/password | \
 sudo -S chmod 666 /home/amnesia/Persistent/swtorcfg/persistence.conf > /dev/null 2>&1
 
-
 # After a release update(from 7.x to 7.x) we do 2 things
 # 1. Update chrome.deb if it exists
 # 2. Update the addon over github
 
-if [ -f ~/Persistent/swtor-addon-to-tails/tails-supdate ] ; then
+if [ $TERMINAL_VERBOSE == "1" ] ; then
+   echo Check Update
+fi
+
+if [ -f ~/Persistent/swtor-addon-to-tails/tails-update ] ; then
+
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo Tails is updated ....
+   fi
+
    if [ -f  ~/Persistent/swtor-addon-to-tails/deb/chrome.deb ] ; then
+
       if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo Update Chrome Installation file 
+         echo chrome will be updated
       fi
+
+      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+      --text="\n\n  Download of new Chromium-Browser \n\n" > /dev/null 2>&1 )
+      sleep 1
       show_wait_dialog & sleep 1
       cd ~/Persistent/swtor-addon-to-tails/scripts
       ./cli_get_chrome.sh  > /dev/null 2>&1
       end_wait_dialog && sleep 1.5
    else
+
       if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo no Chrome Installation file fouund 
+          echo no Chrome Installation file found ....
       fi
+
    fi
 
    cd ~/Persistent/swtor-addon-to-tails/tmp
@@ -371,16 +386,14 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-supdate ] ; then
    file1=$(curl -s https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/refs/heads/master/swtorcfg/build | grep build | tr ':' ' ' | awk '{print $2}')
    file2=$(cat ~/Persistent/swtorcfg/build | grep build | tr ':' ' ' | awk '{print $2}')
 
-   if [[ $file1 -gt $file2 ]]; then
+   cat $file1 > file1
+   cat $file1 > file2
 
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo Addons needs to update ....
-      fi
+   if [[ $file1 -gt $file2 ]] ; then
 
-       zenity --question --width=600 \
-       --text="\n\nThere is a update to install for this addon.\nWould you like to install it now ?\n\n" > /dev/null 2>&1
-       
-       case $? in
+      zenity --question --width=600 \
+      --text="\n\nThere is a update to install for this addon.\nWould you like to install it now ?\n\n" > /dev/null 2>&1
+      case $? in
          0)
            show_wait_dialog & sleep 1
            cd ~/Persistent/swtor-addon-to-tails/scripts
@@ -393,11 +406,14 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-supdate ] ; then
             fi
          ;;
        esac
+
    fi
-
    rm ~/Persistent/swtor-addon-to-tails/tails-supdate > /dev/null 2>&1
+else
+   if [ $TERMINAL_VERBOSE == "1" ] ; then
+      echo Tails is not updated ....
+   fi
 fi
-
 
 # If any of the mandatory options for Persistent have changed from on to off ..
 # We have a error and stop further execution of the script
