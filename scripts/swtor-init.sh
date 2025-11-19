@@ -188,7 +188,7 @@ if [ $wait_until_connection == "1" ] ; then
     while [ $auto_init -gt 0 ]; do
 
            sleep 1
-           curl --socks5 127.0.0.1:9050 -m 4 https://tails.net/home/index.en.html > /dev/null 2>&1
+           curl --socks5 127.0.0.1:9050 -m 2 https://tails.net/home/index.en.html > /dev/null 2>&1
 
            if [ $? -eq 0 ] ; then
               if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -387,8 +387,8 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-setup ] ; then
    file1=$(curl -s https://raw.githubusercontent.com/swtor00/swtor-addon-to-tails/refs/heads/master/swtorcfg/build | grep build | tr ':' ' ' | awk '{print $2}')
    file2=$(cat ~/Persistent/swtorcfg/build | grep build | tr ':' ' ' | awk '{print $2}')
 
-   cat $file1 > file1
-   cat $file1 > file2
+   echo $file1 > file1
+   echo $file1 > file2
 
    if [[ $file1 -gt $file2 ]] ; then
 

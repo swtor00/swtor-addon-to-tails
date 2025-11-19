@@ -17,6 +17,8 @@ swtorcfg/p_thunderbird.config
 swtorcfg/persistence.conf
 swtorcfg/swtorssh.cfg
 tmo/
+tmp/file1
+tmp/file2
 tmp/current-system
 tmp/pid_wait
 tmp/script_connect
