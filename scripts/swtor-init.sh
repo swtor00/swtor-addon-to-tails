@@ -354,7 +354,8 @@ if [ $TERMINAL_VERBOSE == "1" ] ; then
    echo Check Update
 fi
 
-if [ -f ~/Persistent/swtor-addon-to-tails/tails-update ] ; then
+
+if [ -f ~/Persistent/swtor-addon-to-tails/tails-setup ] ; then
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo Tails is updated ....
@@ -408,7 +409,7 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-update ] ; then
        esac
 
    fi
-   rm ~/Persistent/swtor-addon-to-tails/tails-supdate > /dev/null 2>&1
+   rm ~/Persistent/swtor-addon-to-tails/tails-setup > /dev/null 2>&1
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo Tails is not updated ....
@@ -692,12 +693,12 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
          echo >&2 "this addon was freezed with the same version of tails that is currently used .."
       fi
    else
-   
-       # Prior to Version 7.2 of Tails we did unfreezing the system ..... after every update 
-       
-       date >  ~/Persistent/swtor-addon-to-tails/tails-supdate 
-       
-       # Do markup the version of Tails we used to freezing or for a update 
+
+       # Prior to Version 7.2 of Tails we did unfreezing the system ..... after every update
+
+       date >  ~/Persistent/swtor-addon-to-tails/tails-setup
+
+       # Do markup the version of Tails we used to freezing or for a update
        # The command tails-version is obsolete in Tails 6.X and later releases
 
        cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf

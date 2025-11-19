@@ -1,4 +1,5 @@
 setup
+tails-setup
 deb/chrome.deb
 deb/chrome1.deb
 setup
@@ -15,11 +16,13 @@ swtorcfg/p_system-connection.config
 swtorcfg/p_thunderbird.config
 swtorcfg/persistence.conf
 swtorcfg/swtorssh.cfg
+tmo/
 tmp/current-system
 tmp/pid_wait
 tmp/script_connect
 tmp/watchdog_pid
 tmp/password
+tmp/password_correct
 swtorcfg/swtorssh.cfg.txt-free
 
 
