@@ -37,9 +37,9 @@ while [ $menu -gt 0 ]; do
 
       if [ -f /home/amnesia/Persistent/scripts/state/offline ]  ; then
          sleep 2
-         if [ $TERMINAL_VERBOSE == "1" ] ; then
-            echo watchdog state : offline
-         fi
+#        if [ $TERMINAL_VERBOSE == "1" ] ; then
+#           echo watchdog state : offline
+#        fi
       fi
 
       if [ -f /home/amnesia/Persistent/scripts/state/online ]  ; then
@@ -67,16 +67,17 @@ while [ $menu -gt 0 ]; do
              curl --socks5 127.0.0.1:9999 -m 8 https://www.google.com  > /dev/null 2>&1
 
              if [ $? -eq 0 ] ; then
-                if [ $TERMINAL_VERBOSE == "1" ] ; then
-                   echo watchdog state is wrong : online pid ssh $ssh_pid is still running
-                fi
+             #   if [ $TERMINAL_VERBOSE == "1" ] ; then
+             #      echo watchdog state is wrong : online pid ssh $ssh_pid is still running
+             #   fi
+                echo
              else
 
                  # Our SSH conection to the remote System was terminated unexpected !!
 
-                 if [ $TERMINAL_VERBOSE == "1" ] ; then
-                    echo error : pid ssh [$ssh_pid] is not longer running !!!!
-                 fi
+                 #if [ $TERMINAL_VERBOSE == "1" ] ; then
+                 #   echo error : pid ssh [$ssh_pid] is not longer running !!!!
+                 #fi
 
                  # We have to close the active connection script and inform the user
                  # about the termination.Only one connection script of the 4
@@ -116,9 +117,9 @@ while [ $menu -gt 0 ]; do
 
                  if [ $AUTOCLOSE_BROWSER="1" ] ; then
 
-                    if [ $TERMINAL_VERBOSE == "1" ] ; then
-                       echo autoclose is activated !
-                    fi
+                    #if [ $TERMINAL_VERBOSE == "1" ] ; then
+                    #   echo autoclose is activated !
+                    #fi
 
                     kill -9 $(ps axu | grep chromium | grep settings | awk {'print $2'}) > /dev/null  2>&1
                     kill -9 $(ps axu | grep chromium | grep personal-files | awk {'print $2'}) > /dev/null 2>&1
