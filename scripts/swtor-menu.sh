@@ -25,6 +25,14 @@ if [ -f ~/Persistent/scripts/init.lock ] ; then
    exit 1
 fi
 
+cd ~/Persistent/scripts
+./swtor-about &
+sleep 5
+pkill swtor-about
+
+
+
+
 # The following could happen
 # Tails will be started normal with network enabled
 # swtor-init.sh will be executed with rc=0

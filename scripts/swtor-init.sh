@@ -99,10 +99,6 @@ if [ ! -f ~/swtor_init ] ; then
     fi
 fi
 
-cd ~/Persistent/scripts
-./swtor-about & 
-sleep 4
-pkill swtor-about 
 
 # Creating the lockdirectory ....
 
