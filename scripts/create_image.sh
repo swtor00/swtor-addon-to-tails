@@ -269,10 +269,12 @@ else
     fi
 fi
 
-mkdir -p "/home/amnesia/Persistent/backup/Tor Browser"
+# Not longer valid since Tails 7.2 
+# mkdir -p "/home/amnesia/Persistent/backup/Tor Browser"
 mkdir -p /home/amnesia/Persistent/backup/personal-files
 
-cp -r ~/Persistent/Tor\ Browser/*  "/home/amnesia/Persistent/backup/Tor Browser" > /dev/null 2>&1
+# Not longer valid since Tails 7.2
+# cp -r ~/Persistent/Tor\ Browser/*  "/home/amnesia/Persistent/backup/Tor Browser" > /dev/null 2>&1
 cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
 
 # the fixed profile was controlled by a configuration setting
