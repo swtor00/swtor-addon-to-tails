@@ -155,7 +155,7 @@ fi
 cd ~/Persistent/swtor-addon-to-tails/scripts
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n           Starting backup of the persistent data.Please wait !          \n\n" > /dev/null 2>&1)
+--text="\n\nStarting backup of the persistent data.\nPlease wait ! \n\n" > /dev/null 2>&1)
 
 show_wait_dialog && sleep 1
 
@@ -429,8 +429,7 @@ end_wait_dialog
 sleep 0.5
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
---text="\n\n           Backup was created inside of the persistent volume !          \n\n" > /dev/null 2>&1)
-
+--text="\n\n                  Backup was created  !           \n\n" > /dev/null 2>&1)
 
 cd ~/Persistent
 backup_done=0

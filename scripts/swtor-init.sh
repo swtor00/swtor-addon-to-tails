@@ -88,6 +88,7 @@ else
     exit 1
 fi
 
+
 if [ ! -f ~/swtor_init ] ; then
     if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo "swtor-init.sh has never run !" > /dev/null 2>&1
@@ -97,6 +98,8 @@ if [ ! -f ~/swtor_init ] ; then
     else
        wait_until_connection="0"
     fi
+else
+    wait_until_connection="0"
 fi
 
 
