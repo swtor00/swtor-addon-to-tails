@@ -1115,7 +1115,63 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 swtor-init.sh executed in non-autostart produces a error 
                                                 
                                                 
-                                        
+                                                Testing swtor-menu.sh with debug-output turned on 
+                                        	./swtor-menu.sh 
+						starting initialisation global_init() 
+						setting temporary global_init to ~/Persistent/swtor-addon-to-tails/tmp
+						initialisation complete global_init() 
+						global_init() done
+						successfully acquired lock: /home/amnesia/Persistent/scripts/menu.lock
+						starting initialisation global_init() 
+						setting temporary global_init to ~/Persistent/swtor-addon-to-tails/tmp
+						initialisation complete global_init() 
+						successfully acquired lock: /home/amnesia/Persistent/scripts/init.lock
+						step01 : setup-swtor has ben executed once ....  
+						Password test
+						password asked
+						test for password is done
+						the provided administration password was correct
+						--------------
+						mark 1 Sun Nov 23 09:59:02 PM UTC 2025
+						password is correct
+						--------------
+						Check Update
+						Tails is not updated ....
+						ssh settings are present on this persistent volume
+						additional-software is  present on this persistent volume
+						additional-software is  present on this persistent volume
+						network settings are present on this persistent volume
+						greeter-settings are present on this persistent volume	
+						bookmarks are present on this persistent volume
+						cups settings are present on this persistent volume
+						thunderbird settings are present on this persistent volume
+						gnupg settings are present on this persistent volume
+						electrum settings are present on this persistent volume
+						pidgin settings are present on this persistent volume
+						dotfiles are present on this persistent volume
+						--------------
+						mark 2 Sun Nov 23 09:59:05 PM UTC 2025
+						all settings are scanned ...
+						--------------
+
+						no asp-install process found !
+						--------------
+						mark 3 Sun Nov 23 09:59:11 PM UTC 2025
+						firewall changed and menu installed
+						chrome-browser installed on request
+						--------------
+						this addon was freezed with the same version of tails that is currently used ..
+						--------------
+						mark 6 Sun Nov 23 09:59:11 PM UTC 2025
+						systemdirectory /home/amnesia/.ssh is not checked
+						--------------
+						initial-process has ben executed successfully
+						AUTOCLOSE is set to be ON
+						show main menu of addon
+						chosen entry from menu : 6
+						1
+						successfully removed lock: /home/amnesia/Persistent/scripts/menu.lock
+
                                                                                                    
                                                 
                                                 
