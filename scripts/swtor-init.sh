@@ -96,12 +96,13 @@ if [ ! -f ~/swtor_init ] ; then
        wait_until_connection="1"
     else
        wait_until_connection="0"
-    fi
-else
-   exit 1
+    fi  
+    exit 1
 fi
-
-
+ 
+cd ~/Persistent/scripts
+./swtor-about & 
+pkill swtor-about 
 
 # Creating the lockdirectory ....
 

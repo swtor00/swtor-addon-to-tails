@@ -115,7 +115,7 @@ else
 
     end_wait_dialog
     zenity --error --width=600 --text="\n\nLockdirectory for setup.sh can not be created ! \n\n" > /dev/null 2>&1
-    exit 1
+    exit 2
 fi
 
 
@@ -766,7 +766,7 @@ if [ -f ~/Persistent/swtor-addon-to-tails/setup ] ; then
       echo >&2 "removed acquired lock: $lockdir"
       echo >&2 "setup.sh exiting with error-code 1"
    fi
-   exit 1
+   exit 3
 else
    if [ $TERMINAL_VERBOSE == "1" ] ; then
       echo >&2 "swtor-setup.sh was not executed on this volume"
@@ -796,7 +796,7 @@ else
      --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
     > /dev/null 2>&1
    echo "no password set on startup of Tails"
-   exit 1
+   exit 4
 fi
 
 if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -853,7 +853,7 @@ if [ "$correct" == "" ] ; then
    rm password > /dev/null 2>&1
    rm password_correct > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
-   exit 1
+   exit 5
 else
    rm password_correct > /dev/null 2>&1
 fi
@@ -880,7 +880,7 @@ else
    --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
    > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
-   exit 1
+   exit 6
 fi
 
 
@@ -895,7 +895,7 @@ else
    --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
    > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
-   exit 1
+   exit 7
 fi
 
 # Mandatory : additional software part02
@@ -909,7 +909,7 @@ else
    --text="\n\n         This addon needs the additional software option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
    > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
-   exit 1
+   exit 7
 fi
 
 # Do we have network-connections active ?
@@ -1050,7 +1050,7 @@ fi
 # All options are scanned now
 
 zenity --info --width=600 --title="" \
---text="Welcome to the swtor addon for Tails.\nThis is the first time you startup this setup tool on this persistent volume of Tails.\n\n
+--text="Welcome to the swtor add-on for Tails.\nThis is the first time you startup this setup tool on this persistent volume of Tails.\n\n
 * We create a few symbolic links inside of the persistent volume\n
 * We create a folder personal-files\n
 * We install 3 additional debian software-packages\n

@@ -1108,6 +1108,11 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 
 19/11.25	0.90		swtor00	    	It doesn't work to visit reddit.com over TOR 
                                                 Remove reddit.com from the Bookmarks  
+                                                
+23/11/25 	0.90 		swtor00		Since the release of Tails 7.0 the "Tor Browser" directory 
+                                                not longer exist inside the Persistent Volume.
+                                                Remove it from the Backup-Script.
+                                                
                                         
                                                                                                    
                                                 
