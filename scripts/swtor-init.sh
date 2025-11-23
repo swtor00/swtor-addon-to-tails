@@ -96,10 +96,9 @@ if [ ! -f ~/swtor_init ] ; then
        wait_until_connection="1"
     else
        wait_until_connection="0"
-    fi  
-    exit 1
+    fi
 fi
- 
+
 cd ~/Persistent/scripts
 ./swtor-about & 
 sleep 4
