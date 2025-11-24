@@ -82,8 +82,6 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
    fi
 
    if [ $BACKUP_HOST == "1" ] ; then
-   
-      
       sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
       --text="\n\n  Found a valid backup server inside \n   configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
       BACKUP_HOST="1"
@@ -278,6 +276,12 @@ mkdir -p /home/amnesia/Persistent/backup/personal-files
 # cp -r ~/Persistent/Tor\ Browser/*  "/home/amnesia/Persistent/backup/Tor Browser" > /dev/null 2>&1
 cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-files > /dev/null 2>&1
 
+# grep -v "^#" swtor-backup.cfg | tr '\n' ' '
+
+additional-files-backup=$(grep -v "^#" ~/Persistent/swtorcfg/swtor-backup.cfg | tr '\n' ' ')
+mkdir -p /home/amnesia/Persistent/backup/additional-files
+tar cvzf /home/amnesia/Persistent/backup/additional-files/additional-files.tar.gz $(echo $additional-files-backup)
+
 # the fixed profile was controlled by a configuration setting
 # The default setting is no ...
 
@@ -287,7 +291,7 @@ fi
 
 # We don't copy the repair-disk folder into the backup folder
 
-rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk > /dev/null 2>&1
+rm -rf /home/amnesia/Persistent/backup/personal-files/tails-repair-disk* > /dev/null 2>&1
 
 
 cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > /home/amnesia/Persistent/backup/tails-backup-version
