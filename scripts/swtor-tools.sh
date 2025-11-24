@@ -38,7 +38,7 @@ while [ $menu -eq 1 ]; do
          "4"  "[04]      Check for updates on github" \
          "5"  "[05]      Import bookmarks for the TOR-Browser" \
          "6"  "[06]      Show documentation for the file swtor.cfg" \
-         "7"  "[07]      Show documentation for the addon" \
+         "7"  "[07]      Show documentation for the add-on" \
          "8"  "[08]      Clean current Profiles 1 & 2" \
          "9"  "[09]      Show Changes in this release (CHANGES)" \
         "10"  "[10]      About swtor-addon" \
@@ -54,7 +54,7 @@ while [ $menu -eq 1 ]; do
              "4"  "[04]      Check for updates on github" \
              "5"  "[05]      Import bookmarks for the TOR-Browser" \
              "6"  "[06]      Show documentation for the file swtor.cfg" \
-             "7"  "[07]      Show documentation for the addon" \
+             "7"  "[07]      Show documentation for the add-on" \
              "8"  "[08]      Clean current Profiles 1 & 2" \
              "9"  "[09]      Show Changes in this release (CHANGES)" \
              "10" "[10]      About swtor-addon" \
@@ -69,7 +69,7 @@ while [ $menu -eq 1 ]; do
              "4"  "[04]      Check for updates on github" \
              "5"  "[05]      Import bookmarks for the TOR-Browser" \
              "6"  "[06]      Show documentation for the file swtor.cfg" \
-             "7"  "[07]      Show documentation for the addon" \
+             "7"  "[07]      Show documentation for the add-on" \
              "8"  "[08]      Clean current Profiles 1 & 2" \
              "9"  "[09]      Show Changes in this release (CHANGES)" \
              "10" "[10]      About swtor-addon" \
@@ -186,7 +186,7 @@ fi
 
 
 if [ "$selection" == "7" ] ; then
-    evince /home/amnesia/Persistent/doc/swtor-0.85.pdf > /dev/null 2>&1
+    evince /home/amnesia/Persistent/doc/swtor-0.90.pdf > /dev/null 2>&1
 fi
 
 if [ "$selection" == "8" ] ; then
