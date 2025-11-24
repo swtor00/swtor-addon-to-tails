@@ -82,9 +82,10 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
    fi
 
    if [ $BACKUP_HOST == "1" ] ; then
+   
+      
       sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-      --text="\n\n      Found a valid backup server inside your configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
-      rm ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup > /dev/null 2>&1
+      --text="\n\n  Found a valid backup server inside \n   configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
       BACKUP_HOST="1"
    else
       BACKUP_HOST="0"
@@ -608,17 +609,18 @@ if [ $selection == "2" ] ; then
           chmod +x tmp.sh > /dev/null 2>&1
           ssh -42C -p $single_port $ssh_hs 'bash -s' < tmp.sh > /dev/null 2>&1
           rm tmp.sh > /dev/null 2>&1
+          
           sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-          --text="\n\n      Backup was transfered successfull to the remote system with rsync     \n\n" > /dev/null 2>&1)
+          --text="\n\n      Backup was transfered successfull to the\n     remote system with rsync     \n\n" > /dev/null 2>&1)
        else
           if [ $TERMINAL_VERBOSE == "1" ] ; then
              echo "error on copy file crypted_tails_image.tar.gz.gpg to the remote host"
           fi
           end_wait_dialog && sleep 2
           zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
-final_destination_name1
-          rm ~/Persistent/ > /dev/null 2>&1
-          rm ~/Persistent/crypted_tails_image.tar.gz.gpg.md5 > /dev/null 2>&1
+          
+          rm ~/Persistent/$final_destination_name1 > /dev/null 2>&1
+          rm ~/Persistent/$final_destination_name2 > /dev/null 2>&1 
           exit 1
        fi
 

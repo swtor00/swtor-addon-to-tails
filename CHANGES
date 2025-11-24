@@ -1172,6 +1172,9 @@ BUILD 20220518					    - Improved watchdog.sh script
 						1
 						successfully removed lock: /home/amnesia/Persistent/scripts/menu.lock
 
+
+24/11/25 	0.90 		swtor00		Change strings inside create-image.sh 
+
                                                                                                    
                                                 
                                                 
