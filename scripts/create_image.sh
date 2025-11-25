@@ -278,9 +278,9 @@ cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-fil
 
 # grep -v "^#" swtor-backup.cfg | tr '\n' ' '
 
-additional-files-backup=$(grep -v "^#" ~/Persistent/swtorcfg/swtor-backup.cfg | tr '\n' ' ')
+files=$(grep -v "^#" /home/amnesia/Persistent/swtorcfg/swtor-backup.cfg | tr '\n' ' ')
 mkdir -p /home/amnesia/Persistent/backup/additional-files
-tar cvzf /home/amnesia/Persistent/backup/additional-files/additional-files.tar.gz $(echo $additional-files-backup)
+tar cvzf /home/amnesia/Persistent/backup/additional-files/additional-files.tar.gz $(echo $files) > /dev/null 2>&1)
 
 # the fixed profile was controlled by a configuration setting
 # The default setting is no ...
