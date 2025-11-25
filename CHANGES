@@ -1106,17 +1106,17 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 The build-number swtorcfg/build for the project 
                                                 is calculated by the days from 01.01.1970 until now ...   
                                                 
-19/11.25	0.90		swtor00	    	It doesn't work to visit reddit.com over TOR 
+19/11.25	0.90		swtor00		It doesn't work to visit reddit.com over TOR 
                                                 Remove reddit.com from the Bookmarks  
                                                 
-23/11/25 	0.90 		swtor00		Since the release of Tails 7.0 the "Tor Browser" directory 
+23/11/25	0.90		swtor00		Since the release of Tails 7.0 the "Tor Browser" directory 
                                                 not longer exist inside the Persistent Volume.
                                                 Remove it from the Backup-Script.
                                                 swtor-init.sh executed in non-autostart produces a error 
                                                 
                                                 
                                                 Testing swtor-menu.sh with debug-output turned on 
-                                        	./swtor-menu.sh 
+						./swtor-menu.sh 
 						starting initialisation global_init() 
 						setting temporary global_init to ~/Persistent/swtor-addon-to-tails/tmp
 						initialisation complete global_init() 
@@ -1173,9 +1173,13 @@ BUILD 20220518					    - Improved watchdog.sh script
 						successfully removed lock: /home/amnesia/Persistent/scripts/menu.lock
 
 
-24/11/25 	0.90 		swtor00		Change strings inside create-image.sh 
+24/11/25	0.90		swtor00		Change strings inside create-image.sh 
 
-                                                                                                   
+                    
+25/11/25	0.90		swtor00		Dialog 7 insde create-image.sh -> (zenity:14029): Gtk-WARNING **: 08:17:41.843: Trying to measure 
+                                                GtkLabel 0x649f0f9e1870 for width of 252, but it needs at least 255 ... fixed
+                                               
+                                                                                                             
                                                 
                                                 
                                                 

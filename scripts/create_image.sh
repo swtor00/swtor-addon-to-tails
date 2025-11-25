@@ -44,6 +44,7 @@ fi
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
 --text="\n\n      Checking for a backup host inside \n     your current configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
+
 if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
 
    # We found a backup host definition, but we have to check this entry ... otherwise this
@@ -77,6 +78,7 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
          echo ... no ssh-id
       fi
       zenity --info --width=600 --text="\n\n    This backup host definition is not valid without ssh-id !    \n\n" > /dev/null 2>&1
+
       rm ~/Persistent/swtor-addon-to-tails/tmp/check_parameters_backup > /dev/null 2>&1
       BACKUP_HOST="0"
    fi
@@ -84,6 +86,7 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
    if [ $BACKUP_HOST == "1" ] ; then
       sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
       --text="\n\n  Found a valid backup server inside \n   configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
+
       BACKUP_HOST="1"
    else
       BACKUP_HOST="0"
@@ -442,13 +445,14 @@ menu=1
 
 while [ $menu -eq 1 ]; do
 
-selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
+selection=$(zenity --width=700 --height=500 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
          "1"  "[01]  Copy unencrypted backup to the default location "\
          "2"  "[02]  Encrypt the backup and copy it to a remote ssh-host" \
          "3"  "[03]  Encrypt the backup and copy it to the default location" \
          "4"  "[04]  Cancel the current backup" \
         --hide-column=1 \
-        --print-column=1)
+        --print-column=1 > /dev/null 2>&1)
+
 
 if [ "$selection" == "" ] ; then
 
@@ -512,6 +516,7 @@ if [ $selection == "2" ] ; then
    if [ $BACKUP_HOST == "0" ] ; then
       zenity --info --width=600 --title="" \
       --text="\n\n   This function only works with a valid backup-host ! \n\n  " > /dev/null 2>&1
+
    else
 
       # We need a passphrase to encrypt :  gpg does terminate after one minute without any activity from
@@ -560,6 +565,7 @@ if [ $selection == "2" ] ; then
           fi
        else
           zenity --error --width=600 --text="\n\n     Backup canceled by user in the password-screen !      \n\n" > /dev/null 2>&1
+
           rm -rf $final_backup_directory > /dev/null 2>&1
           rm /dev/shm/password1 > /dev/null 2>&1
           rm /dev/shm/password2 > /dev/null 2>&1
@@ -613,7 +619,7 @@ if [ $selection == "2" ] ; then
           chmod +x tmp.sh > /dev/null 2>&1
           ssh -42C -p $single_port $ssh_hs 'bash -s' < tmp.sh > /dev/null 2>&1
           rm tmp.sh > /dev/null 2>&1
-          
+
           sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
           --text="\n\n      Backup was transfered successfull to the\n     remote system with rsync     \n\n" > /dev/null 2>&1)
        else
@@ -622,7 +628,7 @@ if [ $selection == "2" ] ; then
           fi
           end_wait_dialog && sleep 2
           zenity --error --width=600 --text="\n\n     The transfer of the backup to the remote host was not possible !      \n\n" > /dev/null 2>&1
-          
+
           rm ~/Persistent/$final_destination_name1 > /dev/null 2>&1
           rm ~/Persistent/$final_destination_name2 > /dev/null 2>&1 
           exit 1
