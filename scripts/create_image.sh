@@ -84,7 +84,7 @@ if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; th
 
    if [ $BACKUP_HOST == "1" ] ; then
       sleep 4 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
-      --text="\n\n  Found a valid backup server inside \n   configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
+      --text="\n\n  Found a valid backup server inside \n  configuration swtorssh.cfg      \n\n" > /dev/null 2>&1)
 
       BACKUP_HOST="1"
    else

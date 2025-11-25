@@ -34,7 +34,7 @@ while [ $menu -eq 1 ]; do
          selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
          "1"  "[01]                                             " \
          "2"  "[02]                                             " \
-         "3"  "[03]      Backup Persistent volume" \
+         "3"  "[03]      Backup Persistent Volume" \
          "4"  "[04]      Check for updates on github" \
          "5"  "[05]      Import bookmarks for the TOR-Browser" \
          "6"  "[06]      Show documentation for the file swtor.cfg" \
@@ -50,7 +50,7 @@ while [ $menu -eq 1 ]; do
              selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
              "1"  "[01]      Freezing the current state             " \
              "2"  "[02]                                             " \
-             "3"  "[03]      Backup Persistent volume" \
+             "3"  "[03]      Backup Persistent Volume" \
              "4"  "[04]      Check for updates on github" \
              "5"  "[05]      Import bookmarks for the TOR-Browser" \
              "6"  "[06]      Show documentation for the file swtor.cfg" \
@@ -65,7 +65,7 @@ while [ $menu -eq 1 ]; do
              selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
              "1"  "[01]                                   " \
              "2"  "[02]      Unfreezing the current state" \
-             "3"  "[03]      Backup Persistent volume" \
+             "3"  "[03]      Backup Persistent Volume" \
              "4"  "[04]      Check for updates on github" \
              "5"  "[05]      Import bookmarks for the TOR-Browser" \
              "6"  "[06]      Show documentation for the file swtor.cfg" \
@@ -107,7 +107,7 @@ if [ "$selection" == "1" ] ; then
       fi
    else
        if [ $TERMINAL_VERBOSE == "1" ] ; then
-          echo freezing not possible missing dotfile option 
+          echo freezing not possible missing dotfile option
        fi
    fi
 fi
@@ -134,7 +134,7 @@ fi
 
 if [ "$selection" == "3" ] ; then
     zenity --question --width=600 \
-    --text="\n\n   Prior to make a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager\n   * Kleopatra    \n   * KeePassXC   \n\n If none of the above programms is open,please continue the backub by pressing 'Yes'.\n Otherwise press 'No' to cancel the backup.  \n\n"
+    --text="\n\n   Prior to make a backup of the Persistent Volume, please close this programms first,\n   if any of them are open.\n\n   * Tor Browser\n   * Thunderbird\n   * Electrum Bitcoin Wallet \n   * Pidgin Internet Messanger\n   * Synaptic Package Manager or terminal with apt\n   * Kleopatra    \n   * KeePassXC   \n\n If none of the above programms is open,please continue the backub by pressing 'Yes'.\n Otherwise press 'No' to cancel the backup.  \n\n"
     case $? in
          0) if [ $TERMINAL_VERBOSE == "1" ] ; then
                echo backup started
