@@ -445,33 +445,20 @@ menu=1
 
 while [ $menu -eq 1 ]; do
 
-selection=$(zenity --width=700 --height=500 --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column="" \
-         "1"  "[01]  Copy unencrypted backup to the default location "\
-         "2"  "[02]  Encrypt the backup and copy it to a remote ssh-host" \
-         "3"  "[03]  Encrypt the backup and copy it to the default location" \
-         "4"  "[04]  Cancel the current backup" \
+sel=$(zenity --list --hide-header --title "swtor-addon backup-menu" --column="ID"  --column=""  \
+         "1"  "01  Copy unencrypted backup to the default location "\
+         "2"  "02  Encrypt the backup and copy it to a remote ssh-host" \
+         "3"  "03  Encrypt the backup and copy it to the default location" \
+         "4"  "04  Cancel the current backup" \
         --hide-column=1 \
-        --print-column=1 > /dev/null 2>&1)
+        --print-column=1)
 
-
-if [ "$selection" == "" ] ; then
-
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-       echo deleting files
-   fi
-
-   rm -f $final_backup_file > /dev/null 2>&1
-   rm -f $final_backup_file.md5 > /dev/null 2>&1
-
-   if [ $TERMINAL_VERBOSE == "1" ] ; then
-      echo backup-files deleted
-   fi
-
-   menu=0
-   break
+if [ $sel == "" ] ; then
+   echo not deleting files
 fi
 
-if [ "$selection" == "1" ] ; then
+
+if [ $sel == "1" ] ; then
 
    cd ~/Persistent
 
@@ -512,11 +499,12 @@ if [ "$selection" == "1" ] ; then
    backup_done=1
 fi
 
-if [ $selection == "2" ] ; then
+
+
+if [ $sel == "2" ] ; then
    if [ $BACKUP_HOST == "0" ] ; then
       zenity --info --width=600 --title="" \
       --text="\n\n   This function only works with a valid backup-host ! \n\n  " > /dev/null 2>&1
-
    else
 
       # We need a passphrase to encrypt :  gpg does terminate after one minute without any activity from
@@ -594,10 +582,10 @@ if [ $selection == "2" ] ; then
 
        # copy backup-file
 
-       echo "starting backup" > ~/Persistent/swtorcfg/log/backup.log
-       rsync -avHPe '$port' /home/amnesia/Persistent/$final_destination_name2  -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
-       echo "crypted_tails_image.tar.gz.gpg.md5 transfered to remote host" >> ~/Persistent/swtorcfg/log/backup.log
-       rsync -avHPe '$port' /home/amnesia/Persistent/$final_destination_name1 -e ssh $ssh_host >> ~/Persistent/swtorcfg/log/backup.log 2>&1
+       echo "starting backup" > /home/amnesia/Persistent/swtorcfg/log/backup.log
+       rsync -avHPe '$port' /home/amnesia/Persistent/$final_destination_name2  -e ssh $ssh_host >> /home/amnesia/Persistent/swtorcfg/log/backup.log 2>&1
+       echo "crypted_tails_image.tar.gz.gpg.md5 transfered to remote host" >> /home/amnesia/Persistent/swtorcfg/log/backup.log
+       rsync -avHPe '$port' /home/amnesia/Persistent/$final_destination_name1 -e ssh $ssh_host >> /home/amnesia/Persistent/swtorcfg/log/backup.log 2>&1
 
        if [ $? -eq 0 ] ; then
           if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -752,14 +740,16 @@ if [ $selection == "2" ] ; then
    fi
 fi
 
-if [ $selection == "3" ] ; then
+if [ $sel == "3" ] ; then
 
       # We need a passphrase to encrypt :  gpg does terminate after one minute without any activity from
       # the keyboard, therefore we use a a zenity dialog.
 
       swtor_ask_passphrase
+
       if [ $? -eq 0 ] ; then
-          tar czf $filename_tar $final_backup_file $final_backup_file.md5
+
+             tar czf $filename_tar $final_backup_file $final_backup_file.md5
 
           final_destination_name1="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg"
           final_destination_name2="crypted_tails_image-$(date '+%Y-%m-%d-%H-%M').tar.gz.gpg.md5"
@@ -775,6 +765,8 @@ if [ $selection == "3" ] ; then
              sleep 7 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
              --text="\n\n      Backup is now encrpyted with gpg ! You have to store this password anywhere where it is save.     \n\n" > /dev/null 2>&1)
 
+             menu=0
+             backup_done=1
           else
              zenity --error --width=600 --text="\n\n     Backup canceled by error with gpg !      \n\n" > /dev/null 2>&1
              rm -rf $final_backup_directory > /dev/null 2>&1
@@ -827,7 +819,7 @@ if [ $selection == "3" ] ; then
 fi
 
 
-if [ $selection == "4" ] ; then
+if [ $sel == "4" ] ; then
 
    if [ $TERMINAL_VERBOSE == "1" ] ; then
        echo deleting files
@@ -848,13 +840,13 @@ done
 if [ $backup_done == "1" ]  ; then
     zenity --info --width=600 --title="" \
     --text="\n\n   Please do not forget to copy the repair-files to a other external storage.\n\n   Without this files in this directory you can not restore the persistent volume !  \n\n" > /dev/null 2>&1 
-    
-    # Until now , it wasn't possible to hold multiples backups 
-    # We do add a date to the folder 
+
+    # Until now , it wasn't possible to hold multiples backups
+    # We do add a date to the folder
     # So we can hold as many backups as possible
-    
+
     mv ~/Persistent/personal-files/tails-repair-disk  ~/Persistent/personal-files/tails-repair-disk-$(date '+%Y-%m-%d-%H-%M') > /dev/null 2>&1  
-    
+
 else
      if [ $TERMINAL_VERBOSE == "1" ] ; then
            echo "backup was canceled"

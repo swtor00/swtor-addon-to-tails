@@ -34,7 +34,7 @@ while [ $menu -eq 1 ]; do
          selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
          "1"  "[01]                                             " \
          "2"  "[02]                                             " \
-         "3"  "[03]      Backup persistent volume" \
+         "3"  "[03]      Backup Persistent volume" \
          "4"  "[04]      Check for updates on github" \
          "5"  "[05]      Import bookmarks for the TOR-Browser" \
          "6"  "[06]      Show documentation for the file swtor.cfg" \
@@ -50,7 +50,7 @@ while [ $menu -eq 1 ]; do
              selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
              "1"  "[01]      Freezing the current state             " \
              "2"  "[02]                                             " \
-             "3"  "[03]      Backup persistent volume" \
+             "3"  "[03]      Backup Persistent volume" \
              "4"  "[04]      Check for updates on github" \
              "5"  "[05]      Import bookmarks for the TOR-Browser" \
              "6"  "[06]      Show documentation for the file swtor.cfg" \
@@ -65,7 +65,7 @@ while [ $menu -eq 1 ]; do
              selection=$(zenity --width=600 --height=400 --list --hide-header --title "swtor-addon tools-menu" --column="ID"  --column="" \
              "1"  "[01]                                   " \
              "2"  "[02]      Unfreezing the current state" \
-             "3"  "[03]      Backup persistent volume" \
+             "3"  "[03]      Backup Persistent volume" \
              "4"  "[04]      Check for updates on github" \
              "5"  "[05]      Import bookmarks for the TOR-Browser" \
              "6"  "[06]      Show documentation for the file swtor.cfg" \
