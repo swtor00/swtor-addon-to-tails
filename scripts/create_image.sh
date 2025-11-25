@@ -42,7 +42,7 @@ fi
 # searching for a backup host
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Checking for a backup host inside your configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
+--text="\n\n      Checking for a backup host inside \n     your current configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
 if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
 
@@ -268,7 +268,7 @@ else
     fi
 fi
 
-# Not longer valid since Tails 7.2 
+# Not longer valid since Tails 7.2
 # mkdir -p "/home/amnesia/Persistent/backup/Tor Browser"
 mkdir -p /home/amnesia/Persistent/backup/personal-files
 
@@ -280,7 +280,7 @@ cp -r ~/Persistent/personal-files/* /home/amnesia/Persistent/backup/personal-fil
 
 files=$(grep -v "^#" /home/amnesia/Persistent/swtorcfg/swtor-backup.cfg | tr '\n' ' ')
 mkdir -p /home/amnesia/Persistent/backup/additional-files
-tar cvzf /home/amnesia/Persistent/backup/additional-files/additional-files.tar.gz $(echo $files) > /dev/null 2>&1)
+tar cvzf /home/amnesia/Persistent/backup/additional-files/additional-files.tar.gz $(echo $files) > /dev/null 2>&1
 
 # the fixed profile was controlled by a configuration setting
 # The default setting is no ...
