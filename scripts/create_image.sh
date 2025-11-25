@@ -42,8 +42,7 @@ fi
 # searching for a backup host
 
 sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close  --title="Information" \
---text="\n\n      Checking for a backup host inside \n     your current configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
-
+--text="\n\n      Checking for a backup host inside \n      the current configuration swtorssh.cfg     \n\n" > /dev/null 2>&1)
 
 if grep -q "backup" ~/Persistent/swtor-addon-to-tails/swtorcfg/swtorssh.cfg ; then
 
