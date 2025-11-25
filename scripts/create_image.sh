@@ -451,7 +451,7 @@ sel=$(zenity --list --hide-header --title "swtor-addon backup-menu" --column="ID
          "3"  "03  Encrypt the backup and copy it to the default location" \
          "4"  "04  Cancel the current backup" \
         --hide-column=1 \
-        --print-column=1)
+        --print-column=1 > /dev/null 2>&1)
 
 if [ $sel == "" ] ; then
    echo not deleting files
