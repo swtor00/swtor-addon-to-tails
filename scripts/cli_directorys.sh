@@ -48,6 +48,13 @@ else
    echo "symlink ~/Persistent/doc was allready made"
 fi
 
+if [ ! -L ~/Persistent/deb ] ; then
+   ln -s ~/Persistent/swtor-addon-to-tails/deb ~/Persistent/deb > /dev/null 2>&1
+   echo "creating symlink ~/Persistent/deb"
+else
+   echo "symlink ~/Persistent/deb was allready made"
+fi
+
 if [ ! -d ~/Persistent/swtor-addon-to-tails/swtorcfg/log ] ; then
    mkdir -p ~/Persistent/swtor-addon-to-tails/swtorcfg/log
    echo "directory ~/Persistent/swtor-addon-to-tails/swtorcfg/log created"

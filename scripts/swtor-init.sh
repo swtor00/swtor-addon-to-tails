@@ -163,8 +163,7 @@ if grep -q "user amnesia is allowed" /dev/shm/test_admin > /dev/null 2>&1 ; then
    rm /dev/shm/test_admin > /dev/null 2>&1
    rmdir $lockdir 2>&1 >/dev/null
    zenity --error --width=600 \
-     --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \
-    > /dev/null 2>&1
+     --text="\n\n         This addon needs a administration password set on the greeter-screen.\n         You have to set this option first ! \n\n" \    > /dev/null 2>&1
    echo "no password set on startup of Tails"
    exit 1
 fi
@@ -702,6 +701,12 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
        # The command tails-version is obsolete in Tails 6.X and later releases
 
        cat /etc/os-release | grep VERSION |sed "s/[^0-9.]*//g" > ~/Persistent/swtorcfg/freezed.cgf
+
+      # We show a confirmation of the change
+
+      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
+      --text="\n\n Tails-OS has been updated to newest release ! \n\n" > /dev/null 2>&1)
+
     fi
 else
     if [ $TERMINAL_VERBOSE == "1" ] ; then

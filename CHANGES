@@ -1180,8 +1180,11 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                 GtkLabel 0x649f0f9e1870 for width of 252, but it needs at least 255 ... fixed
                                                
                                                                                                              
-                                                
-                                                
+29/01/26        0.90            swtor00         deb directory was not symmlinked -> fixed
+                                                annas.archive.org not longer working -> replaced with annas-archive.pm 
+                                                Google AI added -> /Yes .... Since a few feeks Google can be used. Surprise. Surprise                                                 
+                                                New build-number "20482"
+                                
                                                 
                                                 
                                                 

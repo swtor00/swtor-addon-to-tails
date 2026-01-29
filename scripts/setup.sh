@@ -226,8 +226,8 @@ fi
    else
       zenity --error --width=600 \
       --text="\n\n         This addon needs the ssh option inside of the persistent volume.\n         You have to set this option first ! \n\n" \
-      > /dev/null 2>&1   
-      rmdir $lockdir 2>&1 >/dev/null 
+      > /dev/null 2>&1
+      rmdir $lockdir 2>&1 >/dev/null
       exit 1
    fi
 
