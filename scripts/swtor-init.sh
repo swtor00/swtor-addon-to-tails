@@ -367,12 +367,16 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-setup ] ; then
       fi
 
       sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
-      --text="\n\n  Download of new Chromium-Browser \n\n" > /dev/null 2>&1 )
+      --text="\n\n  Download of the new Chromium-Browser is starting \n\n" > /dev/null 2>&1 )
       sleep 1
       show_wait_dialog & sleep 1
       cd ~/Persistent/swtor-addon-to-tails/scripts
       ./cli_get_chrome.sh  > /dev/null 2>&1
       end_wait_dialog && sleep 1.5
+      
+      sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
+      --text="\n\n  Download is now finished  \n\n" > /dev/null 2>&1 )
+      
    else
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
