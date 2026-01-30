@@ -705,7 +705,7 @@ if [ -f ~/Persistent/swtorcfg/freezed.cgf ] ; then
       # We show a confirmation of the change
 
       sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information"\
-      --text="\n\n Tails-OS has been updated to newest release ! \n\n" > /dev/null 2>&1)
+      --text="\n\n  Tails-OS has been updated to a newer release ! \n\n" > /dev/null 2>&1)
 
     fi
 else
