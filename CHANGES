@@ -1174,19 +1174,21 @@ BUILD 20220518					    - Improved watchdog.sh script
 
 
 24/11/25	0.90		swtor00		Change strings inside create-image.sh 
-
                     
 25/11/25	0.90		swtor00		Dialog 7 insde create-image.sh -> (zenity:14029): Gtk-WARNING **: 08:17:41.843: Trying to measure 
                                                 GtkLabel 0x649f0f9e1870 for width of 252, but it needs at least 255 ... fixed
-                                               
-                                                                                                             
+                                                                                                                                                            
 29/01/26        0.90            swtor00         deb directory was not symmlinked -> fixed
-                                                annas.archive.org not longer working -> replaced with annas-archive.pm 
+		
                                                 Google AI added -> /Yes .... Since a few feeks Google can be used.                                                 
                                                 New build-number "20482"
                                                 
-31/01/26 	0.90		swtor00	 	Testing the new servers outside of the EU. All 
+31/01/26	0.90		swtor00		Testing the new servers outside of the EU. All 
                                                 connections do work like expected.
+                                                                                                
+12/05/26        0.91		swtor00		annas.archive.pm not longer working -> replaced with annas-archive.gl
+                                                removed google-chrome debian file -> It would be to dangerous to install a ai !
+                                                
                                                 
                                 
                                                 
