@@ -1188,7 +1188,10 @@ BUILD 20220518					    - Improved watchdog.sh script
                                                                                                 
 12/05/26        0.91		swtor00		annas.archive.pm not longer working -> replaced with annas-archive.gl
                                                 removed google-chrome debian file -> It would be to dangerous to install a ai !
-                                                
+
+14/05/26        0.91            swtor00         Build : 20587
+
+                                                        
                                                 
                                 
                                                 
