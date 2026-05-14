@@ -374,10 +374,10 @@ if [ -f ~/Persistent/swtor-addon-to-tails/tails-setup ] ; then
       cd ~/Persistent/swtor-addon-to-tails/scripts
       ./cli_get_chrome.sh  > /dev/null 2>&1
       end_wait_dialog && sleep 1.5
-      
+
       sleep 5 | tee >(zenity --progress --pulsate --no-cancel --auto-close --title="Information" \
       --text="\n\n                  Download is finished     \n\n" > /dev/null 2>&1 )
-      
+
    else
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then
@@ -660,22 +660,22 @@ if [ $GUI_LINKS == "1" ] ; then
    fi
 
    # install chrome
+   # We do not install chrome Browser .... It is to dangerours !!!!
 
-   if [ -f ~/Persistent/swtor-addon-to-tails/deb/chrome.deb  ] ; then
-      cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
-   fi
+   # if [ -f ~/Persistent/swtor-addon-to-tails/deb/chrome.deb  ] ; then
+   #   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
+   # fi
 
-   # install chromne libwidevinecdm.so into current chromium installation
-   # the directory /opt/google/chrome/WidevineCdm has to be inside
-   #
+   # We install the library libwidevinecdm.so into current chromium installation
+   # After the copy of this file .. it should be possible to Play DRM Content
 
-   if [ -f ~/Persistent/swtor-addon-to-tails/deb/libwidevinecdm.so  ] ; then
-      if [ $TERMINAL_VERBOSE == "1" ] ; then
-         echo installation of drm library into chromium installation
-      fi
+#   if [ -f ~/Persistent/swtor-addon-to-tails/deb/libwidevinecdm.so  ] ; then
+#      if [ $TERMINAL_VERBOSE == "1" ] ; then
+#         echo installation of drm library into chromium installation
+#      fi
 
-      cat password | sudo -S cp -r /opt/google/chrome/WidevineCdm /usr/lib/chromium
-      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm
+#      cat password | sudo -S cp -r /opt/google/chrome/WidevineCdm /usr/lib/chromium
+#      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm
    fi
 fi
 
