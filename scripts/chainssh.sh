@@ -193,7 +193,7 @@ if [ -z "$ssh_pid" ] ; then
 
       if [ $TERMINAL_VERBOSE == "1" ] ; then 
          echo starting ssh command
-         echo $comnand1
+         echo $command1
          echo $command2
       fi
 
