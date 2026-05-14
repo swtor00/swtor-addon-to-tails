@@ -23,7 +23,7 @@ wget -O ~/Persistent/swtor-addon-to-tails/deb/chrome.deb https://dl.google.com/l
 cd ~/Persistent/swtor-addon-to-tails/deb
 dpkg-deb -x chrome.deb ~/Persistent/swtor-addon-to-tails/deb
 rm -rf etc
-mv opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so .
+mv opt/google/chrome/WidevineCdm/ .
 rm -rf opt
 rm -rf usr
 rm ~/Persistent/swtor-addon-to-tails/deb/chrome.deb
