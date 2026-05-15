@@ -81,7 +81,7 @@ account=$(zenity --width=800 --height=400 --list --title "Please select the desi
           --column "Destination country" \
           --column "Addional description" \
           --hide-column=3,4,5,7,9,10 \
-          --print-column=1,9,2,6 $(tr , \\n < ../swtorcfg/swtorssh.cfg) > /dev/null 2>&1)
+          --print-column=1,9,2,6 $(tr , \\n < ../swtorcfg/swtorssh.cfg) 2> /dev/null)
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
