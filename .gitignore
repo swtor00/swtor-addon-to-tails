@@ -1,7 +1,6 @@
 setup
 tails-setup
-deb/chrome.deb
-deb/chrome1.deb
+deb/WidevineCdm
 setup
 swtorcfg/freezed.cgf
 swtorcfg/freezing
