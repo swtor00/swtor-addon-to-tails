@@ -81,7 +81,7 @@ account=$(zenity --width=800 --height=400 --list --title "Please select the desi
           --column "Destination country" \
           --column "Addional description" \
           --hide-column=3,4,5,7,9,10 \
-          --print-column=1,9,2,6 $(tr , \\n < ../swtorcfg/swtorssh.cfg))
+          --print-column=1,9,2,6 $(tr , \\n < ../swtorcfg/swtorssh.cfg) > /dev/null 2>&1)
 
 selection=$(echo $account)
 if [ "$selection" == "" ] ; then
@@ -119,9 +119,9 @@ if [ $arg1 == "fullssh.sh" ] ; then
 
       # If we would like to see output -> we make it visible
       # Otherwise we send the output to /dev/null
-      
+
       ./1.sh > ~/Persistent/swtorcfg/log/ssh-log.log 2>&1 &
-      
+
    else
        password=$(zenity --entry --text="Please type the password for the selected SSH-Server" --title=Password --hide-text)
        echo $password > /home/amnesia/Persistent/swtorcfg/ssh-interactive.arg
