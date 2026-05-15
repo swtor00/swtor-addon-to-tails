@@ -672,8 +672,8 @@ if [ $GUI_LINKS == "1" ] ; then
    # After the copy of this file .. it should be possible to Play DRM Content
 
    if [ -d ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm  ] ; then
-      cat password | sudo -S cp -r ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm /usr/lib/chromium
-      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm
+      cat password | sudo -S cp -r ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm /usr/lib/chromium > /dev/null 2>&1
+      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm > /dev/null 2>&1
    fi
 
 fi
