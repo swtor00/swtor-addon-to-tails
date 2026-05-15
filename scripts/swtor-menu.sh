@@ -121,6 +121,8 @@ fi
 # Creating the lockdirectory ....
 
 lockdir=~/Persistent/scripts/menu.lock
+rm $lockdir > /dev/null 2>&1
+
 if mkdir "$lockdir" > /dev/null 2>&1
 
    then

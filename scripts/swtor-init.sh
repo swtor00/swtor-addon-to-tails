@@ -107,6 +107,8 @@ fi
 # Creating the lockdirectory ....
 
 lockdir=~/Persistent/scripts/init.lock
+rm $lockdir > /dev/null 2>&1
+
 if mkdir "$lockdir" > /dev/null 2>&1
    then
        # the directory did not exist, but was created successfully
