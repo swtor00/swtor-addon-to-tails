@@ -669,14 +669,11 @@ if [ $GUI_LINKS == "1" ] ; then
    # We install the library libwidevinecdm.so into current chromium installation
    # After the copy of this file .. it should be possible to Play DRM Content
 
-#   if [ -f ~/Persistent/swtor-addon-to-tails/deb/libwidevinecdm.so  ] ; then
-#      if [ $TERMINAL_VERBOSE == "1" ] ; then
-#         echo installation of drm library into chromium installation
-#      fi
-
-#      cat password | sudo -S cp -r /opt/google/chrome/WidevineCdm /usr/lib/chromium
-#      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm
+   if [ -d ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm  ] ; then
+      cat password | sudo -S cp -r ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm /usr/lib/chromium
+      cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm
    fi
+
 fi
 
 
