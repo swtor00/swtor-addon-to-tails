@@ -413,8 +413,9 @@ You can switch between them freely.
 
 Can I use IPv6 for SSH connections ?
 --------------------------------------
-Yes. Change the ip-version field in swtorssh.cfg from 4 to 6.
-Both IPv4 and IPv6 are supported.
+No. Tails disables IPv6 completely for security and anonymity reasons.
+All network traffic, including SSH connections, uses IPv4 exclusively.
+The ip-version field in swtorssh.cfg must always be set to 4.
 
 Can I use a non-standard SSH port ?
 -------------------------------------
@@ -423,12 +424,15 @@ uses (for example 443, 2222, or any other port).
 
 What is a two-hop chain (chainssh.sh) and when would I use it ?
 ----------------------------------------------------------------
-A two-hop chain connects through two SSH servers in sequence:
+A two-hop chain connects through two SSH servers in sequence,
+and like all connections in this addon, always routed through Tor first:
 
-  Tails  →  Server A  →  Server B  →  Internet
+  Tails  ->  Tor (3 hops)  ->  Exit Node  ->  SSH Server A  ->  SSH Server B  ->  Internet
 
-This adds an extra layer of separation. Even if Server B logs your
-connection, it only sees Server A's IP address, not yours.
+This adds an extra layer of separation on top of Tor. Server A sees only
+the Tor exit node IP. Server B sees only Server A's IP address.
+Neither server can identify you or trace the connection back to your
+Tails machine.
 
 Use this when you want an additional hop between yourself and the
 exit point. Both servers must have your SSH key installed.
@@ -477,13 +481,57 @@ is active, the browser will show a connection error. This is intentional
 Can I play DRM-protected content (Netflix, Disney+) in Chromium ?
 ------------------------------------------------------------------
 Not with Chromium out of the box. Chromium on Debian does not include
-the Widevine DRM library. To enable DRM content, run:
+the Widevine DRM library (libwidevinecdm.so). Only this single file
+is needed — Google Chrome itself does not need to be installed.
+
+The script cli_get_chrome.sh handles this automatically:
 
   cd ~/Persistent/scripts
   ./cli_get_chrome.sh
 
-This downloads Google Chrome and extracts the Widevine library from it.
-After this, DRM content should work.
+No administrator password or root access is required. The script runs
+entirely as the normal Tails user.
+
+What the script does step by step:
+  1. Downloads the Google Chrome .deb package to
+     ~/Persistent/swtor-addon-to-tails/deb/
+  2. Extracts the package contents with dpkg-deb (no installation)
+  3. Moves only libwidevinecdm.so to
+     ~/Persistent/swtor-addon-to-tails/deb/
+  4. Deletes all other extracted files (opt/, usr/, etc/) immediately
+  5. Deletes the Chrome .deb package
+
+Google Chrome is never installed on your system. After the script
+completes, the only file remaining from the Chrome package is
+libwidevinecdm.so in the deb/ directory.
+
+Security note: Since Chrome 117, Google installs AI components
+(including Gemini Nano) silently in the background via its Component
+Updater. By extracting only libwidevinecdm.so and discarding everything
+else, your system is never exposed to these components.
+
+How does Chromium actually find the Widevine library ?
+  cli_get_chrome.sh stores the complete WidevineCdm/ directory
+  (including manifest.json and libwidevinecdm.so) in:
+
+    ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm/
+
+  On every startup, swtor-init.sh copies this directory as root
+  to the correct system location:
+
+    /usr/lib/chromium/WidevineCdm/
+
+  This copy step requires root access and happens automatically
+  during initialisation — no manual action is needed.
+
+Do I need to run cli_get_chrome.sh on a fresh installation ?
+  No. The WidevineCdm/ directory is already included in the
+  git repository. Every user who clones the addon already has
+  Widevine available immediately — swtor-init.sh copies it to
+  /usr/lib/chromium/ on the first startup automatically.
+
+  cli_get_chrome.sh is only needed to update Widevine to a
+  newer version when required.
 
 Can I replace the default Chromium profiles with my own ?
 -----------------------------------------------------------
@@ -907,10 +955,23 @@ Solution: Unfreeze, make your changes, then refreeze:
 DRM content does not play in Chromium.
 ----------------------------------------
 Run:
+
   cd ~/Persistent/scripts
   ./cli_get_chrome.sh
 
-This installs the Widevine DRM library from Google Chrome.
+No root or administrator password required. The script downloads the
+Google Chrome package, extracts only libwidevinecdm.so into
+~/Persistent/swtor-addon-to-tails/deb/, and immediately deletes the
+Chrome package and all other extracted files. Google Chrome is never
+installed on your system.
+
+After running cli_get_chrome.sh, restart swtor-init.sh. It will
+automatically copy the WidevineCdm/ directory to /usr/lib/chromium/
+as root during initialisation. Then restart Chromium.
+
+Note: On a fresh installation, cli_get_chrome.sh is not needed at all.
+The WidevineCdm/ directory is already included in the git repository
+and swtor-init.sh installs it automatically on first startup.
 
 The addon worked on Tails 4.x but stopped working after upgrading.
 -------------------------------------------------------------------

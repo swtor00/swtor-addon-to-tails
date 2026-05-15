@@ -30,7 +30,7 @@ Three Chromium browser profiles are available:
 
 ## Requirements
 
-- A USB drive with Tails 7.7.3 or higher installed
+- A USB drive with Tails 7.0 or higher installed
 - A persistent volume on that USB drive with these options activated:
   - **SSH** (openssh-client)
   - **Additional Software**
@@ -209,6 +209,12 @@ cd ~/Persistent/scripts
 ```
 This downloads Google Chrome and installs the Widevine DRM library.
 
+Note: On a fresh installation this step is not necessary. The
+`WidevineCdm/` directory is already included in the git repository.
+`swtor-init.sh` copies it automatically to `/usr/lib/chromium/` on
+every startup. Run `cli_get_chrome.sh` only to update Widevine to
+a newer version.
+
 ---
 
 ## Project Structure
@@ -303,5 +309,3 @@ No. The addon consists entirely of shell scripts that you can read and verify yo
 ## License
 
 GNU General Public License Version 2. See [LICENSE](LICENSE).
-
-
