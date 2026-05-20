@@ -16,6 +16,7 @@ swtorcfg/p_thunderbird.config
 swtorcfg/persistence.conf
 swtorcfg/swtorssh.cfg
 tmo/
+tmp/check_parameters_backup
 tmp/file1
 tmp/file2
 tmp/current-system
