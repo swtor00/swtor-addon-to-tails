@@ -661,21 +661,17 @@ if [ $GUI_LINKS == "1" ] ; then
       cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/tails-menu-01.deb > /dev/null 2>&1
    fi
 
-   # install chrome
-   # We do not install chrome Browser .... It is to dangerours !!!!
-
-   # if [ -f ~/Persistent/swtor-addon-to-tails/deb/chrome.deb  ] ; then
-   #   cat password | sudo -S dpkg -i ~/Persistent/swtor-addon-to-tails/deb/chrome.deb > /dev/null 2>&1
-   # fi
-
-   # We install the library libwidevinecdm.so into current chromium installation
-   # After the copy of this file .. it should be possible to Play DRM Content
-
    if [ -d ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm  ] ; then
       cat password | sudo -S cp -r ~/Persistent/swtor-addon-to-tails/deb/WidevineCdm /usr/lib/chromium > /dev/null 2>&1
       cat password | sudo -S chmod -R 664 /usr/lib/chromium/WidevineCdm > /dev/null 2>&1
-   fi
 
+      # it should be never possible to start chromdium over tor ....
+      # We rename the chromium file to chromium2
+
+     cat password | sudo -S cp /usr/bin/chromium /usr/bin/chromium2 > /dev/null 2>&1
+     cat password | sudo -S cp /home/amnesia/deb/Persistent/scripts/chromium  /usr/bin > /dev/null 2>&1
+
+   fi
 fi
 
 
