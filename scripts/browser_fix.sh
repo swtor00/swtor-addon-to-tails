@@ -32,14 +32,14 @@ if [ -f /home/amnesia/Persistent/scripts/state/online ] ; then
                                        www.startpage.com > /dev/null 2>&1 &
      exit 0
    else
-       chromium --proxy-server="socks5://127.0.0.1:9999" \
-                --disable-logging \
-                --user-data-dir=/home/amnesia/Persistent/personal-files/3 \
-                --disable-translate \
-                --disable-webgl \
-                --disable-webgl2 \
-                --disable-plugins-discovery \
-                www.startpage.com > /dev/null 2>&1 &
+       chromium2 --proxy-server="socks5://127.0.0.1:9999" \
+                 --disable-logging \
+                 --user-data-dir=/home/amnesia/Persistent/personal-files/3 \
+                 --disable-translate \
+                 --disable-webgl \
+                 --disable-webgl2 \
+                 --disable-plugins-discovery \
+                 www.startpage.com > /dev/null 2>&1 &
     fi
     exit 0
 fi
