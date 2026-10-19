@@ -669,7 +669,12 @@ if [ $GUI_LINKS == "1" ] ; then
       # We rename the chromium file to chromium2
 
      cat password | sudo -S cp /usr/bin/chromium /usr/bin/chromium2 > /dev/null 2>&1
-     cat password | sudo -S cp /home/amnesia/deb/Persistent/scripts/chromium  /usr/bin > /dev/null 2>&1
+     cat password | sudo -S cp /home/amnesia/Persistent/scripts/chromium  /usr/bin/chromium > /dev/null 2>&1
+
+     # set the permissions
+
+     cat password | sudo -S chmod 755 /usr/bin/chromium  > /dev/null 2>&1
+     cat password | sudo -S chmod 755 /usr/bin/chromium2 > /dev/null 2>&1
 
    fi
 fi
